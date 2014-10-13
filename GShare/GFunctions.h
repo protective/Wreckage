@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "Enums.h"
 #include <math.h>
-#include "GCommands.h"
 #include "GGlobals.h"
 using namespace std;
 void printBuffer(char* buffer, uint32_t len);
