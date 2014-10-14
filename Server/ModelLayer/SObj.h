@@ -22,7 +22,7 @@ namespace model {
 	private:
 		OBJID _id;
 		map<COMPID::Enum, SComponent*> _components;
-		map<>
+		//map<>
 	
 };
 }
