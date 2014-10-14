@@ -17,7 +17,10 @@ class SObj {
 public:
 	SObj(OBJID id);
 	OBJID getId(){return _id;}
+	void addComponent(SComponent* comp);
 	void signal(SIGNAL::Enum type, Signal* data);
+	void subscribeSignal(SIGNAL::Enum signal, SComponent* comp);
+	void unSubscribeSignal(SIGNAL::Enum signal, SComponent* comp);
 	virtual ~SObj();
 private:
 	OBJID _id;

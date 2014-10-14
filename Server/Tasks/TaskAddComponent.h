@@ -19,6 +19,7 @@ public:
 private:
 	OBJID _id;
 	COMPID::Enum _component;
+	
 };
 
 #endif	/* TASKADDCOMPONENT_H */

@@ -24,6 +24,7 @@ namespace SIGNAL {
 		castPos = 2,
 		takeDamage = 3,
 		loseMana = 4,
+		process = 5,
 	};
 }
 
