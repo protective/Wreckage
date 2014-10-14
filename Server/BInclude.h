@@ -18,6 +18,7 @@
 #include <fstream>
 #include <sstream>
 #include <pthread.h>
+#include <SDL/SDL.h>
 #include <list>
 #include <map>
 #include <algorithm>

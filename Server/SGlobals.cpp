@@ -13,4 +13,4 @@ pthread_mutex_t lockNetInput  = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t lockClientList= PTHREAD_MUTEX_INITIALIZER;
 
 SWorld* world = NULL;
-NetworkControler* networkControl = new NetworkControler();
+NetworkControler* networkControl = NULL;

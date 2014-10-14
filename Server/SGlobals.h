@@ -20,7 +20,7 @@
 #include <map>
 
 #define NRTHREADS 1
-
+#define FRAMERATE 25
 
 #ifndef SGLOBALS_H
 #define	SGLOBALS_H

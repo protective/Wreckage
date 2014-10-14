@@ -18,6 +18,11 @@ void SWorld::addGrid(SGrid* grid){
 	this->grids[grid->_id] = grid;
 }
 
+void SWorld::proces(uint32_t deltaT){
+	_time = SDL_GetTicks();
+	
+}
+
 map<uint32_t, SGrid*>& SWorld::getGrids(){
 	return this->grids;
 }
