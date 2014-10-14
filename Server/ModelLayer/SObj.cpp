@@ -6,7 +6,7 @@
  */
 
 #include "SObj.h"
-using namespace model;
+
 
 SObj::SObj() {
 }
