@@ -21,6 +21,9 @@
 #include <list>
 #include <map>
 #include <algorithm>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 using namespace std;
 #include "../GShare/GDefines.h"

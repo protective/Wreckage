@@ -27,7 +27,9 @@
 using namespace std;
 
 class SWorld;
+class NetworkControler;
 extern SWorld* world;
+extern NetworkControler* networkControl;
 extern pthread_mutex_t lockNetInput;
 extern pthread_mutex_t lockClientList;
 
