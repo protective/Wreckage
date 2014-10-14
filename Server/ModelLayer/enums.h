@@ -27,5 +27,14 @@ namespace SIGNAL {
 	};
 }
 
+namespace MESSAGE {
+	enum Enum {
+		invalid = 0,
+		castTarget = 1,
+		castPos = 2,
+		takeDamage = 3,
+		loseMana = 4,
+	};
+}
 #endif	/* ENUMS_H */
 

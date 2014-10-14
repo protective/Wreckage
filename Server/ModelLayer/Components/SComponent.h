@@ -11,7 +11,7 @@
 class SComponent {
 public:
 	SComponent();
-	SComponent(const SObj& orig);
+	void acceptSignal(SIGNAL::Enum type, Signal* data){}
 	virtual ~SComponent();
 private:
 

@@ -12,6 +12,7 @@
 #define COMMAND_FINAL 0
 #define COMMAND_REPEAT 1
 class Task;
+class SObj;
 class Processor {
 public:
 	Processor();
@@ -19,8 +20,8 @@ public:
 	uint32_t addTask(Task* task);
 	uint32_t removeTask(Task* task);
 	static void* workThreadFunction(void* context);
-
-	uint32_t getFreeID();
+	void addObj(SObj* obj);
+	OBJID getFreeID();
 	virtual ~Processor();
 private:
 
@@ -33,9 +34,10 @@ private:
 	bool _workReady;
 	list<Task*> _commands;
 
+	map<OBJID, SObj*> _localObjs;
 	//processor Data
 	uint8_t _id;
-	uint32_t _freeIdCount;
+	OBJID _freeIdCount;
 	pthread_mutex_t _lockFreeID;
 
 };

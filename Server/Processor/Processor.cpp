@@ -8,6 +8,8 @@
 #include "Processor.h"
 #include  "../Tasks/Task.h"
 #include "../ModelLayer/SWorld.h"
+#include "../ModelLayer/SObj.h"
+
 #include "../SGlobals.h"
 
 #include <sys/time.h>
@@ -23,8 +25,12 @@ Processor::Processor() {
 	_id = 0;
 }
 
-uint32_t Processor::getFreeID(){
-	uint32_t ret;
+void Processor::addObj(SObj* obj){
+	_localObjs[obj->getId()] = obj;
+}
+
+OBJID Processor::getFreeID(){
+	OBJID ret;
 	pthread_mutex_lock(&_lockFreeID);
 		_freeIdCount++;
 		ret = _freeIdCount | (_id << 24); //add the 8 bit processor id

@@ -11,18 +11,19 @@
 #include "../BInclude.h"
 #include "enums.h"
 
-
+class Signal;
 class SComponent;
 class SObj {
 public:
-	SObj();
-	SObj(const SObj& orig);
+	SObj(OBJID id);
+	OBJID getId(){return _id;}
+	void signal(SIGNAL::Enum type, Signal* data);
 	virtual ~SObj();
 private:
 	OBJID _id;
 	map<COMPID::Enum, SComponent*> _components;
-	//map<>
-
+	map<SIGNAL::Enum, list<SComponent*> > _signalAccept;
+	map<MESSAGE::Enum, list<SComponent*> > _messageAccept;
 };
 
 #endif	/* SOBJ_H */
