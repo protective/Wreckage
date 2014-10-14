@@ -7,25 +7,34 @@
 
 #ifndef ENUMS_H
 #define	ENUMS_H
-namespace model {
-	namespace COMPID {
-		enum Enum {
-			invalid = 0,
-			killable = 1,
-			caster = 2,
-			targetable = 3,
 
-		};
-	}
-	namespace SIGNAL {
-		enum Enum {
-			invalid = 0,
-			castTarget = 1,
-			castPos = 2,
-			takeDamage = 3,
-			loseMana = 4,
-		};
-	}
+namespace COMPID {
+	enum Enum {
+		invalid = 0,
+		killable = 1,
+		caster = 2,
+		targetable = 3,
+
+	};
+}
+namespace SIGNAL {
+	enum Enum {
+		invalid = 0,
+		castTarget = 1,
+		castPos = 2,
+		takeDamage = 3,
+		loseMana = 4,
+	};
+}
+
+namespace MESSAGE {
+	enum Enum {
+		invalid = 0,
+		castTarget = 1,
+		castPos = 2,
+		takeDamage = 3,
+		loseMana = 4,
+	};
 }
 #endif	/* ENUMS_H */
 

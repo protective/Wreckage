@@ -8,18 +8,16 @@
 #ifndef SCOMPONENT_H
 #define	SCOMPONENT_H
 
-namespace model {
-	
-	class SComponent {
-	public:
-		SComponent();
-		SComponent(const SObj& orig);
-		virtual ~SComponent();
-	private:
+class SComponent {
+public:
+	SComponent();
+	void acceptSignal(SIGNAL::Enum type, Signal* data){}
+	virtual ~SComponent();
+private:
 
 
 };
-}
+
 
 #endif	/* SCOMPONENT_H */
 

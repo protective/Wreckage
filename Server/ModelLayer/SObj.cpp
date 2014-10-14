@@ -6,13 +6,22 @@
  */
 
 #include "SObj.h"
-using namespace model;
+#include "Components/SComponent.h"
+#include "Signals/Signal.h"
 
-SObj::SObj() {
+SObj::SObj(OBJID id) {
+	_id = id;
 }
 
-SObj::SObj(const SObj& orig) {
+void SObj::signal(SIGNAL::Enum type, Signal* data){
+	map<SIGNAL::Enum, list<SComponent*> >::iterator it = _signalAccept.find(type);
+	if (it != _signalAccept.end()){
+		for (list<SComponent*>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
+			(*it2)->acceptSignal(type, data);
+		}
+	}
 }
+
 
 SObj::~SObj() {
 }
