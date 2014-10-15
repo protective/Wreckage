@@ -1,9 +1,3 @@
-/* 
- * File:   enums.h
- * Author: karsten
- *
- * Created on 13. oktober 2014, 23:37
- */
 
 #ifndef ENUMS_H
 #define	ENUMS_H
@@ -14,27 +8,52 @@ namespace COMPID {
 		killable = 1,
 		caster = 2,
 		targetable = 3,
+		hitMechanic,
+		abilityCreator,
+		timedHit,
 
 	};
 }
 namespace SIGNAL {
 	enum Enum {
 		invalid = 0,
-		castTarget = 1,
-		castPos = 2,
-		takeDamage = 3,
-		loseMana = 4,
-		process = 5,
+		castTarget,
+		castPos,
+		takeDamage,
+		loseMana,
+		process,
+		fireTarget,
 	};
 }
 
 namespace MESSAGE {
 	enum Enum {
 		invalid = 0,
-		castTarget = 1,
-		castPos = 2,
-		takeDamage = 3,
-		loseMana = 4,
+		process,
+		castTarget,
+		castPos,
+		takeDamage,
+		loseMana,
+		applyPower,
+	};
+}
+
+namespace STATS {
+	enum Enum {
+		invalid = 0,
+		hp,
+		maxhp,
+		hitP,
+		dodgeP,
+		
+	};
+}
+
+namespace PROJECTILESTATS {
+	enum Enum {
+		invalid = 0,
+		level,
+		hitP,
 	};
 }
 #endif	/* ENUMS_H */

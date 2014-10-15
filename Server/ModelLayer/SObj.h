@@ -10,6 +10,7 @@
 
 #include "../BInclude.h"
 #include "enums.h"
+#include "Messages/Message.h"
 
 class Signal;
 class SComponent;
@@ -19,8 +20,13 @@ public:
 	OBJID getId(){return _id;}
 	void addComponent(SComponent* comp);
 	void signal(SIGNAL::Enum type, Signal* data);
+	void message(MESSAGE::Enum type, Message* data);
+
 	void subscribeSignal(SIGNAL::Enum signal, SComponent* comp);
 	void unSubscribeSignal(SIGNAL::Enum signal, SComponent* comp);
+	void subscribeMessage(MESSAGE::Enum message, SComponent* comp);
+	void unSubscribeMessage(MESSAGE::Enum message, SComponent* comp);
+
 	virtual ~SObj();
 private:
 	OBJID _id;

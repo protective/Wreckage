@@ -1,9 +1,3 @@
-/* 
- * File:   CompCaster.h
- * Author: karsten
- *
- * Created on 14. oktober 2014, 22:35
- */
 
 #ifndef COMPCASTER_H
 #define	COMPCASTER_H

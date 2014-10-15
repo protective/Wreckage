@@ -1,9 +1,3 @@
-/* 
- * File:   CompCaster.cpp
- * Author: karsten
- * 
- * Created on 14. oktober 2014, 22:35
- */
 
 #include "CompCaster.h"
 

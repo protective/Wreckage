@@ -26,6 +26,15 @@ void SObj::signal(SIGNAL::Enum type, Signal* data){
 	}
 }
 
+void SObj::message(MESSAGE::Enum type, Message* data){
+	map<MESSAGE::Enum, list<SComponent*> >::iterator it = _messageAccept.find(type);
+	if (it != _messageAccept.end()){
+		for (list<SComponent*>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
+			(*it2)->acceptMessage(type, data);
+		}
+	}
+}
+
 void SObj::subscribeSignal(SIGNAL::Enum signal, SComponent* comp){
 	_signalAccept[signal].push_back(comp);
 }
@@ -34,7 +43,14 @@ void SObj::unSubscribeSignal(SIGNAL::Enum signal, SComponent* comp){
 		_signalAccept[signal].remove(comp);
 }
 
-	
+void SObj::subscribeMessage(MESSAGE::Enum message, SComponent* comp){
+	_messageAccept[message].push_back(comp);
+}
+void SObj::unSubscribeMessage(MESSAGE::Enum message, SComponent* comp){
+	if(_messageAccept.find(message) != _messageAccept.end())
+		_messageAccept[message].remove(comp);
+}
+
 SObj::~SObj() {
 }
 

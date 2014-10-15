@@ -9,6 +9,7 @@
 #define	SCOMPONENT_H
 #include "../enums.h"
 #include "../Signals/Signal.h"
+#include "../Messages/Message.h"
 #include "../SObj.h"
 
 class SComponent {
@@ -23,7 +24,8 @@ public:
 		_type = type;
 		obj->addComponent(this);
 	}
-	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) = 0;
+	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
+	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
 	virtual ~SComponent(){}
 protected:
 	SObj* _obj;

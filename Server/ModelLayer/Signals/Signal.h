@@ -1,13 +1,8 @@
-/* 
- * File:   Signal.h
- * Author: karsten
- *
- * Created on 14. oktober 2014, 21:52
- */
-
 #ifndef SIGNAL_H
 #define	SIGNAL_H
+
 #include "../../BInclude.h"
+#include "../enums.h"
 
 struct Signal {
 	Signal(SIGNAL::Enum type){
