@@ -9,7 +9,7 @@
 #include  "../Tasks/Task.h"
 #include "../ModelLayer/SWorld.h"
 #include "../ModelLayer/SObj.h"
-
+#include "../ModelLayer/Components/ComponentFactory.h"
 #include "../SGlobals.h"
 
 #include <sys/time.h>
@@ -22,11 +22,33 @@ Processor::Processor() {
 	pthread_mutex_init(&_lockCommands, NULL);
 	_workReady = false;
 	_freeIdCount = 1;
-	_id = 0;
+	_id = 1;
+	
+	_dbCon = new pqxx::connection("dbname= wreckage user=karsten");
+
 }
 
 void Processor::addObj(SObj* obj){
 	_localObjs[obj->getId()] = obj;
+}
+
+SObj* Processor::getObj(OBJID id){
+	if(_localObjs.find(id) != _localObjs.end())
+		return _localObjs[id];
+	return NULL;
+}
+
+SObj* Processor::createObjFromTemplate(OBJTPID id){
+	SObj* obj = new SObj(getFreeID());
+	
+	pqxx::work w(getDB());
+	stringstream s; 
+	s<<"select compid from comp where objid = "<<id<<";)";
+	pqxx::result r = w.exec(s);
+
+	for(int i = 0; i< r.size();i++){
+		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>() ,getDB()));
+	}
 }
 
 OBJID Processor::getFreeID(){
@@ -43,6 +65,7 @@ void* Processor::workThreadFunction(void* context){
 }
 
 void Processor::work(){
+
 	struct timespec timeToWait;
 	struct timeval now;
 	Task* tempCommand = NULL;

@@ -9,6 +9,7 @@
 #define	GDEFINES_H
 
 typedef uint32_t OBJID;
+typedef uint32_t OBJTPID;
 typedef uint32_t TIME;
 
 #endif	/* GDEFINES_H */

@@ -9,6 +9,7 @@
 #define	PROCESSOR_H
 
 #include "../BInclude.h"
+#include <pqxx/pqxx>
 #define COMMAND_FINAL 0
 #define COMMAND_REPEAT 1
 class Task;
@@ -21,7 +22,10 @@ public:
 	uint32_t removeTask(Task* task);
 	static void* workThreadFunction(void* context);
 	void addObj(SObj* obj);
+	SObj* getObj(OBJID id);
+	SObj* createObjFromTemplate(OBJTPID id);
 	OBJID getFreeID();
+	pqxx::connection& getDB(){return *_dbCon;}
 	virtual ~Processor();
 private:
 
@@ -39,6 +43,8 @@ private:
 	uint8_t _id;
 	OBJID _freeIdCount;
 	pthread_mutex_t _lockFreeID;
+
+	pqxx::connection* _dbCon;
 
 };
 

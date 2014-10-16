@@ -14,6 +14,7 @@
 
 class Signal;
 class SComponent;
+class Processor;
 class SObj {
 public:
 	SObj(OBJID id);
@@ -26,10 +27,12 @@ public:
 	void unSubscribeSignal(SIGNAL::Enum signal, SComponent* comp);
 	void subscribeMessage(MESSAGE::Enum message, SComponent* comp);
 	void unSubscribeMessage(MESSAGE::Enum message, SComponent* comp);
-
+	Processor* getProcessor(){return _processor;}
+	bool isTemplate(){return !(_id & TPIDMASK);}
 	virtual ~SObj();
 private:
 	OBJID _id;
+	Processor* _processor;
 	map<COMPID::Enum, SComponent*> _components;
 	map<SIGNAL::Enum, list<SComponent*> > _signalAccept;
 	map<MESSAGE::Enum, list<SComponent*> > _messageAccept;

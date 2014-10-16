@@ -11,10 +11,13 @@
 
 SObj::SObj(OBJID id) {
 	_id = id;
+	_processor = NULL;
 }
 void SObj::addComponent(SComponent* comp){
-	comp->setObj(this);
-	_components[comp->_type] = comp;
+	if(comp){
+		comp->setObj(this);
+		_components[comp->_type] = comp;
+	}
 }
 
 void SObj::signal(SIGNAL::Enum type, Signal* data){

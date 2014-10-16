@@ -11,7 +11,7 @@
 #include "../Signals/Signal.h"
 #include "../Messages/Message.h"
 #include "../SObj.h"
-
+#include <pqxx/pqxx>
 class SComponent {
 	friend SObj;
 public:
@@ -24,8 +24,24 @@ public:
 		_type = type;
 		obj->addComponent(this);
 	}
+	
+	SComponent* loadComponent(COMPID::Enum type, pqxx::connection& con){
+	
+	
+	}
+	
+	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
+	
+	void sendMessage(MESSAGE::Enum type, Message* data){
+	
+	
+	}
+	void virtual dbInit(){}
+	void virtual dbSave(){}
+	void virtual dbLoad(){}
+	
 	virtual ~SComponent(){}
 protected:
 	SObj* _obj;

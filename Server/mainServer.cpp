@@ -13,6 +13,7 @@
 #include "ModelLayer/SWorld.h"
 #include "NetworkLayer/NetworkControler.h"
 #include "NetworkLayer/NetworkFunctions.h"
+#include "ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
 
 using namespace std;
 
@@ -29,6 +30,25 @@ int main(int argc, char** argv) {
 	
 	
 	printbufferbool = true;
+	
+	pqxx::connection con("dbname= wreckage user=karsten");
+	
+	pqxx::work w(con);
+	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objs');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main OBJ table do not exist create"<<endl;
+		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL);");
+	}
+
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='comp');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main component table do not exist create"<<endl;
+		w.exec("create table comp (objId BIGINT, compId INT);");
+	}	
+	w.commit();
+	
+	CompSpawnNode csn;
+	csn.dbInit(con);
 	
 	for(int i = 0; i < NRTHREADS;i++)
 	{

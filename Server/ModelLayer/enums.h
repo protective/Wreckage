@@ -11,6 +11,7 @@ namespace COMPID {
 		hitMechanic,
 		abilityCreator,
 		timedHit,
+		spawnNode,
 
 	};
 }
