@@ -7,9 +7,13 @@
 
 #include "Processor.h"
 #include  "../Tasks/Task.h"
+#include "../Tasks/TaskCreateObj.h"
+
 #include "../ModelLayer/SWorld.h"
 #include "../ModelLayer/SObj.h"
 #include "../ModelLayer/Components/ComponentFactory.h"
+#include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+
 #include "../SGlobals.h"
 
 #include <sys/time.h>
@@ -26,6 +30,9 @@ Processor::Processor() {
 	
 	_dbCon = new pqxx::connection("dbname= wreckage user=karsten");
 
+	TaskCreateObj* cmd = new TaskCreateObj(true);
+	cmd->addComponent(new CompSpawnNode(1000,0,1));
+	this->addTask(cmd);
 }
 
 void Processor::addObj(SObj* obj){
@@ -39,7 +46,7 @@ SObj* Processor::getObj(OBJID id){
 }
 
 SObj* Processor::createObjFromTemplate(OBJTPID id){
-	SObj* obj = new SObj(getFreeID());
+	SObj* obj = new SObj(getFreeID(),this);
 	
 	pqxx::work w(getDB());
 	stringstream s; 
@@ -47,7 +54,7 @@ SObj* Processor::createObjFromTemplate(OBJTPID id){
 	pqxx::result r = w.exec(s);
 
 	for(int i = 0; i< r.size();i++){
-		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>() ,getDB()));
+		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, getDB()));
 	}
 }
 

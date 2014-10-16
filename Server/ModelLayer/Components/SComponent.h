@@ -7,6 +7,8 @@
 
 #ifndef SCOMPONENT_H
 #define	SCOMPONENT_H
+#include "../../BInclude.h"
+
 #include "../enums.h"
 #include "../Signals/Signal.h"
 #include "../Messages/Message.h"
@@ -41,7 +43,7 @@ public:
 	void virtual dbInit(){}
 	void virtual dbSave(){}
 	void virtual dbLoad(){}
-	
+	COMPID::Enum getType(){return _type;}
 	virtual ~SComponent(){}
 protected:
 	SObj* _obj;

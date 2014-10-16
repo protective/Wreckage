@@ -17,9 +17,10 @@ class SComponent;
 class Processor;
 class SObj {
 public:
-	SObj(OBJID id);
+	SObj(OBJID id, Processor* processor);
 	OBJID getId(){return _id;}
 	void addComponent(SComponent* comp);
+	void save();
 	void signal(SIGNAL::Enum type, Signal* data);
 	void message(MESSAGE::Enum type, Message* data);
 

@@ -6,9 +6,9 @@
 class CompSpawnNode : public SComponent  {
 public:
 	CompSpawnNode();
+	CompSpawnNode(TIME spawnTime, OBJTPID spwanTemplate, OBJID spawn);
 	CompSpawnNode(const CompSpawnNode& orig);
-	CompSpawnNode(pqxx::connection& con);
-	
+	CompSpawnNode(OBJID id, pqxx::connection& con);	
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};

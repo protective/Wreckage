@@ -8,6 +8,8 @@
 #ifndef TASK_H
 #define	TASK_H
 #include "../BInclude.h"
+#include "../ModelLayer/enums.h"
+
 class Processor;
 class Task {
 public:

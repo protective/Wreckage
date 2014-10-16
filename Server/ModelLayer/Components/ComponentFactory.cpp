@@ -8,10 +8,10 @@
 #include "ComponentFactory.h"
 #include "CompSpawnNode/CompSpawnNode.h"
 
-SComponent* createComponent(COMPID::Enum type, pqxx::connection& con){
+SComponent* createComponent(COMPID::Enum type, OBJID id, pqxx::connection& con){
 	switch(type){
 		case COMPID::spawnNode: {
-			return new CompSpawnNode(con);
+			return new CompSpawnNode(id,con);
 		}
 		default:{
 			cerr<<"ERROR ComponentFactory::createComponent component not known"<<endl;			

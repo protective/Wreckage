@@ -6,13 +6,14 @@
 class SComponent;
 class TaskCreateObj : public Task {
 public:
-	TaskCreateObj();
-	void addComponent();
+	TaskCreateObj(bool persistent);
+	void addComponent(SComponent* cmp);
 	virtual uint32_t execute();
 	virtual ~TaskCreateObj();
 private:
 	OBJID _id;
-	map<uint32_t, SComponent*> _components;
+	bool _persistent;
+	map<COMPID::Enum, SComponent*> _components;
 };
 
 #endif	/* TASKCREATEOBJ_H */
