@@ -11,7 +11,7 @@ public:
 	CompSpawnNode(OBJID id, pqxx::connection& con);	
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
-	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
+	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);

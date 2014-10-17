@@ -19,6 +19,7 @@ Task(0) {
 
 uint32_t TaskSendMessage::execute(){
 	_toId->message(_message->_type, _message);
+	delete _message;
 	return COMMAND_FINAL;
 }
 

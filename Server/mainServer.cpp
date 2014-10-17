@@ -53,6 +53,9 @@ int main(int argc, char** argv) {
 	CompReSpawnable crsn;
 	crsn.dbTableInit(con);
 	
+	world = new SWorld(NULL);
+	SDL_Init(SDL_INIT_TIMER);
+	
 	for(int i = 0; i < NRTHREADS;i++)
 	{
 		cerr<<"create processor"<<endl;
@@ -60,9 +63,8 @@ int main(int argc, char** argv) {
 		cerr<<"p "<<temp<<endl;
 		processors.push_back(temp);
 	}	
-	world = new SWorld(processors.front());
+
 	
-	SDL_Init(SDL_INIT_TIMER);
 
 	pthread_t listenThread;
 	pthread_create(&listenThread, NULL, (void*(*)(void*))thread_Listen, NULL);

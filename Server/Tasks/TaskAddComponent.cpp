@@ -6,7 +6,7 @@
  */
 
 #include "TaskAddComponent.h"
-
+#include "../Processor/Processor.h"
 TaskAddComponent::TaskAddComponent() :
 Task(0) {
 }
@@ -14,6 +14,8 @@ Task(0) {
 
 
 uint32_t TaskAddComponent::execute(){
+	
+	return COMMAND_FINAL;
 }
 
 TaskAddComponent::~TaskAddComponent() {

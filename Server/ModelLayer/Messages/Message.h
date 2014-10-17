@@ -5,14 +5,16 @@
 #include "../enums.h"
 
 struct Message {
-	Message(MESSAGE::Enum type){
+	Message(MESSAGE::Enum type, OBJID fromId){
 		_type = type;
 	}
 	Message(Message& m){
 		_type = m._type;
+		_fromId = m._fromId;
 	}
 	uint32_t serialize(char* buff){}
 	MESSAGE::Enum _type;
+	OBJID _fromId;
 };
 
 #endif	/* MESSAGE_H */

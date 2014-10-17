@@ -9,7 +9,7 @@ CompSpawnNode::CompSpawnNode(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
 	pqxx::work w(con);
 	stringstream s; 
-	s<<"select spawnid, spawnTime, spawnTemplate from CompSpawnNode where objId = "<<id<<";)";
+	s<<"select spawnid, spawnTime, spawnTemplate from CompSpawnNode where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
 	if(r.size() != 1)
 		cerr<<"ERROR CompSpawnNode loadsize="<<r.size()<<endl;
@@ -31,7 +31,7 @@ void CompSpawnNode::dbSave(){
 				"spawnid = "<<_spawn<<", "
 				"spawnTime = "<<_spawnTime<<", "
 				"spawnTemplate = "<<_spwanTemplate<<" "
-				"where objId = "<<_obj->getId()<<";)";
+				"where objId = "<<_obj->getId()<<"";
 			w.exec(s);
 			w.commit();
 		}else{

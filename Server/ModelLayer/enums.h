@@ -38,6 +38,7 @@ namespace MESSAGE {
 		takeDamage,
 		loseMana,
 		applyPower,
+		killed, //the unit sending this messeage is dead
 	};
 }
 

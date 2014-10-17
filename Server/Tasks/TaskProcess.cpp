@@ -6,6 +6,7 @@
  */
 
 #include "TaskProcess.h"
+#include "../Processor/Processor.h"
 #include "../ModelLayer/SObj.h"
 #include "../ModelLayer/SWorld.h"
 #include "../ModelLayer/Signals/SignalProcess.h"
@@ -25,6 +26,7 @@ uint32_t TaskProcess::execute(){
 	_obj->signal(SIGNAL::process, &s);
 	_last += delta;
 	_time = _last + _procesDelta;
+	return COMMAND_REPEAT;
 }
 
 TaskProcess::~TaskProcess() {

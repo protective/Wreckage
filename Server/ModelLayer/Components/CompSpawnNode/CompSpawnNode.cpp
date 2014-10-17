@@ -29,9 +29,25 @@ void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 		case SIGNAL::process:{
 			SignalProcess* dataP;
 			_spawnTime -= dataP->_delta;
+			break;
 		}
 	}
 }
+
+void CompSpawnNode::acceptMessage(MESSAGE::Enum type, Message* data){
+	switch(type){
+		case MESSAGE::killed:{
+			cerr<<"CompSpawnNode::acceptMessage MESSAGE::killed"<<endl;
+			
+			if(data->_fromId == _spawn){
+				cerr<<"CompSpawnNode::acceptMessage ID matches"<<endl;			
+			
+			}
+			break;
+		}
+	}
+}
+
 
 CompSpawnNode::~CompSpawnNode() {
 }

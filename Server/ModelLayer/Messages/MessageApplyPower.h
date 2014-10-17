@@ -10,8 +10,8 @@
 #include "Message.h"
 
 struct MessageApplyPower : public Message {
-	MessageApplyPower(map<PROJECTILESTATS::Enum, uint32_t>& stats):
-	Message(MESSAGE::applyPower){
+	MessageApplyPower( OBJID from, map<PROJECTILESTATS::Enum, uint32_t>& stats):
+	Message(MESSAGE::applyPower, from){
 		_stats = stats;
 	}
 	MessageApplyPower(MessageApplyPower& m):

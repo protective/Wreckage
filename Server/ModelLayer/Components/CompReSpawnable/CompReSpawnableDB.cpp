@@ -8,7 +8,7 @@ CompReSpawnable::CompReSpawnable(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
 	pqxx::work w(con);
 	stringstream s; 
-	s<<"select spawner from CompReSpawnable where objId = "<<id<<";)";
+	s<<"select spawner from CompReSpawnable where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
 	if(r.size() != 1)
 		cerr<<"ERROR CompReSpawnable loadsize="<<r.size()<<endl;
@@ -26,7 +26,7 @@ void CompReSpawnable::dbSave(){
 			stringstream s; 
 			s<<"update CompSpawnNode set "
 				"spawnid = "<<_spawner<<" "
-				"where objId = "<<_obj->getId()<<";)";
+				"where objId = "<<_obj->getId()<<"";
 			w.exec(s);
 			w.commit();
 		}else{

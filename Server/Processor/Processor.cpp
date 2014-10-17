@@ -8,6 +8,8 @@
 #include "Processor.h"
 #include  "../Tasks/Task.h"
 #include "../Tasks/TaskCreateObj.h"
+#include "../Tasks/TaskSendMessage.h"
+#include "../Tasks/TaskProcess.h"
 
 #include "../ModelLayer/SWorld.h"
 #include "../ModelLayer/SObj.h"
@@ -44,14 +46,41 @@ Processor::Processor() {
 	else
 		_freeIdCount = 1;
 	cerr<<"hest1"<<endl;
-	TaskCreateObj* cmd = new TaskCreateObj(true);
-	cmd->addComponent(new CompSpawnNode(1000,0,1));
-	cmd->addComponent(new CompReSpawnable(1));
-	this->addTask(cmd);
+	w.commit();
+	
+	loadAllObjFromDb();
+	//TaskCreateObj* cmd = new TaskCreateObj(true);
+	//cmd->addComponent(new CompSpawnNode(1000,0,0));
+	//this->addTask(cmd);	
+	
+	//cmd = new TaskCreateObj(true);
+	//cmd->addComponent(new CompReSpawnable(0));
+	//this->addTask(cmd);
 }
 
+void Processor::loadAllObjFromDb(){
+	pqxx::work w(getDB());
+	stringstream s;
+	s<<"select objid from objs;"; 
+	pqxx::result r = w.exec(s);
+	w.commit();
+	for(int i = 0; i < r.size();i++){
+		
+		addObj(loadObjFromDB(r[i][0].as<OBJID>()));
+		cerr<<"obj added "<<endl;
+	}
+	
+		
+}
+
+
 void Processor::addObj(SObj* obj){
-	_localObjs[obj->getId()] = obj;
+	if(obj){
+		cerr<<"processor add obj id="<<obj->getId()<<endl;
+		_localObjs[obj->getId()] = obj;
+		addTask(new TaskProcess(obj,1000));
+	}else
+		cerr<<"ERROR Processor::addObj obj = NULL"<<endl;
 }
 
 SObj* Processor::getObj(OBJID id){
@@ -65,14 +94,36 @@ SObj* Processor::createObjFromTemplate(OBJTPID id){
 	
 	pqxx::work w(getDB());
 	stringstream s; 
-	s<<"select compid from comp where objid = "<<id<<";)";
+	s<<"select compid from comp where objid = "<<id<<";";
 	pqxx::result r = w.exec(s);
-
+	w.commit();
 	for(int i = 0; i< r.size();i++){
 		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, getDB()));
 	}
 }
 
+SObj* Processor::loadObjFromDB(OBJID id){
+	SObj* obj = new SObj(id,this);
+	
+	pqxx::work w(getDB());
+	stringstream s; 
+	s<<"select compid from comp where objid = "<<id<<";";
+	pqxx::result r = w.exec(s);
+	w.commit();
+	for(int i = 0; i< r.size();i++){
+		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, getDB()));
+	}
+	return obj;
+}
+
+void  Processor::sendMessage(OBJID to, Message* message){
+	SObj* t = getObj(to);
+	cerr<<"send message to id="<<to<<" t="<<t<<endl;
+	if (t){
+		TaskSendMessage* cmd = new TaskSendMessage(t, message);
+		this->addTask(cmd);
+	}
+}
 OBJID Processor::getFreeID(){
 	OBJID ret;
 	pthread_mutex_lock(&_lockFreeID);

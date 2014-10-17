@@ -23,21 +23,19 @@ void SObj::addComponent(SComponent* comp){
 }
 
 void SObj::signal(SIGNAL::Enum type, Signal* data){
-	map<SIGNAL::Enum, list<SComponent*> >::iterator it = _signalAccept.find(type);
-	if (it != _signalAccept.end()){
-		for (list<SComponent*>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
-			(*it2)->acceptSignal(type, data);
-		}
+	//map<SIGNAL::Enum, list<SComponent*> >::iterator it = _signalAccept.find(type);
+	//if (it != _signalAccept.end()){
+	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
+		it->second->acceptSignal(type, data);
 	}
+	//}
 }
 
 void SObj::message(MESSAGE::Enum type, Message* data){
-	map<MESSAGE::Enum, list<SComponent*> >::iterator it = _messageAccept.find(type);
-	if (it != _messageAccept.end()){
-		for (list<SComponent*>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
-			(*it2)->acceptMessage(type, data);
-		}
+	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
+		it->second->acceptMessage(type, data);
 	}
+	//NOTE the task is responsible for deleting the message data
 }
 
 void SObj::subscribeSignal(SIGNAL::Enum signal, SComponent* comp){

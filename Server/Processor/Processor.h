@@ -14,6 +14,7 @@
 #define COMMAND_REPEAT 1
 class Task;
 class SObj;
+class Message;
 class Processor {
 public:
 	Processor();
@@ -23,7 +24,10 @@ public:
 	static void* workThreadFunction(void* context);
 	void addObj(SObj* obj);
 	SObj* getObj(OBJID id);
+	void loadAllObjFromDb();
 	SObj* createObjFromTemplate(OBJTPID id);
+	SObj* loadObjFromDB(OBJID id);
+	void sendMessage(OBJID to, Message* message);
 	OBJID getFreeID();
 	pqxx::connection& getDB(){return *_dbCon;}
 	virtual ~Processor();
