@@ -30,6 +30,18 @@ Processor::Processor() {
 	
 	_dbCon = new pqxx::connection("dbname= wreckage user=karsten");
 
+	OBJID maxLocalId = 0x00FFFFFF | (_id << 24);
+	
+	pqxx::work w(*_dbCon);
+	stringstream s;
+	cerr<<maxLocalId<<endl;
+	s<<"select max(objid) from objs where objid <"<<maxLocalId<<";"; 
+	pqxx::result r = w.exec(s);
+	
+	if(!r[0].empty())
+		_freeIdCount = (r[0][0].as<OBJID>() & 0x00FFFFFF) + 1;
+	else
+		_freeIdCount = 1;
 	TaskCreateObj* cmd = new TaskCreateObj(true);
 	cmd->addComponent(new CompSpawnNode(1000,0,1));
 	this->addTask(cmd);

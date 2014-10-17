@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 	w.commit();
 	
 	CompSpawnNode csn;
-	csn.dbInit(con);
+	csn.dbTableInit(con);
 	
 	for(int i = 0; i < NRTHREADS;i++)
 	{

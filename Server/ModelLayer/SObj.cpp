@@ -13,6 +13,7 @@
 SObj::SObj(OBJID id, Processor* processor) {
 	_id = id;
 	_processor = processor;
+	_flags = 0;
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){
@@ -58,32 +59,39 @@ void SObj::unSubscribeMessage(MESSAGE::Enum message, SComponent* comp){
 
 void SObj::save(){
 	
-	
+	if(isInit()){
+		//pqxx::work w(_processor->getDB());
+
+		for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){
+			it->second->dbSave();
+		}
+		//w.commit();	
+	}else{
+		init();
+	}
+}
+
+void SObj::init(){
 	pqxx::work w(_processor->getDB());
-	
+
 	stringstream s1;
-	s1<<"delete from comp where "
-	"objId = "<<_id<<";"
-	"delete from objs where objid = "<<_id<<";"
-	"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<");";
+	s1<<"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<");";
 	w.exec(s1);
-		
+	w.commit();	
 	for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){
 		stringstream s;
+		pqxx::work w2(_processor->getDB());
+
 		s<<"insert into comp values( "
 			<<_id<<", "
 			<<(uint32_t)it->first<<");";
-		w.exec(s);
+		w2.exec(s);
+		w2.commit();	
 		it->second->dbSave();
 	}
-	w.commit();	
 
-	
-	
-	//pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objs');");
-
+	_flags &= OBJFLAGINIT;
 }
-
 
 SObj::~SObj() {
 }
