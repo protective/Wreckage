@@ -14,6 +14,7 @@
 #include "NetworkLayer/NetworkControler.h"
 #include "NetworkLayer/NetworkFunctions.h"
 #include "ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+#include "ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 
 using namespace std;
 
@@ -49,6 +50,8 @@ int main(int argc, char** argv) {
 	
 	CompSpawnNode csn;
 	csn.dbTableInit(con);
+	CompReSpawnable crsn;
+	crsn.dbTableInit(con);
 	
 	for(int i = 0; i < NRTHREADS;i++)
 	{

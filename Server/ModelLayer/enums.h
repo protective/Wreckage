@@ -12,6 +12,7 @@ namespace COMPID {
 		abilityCreator,
 		timedHit,
 		spawnNode,
+		reSpawnable,
 
 	};
 }
@@ -24,6 +25,7 @@ namespace SIGNAL {
 		loseMana,
 		process,
 		fireTarget,
+		killed,
 	};
 }
 

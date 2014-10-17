@@ -30,7 +30,7 @@ void CompSpawnNode::dbSave(){
 			s<<"update CompSpawnNode set "
 				"spawnid = "<<_spawn<<", "
 				"spawnTime = "<<_spawnTime<<", "
-				"spawnTemplate = "<<_spwanTemplate<<", "
+				"spawnTemplate = "<<_spwanTemplate<<" "
 				"where objId = "<<_obj->getId()<<";)";
 			w.exec(s);
 			w.commit();

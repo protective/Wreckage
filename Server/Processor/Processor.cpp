@@ -13,6 +13,7 @@
 #include "../ModelLayer/SObj.h"
 #include "../ModelLayer/Components/ComponentFactory.h"
 #include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+#include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 
 #include "../SGlobals.h"
 
@@ -37,13 +38,15 @@ Processor::Processor() {
 	cerr<<maxLocalId<<endl;
 	s<<"select max(objid) from objs where objid <"<<maxLocalId<<";"; 
 	pqxx::result r = w.exec(s);
-	
-	if(!r[0].empty())
+
+	if(!r[0][0].is_null())
 		_freeIdCount = (r[0][0].as<OBJID>() & 0x00FFFFFF) + 1;
 	else
 		_freeIdCount = 1;
+	cerr<<"hest1"<<endl;
 	TaskCreateObj* cmd = new TaskCreateObj(true);
 	cmd->addComponent(new CompSpawnNode(1000,0,1));
+	cmd->addComponent(new CompReSpawnable(1));
 	this->addTask(cmd);
 }
 

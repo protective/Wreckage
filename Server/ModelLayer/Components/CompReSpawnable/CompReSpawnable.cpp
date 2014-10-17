@@ -1,16 +1,30 @@
-/* 
- * File:   CompReSpawnable.cpp
- * Author: karsten
- * 
- * Created on 17. oktober 2014, 21:11
- */
 
 #include "CompReSpawnable.h"
+#include "../../../Processor/Processor.h"
+#include "../../Signals/SignalProcess.h"
 
-CompReSpawnable::CompReSpawnable() {
+CompReSpawnable::CompReSpawnable() :
+SComponent(COMPID::reSpawnable){
+	_spawner = 0;
 }
 
-CompReSpawnable::CompReSpawnable(const CompReSpawnable& orig) {
+CompReSpawnable::CompReSpawnable(const CompReSpawnable& orig) :
+SComponent(COMPID::reSpawnable){
+	_spawner = orig._spawner;
+}
+
+CompReSpawnable::CompReSpawnable(OBJID spawner) :
+SComponent(COMPID::reSpawnable){
+	_spawner = spawner;
+}
+
+void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
+	switch(type){
+		case SIGNAL::killed:{
+			//SignalProcess* dataP;
+			
+		}
+	}
 }
 
 CompReSpawnable::~CompReSpawnable() {
