@@ -6,6 +6,7 @@
 
 CompReSpawnable::CompReSpawnable(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
+	init();
 	pqxx::work w(con);
 	stringstream s; 
 	s<<"select spawner from CompReSpawnable where objId = "<<id<<"";

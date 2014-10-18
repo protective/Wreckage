@@ -7,6 +7,7 @@
 
 CompSpawnNode::CompSpawnNode(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
+	init();
 	pqxx::work w(con);
 	stringstream s; 
 	s<<"select spawnid, spawnTime, spawnTemplate from CompSpawnNode where objId = "<<id<<"";

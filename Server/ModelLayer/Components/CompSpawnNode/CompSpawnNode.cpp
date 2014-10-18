@@ -5,6 +5,7 @@
 
 CompSpawnNode::CompSpawnNode() :
 SComponent(COMPID::spawnNode){
+	init();
 	_spawnTime = 0;
 	_spawn = 0;
 	_spwanTemplate = 0;
@@ -12,6 +13,7 @@ SComponent(COMPID::spawnNode){
 
 CompSpawnNode::CompSpawnNode(TIME spawnTime, OBJTPID spwanTemplate, OBJID spawn) :
 SComponent(COMPID::spawnNode){
+	init();
 	_spawnTime = spawnTime;
 	_spawn = spawn;
 	_spwanTemplate = spwanTemplate;
@@ -19,9 +21,15 @@ SComponent(COMPID::spawnNode){
 
 CompSpawnNode::CompSpawnNode(const CompSpawnNode& orig) :
 SComponent(COMPID::spawnNode){
+	init();
 	_spawnTime = orig._spawnTime;
 	_spawn = orig._spawn;
 	_spwanTemplate = orig._spwanTemplate;
+}
+
+
+void CompSpawnNode::init(){
+
 }
 
 void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){

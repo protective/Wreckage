@@ -22,7 +22,6 @@
 #include <sys/time.h>
 Processor::Processor() {
 	
-	cerr<<"init processor"<<endl;
 	pthread_cond_init(&_workCond,NULL);
 	pthread_mutex_init(&_workMutex,NULL);
 	pthread_mutex_init(&_lockFreeID, NULL);
@@ -45,7 +44,6 @@ Processor::Processor() {
 		_freeIdCount = (r[0][0].as<OBJID>() & 0x00FFFFFF) + 1;
 	else
 		_freeIdCount = 1;
-	cerr<<"hest1"<<endl;
 	w.commit();
 	
 	loadAllObjFromDb();
@@ -65,9 +63,7 @@ void Processor::loadAllObjFromDb(){
 	pqxx::result r = w.exec(s);
 	w.commit();
 	for(int i = 0; i < r.size();i++){
-		
-		addObj(loadObjFromDB(r[i][0].as<OBJID>()));
-		cerr<<"obj added "<<endl;
+		addTask(new TaskCreateObj(r[i][0].as<OBJID>(),r[i][0].as<OBJID>(), true));
 	}
 	
 		
@@ -90,7 +86,8 @@ SObj* Processor::getObj(OBJID id){
 }
 
 SObj* Processor::createObjFromTemplate(OBJTPID id){
-	SObj* obj = new SObj(getFreeID(),this);
+	//TODO fix persistent
+	SObj* obj = new SObj(getFreeID(),false,this);
 	
 	pqxx::work w(getDB());
 	stringstream s; 
@@ -103,7 +100,7 @@ SObj* Processor::createObjFromTemplate(OBJTPID id){
 }
 
 SObj* Processor::loadObjFromDB(OBJID id){
-	SObj* obj = new SObj(id,this);
+	SObj* obj = new SObj(id,true,this);
 	
 	pqxx::work w(getDB());
 	stringstream s; 

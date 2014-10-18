@@ -25,12 +25,7 @@ public:
 		_type = type;
 		_flags = 0;
 	}
-	SComponent(SObj* obj, COMPID::Enum type){
-		_type = type;
-		obj->addComponent(this);
-		_flags = 0;
-	}
-	
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
 	
@@ -49,6 +44,8 @@ protected:
 	SObj* _obj;
 	COMPID::Enum _type;	
 	uint32_t _flags;
+	list<OBJDATA::Enum> _objDataAcces;
+	virtual void init(){}
 private:
 	
 	void setObj(SObj* obj){

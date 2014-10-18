@@ -19,6 +19,7 @@ public:
 	void virtual dbLoad(){}
 	virtual ~CompSpawnNode();
 private:
+	virtual void init();
 	TIME _spawnTime;
 	OBJTPID _spwanTemplate;
 	OBJID _spawn;

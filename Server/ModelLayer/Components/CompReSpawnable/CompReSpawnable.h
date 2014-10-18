@@ -20,6 +20,7 @@ public:
 	
 	virtual ~CompReSpawnable();
 private:
+	virtual void init();
 	OBJID _spawner;
 };
 

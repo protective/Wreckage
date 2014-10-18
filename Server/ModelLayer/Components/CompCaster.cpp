@@ -10,7 +10,7 @@ void CompCaster::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 }
 void CompCaster::init(){
-	_obj->subscribeSignal(SIGNAL::castTarget,this);
+	//_obj->subscribeSignal(SIGNAL::castTarget,this);
 }
 
 CompCaster::~CompCaster() {

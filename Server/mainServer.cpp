@@ -46,6 +46,12 @@ int main(int argc, char** argv) {
 		cerr<<"MAIN INIT main component table do not exist create"<<endl;
 		w.exec("create table comp (objId BIGINT, compId INT, PRIMARY KEY(objId, compId));");
 	}	
+	
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objdata');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main obj data table do not exist create"<<endl;
+		w.exec("create table objdata (objId BIGINT, dataId INT, value INT, PRIMARY KEY(objId, dataId));");
+	}	
 	w.commit();
 	
 	CompSpawnNode csn;
