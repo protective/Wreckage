@@ -38,6 +38,7 @@ public:
 	void virtual dbSave(){}
 	void virtual dbLoad(){}
 	COMPID::Enum getType(){return _type;}
+	list<OBJDATA::Enum>& getDataAccesUssage(){return _objDataAcces;}
 	virtual ~SComponent(){}
 protected:
 	void virtual dbInit(){}

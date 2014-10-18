@@ -11,10 +11,8 @@ TaskAddComponent::TaskAddComponent() :
 Task(0) {
 }
 
-
-
 uint32_t TaskAddComponent::execute(){
-	
+	_id->addComponent(_component);
 	return COMMAND_FINAL;
 }
 

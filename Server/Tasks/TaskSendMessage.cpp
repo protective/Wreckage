@@ -1,9 +1,3 @@
-/* 
- * File:   TaskSendMessage.cpp
- * Author: karsten
- * 
- * Created on 15. oktober 2014, 21:44
- */
 
 #include "TaskSendMessage.h"
 #include "../ModelLayer/Messages/Message.h"

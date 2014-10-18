@@ -19,7 +19,10 @@ void SObj::addComponent(SComponent* comp){
 	if(comp){
 		comp->setObj(this);
 		_components[comp->_type] = comp;
-		
+		for(list<OBJDATA::Enum>::iterator it = comp->getDataAccesUssage().begin(); it!=comp->getDataAccesUssage().end();it++){
+			if(_data.find(*it) == _data.end())
+				addData(*it,0);
+		} 
 		if(isPersistent() && isInit()){
 			stringstream s;
 			pqxx::work w2(_processor->getDB());
@@ -46,7 +49,6 @@ void SObj::addData(OBJDATA::Enum id, int32_t value){
 			<<value<<");";
 			w3.exec(s);
 		}
-			
 	}
 }
 
