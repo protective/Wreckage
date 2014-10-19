@@ -28,10 +28,11 @@ using namespace std;
 
 class SWorld;
 class NetworkControler;
+class Processor;
 extern SWorld* world;
 extern NetworkControler* networkControl;
 extern pthread_mutex_t lockNetInput;
 extern pthread_mutex_t lockClientList;
-
+extern map<uint8_t, Processor*> processors;
 #endif	/* SGLOBALS_H */
 

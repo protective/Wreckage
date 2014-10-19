@@ -1,9 +1,16 @@
 #include "NetworkFunctions.h"
 #include "NetworkControler.h"
-#include "../../GShare/GFunctions.h"
 
-#include "../Network/Serialize.h"
+
 #include "Client.h"
+
+#include "../ModelLayer/Components/SComponent.h"
+#include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
+#include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+
+#include "../Tasks/TaskAddComponent.h"
+#include "../Tasks/TaskRemoveObj.h"
+
 
 void sendtoC(Client* cli, char* buffer, uint32_t len){
 	pthread_mutex_lock(&cli->networkSendLock);
@@ -68,6 +75,7 @@ void* thread_Listen(){
     close(SocketFD);
 	return 0;
 }
+
 
 
 void* thread_Recive(Client* client){
@@ -157,7 +165,7 @@ void* ReadBuffer(Client* client){
 uint32_t parseBuffer(Client* client, uint32_t len){
 	char* buffer = client->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
-	printBuffer(buffer,len);
+	//printBuffer(buffer,len);
 	while (offset < len){
 		SerialData* temp = (SerialData*)(buffer + offset);
 		if (len - offset >= sizeof(uint32_t)*2 && temp->_size <= len - offset){
@@ -176,7 +184,6 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					data->_size = sizeof(SerialTime);
 					data->time = SDL_GetTicks();
 					data->local = st->local;
-					cerr<<"send Time "<<data->time<<endl;
 					send(client->getSocket(),message,sizeof(SerialTime),0);
 
 					break;
@@ -185,6 +192,22 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					SerialReqJoin* st = (SerialReqJoin*)(buffer+offset);
 					client->setPlayerId(st->_unitId);
 					client->initTransfere();
+
+					break;
+				}
+				case SerialType::SerialAddComponent:{
+					SerialAddComponent* st = (SerialAddComponent*)(buffer+offset);
+					SObj* obj = networkControl->getObj(st->_unitId);
+					if(!obj){
+						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
+						break;
+					}
+					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+
+
+					TaskRemoveObj * t = new TaskRemoveObj(st->_unitId);
+
+					networkControl->addTaskToObj(t,st->_unitId);
 
 					break;
 				}

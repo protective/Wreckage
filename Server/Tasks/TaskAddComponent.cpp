@@ -6,14 +6,16 @@
  */
 
 #include "TaskAddComponent.h"
-
-TaskAddComponent::TaskAddComponent() :
+#include "../Processor/Processor.h"
+TaskAddComponent::TaskAddComponent(SObj* id, SComponent* component) :
 Task(0) {
+	_id = id;
+	_component = component;
 }
 
-
-
 uint32_t TaskAddComponent::execute(){
+	_id->addComponent(_component);
+	return COMMAND_FINAL;
 }
 
 TaskAddComponent::~TaskAddComponent() {

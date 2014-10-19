@@ -21,7 +21,10 @@ extern uint32_t Gtime;
 extern double MySin[360];
 extern double MyCos[360];
 
+
+#define TPIDMASK 0xFF000000
 typedef uint32_t OBJID;
+typedef uint32_t OBJTPID;
 typedef uint32_t TIME;
 #endif	/* GGLOBALS_H */
 

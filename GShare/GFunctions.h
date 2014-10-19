@@ -22,7 +22,6 @@
 #include <list>
 #include <map>
 #include <algorithm>
-#include "Enums.h"
 #include <math.h>
 #include "GGlobals.h"
 using namespace std;
@@ -35,7 +34,7 @@ double VektorUnitY(uint32_t deg);
 int32_t dirDiff(uint32_t d1, uint32_t d2);
 uint32_t Rangecord(int32_t p1x,  int32_t p1y, int32_t p2x,int32_t p2y);
 bool LinePointIntersect(int32_t p1x,  int32_t p1y, int32_t p2x,int32_t p2y, int32_t pointx, int32_t pointy, int32_t range);
-string getTargetGroupstring(TargetGroup::Enum en);
+
 //double range(int32_t x1, int32_t y1, int32_t x2, int32_t y2){
 //	return sqrt((x1 - x2) ^ 2 + (y1 - y2) ^ 2);
 //}

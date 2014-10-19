@@ -8,6 +8,7 @@
 #ifndef SERIALIZE_H
 #define	SERIALIZE_H
 
+#include "../GShare/GGlobals.h"
 
 namespace SerialType{
 	/** Identifiers for each serializable type
@@ -18,6 +19,7 @@ namespace SerialType{
 		Invalid = 0,
                 SerialTime= 1,
                 SerialReqJoin = 5,
+				SerialAddComponent = 6,
 	};
 }
 
@@ -42,6 +44,20 @@ struct SerialReqJoin : public SerialData{ //id = 5
     uint32_t _pass;
 };
 
+struct SerialCompSpawnNode{
+	TIME _spawnTime;
+	OBJTPID _spawnTemplate;
+	OBJID _spawn;
+};
+
+struct SerialCompReSpawnable{
+	OBJID _spawner;
+};
+
+struct SerialAddComponent : public SerialData{ //id = 5
+    uint32_t _unitId;
+    uint32_t _compid;
+};
 
 #endif	/* SERIALIZE_H */
 

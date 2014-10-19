@@ -1,24 +1,21 @@
-/* 
- * File:   TaskAddComponent.h
- * Author: karsten
- *
- * Created on 14. oktober 2014, 20:48
- */
 
 #ifndef TASKADDCOMPONENT_H
 #define	TASKADDCOMPONENT_H
 
 #include "Task.h"
-#include "../ModelLayer/enums.h"
-
+#include "../Processor/Processor.h"
+#include "../ModelLayer/SObj.h"
+class SComponent;
+class SObj;
 class TaskAddComponent : public Task{
 public:
-	TaskAddComponent();
+	TaskAddComponent(SObj* id, SComponent* component);
 	virtual uint32_t execute();
 	virtual ~TaskAddComponent();
 private:
-	OBJID _id;
-	COMPID::Enum _component;
+	SObj* _id;
+	SComponent* _component;
+	
 };
 
 #endif	/* TASKADDCOMPONENT_H */

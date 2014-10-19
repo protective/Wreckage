@@ -13,13 +13,14 @@
 #include "ModelLayer/SWorld.h"
 #include "NetworkLayer/NetworkControler.h"
 #include "NetworkLayer/NetworkFunctions.h"
+#include "ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+#include "ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 
 using namespace std;
 
 pthread_cond_t  procesConBegin = PTHREAD_COND_INITIALIZER;
 pthread_cond_t  procesConallReady = PTHREAD_COND_INITIALIZER;
 pthread_t procesThreads[NRTHREADS];
-list<Processor*> processors;
 int threadsReady;
 /*
  * 
@@ -30,16 +31,45 @@ int main(int argc, char** argv) {
 	
 	printbufferbool = true;
 	
+	pqxx::connection con("dbname= wreckage user=karsten");
+	
+	pqxx::work w(con);
+	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objs');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main OBJ table do not exist create"<<endl;
+		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL);");
+	}
+
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='comp');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main component table do not exist create"<<endl;
+		w.exec("create table comp (objId BIGINT, compId INT, PRIMARY KEY(objId, compId));");
+	}	
+	
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objdata');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main obj data table do not exist create"<<endl;
+		w.exec("create table objdata (objId BIGINT, dataId INT, value INT, PRIMARY KEY(objId, dataId));");
+	}	
+	w.commit();
+	
+	CompSpawnNode csn;
+	csn.dbTableInit(con);
+	CompReSpawnable crsn;
+	crsn.dbTableInit(con);
+	
+	world = new SWorld(NULL);
+	SDL_Init(SDL_INIT_TIMER);
+	
 	for(int i = 0; i < NRTHREADS;i++)
 	{
 		cerr<<"create processor"<<endl;
 		Processor* temp = new Processor();
 		cerr<<"p "<<temp<<endl;
-		processors.push_back(temp);
+		processors[temp->getId()] = temp;
 	}	
-	world = new SWorld(processors.front());
+
 	
-	SDL_Init(SDL_INIT_TIMER);
 
 	pthread_t listenThread;
 	pthread_create(&listenThread, NULL, (void*(*)(void*))thread_Listen, NULL);
@@ -50,9 +80,10 @@ int main(int argc, char** argv) {
 			cerr<<"done load game"<<endl;
 			
 	//tempU->ActivateAI();
-	list<Processor*>::iterator it = processors.begin();
+	map<uint8_t, Processor*>::iterator it = processors.begin();
 	for (int i = 0 ; i< NRTHREADS; i++){
-		Processor* temp = *it++;
+		Processor* temp = it->second;
+		it++;
 		pthread_create(&procesThreads[i], NULL, &Processor::workThreadFunction, temp);
 	}
 	networkControl = new NetworkControler();

@@ -1,22 +1,25 @@
-/* 
- * File:   TaskCreateObj.h
- * Author: karsten
- *
- * Created on 14. oktober 2014, 20:28
- */
 
 #ifndef TASKCREATEOBJ_H
 #define	TASKCREATEOBJ_H
 
 #include "Task.h"
-
+class SComponent;
 class TaskCreateObj : public Task {
 public:
-	TaskCreateObj();
+	TaskCreateObj(bool persistent, OBJID fromId);
+	TaskCreateObj(OBJID id, OBJID fromId, bool persistent);	
+	bool addComponent(SComponent* cmp);
 	virtual uint32_t execute();
 	virtual ~TaskCreateObj();
 private:
+
+	void loadComponents(OBJID id);
+	void loadData(OBJID id);
+	
 	OBJID _id;
+	OBJID _fromid;
+	bool _persistent;
+	map<COMPID::Enum, SComponent*> _components;
 };
 
 #endif	/* TASKCREATEOBJ_H */

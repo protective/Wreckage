@@ -9,7 +9,9 @@
 #define	NETWORKFUNCTIONS_H
 
 #include "../BInclude.h"
-
+#include "../../GShare/GFunctions.h"
+#include "../ModelLayer/enums.h"
+#include "../Network/Serialize.h"
 class Client;
 void* thread_Listen();
 void* thread_Recive(Client* client);
