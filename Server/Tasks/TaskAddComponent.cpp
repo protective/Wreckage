@@ -7,8 +7,10 @@
 
 #include "TaskAddComponent.h"
 #include "../Processor/Processor.h"
-TaskAddComponent::TaskAddComponent() :
+TaskAddComponent::TaskAddComponent(SObj* id, SComponent* component) :
 Task(0) {
+	_id = id;
+	_component = component;
 }
 
 uint32_t TaskAddComponent::execute(){

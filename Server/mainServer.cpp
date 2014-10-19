@@ -21,7 +21,6 @@ using namespace std;
 pthread_cond_t  procesConBegin = PTHREAD_COND_INITIALIZER;
 pthread_cond_t  procesConallReady = PTHREAD_COND_INITIALIZER;
 pthread_t procesThreads[NRTHREADS];
-list<Processor*> processors;
 int threadsReady;
 /*
  * 
@@ -67,7 +66,7 @@ int main(int argc, char** argv) {
 		cerr<<"create processor"<<endl;
 		Processor* temp = new Processor();
 		cerr<<"p "<<temp<<endl;
-		processors.push_back(temp);
+		processors[temp->getId()] = temp;
 	}	
 
 	
@@ -81,9 +80,10 @@ int main(int argc, char** argv) {
 			cerr<<"done load game"<<endl;
 			
 	//tempU->ActivateAI();
-	list<Processor*>::iterator it = processors.begin();
+	map<uint8_t, Processor*>::iterator it = processors.begin();
 	for (int i = 0 ; i< NRTHREADS; i++){
-		Processor* temp = *it++;
+		Processor* temp = it->second;
+		it++;
 		pthread_create(&procesThreads[i], NULL, &Processor::workThreadFunction, temp);
 	}
 	networkControl = new NetworkControler();

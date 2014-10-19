@@ -62,6 +62,7 @@ void SObj::signal(SIGNAL::Enum type, Signal* data){
 }
 
 void SObj::message(MESSAGE::Enum type, Message* data){
+	cerr<<"SObj::message data>>"<<data->_fromId<<endl;
 	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
 		it->second->acceptMessage(type, data);
 	}

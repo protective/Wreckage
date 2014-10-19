@@ -7,6 +7,7 @@
 struct Message {
 	Message(MESSAGE::Enum type, OBJID fromId){
 		_type = type;
+		_fromId = fromId;
 	}
 	Message(Message& m){
 		_type = m._type;

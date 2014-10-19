@@ -14,3 +14,4 @@ pthread_mutex_t lockClientList= PTHREAD_MUTEX_INITIALIZER;
 
 SWorld* world = NULL;
 NetworkControler* networkControl = NULL;
+map<uint8_t, Processor*> processors;

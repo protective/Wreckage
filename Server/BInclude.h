@@ -30,6 +30,7 @@ using namespace std;
 #include "../GShare/GDefines.h"
 //#include "../GShare/GFunctions.h"
 #include "../GShare/GGlobals.h"
+#include "SGlobals.h"
 
 #endif	/* BINCLUDE_H */
 

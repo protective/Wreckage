@@ -39,6 +39,9 @@ namespace MESSAGE {
 		loseMana,
 		applyPower,
 		killed, //the unit sending this messeage is dead
+		HeartBeatReq,
+		HeartBeatRsp,
+
 	};
 }
 

@@ -9,7 +9,7 @@ class SComponent;
 class SObj;
 class TaskAddComponent : public Task{
 public:
-	TaskAddComponent();
+	TaskAddComponent(SObj* id, SComponent* component);
 	virtual uint32_t execute();
 	virtual ~TaskAddComponent();
 private:

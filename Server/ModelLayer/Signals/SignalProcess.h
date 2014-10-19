@@ -17,7 +17,7 @@ struct SignalProcess : public Signal {
 	}
 	SignalProcess(SignalProcess& s):
 	Signal(s._type){
-		_delta = s._delta;;
+		_delta = s._delta;
 	}
 	SIGNAL::Enum _type;
 	TIME _delta;

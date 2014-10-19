@@ -21,8 +21,11 @@ public:
 private:
 	virtual void init();
 	TIME _spawnTime;
-	OBJTPID _spwanTemplate;
+	OBJTPID _spawnTemplate;
 	OBJID _spawn;
+	
+	//NONSERIAL
+	TIME __timeout;
 };
 
 #endif	/* COMPSPAWNNODE_H */

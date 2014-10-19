@@ -26,8 +26,12 @@ Task(0) {
 	_fromid = fromId;
 }
 
-void TaskCreateObj::addComponent(SComponent* cmp){
+bool TaskCreateObj::addComponent(SComponent* cmp){
+	if(_components.find(cmp->getType()) != _components.end()){
+		return false;
+	}
 	_components[cmp->getType()] = cmp;
+	return true;
 }
 
 
@@ -43,21 +47,25 @@ void TaskCreateObj::loadComponents(OBJID id){
 	pqxx::result r = w.exec(s);
 	w.commit();
 	for(int i = 0; i< r.size();i++){
-		this->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, _processor->getDB()));
+		SComponent* cmp = createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, _processor->getDB());
+		if(!this->addComponent(cmp))
+			delete cmp;
 	}
 }
 
 uint32_t TaskCreateObj::execute(){
-	if(_id && _id == _fromid){//load from existing or template
+	if(_id){//load from existing or template
 		SObj* obj = new SObj(_id, _persistent, _processor);
-
-		loadComponents(_id);
-		loadData(_id);
+		cerr<<"create new obj from id="<<_fromid<<endl;
+		loadComponents(_fromid);
+		loadData(_fromid);
 		
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
 			obj->addComponent(it->second);
 		}
 		
+		if(_id != _fromid)
+			obj->save();
 		_processor->addObj(obj);
 	
 	}else{//create new
@@ -71,6 +79,7 @@ uint32_t TaskCreateObj::execute(){
 		
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
 			obj->addComponent(it->second);
+
 		}
 		
 		if(_persistent)

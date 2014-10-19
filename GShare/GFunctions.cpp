@@ -41,6 +41,14 @@ void printBuffer(char* buffer, uint32_t len){
 						cerr<<"****************************"<<endl;
 						break;
 					}
+					case SerialType::SerialAddComponent:{
+						SerialAddComponent* st = (SerialAddComponent*)(buffer+offset);
+						cerr<<"Recived SerialAddComponent*************"<<endl
+						<<"\tid "<<st->_unitId<<endl
+						<<"\tcompid "<<st->_compid<<endl;
+						cerr<<"****************************"<<endl;
+						break;
+					}
 					default:{
 						cerr<<"error recived unknown packate in GLobal"<<endl;
 						offset = len;
@@ -144,13 +152,3 @@ int32_t dirDiff(uint32_t d1, uint32_t d2){
 		return dd;
 }
 
-string getTargetGroupstring(TargetGroup::Enum en){
-		switch(en){
-			case TargetGroup::Primary:{return "Primary";}
-			case TargetGroup::Heavy:{return "Heavy";}
-			case TargetGroup::Medium:{return "Medium";}
-			case TargetGroup::Light:{return "Light";}
-			case TargetGroup::Special:{return "Special";}
-			default:{return "invalid";}
-		}
-	}

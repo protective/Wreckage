@@ -17,7 +17,7 @@ SComponent(COMPID::spawnNode){
 
 	_spawn = r[0][0].as<OBJID>();
 	_spawnTime = r[0][1].as<TIME>();
-	_spwanTemplate = r[0][2].as<OBJTPID>();
+	_spawnTemplate = r[0][2].as<OBJTPID>();
 	
 	_flags = COMPFLAGINIT;
 }
@@ -31,7 +31,7 @@ void CompSpawnNode::dbSave(){
 			s<<"update CompSpawnNode set "
 				"spawnid = "<<_spawn<<", "
 				"spawnTime = "<<_spawnTime<<", "
-				"spawnTemplate = "<<_spwanTemplate<<" "
+				"spawnTemplate = "<<_spawnTemplate<<" "
 				"where objId = "<<_obj->getId()<<"";
 			w.exec(s);
 			w.commit();
@@ -53,7 +53,7 @@ void CompSpawnNode::dbInit(){
 		<<_obj->getId()<<", "
 		<<_spawn<<", "
 		<<_spawnTime<<", "
-		<<_spwanTemplate<<");";
+		<<_spawnTemplate<<");";
 	w.exec(s);
 	w.commit();
 	_flags &= COMPFLAGINIT;

@@ -80,6 +80,7 @@ void Processor::addObj(SObj* obj){
 }
 
 SObj* Processor::getObj(OBJID id){
+	cerr<<"Processor::getObj id "<<id<<endl;
 	if(_localObjs.find(id) != _localObjs.end())
 		return _localObjs[id];
 	return NULL;
