@@ -23,10 +23,9 @@ public:
 	uint32_t removeTask(Task* task);
 	static void* workThreadFunction(void* context);
 	void addObj(SObj* obj);
+	void removeObj(SObj* obj);
 	SObj* getObj(OBJID id);
 	void loadAllObjFromDb();
-	SObj* createObjFromTemplate(OBJTPID id);
-	SObj* loadObjFromDB(OBJID id);
 	void sendMessage(OBJID to, Message* message);
 	OBJID getFreeID();
 	pqxx::connection& getDB(){return *_dbCon;}

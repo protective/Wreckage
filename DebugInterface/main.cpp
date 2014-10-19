@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 	SerialAddComponent* data = (SerialAddComponent*)(message);
 	data->_type = SerialType::SerialAddComponent;
 	data->_size = len;
-	data->_unitId = 16777219; //TODO BIG TODO FIX THIS SOOON
+	data->_unitId = 16777224; //TODO BIG TODO FIX THIS SOOON
 	data->_compid = COMPID::reSpawnable;
 	SerialCompSpawnNode* comp  = (SerialCompSpawnNode*)(message + sizeof(SerialAddComponent));
 	comp->_spawnTemplate= 1;

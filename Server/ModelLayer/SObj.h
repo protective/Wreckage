@@ -29,14 +29,22 @@ namespace OBJDATA {
 
 class Signal;
 class SComponent;
+class TaskProcess;
 class Processor;
 class SObj {
 public:
-	SObj(OBJID id, bool persistent, Processor* processor);
+	SObj(OBJID id, bool persistent, bool initialized, Processor* processor);
 	OBJID getId(){return _id;}
+	void setProcessTask(TaskProcess* task){
+		_processtask = task;
+	}
+	TaskProcess* getProcessTask(){
+		return _processtask;
+	}
 	void addComponent(SComponent* comp);
 	void addData(OBJDATA::Enum comp, int32_t value);
 	void save();
+	void DBdelete();
 	void init();
 	void signal(SIGNAL::Enum type, Signal* data);
 	void message(MESSAGE::Enum type, Message* data);
@@ -48,7 +56,10 @@ public:
 	}
 	void setData(OBJDATA::Enum dataId, int32_t value){
 		_data[dataId] = value;
-	}	
+	}
+	
+	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
+	
 	bool isTemplate(){return !(_id & TPIDMASK);}
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
 	bool isInit(){return (_flags & OBJFLAGINIT) ? true : false;}
@@ -58,6 +69,7 @@ private:
 	OBJID _id;
 	uint32_t _flags;
 	Processor* _processor;
+	TaskProcess* _processtask;
 	map<COMPID::Enum, SComponent*> _components;
 	map<OBJDATA::Enum, int32_t> _data;
 	

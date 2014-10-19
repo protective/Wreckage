@@ -31,14 +31,10 @@ Client::Client(int socket) {
 	inputnetworkBuf = &networkBuf1;
 	outputnetworkBuf = &networkBuf2;
 
-	cerr << "create client" << endl;
 }
 
 
 void Client::initTransfere(){
-	cerr<<"init transfere"<<endl;
-	
-	cerr<<"data sendt"<<endl;
 }
 
 Client::~Client() {

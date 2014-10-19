@@ -74,7 +74,19 @@ void Processor::addObj(SObj* obj){
 	if(obj){
 		cerr<<"processor add obj id="<<obj->getId()<<endl;
 		_localObjs[obj->getId()] = obj;
-		addTask(new TaskProcess(obj,1000));
+		TaskProcess* task = new TaskProcess(obj,1000);
+		addTask(task);
+		obj->setProcessTask(task);
+	}else
+		cerr<<"ERROR Processor::addObj obj = NULL"<<endl;
+}
+
+void Processor::removeObj(SObj* obj){
+	if(obj){
+		cerr<<"processor remove obj id="<<obj->getId()<<endl;
+		_localObjs[obj->getId()] = obj;
+		obj->getProcessTask()->objDeleted();
+		delete obj;
 	}else
 		cerr<<"ERROR Processor::addObj obj = NULL"<<endl;
 }
@@ -84,34 +96,6 @@ SObj* Processor::getObj(OBJID id){
 	if(_localObjs.find(id) != _localObjs.end())
 		return _localObjs[id];
 	return NULL;
-}
-
-SObj* Processor::createObjFromTemplate(OBJTPID id){
-	//TODO fix persistent
-	SObj* obj = new SObj(getFreeID(),false,this);
-	
-	pqxx::work w(getDB());
-	stringstream s; 
-	s<<"select compid from comp where objid = "<<id<<";";
-	pqxx::result r = w.exec(s);
-	w.commit();
-	for(int i = 0; i< r.size();i++){
-		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, getDB()));
-	}
-}
-
-SObj* Processor::loadObjFromDB(OBJID id){
-	SObj* obj = new SObj(id,true,this);
-	
-	pqxx::work w(getDB());
-	stringstream s; 
-	s<<"select compid from comp where objid = "<<id<<";";
-	pqxx::result r = w.exec(s);
-	w.commit();
-	for(int i = 0; i< r.size();i++){
-		obj->addComponent(createComponent((COMPID::Enum)r[i][0].as<uint32_t>(), id, getDB()));
-	}
-	return obj;
 }
 
 void  Processor::sendMessage(OBJID to, Message* message){

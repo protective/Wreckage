@@ -29,13 +29,12 @@ public:
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
 	
-	void sendMessage(MESSAGE::Enum type, Message* data){
-
-	}
+	void sendMessage(MESSAGE::Enum type, Message* data){}
 	
 	bool isInit(){return (_flags & COMPFLAGINIT) ? true : false;}
 	void virtual dbTableInit(){}
 	void virtual dbSave(){}
+	void virtual dbDelete(){}
 	void virtual dbLoad(){}
 	COMPID::Enum getType(){return _type;}
 	uint32_t serialize(const char*){}

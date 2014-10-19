@@ -13,6 +13,9 @@ class SObj;
 class TaskProcess : public Task {
 public:
 	TaskProcess(SObj* obj, TIME delta);
+	void objDeleted(){
+		_obj = NULL;
+	}
 	virtual uint32_t execute();
 	virtual ~TaskProcess();
 private:

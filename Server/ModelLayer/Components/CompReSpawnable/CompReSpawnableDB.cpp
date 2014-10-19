@@ -11,10 +11,13 @@ SComponent(COMPID::spawnNode){
 	stringstream s; 
 	s<<"select spawner from CompReSpawnable where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
-	if(r.size() != 1)
+	if(r.size() != 1){
 		cerr<<"ERROR CompReSpawnable loadsize="<<r.size()<<endl;
+		_spawner = 0;
+	}else{
+		_spawner = r[0][0].as<OBJID>();
+	}
 
-	_spawner = r[0][0].as<OBJID>();
 
 	_flags = COMPFLAGINIT;
 }
@@ -48,7 +51,7 @@ void CompReSpawnable::dbInit(){
 		<<_spawner<<");";
 	w.exec(s);
 	w.commit();
-	_flags &= COMPFLAGINIT;
+	_flags |= COMPFLAGINIT;
 }
 
 void CompReSpawnable::dbTableInit(pqxx::connection& con){
@@ -59,4 +62,18 @@ void CompReSpawnable::dbTableInit(pqxx::connection& con){
 		w.exec("create table comprespawnable (objId BIGINT PRIMARY KEY, spawner BIGINT);");
 		w.commit();
 	}
+}
+
+void CompReSpawnable::dbDelete(){
+	if(!_obj){
+		cerr<<"ERROR CompReSpawnable::delete no obj"<<endl;
+		return;
+	}
+	pqxx::work w(_obj->getProcessor()->getDB());
+	stringstream s; 
+	s<<"delete from CompReSpawnable where "
+		"objid = "<<_obj->getId()<<";";
+	w.exec(s);
+	w.commit();
+	_flags &= ~COMPFLAGINIT;
 }

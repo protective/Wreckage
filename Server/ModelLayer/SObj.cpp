@@ -10,10 +10,11 @@
 #include "Signals/Signal.h"
 #include "../Processor/Processor.h"
 
-SObj::SObj(OBJID id, bool persistent, Processor* processor) {
+SObj::SObj(OBJID id, bool persistent, bool initialized ,Processor* processor) {
 	_id = id;
 	_processor = processor;
 	_flags = persistent ? OBJFLAGPERSISTENT : 0;
+	_flags |= initialized ? OBJFLAGINIT : 0;
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){
@@ -23,15 +24,17 @@ void SObj::addComponent(SComponent* comp){
 			if(_data.find(*it) == _data.end())
 				addData(*it,0);
 		} 
-		if(isPersistent() && isInit()){
-			stringstream s;
-			pqxx::work w2(_processor->getDB());
+		if(isPersistent()){
+			if(isInit() && !comp->isInit()){
+				stringstream s;
+				pqxx::work w2(_processor->getDB());
 
-			s<<"insert into comp values( "
-				<<_id<<", "
-				<<comp->getType()<<");";
-			w2.exec(s);
-			w2.commit();
+				s<<"insert into comp values( "
+					<<_id<<", "
+					<<comp->getType()<<");";
+				w2.exec(s);
+				w2.commit();
+			}
 			comp->dbSave();
 		}
 	}
@@ -70,15 +73,11 @@ void SObj::message(MESSAGE::Enum type, Message* data){
 }
 
 
-void SObj::save(){
-	
+void SObj::save(){	
 	if(isInit()){
-		//pqxx::work w(_processor->getDB());
-
 		for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){
 			it->second->dbSave();
 		}
-		
 		pqxx::work w3(_processor->getDB());	
 		for(map<OBJDATA::Enum ,int32_t>::iterator it = _data.begin(); it!= _data.end(); it++){
 			stringstream s;
@@ -87,12 +86,8 @@ void SObj::save(){
 				<<"objId = "<<_id<<" and " 
 				<<"dataId = "<< it->first<<");";
 			w3.exec(s);
-
 		}
 		w3.commit();
-		
-		
-		
 	}else{
 		init();
 	}
@@ -128,7 +123,23 @@ void SObj::init(){
 			
 	}
 	w3.commit();
-	_flags &= OBJFLAGINIT;
+	_flags |= OBJFLAGINIT;
+}
+
+void SObj::DBdelete(){
+	pqxx::work w(_processor->getDB());	
+	stringstream s;
+	s<<"delete from objdata where "
+		<<"objid = "<<_id<<";";
+	w.exec(s);
+	s<<"delete from comp where "
+		<<"objid ="<<_id<<";";
+	w.exec(s);
+	s<<"delete from objs where "
+		<<"objid ="<<_id<<";";
+	w.exec(s);
+	w.commit();
+	_flags &= ~COMPFLAGINIT;
 }
 
 SObj::~SObj() {

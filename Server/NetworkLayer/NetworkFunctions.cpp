@@ -7,8 +7,9 @@
 #include "../ModelLayer/Components/SComponent.h"
 #include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 #include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
-#include "../Tasks/TaskAddComponent.h"
 
+#include "../Tasks/TaskAddComponent.h"
+#include "../Tasks/TaskRemoveObj.h"
 
 
 void sendtoC(Client* cli, char* buffer, uint32_t len){
@@ -183,7 +184,6 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					data->_size = sizeof(SerialTime);
 					data->time = SDL_GetTicks();
 					data->local = st->local;
-					cerr<<"send Time "<<data->time<<endl;
 					send(client->getSocket(),message,sizeof(SerialTime),0);
 
 					break;
@@ -199,10 +199,14 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					SerialAddComponent* st = (SerialAddComponent*)(buffer+offset);
 					SObj* obj = networkControl->getObj(st->_unitId);
 					if(!obj){
-						cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
+						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
 						break;
 					}
-					TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+
+
+					TaskRemoveObj * t = new TaskRemoveObj(st->_unitId);
+
 					networkControl->addTaskToObj(t,st->_unitId);
 
 					break;

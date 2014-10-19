@@ -16,11 +16,13 @@ TaskProcess::TaskProcess(SObj* obj, TIME delta):
 Task(0){
 	_obj = obj;
 	_procesDelta = delta;
-	
 	_last = world->getTime();
 }
 
 uint32_t TaskProcess::execute(){
+	if(!_obj){
+		return COMMAND_FINAL;
+	}
 	TIME  delta = world->getTime() - _last;
 	SignalProcess s(SIGNAL::process, delta);
 	_obj->signal(SIGNAL::process, &s);

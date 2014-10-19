@@ -17,6 +17,7 @@ public:
 	void virtual dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
+	void virtual dbDelete();
 	
 	virtual ~CompReSpawnable();
 private:
