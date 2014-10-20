@@ -5,11 +5,6 @@
 namespace COMPID {
 	enum Enum {
 		invalid = 0,
-		killable = 1,
-		caster = 2,
-		targetable = 3,
-		hitMechanic = 4,
-		abilityCreator = 5,
 		powerActivateTimed = 6,
 		spawnNode = 7,
 		reSpawnable = 8,
