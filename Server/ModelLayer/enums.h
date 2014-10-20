@@ -8,11 +8,15 @@ namespace COMPID {
 		killable = 1,
 		caster = 2,
 		targetable = 3,
-		hitMechanic,
-		abilityCreator,
-		timedHit,
-		spawnNode,
-		reSpawnable,
+		hitMechanic = 4,
+		abilityCreator = 5,
+		timedHit = 6,
+		spawnNode = 7,
+		reSpawnable = 8,
+		abilityInput = 9,
+		powerDealDamage = 10,
+		powerActivate = 11,
+		targeted = 12,
 
 	};
 }
