@@ -4,12 +4,12 @@
 
 #include "../SComponent.h"
 
-class CompPowerActivate  : public SComponent {
+class CompPowerActivateInstant  : public SComponent {
 public:
-	CompPowerActivate();
-	CompPowerActivate(OBJID spawner);
-	CompPowerActivate(const CompPowerActivate& orig);
-	CompPowerActivate(OBJID id, pqxx::connection& con);
+	CompPowerActivateInstant();
+	CompPowerActivateInstant(OBJID spawner);
+	CompPowerActivateInstant(const CompPowerActivateInstant& orig);
+	CompPowerActivateInstant(OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -19,7 +19,7 @@ public:
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();
-	virtual ~CompPowerActivate();
+	virtual ~CompPowerActivateInstant();
 private:
 	virtual void init();
 

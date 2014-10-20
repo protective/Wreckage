@@ -3,7 +3,7 @@
 #define	COMPTARGETED_H
 
 #include "../SComponent.h"
-class Power;
+
 class CompTargeted  : public SComponent {
 public:
 	CompTargeted();

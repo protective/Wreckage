@@ -10,12 +10,12 @@ namespace COMPID {
 		targetable = 3,
 		hitMechanic = 4,
 		abilityCreator = 5,
-		timedHit = 6,
+		powerActivateTimed = 6,
 		spawnNode = 7,
 		reSpawnable = 8,
 		abilityInput = 9,
 		powerDealDamage = 10,
-		powerActivate = 11,
+		powerActivateInstant = 11,
 		targeted = 12,
 
 	};
