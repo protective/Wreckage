@@ -6,7 +6,7 @@
 class CompAbilityInput  : public SComponent {
 public:
 	CompAbilityInput();
-	CompAbilityInput(OBJID spawner);
+	//CompAbilityInput(OBJID spawner);
 	CompAbilityInput(const CompAbilityInput& orig);
 	CompAbilityInput(OBJID id, pqxx::connection& con);
 	

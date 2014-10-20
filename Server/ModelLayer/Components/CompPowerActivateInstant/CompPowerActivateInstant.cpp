@@ -11,11 +11,14 @@ SComponent(COMPID::powerActivateInstant){
 	init();
 }
 
-CompPowerActivateInstant::CompPowerActivateInstant(OBJID spawner) :
-SComponent(COMPID::powerActivateInstant){
-	init();
+void CompPowerActivateInstant::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 }
+
+void CompPowerActivateInstant::acceptMessage(MESSAGE::Enum type, Message* data){
+
+}
+
 void CompPowerActivateInstant::init(){
 	_objDataAcces.push_back(OBJDATA::hp);
 	_objDataAcces.push_back(OBJDATA::maxhp);

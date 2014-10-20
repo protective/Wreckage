@@ -18,11 +18,14 @@ SComponent(COMPID::abilityInput){
 
 }
 
-CompAbilityInput::CompAbilityInput(OBJID spawner) :
-SComponent(COMPID::abilityInput){
-	init();
+void CompAbilityInput::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 }
+
+void CompAbilityInput::acceptMessage(MESSAGE::Enum type, Message* data){
+
+}
+
 void CompAbilityInput::init(){
 	_objDataAcces.push_back(OBJDATA::hp);
 	_objDataAcces.push_back(OBJDATA::maxhp);

@@ -7,7 +7,7 @@
 class CompTargeted  : public SComponent {
 public:
 	CompTargeted();
-	CompTargeted(OBJID spawner);
+	//CompTargeted(OBJID spawner);
 	CompTargeted(const CompTargeted& orig);
 	CompTargeted(OBJID id, pqxx::connection& con);
 	

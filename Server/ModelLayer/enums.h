@@ -40,7 +40,9 @@ namespace MESSAGE {
 		killed, //the unit sending this messeage is dead
 		HeartBeatReq,
 		HeartBeatRsp,
-
+		ProjectileStats,
+		powerStatsReq,
+		powerStatsRsp,
 	};
 }
 

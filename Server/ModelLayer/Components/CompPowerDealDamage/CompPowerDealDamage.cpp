@@ -11,11 +11,18 @@ SComponent(COMPID::abilityInput){
 	init();
 }
 
-CompPowerDealDamage::CompPowerDealDamage(OBJID spawner) :
-SComponent(COMPID::powerDealDamage){
-	init();
+
+
+void CompPowerDealDamage::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 }
+
+void CompPowerDealDamage::acceptMessage(MESSAGE::Enum type, Message* data){
+
+}
+
+
+
 void CompPowerDealDamage::init(){
 	_objDataAcces.push_back(OBJDATA::hp);
 	_objDataAcces.push_back(OBJDATA::maxhp);

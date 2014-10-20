@@ -7,7 +7,7 @@
 class CompPowerDealDamage  : public SComponent {
 public:
 	CompPowerDealDamage();
-	CompPowerDealDamage(OBJID spawner);
+	//CompPowerDealDamage(OBJID spawner);
 	CompPowerDealDamage(const CompPowerDealDamage& orig);
 	CompPowerDealDamage(OBJID id, pqxx::connection& con);
 	

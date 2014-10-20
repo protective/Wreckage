@@ -7,7 +7,7 @@
 class CompPowerActivateInstant  : public SComponent {
 public:
 	CompPowerActivateInstant();
-	CompPowerActivateInstant(OBJID spawner);
+	//CompPowerActivateInstant(OBJID spawner);
 	CompPowerActivateInstant(const CompPowerActivateInstant& orig);
 	CompPowerActivateInstant(OBJID id, pqxx::connection& con);
 	
