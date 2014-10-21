@@ -5,6 +5,7 @@
 namespace COMPID {
 	enum Enum {
 		invalid = 0,
+		spellbook = 4,
 		powerUseCheck = 5,
 		powerActivateTimed = 6,
 		spawnNode = 7,

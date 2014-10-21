@@ -1,15 +1,15 @@
 
-#ifndef COMPPOWERUSECHECK_H
-#define	COMPPOWERUSECHECK_H
+#ifndef COMPSPELLBOOK_H
+#define	COMPSPELLBOOK_H
 
 #include "../SComponent.h"
 
-class CompPowerUseCheck  : public SComponent {
+class CompSpellBook  : public SComponent {
 public:
-	CompPowerUseCheck();
-	CompPowerUseCheck(OBJID spawner);
-	CompPowerUseCheck(const CompPowerUseCheck& orig);
-	CompPowerUseCheck(OBJID id, pqxx::connection& con);
+	CompSpellBook();
+	CompSpellBook(OBJID spawner);
+	CompSpellBook(const CompSpellBook& orig);
+	CompSpellBook(OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -19,12 +19,12 @@ public:
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();
-	virtual ~CompPowerUseCheck();
+	virtual ~CompSpellBook();
 private:
 	virtual void init();
 
 	
 };
 
-#endif	/* COMPPOWERUSECHECK_H */
+#endif	/* COMPSPELLBOOK_H */
 
