@@ -15,6 +15,7 @@ SObj::SObj(OBJID id, bool persistent, bool initialized ,Processor* processor) {
 	_processor = processor;
 	_flags = persistent ? OBJFLAGPERSISTENT : 0;
 	_flags |= initialized ? OBJFLAGINIT : 0;
+	cerr<<"Create new object id="<<id<<endl;
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){

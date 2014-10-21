@@ -4,6 +4,7 @@
 
 #include "Task.h"
 class SComponent;
+class SObj;
 class TaskCreateObj : public Task {
 public:
 	TaskCreateObj(bool persistent, OBJID fromId);
@@ -13,7 +14,7 @@ public:
 	virtual ~TaskCreateObj();
 private:
 
-	void loadComponents(OBJID id);
+	void loadComponents(SObj* obj, OBJID id);
 	void loadData(OBJID id);
 	
 	OBJID _id;

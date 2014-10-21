@@ -1,6 +1,6 @@
 
-#ifndef COMPPOWERACTIVATE_H
-#define	COMPPOWERACTIVATE_H
+#ifndef COMPPOWERACTIVATETIMED_H
+#define	COMPPOWERACTIVATETIMED_H
 
 #include "../SComponent.h"
 
@@ -26,5 +26,5 @@ private:
 	
 };
 
-#endif	/* COMPPOWERACTIVATE_H */
+#endif	/* COMPPOWERACTIVATETIMED_H */
 

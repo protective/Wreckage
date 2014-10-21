@@ -10,7 +10,7 @@
 
 #include "SComponent.h"
 
-SComponent* createComponent(COMPID::Enum type, OBJID id, pqxx::connection& con);
+SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connection& con);
 
 #endif	/* COMPONENTFACTORY_H */
 

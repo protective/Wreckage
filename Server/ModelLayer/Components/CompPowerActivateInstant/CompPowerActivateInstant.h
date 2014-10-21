@@ -1,10 +1,10 @@
 
-#ifndef COMPPOWERACTIVATE_H
-#define	COMPPOWERACTIVATE_H
+#ifndef COMPPOWERACTIVATEINSTANT_H
+#define	COMPPOWERACTIVATEINSTANT_H
 
 #include "../SComponent.h"
 
-class CompPowerActivateInstant  : public SComponent {
+class CompPowerActivateInstant : public SComponent {
 public:
 	CompPowerActivateInstant();
 	//CompPowerActivateInstant(OBJID spawner);
@@ -26,5 +26,5 @@ private:
 	
 };
 
-#endif	/* COMPPOWERACTIVATE_H */
+#endif	/* COMPPOWERACTIVATEINSTANT_H */
 

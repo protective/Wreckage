@@ -7,9 +7,8 @@
 class CompSpellBook  : public SComponent {
 public:
 	CompSpellBook();
-	CompSpellBook(OBJID spawner);
 	CompSpellBook(const CompSpellBook& orig);
-	CompSpellBook(OBJID id, pqxx::connection& con);
+	CompSpellBook(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -23,7 +22,8 @@ public:
 private:
 	virtual void init();
 
-	
+	list<OBJID> _knownPowers;
+	list<OBJID> _loadedPowers;
 };
 
 #endif	/* COMPSPELLBOOK_H */

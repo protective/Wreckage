@@ -15,6 +15,9 @@
 #include "NetworkLayer/NetworkFunctions.h"
 #include "ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
 #include "ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
+#include "ModelLayer/Components/CompPowerActivateTimed/CompPowerActivateTimed.h"
+#include "ModelLayer/Components/CompPowerUseCheck/CompPowerUseCheck.h"
+#include "ModelLayer/Components/CompSpellBook/CompSpellBook.h"
 
 using namespace std;
 
@@ -55,9 +58,18 @@ int main(int argc, char** argv) {
 	
 	CompSpawnNode csn;
 	csn.dbTableInit(con);
+	
 	CompReSpawnable crsn;
 	crsn.dbTableInit(con);
+
+	CompPowerActivateTimed cpat;
+	cpat.dbTableInit(con);
+
+	CompPowerUseCheck cpuc;
+	cpuc.dbTableInit(con);
 	
+	CompSpellBook css;
+	css.dbTableInit(con);
 	world = new SWorld(NULL);
 	SDL_Init(SDL_INIT_TIMER);
 	
