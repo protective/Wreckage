@@ -15,7 +15,7 @@
 #define OBJFLAGINIT  0x01
 #define OBJFLAGDIRTY 0x02
 #define OBJFLAGPERSISTENT 0x04
-
+#define OBJFLAGTEMPLATE 0x08
 namespace OBJDATA {
 	enum Enum {
 		invalid = 0,
@@ -33,7 +33,7 @@ class TaskProcess;
 class Processor;
 class SObj {
 public:
-	SObj(OBJID id, bool persistent, bool initialized, Processor* processor);
+	SObj(OBJID id, bool persistent, bool istemplate, bool initialized, Processor* processor);
 	OBJID getId(){return _id;}
 	void setProcessTask(TaskProcess* task){
 		_processtask = task;
@@ -60,9 +60,9 @@ public:
 	
 	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
 	
-	bool isTemplate(){return !(_id & TPIDMASK);}
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
 	bool isInit(){return (_flags & OBJFLAGINIT) ? true : false;}
+	bool isTemplate(){return (_flags & OBJFLAGTEMPLATE) ? true : false;}
 
 	virtual ~SObj();
 private:

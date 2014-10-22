@@ -7,7 +7,7 @@ class SComponent;
 class SObj;
 class TaskCreateObj : public Task {
 public:
-	TaskCreateObj(bool persistent, OBJID fromId);
+	//TaskCreateObj(bool persistent, OBJID fromId);
 	TaskCreateObj(OBJID id, OBJID fromId, bool persistent);	
 	bool addComponent(SComponent* cmp);
 	virtual uint32_t execute();
@@ -20,6 +20,7 @@ private:
 	OBJID _id;
 	OBJID _fromid;
 	bool _persistent;
+	bool _isTemplate;
 	map<COMPID::Enum, SComponent*> _components;
 };
 

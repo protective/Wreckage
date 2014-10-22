@@ -11,17 +11,20 @@
 #include "../ModelLayer/Components/ComponentFactory.h"
 
 #include "../Processor/Processor.h"
-
+/*
 TaskCreateObj::TaskCreateObj(bool persistent, OBJID fromId) :
 Task(0) {
 	_persistent = persistent;
+	_isTemplate = false;
 	_id = 0;
 	_fromid = fromId;
 }
+*/
 
 TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent) :
 Task(0) {
 	_persistent = persistent;
+	_isTemplate = false;
 	_id = id;
 	_fromid = fromId;
 }
@@ -55,8 +58,22 @@ void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
 
 uint32_t TaskCreateObj::execute(){
 	if(_id){//load from existing or template
-		SObj* obj = new SObj(_id, _persistent, _id == _fromid, _processor);
+		if(_fromid){
+			pqxx::work w(_processor->getDB());	
+			stringstream s; s<<"select istemplate, cloneispersistent from objs where objid = "<<_fromid<<";";
+			pqxx::result r = w.exec(s); w.commit();	
+			
+			if(_id != _fromid){
+				_isTemplate = false;
+				_persistent = r[0][1].as<bool>();
+			}else if(_id == _fromid){
+				_isTemplate = r[0][0].as<bool>();
+				_persistent = true;
+			}
+		}
+		SObj* obj = new SObj(_id, _persistent, _isTemplate, _id == _fromid, _processor);
 		cerr<<"create new obj id="<<_id<<" from id="<<_fromid<<endl;
+		
 		loadComponents(obj, _fromid);
 		loadData(_fromid);
 		
@@ -69,7 +86,9 @@ uint32_t TaskCreateObj::execute(){
 		
 		_processor->addObj(obj);
 	
-	}else{//create new
+	}
+	/*
+	else{//create new
 		SObj* obj = new SObj(_processor->getFreeID(), _persistent, false, _processor);
 		
 		if(_fromid)
@@ -92,7 +111,7 @@ uint32_t TaskCreateObj::execute(){
 			obj->save();
 		_processor->addObj(obj);
 	}
-	
+	*/
 	return COMMAND_FINAL;
 }
 

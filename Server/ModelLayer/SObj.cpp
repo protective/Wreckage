@@ -10,11 +10,12 @@
 #include "Signals/Signal.h"
 #include "../Processor/Processor.h"
 
-SObj::SObj(OBJID id, bool persistent, bool initialized ,Processor* processor) {
+SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
 	_id = id;
 	_processor = processor;
 	_flags = persistent ? OBJFLAGPERSISTENT : 0;
 	_flags |= initialized ? OBJFLAGINIT : 0;
+	_flags |= istemplate ? OBJFLAGTEMPLATE : 0;
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){
@@ -96,7 +97,7 @@ void SObj::init(){
 	pqxx::work w(_processor->getDB());
 
 	stringstream s1;
-	s1<<"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<");";
+	s1<<"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<", false"<<");";
 	w.exec(s1);
 	w.commit();	
 	for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){

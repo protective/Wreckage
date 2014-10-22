@@ -12,12 +12,11 @@ SComponent(COMPID::spellbook){
 	pqxx::result r = w.exec(s);
 	for (int i = 0; i < r.size(); i++) {
 		_knownPowers.push_back(r[i][0].as<OBJID>());
-		TaskCreateObj* task = new TaskCreateObj(obj->getProcessor()->getFreeID(), _knownPowers.back(),false);
-		obj->getProcessor()->addTask(task);
+		if(!obj->isTemplate()){
+			TaskCreateObj* task = new TaskCreateObj(obj->getProcessor()->getFreeID(), _knownPowers.back(),false);
+			obj->getProcessor()->addTask(task);
+		}
 	}
-	
-	
-	
 	_flags = COMPFLAGINIT;
 }
 
