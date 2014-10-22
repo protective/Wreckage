@@ -22,6 +22,8 @@ void CompAbilityInput::dbTableInit(pqxx::connection& con){
 		w.exec("create table compabilityinput (objId BIGINT PRIMARY KEY);");
 		w.commit();
 	}
+	w.exec("delete from compabilityinput where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompAbilityInput::dbDelete(){

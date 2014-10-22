@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
 	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objs');");
 	if(!r[0][0].as<bool>()){
 		cerr<<"MAIN INIT main OBJ table do not exist create"<<endl;
-		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL);");
+		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL, cloneispersistent BOOL);");
 	}
 
 	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='comp');");

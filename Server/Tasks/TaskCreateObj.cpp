@@ -56,7 +56,7 @@ void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
 uint32_t TaskCreateObj::execute(){
 	if(_id){//load from existing or template
 		SObj* obj = new SObj(_id, _persistent, _id == _fromid, _processor);
-		cerr<<"create new obj from id="<<_fromid<<endl;
+		cerr<<"create new obj id="<<_id<<" from id="<<_fromid<<endl;
 		loadComponents(obj, _fromid);
 		loadData(_fromid);
 		
@@ -71,9 +71,14 @@ uint32_t TaskCreateObj::execute(){
 	
 	}else{//create new
 		SObj* obj = new SObj(_processor->getFreeID(), _persistent, false, _processor);
+		
+		if(_fromid)
+			cerr<<"create new obj id="<<obj->getId()<<" from template id="<<_fromid<<endl;
+		else
+			cerr<<"create new obj id="<<obj->getId() <<endl;
 
 		if(_fromid){
-			cerr<<"create new obj from template"<<endl;
+			cerr<<"create new obj id="<<obj->getId()<<" from template id="<<_fromid<<endl;
 			loadComponents(obj, _fromid);
 			loadData(_fromid);
 		}

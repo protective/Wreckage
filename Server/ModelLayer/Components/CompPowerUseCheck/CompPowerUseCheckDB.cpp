@@ -22,6 +22,8 @@ void CompPowerUseCheck::dbTableInit(pqxx::connection& con){
 		w.exec("create table comppowerusecheck (objId BIGINT PRIMARY KEY);");
 		w.commit();
 	}
+	w.exec("delete from comppowerusecheck where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompPowerUseCheck::dbDelete(){

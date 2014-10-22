@@ -22,6 +22,8 @@ void CompPowerDealDamage::dbTableInit(pqxx::connection& con){
 		w.exec("create table comppowerdealdamage (objId BIGINT PRIMARY KEY);");
 		w.commit();
 	}
+	w.exec("delete from comppowerdealdamage where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompPowerDealDamage::dbDelete(){

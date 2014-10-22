@@ -23,6 +23,8 @@ void CompTargeted::dbTableInit(pqxx::connection& con){
 		w.exec("create table comptargeted (objId BIGINT PRIMARY KEY);");
 		w.commit();
 	}
+	w.exec("delete from comptargeted where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompTargeted::dbDelete(){

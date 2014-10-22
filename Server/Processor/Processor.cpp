@@ -34,8 +34,14 @@ Processor::Processor() {
 
 	OBJID maxLocalId = 0x00FFFFFF | (_id << 24);
 	
-	pqxx::work w(*_dbCon);
+
 	stringstream s;
+	
+	pqxx::work w2(*_dbCon);
+	w2.exec("delete from comp where objid NOT IN (select objid from objs);");
+	w2.commit();
+		
+	pqxx::work w(*_dbCon);
 	cerr<<maxLocalId<<endl;
 	s<<"select max(objid) from objs where objid <"<<maxLocalId<<";"; 
 	pqxx::result r = w.exec(s);
@@ -72,7 +78,6 @@ void Processor::loadAllObjFromDb(){
 
 void Processor::addObj(SObj* obj){
 	if(obj){
-		cerr<<"processor add obj id="<<obj->getId()<<endl;
 		_localObjs[obj->getId()] = obj;
 		TaskProcess* task = new TaskProcess(obj,1000);
 		addTask(task);
@@ -83,7 +88,6 @@ void Processor::addObj(SObj* obj){
 
 void Processor::removeObj(SObj* obj){
 	if(obj){
-		cerr<<"processor remove obj id="<<obj->getId()<<endl;
 		_localObjs[obj->getId()] = obj;
 		obj->getProcessTask()->objDeleted();
 		delete obj;
@@ -92,7 +96,6 @@ void Processor::removeObj(SObj* obj){
 }
 
 SObj* Processor::getObj(OBJID id){
-	cerr<<"Processor::getObj id "<<id<<endl;
 	if(_localObjs.find(id) != _localObjs.end())
 		return _localObjs[id];
 	return NULL;
@@ -100,7 +103,6 @@ SObj* Processor::getObj(OBJID id){
 
 void  Processor::sendMessage(OBJID to, Message* message){
 	SObj* t = getObj(to);
-	cerr<<"send message to id="<<to<<" t="<<t<<endl;
 	if (t){
 		TaskSendMessage* cmd = new TaskSendMessage(t, message);
 		this->addTask(cmd);

@@ -66,9 +66,12 @@ void CompSpellBook::dbTableInit(pqxx::connection& con){
 	if(!r2[0][0].as<bool>()){
 		cerr<<"compspellbook_knownpower::dbInit compspellbook_knownpower do not exist create"<<endl;
 		w.exec("create table compspellbook_knownpowers (objId BIGINT, powerTemplateID BIGINT);");
-		
+		w.commit();
 	}
+	w.exec("delete from compspellbook where objid NOT IN (select objid from objs);");
+	w.exec("delete from compspellbook_knownpowers where objid NOT IN (select objid from objs);");
 	w.commit();
+	
 }
 
 void CompSpellBook::dbDelete(){

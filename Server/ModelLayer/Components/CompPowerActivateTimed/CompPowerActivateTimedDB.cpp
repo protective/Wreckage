@@ -22,6 +22,8 @@ void CompPowerActivateTimed::dbTableInit(pqxx::connection& con){
 		w.exec("create table comppoweractivatetimed (objId BIGINT PRIMARY KEY);");
 		w.commit();
 	}
+	w.exec("delete from comppoweractivatetimed where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompPowerActivateTimed::dbDelete(){

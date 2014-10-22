@@ -62,6 +62,8 @@ void CompReSpawnable::dbTableInit(pqxx::connection& con){
 		w.exec("create table comprespawnable (objId BIGINT PRIMARY KEY, spawner BIGINT);");
 		w.commit();
 	}
+	w.exec("delete from comprespawnable where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompReSpawnable::dbDelete(){

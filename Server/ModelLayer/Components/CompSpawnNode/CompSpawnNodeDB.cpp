@@ -70,6 +70,8 @@ void CompSpawnNode::dbTableInit(pqxx::connection& con){
 		w.exec("create table compspawnnode (objId BIGINT PRIMARY KEY, spawnid BIGINT, spawnTime BIGINT, spawnTemplate BIGINT);");
 		w.commit();
 	}
+	w.exec("delete from compspawnnode where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 
