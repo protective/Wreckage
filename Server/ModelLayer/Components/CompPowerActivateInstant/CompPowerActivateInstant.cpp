@@ -16,7 +16,12 @@ void CompPowerActivateInstant::acceptSignal(SIGNAL::Enum type, Signal* data){
 }
 
 void CompPowerActivateInstant::acceptMessage(MESSAGE::Enum type, Message* data){
-
+		switch(type){
+		case MESSAGE::powerCheckRsp:{
+			_obj->signal(SIGNAL::powerHit, NULL);
+			break;
+		}
+	}
 }
 
 void CompPowerActivateInstant::init(){

@@ -27,6 +27,7 @@ namespace SIGNAL {
 		process,
 		fireTarget,
 		killed,
+		powerHit,
 	};
 }
 
@@ -43,8 +44,12 @@ namespace MESSAGE {
 		HeartBeatReq,
 		HeartBeatRsp,
 		ProjectileStats,
+		powerCheck,
+		powerCheckRsp,
 		powerStatsReq,
 		powerStatsRsp,
+		casterStatsReq,
+		casterStatsRsp,		
 	};
 }
 
