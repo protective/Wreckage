@@ -1,6 +1,11 @@
 
 #include "CompPowerDealDamage.h"
 
+#include "../../../Processor/Processor.h"
+
+#include "../../Messages/MessageCasterStats.h"
+#include "../../Messages/MessageProjectileStats.h"
+
 CompPowerDealDamage::CompPowerDealDamage() :
 SComponent(COMPID::powerDealDamage){
 	init();
@@ -14,11 +19,27 @@ SComponent(COMPID::abilityInput){
 
 
 void CompPowerDealDamage::acceptSignal(SIGNAL::Enum type, Signal* data){
+	switch(type){
+		case SIGNAL::powerHit:{
+			
+			MessageCasterStats* msg = new MessageCasterStats(_obj->getId());
+			_obj->getProcessor()->sendMessage(_obj->getData(OBJDATA::owner), msg);
 
+			break;
+		}
+	}
 }
 
 void CompPowerDealDamage::acceptMessage(MESSAGE::Enum type, Message* data){
-
+	switch(type){
+		case MESSAGE::casterStatsRsp:{
+			if(_obj->getData(OBJDATA::target)){
+				MessageProjectileStats* msg = new MessageProjectileStats(_obj->getId());
+				_obj->getProcessor()->sendMessage((OBJID)_obj->getData(OBJDATA::target), msg);
+			}
+			break;
+		}
+	}
 }
 
 

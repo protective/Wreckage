@@ -2,6 +2,19 @@
 #ifndef ENUMS_H
 #define	ENUMS_H
 
+namespace OBJDATA {
+	enum Enum {
+		invalid = 0,
+		hp,
+		maxhp,
+		hitP,
+		dodgeP,
+		target,
+		owner,
+	};
+}
+
+
 namespace COMPID {
 	enum Enum {
 		invalid = 0,
@@ -49,7 +62,8 @@ namespace MESSAGE {
 		powerStatsReq,
 		powerStatsRsp,
 		casterStatsReq,
-		casterStatsRsp,		
+		casterStatsRsp,
+		activatePowerOnt,
 	};
 }
 

@@ -11,15 +11,6 @@
 #include "../ModelLayer/Components/ComponentFactory.h"
 
 #include "../Processor/Processor.h"
-/*
-TaskCreateObj::TaskCreateObj(bool persistent, OBJID fromId) :
-Task(0) {
-	_persistent = persistent;
-	_isTemplate = false;
-	_id = 0;
-	_fromid = fromId;
-}
-*/
 
 TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent) :
 Task(0) {
@@ -37,8 +28,32 @@ bool TaskCreateObj::addComponent(SComponent* cmp){
 	return true;
 }
 
+bool TaskCreateObj::addData(OBJDATA::Enum dataid, int32_t value){
+	if(_data.find(dataid) != _data.end()){
+		return false;
+	}
+	_data[dataid] = value;
+	return true;
+}
 
-void TaskCreateObj::loadData(OBJID id){
+
+void TaskCreateObj::loadData(SObj* obj, OBJID id){
+	pqxx::work w(_processor->getDB());
+	
+	for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end();it++){
+		for (list<OBJDATA::Enum>::iterator it2 = it->second->getDataAccesUssage().begin() ; it2 != it->second->getDataAccesUssage().end();it2++){
+			obj->setData(*it2,0);
+			
+		}
+	}
+	
+	stringstream s;
+	s<<"select dataid, value from objdata where "
+	"objid = "<<id<<";";
+	pqxx::result r = w.exec(s); w.commit();	
+	for (int i = 0; i< r.size(); i++){
+		obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][0].as<int32_t>());
+	}
 
 }
 
@@ -74,8 +89,12 @@ uint32_t TaskCreateObj::execute(){
 		SObj* obj = new SObj(_id, _persistent, _isTemplate, _id == _fromid, _processor);
 		cerr<<"create new obj id="<<_id<<" from id="<<_fromid<<endl;
 		
+		for(map<OBJDATA::Enum, int32_t>::iterator it = _data.begin(); it != _data.end(); it++){
+			obj->setData(it->first, it->second);
+		}
+		
 		loadComponents(obj, _fromid);
-		loadData(_fromid);
+		loadData(obj, _fromid);
 		
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
 			obj->addComponent(it->second);
@@ -87,31 +106,6 @@ uint32_t TaskCreateObj::execute(){
 		_processor->addObj(obj);
 	
 	}
-	/*
-	else{//create new
-		SObj* obj = new SObj(_processor->getFreeID(), _persistent, false, _processor);
-		
-		if(_fromid)
-			cerr<<"create new obj id="<<obj->getId()<<" from template id="<<_fromid<<endl;
-		else
-			cerr<<"create new obj id="<<obj->getId() <<endl;
-
-		if(_fromid){
-			cerr<<"create new obj id="<<obj->getId()<<" from template id="<<_fromid<<endl;
-			loadComponents(obj, _fromid);
-			loadData(_fromid);
-		}
-		
-		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
-			obj->addComponent(it->second);
-
-		}
-		
-		if(_persistent)
-			obj->save();
-		_processor->addObj(obj);
-	}
-	*/
 	return COMMAND_FINAL;
 }
 

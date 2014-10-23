@@ -1,5 +1,7 @@
 
 #include "CompTargeted.h"
+#include "../../../Tasks/TaskRemoveObj.h"
+#include "../../../Processor/Processor.h"
 
 CompTargeted::CompTargeted() :
 SComponent(COMPID::targeted){
@@ -16,7 +18,14 @@ void CompTargeted::acceptSignal(SIGNAL::Enum type, Signal* data){
 }
 
 void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
+	switch(type){
+		case MESSAGE::ProjectileStats:{
+			TaskRemoveObj* task = new TaskRemoveObj(_obj->getId());
+			_obj->getProcessor()->addTask(task);
+			break;
+		}
 
+	}
 }
 
 void CompTargeted::init(){

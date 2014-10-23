@@ -203,10 +203,7 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 						break;
 					}
 					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
-
-
 					TaskRemoveObj * t = new TaskRemoveObj(st->_unitId);
-
 					networkControl->addTaskToObj(t,st->_unitId);
 
 					break;

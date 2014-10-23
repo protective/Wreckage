@@ -16,15 +16,7 @@
 #define OBJFLAGDIRTY 0x02
 #define OBJFLAGPERSISTENT 0x04
 #define OBJFLAGTEMPLATE 0x08
-namespace OBJDATA {
-	enum Enum {
-		invalid = 0,
-		hp,
-		maxhp,
-		hitP,
-		dodgeP,
-	};
-}
+
 
 
 class Signal;

@@ -14,6 +14,7 @@ SComponent(COMPID::spellbook){
 		_knownPowers.push_back(r[i][0].as<OBJID>());
 		if(!obj->isTemplate()){
 			TaskCreateObj* task = new TaskCreateObj(obj->getProcessor()->getFreeID(), _knownPowers.back(),false);
+			task->addData(OBJDATA::owner, obj->getId());
 			obj->getProcessor()->addTask(task);
 		}
 	}
