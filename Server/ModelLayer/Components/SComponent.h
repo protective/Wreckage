@@ -28,7 +28,7 @@ public:
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
-	
+	void virtual acceptNetwork(void* data){}
 	void sendMessage(MESSAGE::Enum type, Message* data){}
 	
 	bool isInit(){return (_flags & COMPFLAGINIT) ? true : false;}

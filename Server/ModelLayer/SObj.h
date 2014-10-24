@@ -10,6 +10,9 @@
 
 #include "../BInclude.h"
 #include "enums.h"
+
+#include "../Network/Serialize.h"
+
 #include "Messages/Message.h"
 
 #define OBJFLAGINIT  0x01
@@ -40,7 +43,8 @@ public:
 	void init();
 	void signal(SIGNAL::Enum type, Signal* data);
 	void message(MESSAGE::Enum type, Message* data);
-
+	void input(inputOP op, inputLen len, uint32_t* data);
+	
 	Processor* getProcessor(){return _processor;}
 	
 	int32_t getData(OBJDATA::Enum dataId){

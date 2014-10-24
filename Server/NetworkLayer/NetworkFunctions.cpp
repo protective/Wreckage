@@ -10,7 +10,7 @@
 
 #include "../Tasks/TaskAddComponent.h"
 #include "../Tasks/TaskRemoveObj.h"
-
+#include "../Tasks/TaskAcceptInput.h"
 
 void sendtoC(Client* cli, char* buffer, uint32_t len){
 	pthread_mutex_lock(&cli->networkSendLock);
@@ -204,6 +204,19 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					}
 					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
 					TaskRemoveObj * t = new TaskRemoveObj(st->_unitId);
+					networkControl->addTaskToObj(t,st->_unitId);
+
+					break;
+				}
+				case SerialType::SerialInput:{
+					SerialInput* st = (SerialInput*)(buffer+offset);
+					SObj* obj = networkControl->getObj(st->_unitId);
+					if(!obj){
+						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
+						break;
+					}
+					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+					TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, st->_op, st->_len, st->_data);
 					networkControl->addTaskToObj(t,st->_unitId);
 
 					break;

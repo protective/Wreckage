@@ -9,7 +9,8 @@
 #define	SERIALIZE_H
 
 #include "../GShare/GGlobals.h"
-
+typedef uint16_t inputOP;
+typedef uint16_t inputLen;
 namespace SerialType{
 	/** Identifiers for each serializable type
 	  */
@@ -20,6 +21,7 @@ namespace SerialType{
                 SerialTime= 1,
                 SerialReqJoin = 5,
 				SerialAddComponent = 6,
+				SerialInput = 7,
 	};
 }
 
@@ -57,6 +59,13 @@ struct SerialCompReSpawnable{
 struct SerialAddComponent : public SerialData{ //id = 5
     uint32_t _unitId;
     uint32_t _compid;
+};
+
+struct SerialInput : public SerialData{ //id = 5
+    OBJID _unitId;
+    inputOP _op;
+	inputLen _len;
+	uint32_t _data[1]; 
 };
 
 #endif	/* SERIALIZE_H */
