@@ -165,7 +165,7 @@ void* ReadBuffer(Client* client){
 uint32_t parseBuffer(Client* client, uint32_t len){
 	char* buffer = client->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
-	//printBuffer(buffer,len);
+	printBuffer(buffer,len);
 	while (offset < len){
 		SerialData* temp = (SerialData*)(buffer + offset);
 		if (len - offset >= sizeof(uint32_t)*2 && temp->_size <= len - offset){
@@ -209,6 +209,7 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					break;
 				}
 				case SerialType::SerialInput:{
+					cerr<<"SerialType::SerialInput"<<endl;
 					SerialInput* st = (SerialInput*)(buffer+offset);
 					SObj* obj = networkControl->getObj(st->_unitId);
 					if(!obj){
@@ -216,10 +217,11 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					}
 					
 					SerialInputPayload* data = NULL;
-					switch (((SerialInputPayload*)st->_data)->_type){
+					switch (((SerialInputPayload*)(&st[1]))->_type){
 						case SERIALINPUT::SerialInputCastPower:{
 							data = (SerialInputPayload*)malloc(sizeof(SerialInputCastPower));
-							memcpy(data, st->_data, sizeof(SerialInputCastPower));
+							memcpy(data, &st[1], sizeof(SerialInputCastPower));
+							cerr<<"cp data"<<endl;
 							break;
 						}
 						default:{

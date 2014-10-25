@@ -19,9 +19,11 @@ Task(0)	{
 
 
 uint32_t TaskAcceptInput::execute() {
+	cerr<<"TaskAcceptInput::execute"<<endl;
+	cerr<<"id="<<_id<<endl;
 	if(!_processor->getObj(_id))
 		return COMMAND_FINAL;
-	
+	cerr<<"found"<<endl;
 	SObj* obj = _processor->getObj(_id);
 	
 	obj->input(_data);

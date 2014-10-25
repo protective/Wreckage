@@ -61,7 +61,6 @@ struct SerialAddComponent : public SerialData{ //id = 5
 
 struct SerialInput : public SerialData{ //id = 5
     OBJID _unitId;
-	uint32_t _data[1]; 
 };
 
 #endif	/* SERIALIZE_H */

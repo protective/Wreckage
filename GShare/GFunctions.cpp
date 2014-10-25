@@ -9,6 +9,8 @@
 
 #include "GFunctions.h"
 #include "../Network/Serialize.h"
+#include "../Network/InputSerial.h"
+
 void printBuffer(char* buffer, uint32_t len){
 	int offset = 0;
 	int loopoffset = 0;
@@ -46,6 +48,27 @@ void printBuffer(char* buffer, uint32_t len){
 						cerr<<"Recived SerialAddComponent*************"<<endl
 						<<"\tid "<<st->_unitId<<endl
 						<<"\tcompid "<<st->_compid<<endl;
+						cerr<<"****************************"<<endl;
+						break;
+					}
+					case SerialType::SerialInput:{
+						SerialInput* st = (SerialInput*)(buffer+offset);
+						cerr<<"Recived SerialInput*************"<<endl
+						<<"\tunit "<<st->_unitId<<endl;
+						SerialInputPayload* si = (SerialInputPayload*)(&st[1]);
+						cerr<<"\ttype "<<si->_type<<endl;
+
+						switch(si->_type){
+							case SERIALINPUT::SerialInputCastPower:{
+								SerialInputCastPower* scp = (SerialInputCastPower*)(&st[1]);
+								cerr<<"\tpower "<<scp->_power<<endl
+								<<"\ttarget "<<scp->_target<<endl;
+								break;
+							}
+							default:{
+								cerr<<"UNKNOWN Serial Input Type"<<endl;
+							}
+						}
 						cerr<<"****************************"<<endl;
 						break;
 					}
