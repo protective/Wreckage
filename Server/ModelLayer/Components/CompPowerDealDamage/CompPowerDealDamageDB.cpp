@@ -4,6 +4,8 @@
 CompPowerDealDamage::CompPowerDealDamage(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerDealDamage){
 	init();
+	
+		_flags = COMPFLAGINIT;
 }
 
 void CompPowerDealDamage::dbSave(){

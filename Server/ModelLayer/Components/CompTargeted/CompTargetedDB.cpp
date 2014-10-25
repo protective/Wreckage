@@ -5,6 +5,8 @@
 CompTargeted::CompTargeted(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::targeted){
 	init();
+	
+		_flags = COMPFLAGINIT;
 }
 
 void CompTargeted::dbSave(){

@@ -5,6 +5,8 @@
 CompPowerActivateInstant::CompPowerActivateInstant(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerActivateInstant){
 	init();
+	
+		_flags = COMPFLAGINIT;
 }
 
 void CompPowerActivateInstant::dbSave(){

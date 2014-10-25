@@ -4,6 +4,8 @@
 CompAbilityInput::CompAbilityInput(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::abilityInput){
 	init();
+	
+		_flags = COMPFLAGINIT;
 }
 
 void CompAbilityInput::dbSave(){

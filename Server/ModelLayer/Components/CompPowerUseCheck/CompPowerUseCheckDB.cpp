@@ -4,6 +4,9 @@
 CompPowerUseCheck::CompPowerUseCheck(OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerUseCheck){
 	init();
+	
+	
+	_flags = COMPFLAGINIT;
 }
 
 void CompPowerUseCheck::dbSave(){
@@ -24,6 +27,7 @@ void CompPowerUseCheck::dbTableInit(pqxx::connection& con){
 	}
 	w.exec("delete from comppowerusecheck where objid NOT IN (select objid from objs);");
 	w.commit();
+	
 }
 
 void CompPowerUseCheck::dbDelete(){
