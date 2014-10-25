@@ -72,9 +72,9 @@ void SObj::message(MESSAGE::Enum type, Message* data){
 	//NOTE the task is responsible for deleting the message data
 }
 
-void SObj::input(inputOP op, inputLen len, uint32_t* data) {
+void SObj::input(SerialInputPayload* data) {
 	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
-		//it->second->acceptMessage(type, data);
+		it->second->acceptNetwork(data);
 	}
 	//NOTE the task is responsible for deleting the message data
 

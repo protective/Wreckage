@@ -11,7 +11,7 @@
 #include "../BInclude.h"
 #include "enums.h"
 
-#include "../Network/Serialize.h"
+#include "../Network/InputSerial.h"
 
 #include "Messages/Message.h"
 
@@ -23,6 +23,7 @@
 
 
 class Signal;
+class SerialInputPayload;
 class SComponent;
 class TaskProcess;
 class Processor;
@@ -43,7 +44,7 @@ public:
 	void init();
 	void signal(SIGNAL::Enum type, Signal* data);
 	void message(MESSAGE::Enum type, Message* data);
-	void input(inputOP op, inputLen len, uint32_t* data);
+	void input(SerialInputPayload* data);
 	
 	Processor* getProcessor(){return _processor;}
 	

@@ -212,11 +212,22 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					SerialInput* st = (SerialInput*)(buffer+offset);
 					SObj* obj = networkControl->getObj(st->_unitId);
 					if(!obj){
-						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
 						break;
 					}
-					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
-					TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, st->_op, st->_len, st->_data);
+					
+					SerialInputPayload* data = NULL;
+					switch (((SerialInputPayload*)st->_data)->_type){
+						case SERIALINPUT::SerialInputCastPower:{
+							data = (SerialInputPayload*)malloc(sizeof(SerialInputCastPower));
+							memcpy(data, st->_data, sizeof(SerialInputCastPower));
+							break;
+						}
+						default:{
+							break;
+						}
+						
+					}
+					TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, data);
 					networkControl->addTaskToObj(t,st->_unitId);
 
 					break;
@@ -236,5 +247,4 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 	}
 	//cerr<<"end parse  "<<endl;
 	return offset;
-
 }

@@ -12,6 +12,8 @@
 #include "../../GShare/GFunctions.h"
 #include "../ModelLayer/enums.h"
 #include "../Network/Serialize.h"
+#include "../Network/InputSerial.h"
+
 class Client;
 void* thread_Listen();
 void* thread_Recive(Client* client);

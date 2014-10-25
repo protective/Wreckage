@@ -8,18 +8,16 @@
 #ifndef TASKACCEPTINPUT_H
 #define	TASKACCEPTINPUT_H
 #include "Task.h"
-#include "../../Network/Serialize.h"
+#include "../../Network/InputSerial.h"
 
 class TaskAcceptInput : public Task  {
 public:
-	TaskAcceptInput(OBJID obj,inputOP op, inputLen len, uint32_t* data);
+	TaskAcceptInput(OBJID id, SerialInputPayload* data);
 	virtual uint32_t execute();
 	virtual ~TaskAcceptInput();
 private:
 	OBJID _id;
-	inputOP _op;
-	inputLen _len;
-	uint32_t* _data;
+	SerialInputPayload* _data;
 	
 };
 

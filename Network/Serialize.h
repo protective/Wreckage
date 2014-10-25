@@ -9,8 +9,6 @@
 #define	SERIALIZE_H
 
 #include "../GShare/GGlobals.h"
-typedef uint16_t inputOP;
-typedef uint16_t inputLen;
 namespace SerialType{
 	/** Identifiers for each serializable type
 	  */
@@ -63,8 +61,6 @@ struct SerialAddComponent : public SerialData{ //id = 5
 
 struct SerialInput : public SerialData{ //id = 5
     OBJID _unitId;
-    inputOP _op;
-	inputLen _len;
 	uint32_t _data[1]; 
 };
 
