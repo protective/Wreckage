@@ -18,6 +18,7 @@
 #include "ModelLayer/Components/CompPowerActivateTimed/CompPowerActivateTimed.h"
 #include "ModelLayer/Components/CompPowerUseCheck/CompPowerUseCheck.h"
 #include "ModelLayer/Components/CompSpellBook/CompSpellBook.h"
+#include "ModelLayer/Components/CompModelStatic/CompModelStatic.h"
 
 using namespace std;
 
@@ -70,6 +71,9 @@ int main(int argc, char** argv) {
 	
 	CompSpellBook css;
 	css.dbTableInit(con);
+	
+	CompModelStatic cms;
+	cms.dbTableInit(con);
 	world = new SWorld(NULL);
 	SDL_Init(SDL_INIT_TIMER);
 	
