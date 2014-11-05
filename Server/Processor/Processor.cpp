@@ -17,6 +17,9 @@
 #include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
 #include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 
+#include "../ModelLayer/Signals/SignalEnterClient.h"
+#include "../ModelLayer/Signals/SignalExitClient.h"
+
 #include "../SGlobals.h"
 
 #include <sys/time.h>
@@ -206,6 +209,27 @@ uint32_t Processor::addTask(Task* cmd){
 	return 0;
 }
 
+void Processor::addClientView(uint32_t id){
+	_clientViews[id] = new ClientViews(id);
+
+	for(map<OBJID, SObj*>::iterator it = _localObjs.begin(); it != _localObjs.end(); it++){
+		SignalEnterClient s(id);
+		it->second->signal(SIGNAL::enterClient, &s);
+	}
+}
+
+void Processor::removeClientView(uint32_t id){
+	
+	for(map<OBJID, SObj*>::iterator it = _localObjs.begin(); it != _localObjs.end(); it++){
+		SignalExitClient s(id);
+		it->second->signal(SIGNAL::exitClient, &s);
+	}
+	if (_clientViews.find(id) != _clientViews.end()){
+		delete _clientViews[id];
+		_clientViews.erase(id);
+	}		
+}
+
 uint32_t Processor::removeTask(Task* cmd){
 	cerr<<"remove command"<<endl;
 	pthread_mutex_lock(&this->_lockCommands);
@@ -224,5 +248,9 @@ uint32_t Processor::removeTask(Task* cmd){
 }
 
 Processor::~Processor() {
+	
+	for(map<uint32_t, ClientViews*>::iterator it = _clientViews.begin(); it != _clientViews.end(); it++){
+		delete it->second;
+	}
 }
 

@@ -11,6 +11,7 @@
 #include "../Tasks/TaskAddComponent.h"
 #include "../Tasks/TaskRemoveObj.h"
 #include "../Tasks/TaskAcceptInput.h"
+#include "../Tasks/TaskAddClientView.h"
 
 void sendtoC(Client* cli, char* buffer, uint32_t len){
 	pthread_mutex_lock(&cli->networkSendLock);

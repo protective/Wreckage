@@ -67,6 +67,10 @@ void NetworkControler::addClient(Client* client){
 	cerr<<"add cli ="<<client->getId()<<endl;
 	_connections[client->getId()] = client;
 	pthread_mutex_unlock(&_clientLock);
+	
+	for(map<uint8_t,Processor*>::iterator it = processors.begin(); it != processors.end();it++){
+		it->second->addClientView(client->getId());
+	}
 }
 void NetworkControler::removeClient(Client* client){
 	_connections.erase(client->getId());

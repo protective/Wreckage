@@ -69,7 +69,7 @@ private:
 	TaskProcess* _processtask;
 	map<COMPID::Enum, SComponent*> _components;
 	map<OBJDATA::Enum, int32_t> _data;
-	
+	map<uint32_t, uint32_t> _subscribers;
 	//map<SIGNAL::Enum, list<SComponent*> > _signalAccept;
 	//map<MESSAGE::Enum, list<SComponent*> > _messageAccept;
 };

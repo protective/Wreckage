@@ -9,6 +9,7 @@
 #define	PROCESSOR_H
 
 #include "../BInclude.h"
+#include "ClientViews.h"
 #include <pqxx/pqxx>
 #define COMMAND_FINAL 0
 #define COMMAND_REPEAT 1
@@ -29,6 +30,9 @@ public:
 	void sendMessage(OBJID to, Message* message);
 	OBJID getFreeID();
 	pqxx::connection& getDB(){return *_dbCon;}
+	
+	void addClientView(uint32_t id);
+	void removeClientView(uint32_t id);
 	virtual ~Processor();
 private:
 
@@ -48,7 +52,7 @@ private:
 	pthread_mutex_t _lockFreeID;
 
 	pqxx::connection* _dbCon;
-
+	map<uint32_t, ClientViews*> _clientViews;
 };
 
 #endif	/* PROCESSOR_H */

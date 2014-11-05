@@ -41,6 +41,8 @@ namespace SIGNAL {
 		fireTarget,
 		killed,
 		powerHit,
+		enterClient,
+		exitClient,
 	};
 }
 
