@@ -9,6 +9,7 @@ void CompModelStatic::sendEnter(uint32_t clientId){
 	
 	SerialObjEnter s(_obj->getId(),_modelId);
 	networkControl->sendToC(clientId, &s, sizeof(s));
+	cerr<<"send enter"<<endl;
 }
 void CompModelStatic::sendExit(uint32_t clientId){
 	SerialObjExit s(_obj->getId(),1000); //TODO fix fadetimer

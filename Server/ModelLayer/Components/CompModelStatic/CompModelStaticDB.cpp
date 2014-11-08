@@ -9,7 +9,7 @@ SComponent(COMPID::modelStatic){
 	init();
 	pqxx::work w(con);
 	stringstream s; 
-	s<<"select modelId from CompModelStatic where objId = "<<id<<"";
+	s<<"select modelid from CompModelStatic where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
 	if(r.size() != 1){
 		cerr<<"ERROR CompModelStatic loadsize="<<r.size()<<endl;
@@ -57,7 +57,7 @@ void CompModelStatic::dbTableInit(pqxx::connection& con){
 	pqxx::work w(con);
 	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='compmodelstatic');");
 	if(!r[0][0].as<bool>()){
-		cerr<<"CompModelStatic::dbInit CompSpawnNode do not exist create"<<endl;
+		cerr<<"CompModelStatic::dbInit CompModelStatic do not exist create"<<endl;
 		w.exec("create table CompModelStatic (objId BIGINT PRIMARY KEY, modelId INT);");
 		w.commit();
 	}else{

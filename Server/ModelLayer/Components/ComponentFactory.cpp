@@ -11,6 +11,7 @@
 #include "CompPowerDealDamage/CompPowerDealDamage.h"
 #include "CompPowerActivateInstant/CompPowerActivateInstant.h"
 #include "CompTargeted/CompTargeted.h"
+#include "CompModelStatic/CompModelStatic.h"
 
 SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connection& con){
 	switch(type){
@@ -40,7 +41,10 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 		}
 		case COMPID::targeted: {
 			return new CompTargeted(id,con);
-		}				
+		}
+		case COMPID::modelStatic: {
+			return new CompModelStatic(id,con);
+		}		
 		default:{
 			cerr<<"ERROR ComponentFactory::createComponent component not known"<<endl;			
 		}
