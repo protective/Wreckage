@@ -28,6 +28,7 @@ namespace COMPID {
 		powerActivateInstant = 11,
 		targeted = 12,
 		modelStatic = 13,
+		position = 14,
 
 	};
 }

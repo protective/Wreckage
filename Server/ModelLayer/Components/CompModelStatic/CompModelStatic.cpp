@@ -4,7 +4,6 @@
 #include "../../Signals/SignalEnterClient.h"
 #include "../../Signals/SignalExitClient.h"
 
-
 CompModelStatic::CompModelStatic() :
 SComponent(COMPID::modelStatic){
 	init();

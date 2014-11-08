@@ -12,6 +12,7 @@
 #include "CompPowerActivateInstant/CompPowerActivateInstant.h"
 #include "CompTargeted/CompTargeted.h"
 #include "CompModelStatic/CompModelStatic.h"
+#include "CompPosition/CompPosition.h"
 
 SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connection& con){
 	switch(type){
@@ -44,7 +45,10 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 		}
 		case COMPID::modelStatic: {
 			return new CompModelStatic(id,con);
-		}		
+		}
+		case COMPID::position: {
+			return new CompPosition(id,con);
+		}	
 		default:{
 			cerr<<"ERROR ComponentFactory::createComponent component not known"<<endl;			
 		}
