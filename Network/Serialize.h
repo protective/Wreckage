@@ -20,10 +20,19 @@ namespace SerialType{
                 SerialReqJoin = 5,
 				SerialAddComponent = 6,
 				SerialInput = 7,
+				SerialComp = 9,
+				SerialObjEnter = 10,
+				SerialObjExit = 11,
 	};
 }
 
 struct SerialData{
+	
+	SerialData(SerialType::Enum _type, uint32_t _size){
+		this->_type = _type;
+		this->_size = _size;
+	}
+	
 	/** Type identifier of the serialized object
 	  */
 	SerialType::Enum _type;
@@ -34,12 +43,12 @@ struct SerialData{
 }__attribute__((__packed__));
 
 
-struct SerialTime : public SerialData{ //id = 1
+struct SerialTime : public SerialData{
     uint32_t time;
     uint32_t local;
 };
 
-struct SerialReqJoin : public SerialData{ //id = 5
+struct SerialReqJoin : public SerialData{ 
     uint32_t _unitId;
     uint32_t _pass;
 };
@@ -54,12 +63,12 @@ struct SerialCompReSpawnable{
 	OBJID _spawner;
 };
 
-struct SerialAddComponent : public SerialData{ //id = 5
+struct SerialAddComponent : public SerialData{
     uint32_t _unitId;
     uint32_t _compid;
 };
 
-struct SerialInput : public SerialData{ //id = 5
+struct SerialInput : public SerialData{
     OBJID _unitId;
 };
 

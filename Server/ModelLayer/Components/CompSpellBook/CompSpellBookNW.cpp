@@ -4,6 +4,7 @@
 
 #include "../../../../Network/InputSerial.h"
 #include "../../Messages/MessageActivatePowerOnTarget.h"
+
 void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 	cerr<<"CompSpellBook::acceptNetwork type="<<data->_type<<endl;
 	switch(data->_type) {

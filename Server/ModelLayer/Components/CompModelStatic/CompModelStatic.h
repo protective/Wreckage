@@ -21,6 +21,8 @@ public:
 	virtual ~CompModelStatic();
 private:
 	virtual void init();
+	void sendEnter(uint32_t clientId);
+	void sendExit(uint32_t clientId);
 	uint32_t _modelId; 
 };
 

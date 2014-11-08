@@ -27,7 +27,7 @@ public:
 	SObj* getObj(uint32_t objId);
 	uint32_t addTaskToObj(Task* task, OBJID obj);
 	void readBuffers();
-	uint32_t sendToC(uint32_t id, void* block, uint32_t len);
+	uint32_t sendToC(uint32_t clientId, void* block, uint32_t len);
 	virtual ~NetworkControler();
 private:
 
