@@ -12,6 +12,7 @@
 
 SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
 	_id = id;
+	_pos = NULL;
 	_processor = processor;
 	_flags = persistent ? OBJFLAGPERSISTENT : 0;
 	_flags |= initialized ? OBJFLAGINIT : 0;

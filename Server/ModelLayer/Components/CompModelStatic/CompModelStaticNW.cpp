@@ -6,13 +6,18 @@
 #include "../../../NetworkLayer/NetworkControler.h"
 
 void CompModelStatic::sendEnter(uint32_t clientId){
-	
-	SerialObjEnter s(_obj->getId(),_modelId);
-	networkControl->sendToC(clientId, &s, sizeof(s));
-	cerr<<"send enter"<<endl;
+	if(!_obj->getPos()){
+		SerialObjEnter s(_obj->getId(),_obj->getPos(),_modelId);
+		networkControl->sendToC(clientId, &s, sizeof(s));
+		cerr<<"send enter"<<endl;
+	}else
+		cerr<<"ERROR CompModelStatic::sendEnter no pos"<<endl;
 }
 void CompModelStatic::sendExit(uint32_t clientId){
-	SerialObjExit s(_obj->getId(),1000); //TODO fix fadetimer
-	networkControl->sendToC(clientId, &s, sizeof(s));
+	if(!_obj->getPos()){
+		SerialObjExit s(_obj->getId(), _obj->getPos(), 1000); //TODO fix fadetimer
+		networkControl->sendToC(clientId, &s, sizeof(s));
+	}else
+		cerr<<"ERROR CompModelStatic::sendExit no pos"<<endl;
 
 }

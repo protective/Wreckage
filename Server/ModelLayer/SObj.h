@@ -14,6 +14,7 @@
 #include "../Network/InputSerial.h"
 
 #include "Messages/Message.h"
+#include "ObjData/SPos.h"
 
 #define OBJFLAGINIT  0x01
 #define OBJFLAGDIRTY 0x02
@@ -55,6 +56,18 @@ public:
 		_data[dataId] = value;
 	}
 	
+	SPos* getPos(){
+		return _pos;
+	}
+	
+	void setPos(SPos& pos){
+		if(!_pos)
+			_pos = new SPos(pos);
+		else{
+			delete _pos;
+			_pos = new SPos(pos);
+		}
+	}
 	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
 	
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
@@ -69,6 +82,7 @@ private:
 	TaskProcess* _processtask;
 	map<COMPID::Enum, SComponent*> _components;
 	map<OBJDATA::Enum, int32_t> _data;
+	SPos* _pos;
 	map<uint32_t, uint32_t> _subscribers;
 	//map<SIGNAL::Enum, list<SComponent*> > _signalAccept;
 	//map<MESSAGE::Enum, list<SComponent*> > _messageAccept;

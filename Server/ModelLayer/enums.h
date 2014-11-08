@@ -11,6 +11,7 @@ namespace OBJDATA {
 		dodgeP,
 		target,
 		owner,
+		position,
 	};
 }
 
