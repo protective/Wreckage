@@ -54,6 +54,11 @@ int main(int argc, char** argv) {
 	if(!r[0][0].as<bool>()){
 		cerr<<"MAIN INIT main obj data table do not exist create"<<endl;
 		w.exec("create table objdata (objId BIGINT, dataId INT, value INT, PRIMARY KEY(objId, dataId));");
+	}
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objpos');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main obj pos table do not exist create"<<endl;
+		w.exec("create table objpos (objId BIGINT, x INT, y INT, z INT, d INT, PRIMARY KEY(objId));");
 	}	
 	w.commit();
 	

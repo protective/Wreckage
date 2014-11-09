@@ -81,10 +81,6 @@ void SObj::input(SerialInputPayload* data) {
 
 }
 
-
-
-
-
 void SObj::save(){	
 	if(isInit()){
 		for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){
@@ -97,6 +93,17 @@ void SObj::save(){
 				<<(int32_t)it->second<<" where "
 				<<"objId = "<<_id<<" and " 
 				<<"dataId = "<< it->first<<");";
+			w3.exec(s);
+		}
+		if(_pos){
+			stringstream s;
+			s<<"update objpos "
+				"set x = "<<_pos->x()<<" "
+				"set y = "<<_pos->y()<<" "
+				"set z = "<<_pos->z()<< " "
+				"set d = "<<(int32_t)_pos->d()<<" "
+				"where "<<
+				"objId = "<<_id<<";";
 			w3.exec(s);
 		}
 		w3.commit();
@@ -134,6 +141,16 @@ void SObj::init(){
 		w3.exec(s);
 			
 	}
+	if(_pos){
+		stringstream s;
+		s<<"insert into objpos values("<<
+			_id<<", "<<
+			_pos->x()<<", "<<
+			_pos->x()<<", "<<
+			_pos->x()<<", "<<
+			(int32_t)_pos->d()<<";";
+		w3.exec(s);
+	}
 	w3.commit();
 	_flags |= OBJFLAGINIT;
 }
@@ -148,6 +165,9 @@ void SObj::DBdelete(){
 		<<"objid ="<<_id<<";";
 	w.exec(s);
 	s<<"delete from objs where "
+		<<"objid ="<<_id<<";";
+	w.exec(s);
+	s<<"delete from objpos where "
 		<<"objid ="<<_id<<";";
 	w.exec(s);
 	w.commit();

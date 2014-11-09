@@ -1,7 +1,7 @@
 
 #include "SPos.h"
 
-SPos::SPos(uint32_t x, uint32_t y, uint32_t z, uint16_t d) {
+SPos::SPos(int32_t x, int32_t y, int32_t z, uint16_t d) {
 	_x = x;
 	_y = y;
 	_z = z;
