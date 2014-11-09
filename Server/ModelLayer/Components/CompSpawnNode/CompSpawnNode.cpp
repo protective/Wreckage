@@ -60,6 +60,7 @@ void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 					CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
 					if(!task->addComponent(cmp))
 						delete cmp;
+					task->addPos(_obj->getPos());
 					_obj->getProcessor()->addTask(task);
 					_spawn = id;
 					__timeout = 10000;

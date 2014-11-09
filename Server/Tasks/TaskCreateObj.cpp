@@ -18,6 +18,7 @@ Task(0) {
 	_isTemplate = false;
 	_id = id;
 	_fromid = fromId;
+	_pos = NULL;
 }
 
 bool TaskCreateObj::addComponent(SComponent* cmp){
@@ -36,6 +37,12 @@ bool TaskCreateObj::addData(OBJDATA::Enum dataid, int32_t value){
 	return true;
 }
 
+bool TaskCreateObj::addPos(SPos* pos){
+	if (_pos)
+		delete _pos;
+	_pos = pos;
+	return true;
+}
 
 void TaskCreateObj::loadData(SObj* obj, OBJID id){
 	pqxx::work w(_processor->getDB());
@@ -54,7 +61,20 @@ void TaskCreateObj::loadData(SObj* obj, OBJID id){
 	for (int i = 0; i< r.size(); i++){
 		obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][0].as<int32_t>());
 	}
+}
 
+void TaskCreateObj::loadPos(SObj* obj, OBJID id){
+
+	pqxx::work w(_processor->getDB());
+	stringstream s;
+	s<<"select x, y, z, d from objpos where "
+	"objid = "<<id<<";";
+	pqxx::result r = w.exec(s); w.commit();	
+	if ( r.size() > 0){
+		SPos p(r[0][0].as<int32_t>(),r[0][1].as<int32_t>(),r[0][2].as<int32_t>(),r[0][3].as<uint16_t>());
+		obj->setPos(p);
+	}
+	
 }
 
 void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
@@ -66,7 +86,6 @@ void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
 	w.commit();
 	for(int i = 0; i< r.size();i++){
 		SComponent* cmp = createComponent(obj,(COMPID::Enum)r[i][0].as<uint32_t>(), id, _processor->getDB());
-		
 		if(!this->addComponent(cmp))
 			delete cmp;
 	}
@@ -93,10 +112,13 @@ uint32_t TaskCreateObj::execute(){
 		for(map<OBJDATA::Enum, int32_t>::iterator it = _data.begin(); it != _data.end(); it++){
 			obj->setData(it->first, it->second);
 		}
+		if(_pos)
+			obj->setPos(*_pos);
 		
 		//load components to add to the task
 		loadComponents(obj, _fromid);
 		loadData(obj, _fromid);
+		loadPos(obj, _fromid);
 		
 		//add components from the task to obj
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
@@ -113,5 +135,7 @@ uint32_t TaskCreateObj::execute(){
 }
 
 TaskCreateObj::~TaskCreateObj() {
+	if(_pos)
+		delete _pos;
 }
 

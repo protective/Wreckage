@@ -45,6 +45,9 @@ Processor::Processor() {
 
 	
 	w2.exec("delete from objdata where objid NOT IN (select objid from objs);");
+	
+	
+	w2.exec("delete from objpos where objid NOT IN (select objid from objs);");
 	w2.commit();	
 	
 	pqxx::work w(*_dbCon);

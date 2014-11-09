@@ -146,9 +146,9 @@ void SObj::init(){
 		s<<"insert into objpos values("<<
 			_id<<", "<<
 			_pos->x()<<", "<<
-			_pos->x()<<", "<<
-			_pos->x()<<", "<<
-			(int32_t)_pos->d()<<";";
+			_pos->y()<<", "<<
+			_pos->z()<<", "<<
+			(int32_t)_pos->d()<<");";
 		w3.exec(s);
 	}
 	w3.commit();
