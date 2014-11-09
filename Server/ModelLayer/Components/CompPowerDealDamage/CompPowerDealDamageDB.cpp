@@ -1,10 +1,11 @@
 
 #include "CompPowerDealDamage.h"
 
-CompPowerDealDamage::CompPowerDealDamage(OBJID id, pqxx::connection& con) :
+CompPowerDealDamage::CompPowerDealDamage(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerDealDamage){
 	init();
 	
+	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 

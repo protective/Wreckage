@@ -1,10 +1,11 @@
 
 #include "CompAbilityInput.h"
 
-CompAbilityInput::CompAbilityInput(OBJID id, pqxx::connection& con) :
+CompAbilityInput::CompAbilityInput(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::abilityInput){
 	init();
 	
+	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 

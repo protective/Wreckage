@@ -4,7 +4,7 @@
 
 #include "../../../Processor/Processor.h"
 
-CompModelStatic::CompModelStatic(OBJID id, pqxx::connection& con) :
+CompModelStatic::CompModelStatic(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::modelStatic){
 	init();
 	pqxx::work w(con);
@@ -17,7 +17,8 @@ SComponent(COMPID::modelStatic){
 	}else{
 		_modelId = r[0][0].as<uint32_t>();
 	}
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompModelStatic::dbSave(){

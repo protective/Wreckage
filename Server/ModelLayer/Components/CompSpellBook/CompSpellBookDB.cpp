@@ -18,7 +18,8 @@ SComponent(COMPID::spellbook){
 			obj->getProcessor()->addTask(task);
 		}
 	}
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompSpellBook::dbSave(){

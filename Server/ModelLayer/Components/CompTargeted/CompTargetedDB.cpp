@@ -2,10 +2,11 @@
 
 #include "CompTargeted.h"
 
-CompTargeted::CompTargeted(OBJID id, pqxx::connection& con) :
+CompTargeted::CompTargeted(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::targeted){
 	init();
 	
+	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 

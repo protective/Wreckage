@@ -66,6 +66,7 @@ void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
 	w.commit();
 	for(int i = 0; i< r.size();i++){
 		SComponent* cmp = createComponent(obj,(COMPID::Enum)r[i][0].as<uint32_t>(), id, _processor->getDB());
+		
 		if(!this->addComponent(cmp))
 			delete cmp;
 	}
@@ -93,9 +94,11 @@ uint32_t TaskCreateObj::execute(){
 			obj->setData(it->first, it->second);
 		}
 		
+		//load components to add to the task
 		loadComponents(obj, _fromid);
 		loadData(obj, _fromid);
 		
+		//add components from the task to obj
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
 			obj->addComponent(it->second);
 		}

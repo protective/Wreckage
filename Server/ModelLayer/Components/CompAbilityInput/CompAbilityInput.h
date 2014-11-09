@@ -8,7 +8,7 @@ public:
 	CompAbilityInput();
 	//CompAbilityInput(OBJID spawner);
 	CompAbilityInput(const CompAbilityInput& orig);
-	CompAbilityInput(OBJID id, pqxx::connection& con);
+	CompAbilityInput(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

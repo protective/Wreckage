@@ -2,10 +2,11 @@
 #include "CompPowerActivateInstant.h"
 
 
-CompPowerActivateInstant::CompPowerActivateInstant(OBJID id, pqxx::connection& con) :
+CompPowerActivateInstant::CompPowerActivateInstant(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerActivateInstant){
 	init();
 	
+	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 

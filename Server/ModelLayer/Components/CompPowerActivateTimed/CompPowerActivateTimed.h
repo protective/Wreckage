@@ -9,7 +9,7 @@ public:
 	CompPowerActivateTimed();
 	CompPowerActivateTimed(OBJID spawner);
 	CompPowerActivateTimed(const CompPowerActivateTimed& orig);
-	CompPowerActivateTimed(OBJID id, pqxx::connection& con);
+	CompPowerActivateTimed(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

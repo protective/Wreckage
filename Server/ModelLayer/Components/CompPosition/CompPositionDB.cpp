@@ -4,7 +4,7 @@
 
 #include "../../../Processor/Processor.h"
 
-CompPosition::CompPosition(OBJID id, pqxx::connection& con) :
+CompPosition::CompPosition(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::position){
 	init();
 	pqxx::work w(con);
@@ -17,7 +17,8 @@ SComponent(COMPID::position){
 	}else{
 		//_modelId = r[0][0].as<uint32_t>();
 	}
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompPosition::dbSave(){

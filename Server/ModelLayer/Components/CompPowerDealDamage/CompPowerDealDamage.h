@@ -9,7 +9,7 @@ public:
 	CompPowerDealDamage();
 	//CompPowerDealDamage(OBJID spawner);
 	CompPowerDealDamage(const CompPowerDealDamage& orig);
-	CompPowerDealDamage(OBJID id, pqxx::connection& con);
+	CompPowerDealDamage(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

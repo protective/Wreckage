@@ -20,34 +20,34 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 			return new CompSpellBook(obj, id,con);
 		}
 		case COMPID::powerUseCheck: {
-			return new CompPowerUseCheck(id,con);
+			return new CompPowerUseCheck(obj, id,con);
 		}
 		case COMPID::powerActivateTimed: {
-			return new CompPowerActivateTimed(id,con);
+			return new CompPowerActivateTimed(obj, id,con);
 		}
 		case COMPID::spawnNode: {
-			return new CompSpawnNode(id,con);
+			return new CompSpawnNode(obj, id,con);
 		}
 		case COMPID::reSpawnable: {
-			return new CompReSpawnable(id,con);
+			return new CompReSpawnable(obj, id,con);
 		}
 		case COMPID::abilityInput: {
-			return new CompAbilityInput(id,con);
+			return new CompAbilityInput(obj, id,con);
 		}
 		case COMPID::powerDealDamage: {
-			return new CompPowerDealDamage(id,con);
+			return new CompPowerDealDamage(obj, id,con);
 		}		
 		case COMPID::powerActivateInstant: {
-			return new CompPowerActivateInstant(id,con);
+			return new CompPowerActivateInstant(obj, id,con);
 		}
 		case COMPID::targeted: {
-			return new CompTargeted(id,con);
+			return new CompTargeted(obj, id,con);
 		}
 		case COMPID::modelStatic: {
-			return new CompModelStatic(id,con);
+			return new CompModelStatic(obj, id,con);
 		}
 		case COMPID::position: {
-			return new CompPosition(id,con);
+			return new CompPosition(obj, id,con);
 		}	
 		default:{
 			cerr<<"ERROR ComponentFactory::createComponent component not known"<<endl;			

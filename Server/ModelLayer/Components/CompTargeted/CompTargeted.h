@@ -9,7 +9,7 @@ public:
 	CompTargeted();
 	//CompTargeted(OBJID spawner);
 	CompTargeted(const CompTargeted& orig);
-	CompTargeted(OBJID id, pqxx::connection& con);
+	CompTargeted(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

@@ -1,12 +1,13 @@
 
 #include "CompPowerUseCheck.h"
 
-CompPowerUseCheck::CompPowerUseCheck(OBJID id, pqxx::connection& con) :
+CompPowerUseCheck::CompPowerUseCheck(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerUseCheck){
 	init();
 	
 	
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompPowerUseCheck::dbSave(){

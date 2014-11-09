@@ -1,10 +1,11 @@
 
 #include "CompPowerActivateTimed.h"
 
-CompPowerActivateTimed::CompPowerActivateTimed(OBJID id, pqxx::connection& con) :
+CompPowerActivateTimed::CompPowerActivateTimed(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::powerActivateTimed){
 	init();
 	
+	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 
