@@ -2,6 +2,8 @@
 #include "ComponentFactory.h"
 
 #include "../SObj.h"
+#include "../Network/Serialize.h"
+
 #include "CompSpawnNode/CompSpawnNode.h"
 #include "CompReSpawnable/CompReSpawnable.h"
 #include "CompSpellBook/CompSpellBook.h"
@@ -55,3 +57,20 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 	}
 }
 
+SComponent* createComponent(SerialObjComp* sc, int32_t* size){
+	SComponent* temp = NULL;
+	switch(sc->_compType){
+		case COMPID::spawnNode: {
+			temp = new CompSpawnNode((SerialCompSpawnNode*)sc, size);
+			break;
+		}
+		default:{
+			cerr<<"WARNING factory createComponent unserialized component"<<endl;
+		}
+	}
+	if(*size > 0)
+		return temp;
+	else if(temp)
+		delete temp;
+	return NULL;
+}

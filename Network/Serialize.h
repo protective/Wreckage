@@ -56,12 +56,6 @@ struct SerialReqJoin : public SerialData{
     uint32_t _pass;
 };
 
-struct SerialCompSpawnNode{
-	TIME _spawnTime;
-	OBJTPID _spawnTemplate;
-	OBJID _spawn;
-};
-
 struct SerialCompReSpawnable{
 	OBJID _spawner;
 };
@@ -90,7 +84,7 @@ struct SerialObjDataPos : SerialObjData {
 	uint16_t _d;
 };
 
-struct SerialObjComp {
+struct SerialObjComp  {
 	uint16_t _compType;
 };
 

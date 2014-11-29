@@ -11,6 +11,8 @@
 
 #include "../enums.h"
 #include "../Network/InputSerial.h"
+#include "../Network/Serialize.h"
+
 #include "../Signals/Signal.h"
 #include "../Messages/Message.h"
 #include "../SObj.h"
