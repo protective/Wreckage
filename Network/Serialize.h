@@ -75,8 +75,29 @@ struct SerialInput : public SerialData{
     OBJID _unitId;
 };
 
+struct SerialObjData {
+	uint16_t _dataType;
+};
+
+struct SerialObjDataValue : SerialObjData {
+	int32_t _value;	
+};
+
+struct SerialObjDataPos : SerialObjData {
+	int32_t _x;
+	int32_t _y;
+	int32_t _z;
+	uint16_t _d;
+};
+
+struct SerialObjComp {
+	uint16_t _compType;
+};
+
 struct SerialCmdCreateObj : public SerialData{
-    OBJID _unitId;
+    OBJID _template;
+	SerialObjData _data[1];
+	SerialObjComp _comp[1];
 };
 
 #endif	/* SERIALIZE_H */

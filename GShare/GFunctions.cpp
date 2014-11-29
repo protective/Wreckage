@@ -10,6 +10,7 @@
 #include "GFunctions.h"
 #include "../Network/Serialize.h"
 #include "../Network/InputSerial.h"
+#include "Enums.h"
 
 void printBuffer(char* buffer, uint32_t len){
 	int offset = 0;
@@ -70,6 +71,40 @@ void printBuffer(char* buffer, uint32_t len){
 							}
 						}
 						cerr<<"****************************"<<endl;
+						break;
+					}
+					case SerialType::SerialCmdCreateObj:{
+						SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
+						cerr<<"Recived SerialCmdCreateObj*************"<<endl
+						<<"\ttemplate "<<st->_template<<endl;
+						SerialObjData* sd = (SerialObjData*)st->_data;
+						while(sd->_dataType){
+							switch(sd->_dataType){
+								case OBJDATA::position: {
+									cerr<<"\t\tOBJDATA::position"<<endl
+									<<"\t\t\tx="<<((SerialObjDataPos*)sd)->_x
+											<<" y="<<((SerialObjDataPos*)sd)->_y
+											<<" z="<<((SerialObjDataPos*)sd)->_z
+											<<" d="<<((SerialObjDataPos*)sd)->_d<<endl;
+									sd+= sizeof(SerialObjDataPos);
+									break;
+								}
+								default:{
+									cerr<<"\t\ttype"<<sd->_dataType<<endl
+									<<"\t\tvalue="<<((SerialObjDataValue*)sd)->_value<<endl;
+									sd+= sizeof(SerialObjDataValue);
+									break;								
+								}
+							}
+						}
+						SerialObjComp* sc = (SerialObjComp*)sd + sizeof(SerialObjData);
+						while(sc->_compType){
+
+							sd += sizeof(SerialObjComp);
+						}
+						
+						cerr<<"****************************"<<endl;
+						
 						break;
 					}
 					default:{
