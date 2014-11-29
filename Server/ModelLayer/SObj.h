@@ -61,6 +61,7 @@ public:
 	}
 	
 	void setPos(SPos& pos){
+		cerr<<"set pos"<<endl;
 		if(!_pos)
 			_pos = new SPos(pos);
 		else{

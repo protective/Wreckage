@@ -23,6 +23,9 @@ namespace SerialType{
 				SerialComp = 9,
 				SerialObjEnter = 10,
 				SerialObjExit = 11,
+				
+				SerialCmdCreateObj = 100,
+			
 	};
 }
 
@@ -69,6 +72,10 @@ struct SerialAddComponent : public SerialData{
 };
 
 struct SerialInput : public SerialData{
+    OBJID _unitId;
+};
+
+struct SerialCmdCreateObj : public SerialData{
     OBJID _unitId;
 };
 

@@ -44,8 +44,9 @@ uint32_t NetworkControler::addTaskToObj(Task* task, OBJID obj){
 }
 
 uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len){
+	
 	bool sendt = false;
-	//cerr<<"send to c= "<<id<<endl;
+	cerr<<"send to c= "<<clientId<<endl;
 	pthread_mutex_lock(&_clientLock);
 	map<uint32_t, Client*>::iterator it = _connections.find(clientId);
 	if (it!= _connections.end()){

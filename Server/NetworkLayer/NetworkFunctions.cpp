@@ -84,12 +84,14 @@ void* thread_Recive(Client* client){
 	int recsize;
 	uint32_t timeout = 0;
 
-	while(true){
+	while(!client->isDisconnecting()){
 
 		recsize = recv(client->getSocket(), (client->inputnetworkBuf->networkBuf) + client->inputnetworkBuf->recived, 512,0);
 
 		if (recsize < 0){
+			
 			fprintf(stderr, "RECV  ERROR***********************\n");
+			client->disconnect();
 			break;
 		}
 		if (recsize)
@@ -113,6 +115,7 @@ void* thread_Recive(Client* client){
 		if (timeout < 20)
 			usleep(400);
 		else{
+			client->disconnect();
 			cerr<<"timeout"<<endl;
 			break;
 		}
@@ -167,8 +170,11 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 	char* buffer = client->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
 	printBuffer(buffer,len);
-	while (offset < len){
+	while (offset < len && !client->isDisconnecting()){
 		SerialData* temp = (SerialData*)(buffer + offset);
+		if(temp->_size < sizeof(SerialData))
+			client->disconnect();
+		
 		if (len - offset >= sizeof(uint32_t)*2 && temp->_size <= len - offset){
 			//cerr<<"parse single "<<endl;
 

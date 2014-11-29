@@ -24,9 +24,13 @@ Client::Client(int socket) {
 	pthread_mutex_init(&this->networkSendLock, NULL);
 	pthread_mutex_init(&this->locksubscriber, NULL);
 	
+	pthread_mutex_init(&this->_lockState, NULL);
+	
 	pthread_mutex_lock(&this->networkSendLock);
 	networkSendLockBool = true;
 	pthread_mutex_unlock(&this->networkSendLock);
+	
+	this->_isDisconnecting = false;
 	//this->switchBuffer();
 	inputnetworkBuf = &networkBuf1;
 	outputnetworkBuf = &networkBuf2;
