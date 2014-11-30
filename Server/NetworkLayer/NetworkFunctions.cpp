@@ -4,14 +4,18 @@
 
 #include "Client.h"
 
+#include "../ModelLayer/Components/ComponentFactory.h"
 #include "../ModelLayer/Components/SComponent.h"
 #include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 #include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
+
+
 
 #include "../Tasks/TaskAddComponent.h"
 #include "../Tasks/TaskRemoveObj.h"
 #include "../Tasks/TaskAcceptInput.h"
 #include "../Tasks/TaskAddClientView.h"
+#include "../Tasks/TaskCreateObj.h"
 
 void sendtoC(Client* cli, char* buffer, uint32_t len){
 	pthread_mutex_lock(&cli->networkSendLock);
@@ -169,6 +173,7 @@ void* ReadBuffer(Client* client){
 uint32_t parseBuffer(Client* client, uint32_t len){
 	char* buffer = client->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
+	uint32_t remaning = 0;
 	printBuffer(buffer,len);
 	while (offset < len && !client->isDisconnecting()){
 		SerialData* temp = (SerialData*)(buffer + offset);
@@ -177,7 +182,7 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 		
 		if (len - offset >= sizeof(uint32_t)*2 && temp->_size <= len - offset){
 			//cerr<<"parse single "<<endl;
-
+			remaning = len - offset;
 			switch(temp->_type)
 			{
 				case SerialType::SerialTime:{
@@ -238,6 +243,32 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					}
 					TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, data);
 					networkControl->addTaskToObj(t,st->_unitId);
+
+					break;
+				}
+				case SerialType::SerialCmdCreateObj:{
+					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
+					
+					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+					TaskCreateObj* t = new TaskCreateObj(0, st->_template, true);
+					SerialObjData* sd = (SerialObjData*)st->_data;
+					while(sd->_dataType){
+						break;
+					}
+					SerialObjComp* sc = (SerialObjComp*)sd + sizeof(SerialObjData);
+					while(sc->_compType){
+						//component size is max the min of remaning buffer of the size of the package
+						int32_t cmpSize = min(remaning, temp->_size);
+						t->addComponent(createComponent(sc, &cmpSize));
+						if(cmpSize){
+							sc += cmpSize; //increasse by the buffer read by the factory
+						}else{
+							cerr<<"parse buffer SerialType::SerialCmdCreateObj WARNING this should not happen"<<endl;
+							break;
+						}
+					}
+					
+					networkControl->addTaskToObj(t,0);
 
 					break;
 				}

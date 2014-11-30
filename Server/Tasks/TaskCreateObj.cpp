@@ -22,6 +22,8 @@ Task(0) {
 }
 
 bool TaskCreateObj::addComponent(SComponent* cmp){
+	if(!cmp)
+		return false;
 	if(_components.find(cmp->getType()) != _components.end()){
 		return false;
 	}
@@ -92,6 +94,8 @@ void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
 }
 
 uint32_t TaskCreateObj::execute(){
+	if(_id == 0)
+		_id = _processor->getFreeID();
 	if(_id){//load from existing or template
 		if(_fromid){
 			pqxx::work w(_processor->getDB());	
