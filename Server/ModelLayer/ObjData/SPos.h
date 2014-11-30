@@ -3,6 +3,7 @@
 #define	SPOS_H
 #include "../../BInclude.h"
 
+struct SerialObjDataPos;
 class SPos {
 public:
 	SPos(){}
@@ -14,6 +15,7 @@ public:
 	uint16_t d(){return _d;}
 	
 	SPos(const SPos& orig);
+	SPos(SerialObjDataPos* sp);
 	virtual ~SPos();
 private:
 	int32_t _x;

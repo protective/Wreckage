@@ -255,6 +255,17 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					SerialObjData* sd = (SerialObjData*)st->_data;
 					cerr<<"sd "<<sd<<endl;
 					while(sd->_dataType){
+						switch(sd->_dataType){
+							case OBJDATA::position: {
+								t->addPos(new SPos((SerialObjDataPos*)sd));	
+								sd = &(((SerialObjDataPos*)sd)[1]);
+							}
+							default:{
+								t->addData(((SerialObjDataValue*)sd)->_dataType,((SerialObjDataValue*)sd)->_value);
+								sd = &(((SerialObjDataValue*)sd)[1]);
+							}
+						}
+						
 						cerr<<"WARNING shoudl be empty "<<sd->_dataType<<endl;
 						break;
 					}
