@@ -250,13 +250,19 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
 					
 					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
+					cerr<<"st "<<st<<endl;
 					TaskCreateObj* t = new TaskCreateObj(0, st->_template, true);
 					SerialObjData* sd = (SerialObjData*)st->_data;
+					cerr<<"sd "<<sd<<endl;
 					while(sd->_dataType){
+						cerr<<"WARNING shoudl be empty "<<sd->_dataType<<endl;
 						break;
 					}
-					SerialObjComp* sc = (SerialObjComp*)sd + sizeof(SerialObjData);
+					SerialObjComp* sc = (SerialObjComp*) (&sd[1]);
+					cerr<<"sc "<<sc<<endl;
 					while(sc->_compType){
+						cerr<<"WARNING shoudl also be empty "<<sc->_compType<<endl;
+				
 						//component size is max the min of remaning buffer of the size of the package
 						int32_t cmpSize = min(remaning, temp->_size);
 						t->addComponent(createComponent(sc, &cmpSize));

@@ -97,11 +97,11 @@ void printBuffer(char* buffer, uint32_t len){
 								}
 							}
 						}
-						SerialObjComp* sc = (SerialObjComp*)sd + sizeof(SerialObjData);
-						while(sc->_compType){
+						SerialObjComp* sc = (SerialObjComp*)(&sd[1]);
+						//while(sc->_compType){
 
-							sd += sizeof(SerialObjComp);
-						}
+						//	sd += sizeof(SerialObjComp);
+						//}
 						
 						cerr<<"****************************"<<endl;
 						

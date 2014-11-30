@@ -71,7 +71,7 @@ struct SerialInput : public SerialData{
 
 struct SerialObjData {
 	uint16_t _dataType;
-};
+}__attribute__((__packed__));
 
 struct SerialObjDataValue : SerialObjData {
 	int32_t _value;	
@@ -86,7 +86,7 @@ struct SerialObjDataPos : SerialObjData {
 
 struct SerialObjComp  {
 	uint16_t _compType;
-};
+}__attribute__((__packed__));
 
 struct SerialCmdCreateObj : public SerialData{
     OBJID _template;
