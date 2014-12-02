@@ -45,6 +45,19 @@ public:
     NetworkBuffer* inputnetworkBuf;
     NetworkBuffer* outputnetworkBuf;
 	//map<uint32_t,SObj*>& getsubscribes(){return this->_subscribes;}
+	bool isDisconnecting(){
+		bool temp;
+		pthread_mutex_lock(&this->_lockState);
+		temp = _isDisconnecting;
+		pthread_mutex_unlock(&this->_lockState);
+		return temp;
+	}
+	void disconnect(){
+		pthread_mutex_lock(&this->_lockState);
+		_isDisconnecting= true;
+		pthread_mutex_unlock(&this->_lockState);
+	}
+	
 	void initTransfere();
 	virtual ~Client();
 	pthread_mutex_t& getlocksubscriber() {return locksubscriber;}
@@ -56,8 +69,10 @@ private:
 	uint32_t _teamId;
 	int socket;
     uint16_t active_buffer;
+	bool _isDisconnecting;
     NetworkBuffer networkBuf1;
     NetworkBuffer networkBuf2;
+	pthread_mutex_t _lockState;
 	pthread_mutex_t locksubscriber;
 };
 

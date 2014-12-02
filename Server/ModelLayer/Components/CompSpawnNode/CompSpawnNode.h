@@ -3,12 +3,14 @@
 #define	COMPSPAWNNODE_H
 
 #include "../SComponent.h"
+struct SerialCompSpawnNode;
 class CompSpawnNode : public SComponent  {
 public:
 	CompSpawnNode();
 	CompSpawnNode(TIME spawnTime, OBJTPID spwanTemplate, OBJID spawn);
 	CompSpawnNode(const CompSpawnNode& orig);
-	CompSpawnNode(OBJID id, pqxx::connection& con);	
+	CompSpawnNode(SObj* obj, OBJID id, pqxx::connection& con);	
+	CompSpawnNode(SerialCompSpawnNode* sc, int32_t* size);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -27,6 +29,12 @@ private:
 	
 	//NONSERIAL
 	TIME __timeout;
+};
+
+struct SerialCompSpawnNode : SerialObjComp{
+	TIME _spawnTime;
+	OBJTPID _spawnTemplate;
+	OBJID _spawn;
 };
 
 #endif	/* COMPSPAWNNODE_H */

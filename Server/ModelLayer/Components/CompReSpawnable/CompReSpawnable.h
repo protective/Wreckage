@@ -8,7 +8,7 @@ public:
 	CompReSpawnable();
 	CompReSpawnable(OBJID spawner);
 	CompReSpawnable(const CompReSpawnable& orig);
-	CompReSpawnable(OBJID id, pqxx::connection& con);
+	CompReSpawnable(SObj* obj, OBJID id, pqxx::connection& con);
 	
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

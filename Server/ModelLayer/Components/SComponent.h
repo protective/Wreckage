@@ -10,6 +10,9 @@
 #include "../../BInclude.h"
 
 #include "../enums.h"
+#include "../Network/InputSerial.h"
+#include "../Network/Serialize.h"
+
 #include "../Signals/Signal.h"
 #include "../Messages/Message.h"
 #include "../SObj.h"
@@ -28,7 +31,7 @@ public:
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};
-	
+	void virtual acceptNetwork(SerialInputPayload* data){}
 	void sendMessage(MESSAGE::Enum type, Message* data){}
 	
 	bool isInit(){return (_flags & COMPFLAGINIT) ? true : false;}

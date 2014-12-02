@@ -5,7 +5,7 @@
 #include "../../Signals/SignalProcess.h"
 
 
-CompSpawnNode::CompSpawnNode(OBJID id, pqxx::connection& con) :
+CompSpawnNode::CompSpawnNode(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
 	init();
 	pqxx::work w(con);
@@ -22,7 +22,8 @@ SComponent(COMPID::spawnNode){
 		_spawnTime = r[0][1].as<TIME>();
 		_spawnTemplate = r[0][2].as<OBJTPID>();
 	}
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompSpawnNode::dbSave(){
@@ -70,6 +71,8 @@ void CompSpawnNode::dbTableInit(pqxx::connection& con){
 		w.exec("create table compspawnnode (objId BIGINT PRIMARY KEY, spawnid BIGINT, spawnTime BIGINT, spawnTemplate BIGINT);");
 		w.commit();
 	}
+	w.exec("delete from compspawnnode where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 

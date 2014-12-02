@@ -15,6 +15,10 @@
 #include "NetworkLayer/NetworkFunctions.h"
 #include "ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
 #include "ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
+#include "ModelLayer/Components/CompPowerActivateTimed/CompPowerActivateTimed.h"
+#include "ModelLayer/Components/CompPowerUseCheck/CompPowerUseCheck.h"
+#include "ModelLayer/Components/CompSpellBook/CompSpellBook.h"
+#include "ModelLayer/Components/CompModelStatic/CompModelStatic.h"
 
 using namespace std;
 
@@ -37,7 +41,7 @@ int main(int argc, char** argv) {
 	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objs');");
 	if(!r[0][0].as<bool>()){
 		cerr<<"MAIN INIT main OBJ table do not exist create"<<endl;
-		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL);");
+		w.exec("create table objs (objId BIGINT PRIMARY KEY, isTemplate BOOL, cloneispersistent BOOL);");
 	}
 
 	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='comp');");
@@ -50,14 +54,31 @@ int main(int argc, char** argv) {
 	if(!r[0][0].as<bool>()){
 		cerr<<"MAIN INIT main obj data table do not exist create"<<endl;
 		w.exec("create table objdata (objId BIGINT, dataId INT, value INT, PRIMARY KEY(objId, dataId));");
+	}
+	r = w.exec("select EXISTS(select * from information_schema.tables where table_name='objpos');");
+	if(!r[0][0].as<bool>()){
+		cerr<<"MAIN INIT main obj pos table do not exist create"<<endl;
+		w.exec("create table objpos (objId BIGINT, x INT, y INT, z INT, d INT, PRIMARY KEY(objId));");
 	}	
 	w.commit();
 	
 	CompSpawnNode csn;
 	csn.dbTableInit(con);
+	
 	CompReSpawnable crsn;
 	crsn.dbTableInit(con);
+
+	CompPowerActivateTimed cpat;
+	cpat.dbTableInit(con);
+
+	CompPowerUseCheck cpuc;
+	cpuc.dbTableInit(con);
 	
+	CompSpellBook css;
+	css.dbTableInit(con);
+	
+	CompModelStatic cms;
+	cms.dbTableInit(con);
 	world = new SWorld(NULL);
 	SDL_Init(SDL_INIT_TIMER);
 	

@@ -36,7 +36,6 @@ void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
 		case SIGNAL::killed:{
 			if(_spawner){
-				//cerr<<"CompReSpawnable::acceptSignal SIGNAL::killed"<<endl;
 				MessageKilled* msg = new MessageKilled(_obj->getId());
 				_obj->getProcessor()->sendMessage(_spawner, msg);
 				_spawner = 0; //my task is done
@@ -44,10 +43,7 @@ void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
 			break;
 		}
 		case SIGNAL::process:{
-			//cerr<<"CompReSpawnable::acceptSignal SIGNAL::process"<<endl;
-			
-			//cerr<<"obj "<<_obj->getId()<<" hp="<<_obj->getData(OBJDATA::hp)<<endl;
-			//_obj->signal(SIGNAL::killed, NULL);
+
 			break;
 		}
 	}
@@ -56,7 +52,6 @@ void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompReSpawnable::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::HeartBeatReq:{
-			//cerr<<"obj "<<_obj->getId()<<" rec MESSAGE::HeartBeatReq send resp to "<<data->_fromId<<endl;
 			MessageHeartBeatRsp* msg = new MessageHeartBeatRsp(_obj->getId());
 			_obj->getProcessor()->sendMessage(data->_fromId, msg);
 			break;

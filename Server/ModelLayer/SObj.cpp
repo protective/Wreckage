@@ -10,11 +10,13 @@
 #include "Signals/Signal.h"
 #include "../Processor/Processor.h"
 
-SObj::SObj(OBJID id, bool persistent, bool initialized ,Processor* processor) {
+SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
 	_id = id;
+	_pos = NULL;
 	_processor = processor;
 	_flags = persistent ? OBJFLAGPERSISTENT : 0;
 	_flags |= initialized ? OBJFLAGINIT : 0;
+	_flags |= istemplate ? OBJFLAGTEMPLATE : 0;
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){
@@ -65,13 +67,19 @@ void SObj::signal(SIGNAL::Enum type, Signal* data){
 }
 
 void SObj::message(MESSAGE::Enum type, Message* data){
-	cerr<<"SObj::message data>>"<<data->_fromId<<endl;
 	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
 		it->second->acceptMessage(type, data);
 	}
 	//NOTE the task is responsible for deleting the message data
 }
 
+void SObj::input(SerialInputPayload* data) {
+	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
+		it->second->acceptNetwork(data);
+	}
+	//NOTE the task is responsible for deleting the message data
+
+}
 
 void SObj::save(){	
 	if(isInit()){
@@ -87,6 +95,17 @@ void SObj::save(){
 				<<"dataId = "<< it->first<<");";
 			w3.exec(s);
 		}
+		if(_pos){
+			stringstream s;
+			s<<"update objpos "
+				"set x = "<<_pos->x()<<" "
+				"set y = "<<_pos->y()<<" "
+				"set z = "<<_pos->z()<< " "
+				"set d = "<<(int32_t)_pos->d()<<" "
+				"where "<<
+				"objId = "<<_id<<";";
+			w3.exec(s);
+		}
 		w3.commit();
 	}else{
 		init();
@@ -97,7 +116,7 @@ void SObj::init(){
 	pqxx::work w(_processor->getDB());
 
 	stringstream s1;
-	s1<<"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<");";
+	s1<<"insert into objs values("<<_id<<","<<(isTemplate()? "true": "false")<<", false"<<");";
 	w.exec(s1);
 	w.commit();	
 	for(map<COMPID::Enum ,SComponent*>::iterator it = _components.begin(); it!= _components.end(); it++){
@@ -122,6 +141,16 @@ void SObj::init(){
 		w3.exec(s);
 			
 	}
+	if(_pos){
+		stringstream s;
+		s<<"insert into objpos values("<<
+			_id<<", "<<
+			_pos->x()<<", "<<
+			_pos->y()<<", "<<
+			_pos->z()<<", "<<
+			(int32_t)_pos->d()<<");";
+		w3.exec(s);
+	}
 	w3.commit();
 	_flags |= OBJFLAGINIT;
 }
@@ -136,6 +165,9 @@ void SObj::DBdelete(){
 		<<"objid ="<<_id<<";";
 	w.exec(s);
 	s<<"delete from objs where "
+		<<"objid ="<<_id<<";";
+	w.exec(s);
+	s<<"delete from objpos where "
 		<<"objid ="<<_id<<";";
 	w.exec(s);
 	w.commit();

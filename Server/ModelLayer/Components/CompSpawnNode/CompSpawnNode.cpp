@@ -48,7 +48,6 @@ void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 		case SIGNAL::process:{
 			
 			if(__timeout < 5000 && _spawn){
-				//cerr<<"send heartbeat req from"<< _obj->getId()<<" to "<<_spawn<<endl;
 				MessageHeartBeatReq* msg = new MessageHeartBeatReq(_obj->getId());
 				_obj->getProcessor()->sendMessage(_spawn, msg);
 			}
@@ -61,6 +60,7 @@ void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 					CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
 					if(!task->addComponent(cmp))
 						delete cmp;
+					task->addPos(_obj->getPos());
 					_obj->getProcessor()->addTask(task);
 					_spawn = id;
 					__timeout = 10000;
@@ -94,8 +94,6 @@ void CompSpawnNode::acceptMessage(MESSAGE::Enum type, Message* data){
 			//cerr<<"CompSpawnNode::acceptMessage MESSAGE::HeartBeatRsp"<<endl;
 			//cerr<<"data->_fromId ="<<data->_fromId<<" _spawn="<<_spawn<<endl;
 			if(data->_fromId == _spawn){
-				cerr<<"reset timeout"<<endl;
-
 				__timeout = 10000;
 			}
 			break;

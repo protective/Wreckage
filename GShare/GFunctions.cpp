@@ -9,6 +9,9 @@
 
 #include "GFunctions.h"
 #include "../Network/Serialize.h"
+#include "../Network/InputSerial.h"
+#include "Enums.h"
+
 void printBuffer(char* buffer, uint32_t len){
 	int offset = 0;
 	int loopoffset = 0;
@@ -47,6 +50,61 @@ void printBuffer(char* buffer, uint32_t len){
 						<<"\tid "<<st->_unitId<<endl
 						<<"\tcompid "<<st->_compid<<endl;
 						cerr<<"****************************"<<endl;
+						break;
+					}
+					case SerialType::SerialInput:{
+						SerialInput* st = (SerialInput*)(buffer+offset);
+						cerr<<"Recived SerialInput*************"<<endl
+						<<"\tunit "<<st->_unitId<<endl;
+						SerialInputPayload* si = (SerialInputPayload*)(&st[1]);
+						cerr<<"\ttype "<<si->_type<<endl;
+
+						switch(si->_type){
+							case SERIALINPUT::SerialInputCastPower:{
+								SerialInputCastPower* scp = (SerialInputCastPower*)(&st[1]);
+								cerr<<"\tpower "<<scp->_power<<endl
+								<<"\ttarget "<<scp->_target<<endl;
+								break;
+							}
+							default:{
+								cerr<<"UNKNOWN Serial Input Type"<<endl;
+							}
+						}
+						cerr<<"****************************"<<endl;
+						break;
+					}
+					case SerialType::SerialCmdCreateObj:{
+						SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
+						cerr<<"Recived SerialCmdCreateObj*************"<<endl
+						<<"\ttemplate "<<st->_template<<endl;
+						SerialObjData* sd = (SerialObjData*)st->_data;
+						while(sd->_dataType){
+							switch(sd->_dataType){
+								case OBJDATA::position: {
+									cerr<<"\t\tOBJDATA::position"<<endl
+									<<"\t\t\tx="<<((SerialObjDataPos*)sd)->_x
+											<<" y="<<((SerialObjDataPos*)sd)->_y
+											<<" z="<<((SerialObjDataPos*)sd)->_z
+											<<" d="<<((SerialObjDataPos*)sd)->_d<<endl;
+									sd+= sizeof(SerialObjDataPos);
+									break;
+								}
+								default:{
+									cerr<<"\t\ttype"<<sd->_dataType<<endl
+									<<"\t\tvalue="<<((SerialObjDataValue*)sd)->_value<<endl;
+									sd+= sizeof(SerialObjDataValue);
+									break;								
+								}
+							}
+						}
+						SerialObjComp* sc = (SerialObjComp*)(&sd[1]);
+						//while(sc->_compType){
+
+						//	sd += sizeof(SerialObjComp);
+						//}
+						
+						cerr<<"****************************"<<endl;
+						
 						break;
 					}
 					default:{

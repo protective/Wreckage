@@ -4,7 +4,7 @@
 #include "../../../Processor/Processor.h"
 #include "../../Signals/SignalProcess.h"
 
-CompReSpawnable::CompReSpawnable(OBJID id, pqxx::connection& con) :
+CompReSpawnable::CompReSpawnable(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spawnNode){
 	init();
 	pqxx::work w(con);
@@ -18,8 +18,8 @@ SComponent(COMPID::spawnNode){
 		_spawner = r[0][0].as<OBJID>();
 	}
 
-
-	_flags = COMPFLAGINIT;
+	if(obj->getId() == id)
+		_flags = COMPFLAGINIT;
 }
 
 void CompReSpawnable::dbSave(){
@@ -62,6 +62,8 @@ void CompReSpawnable::dbTableInit(pqxx::connection& con){
 		w.exec("create table comprespawnable (objId BIGINT PRIMARY KEY, spawner BIGINT);");
 		w.commit();
 	}
+	w.exec("delete from comprespawnable where objid NOT IN (select objid from objs);");
+	w.commit();
 }
 
 void CompReSpawnable::dbDelete(){

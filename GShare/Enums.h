@@ -5,8 +5,8 @@
  * Created on 23. maj 2011, 21:51
  */
 
-#ifndef ENUMS_H
-#define	ENUMS_H
+#ifndef SHAREENUMS_H
+#define	SHAREENUMS_H
 #include <string.h>
 
 namespace PlayerCommands{
@@ -34,19 +34,16 @@ namespace MoveBitF
   const uint32_t SOME_VALUE2 = 0x04;
   const uint32_t SOME_VALUE3 = 0x08;
 }
-namespace SubKeyWord{
-	enum Enum{
-		Invalid = 0,
-		Laser = 1,
-		Beam = 2,
-		Fusion = 3,
-		Ion = 4,
-		Projectile = 5,
-		Guided = 6,
-		Plasma = 7,
-		Turret = 8,
-		Bay = 9,
-		Mining = 10,
+namespace OBJDATA {
+	enum Enum {
+		invalid = 0,
+		hp,
+		maxhp,
+		hitP,
+		dodgeP,
+		target,
+		owner,
+		position,
 	};
 }
 
@@ -392,5 +389,5 @@ namespace DmgTypes{
 		Mining = 2,
 	};
 }
-#endif	/* ENUMS_H */
+#endif	/* SHAREENUMS_H */
 

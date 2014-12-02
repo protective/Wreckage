@@ -2,17 +2,23 @@
 #ifndef ENUMS_H
 #define	ENUMS_H
 
+#include "../../GShare/Enums.h"
+
+
 namespace COMPID {
 	enum Enum {
 		invalid = 0,
-		killable = 1,
-		caster = 2,
-		targetable = 3,
-		hitMechanic,
-		abilityCreator,
-		timedHit,
-		spawnNode,
-		reSpawnable,
+		spellbook = 4,
+		powerUseCheck = 5,
+		powerActivateTimed = 6,
+		spawnNode = 7,
+		reSpawnable = 8,
+		abilityInput = 9,
+		powerDealDamage = 10,
+		powerActivateInstant = 11,
+		targeted = 12,
+		modelStatic = 13,
+		position = 14,
 
 	};
 }
@@ -26,6 +32,9 @@ namespace SIGNAL {
 		process,
 		fireTarget,
 		killed,
+		powerHit,
+		enterClient,
+		exitClient,
 	};
 }
 
@@ -41,7 +50,14 @@ namespace MESSAGE {
 		killed, //the unit sending this messeage is dead
 		HeartBeatReq,
 		HeartBeatRsp,
-
+		ProjectileStats,
+		powerCheck,
+		powerCheckRsp,
+		powerStatsReq,
+		powerStatsRsp,
+		casterStatsReq,
+		casterStatsRsp,
+		activatePowerOnt,
 	};
 }
 

@@ -43,17 +43,19 @@ uint32_t NetworkControler::addTaskToObj(Task* task, OBJID obj){
 	return 1;
 }
 
-uint32_t NetworkControler::sendToC(uint32_t id, void* block, uint32_t len){
+uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len){
+	
 	bool sendt = false;
-	//cerr<<"send to c= "<<id<<endl;
+	cerr<<"send to c= "<<clientId<<endl;
 	pthread_mutex_lock(&_clientLock);
-	map<uint32_t, Client*>::iterator it = _connections.find(id);
+	map<uint32_t, Client*>::iterator it = _connections.find(clientId);
 	if (it!= _connections.end()){
 		//cerr<<"network send len ="<<len<<endl;
+		cerr<<"send IT!!"<<endl;
 		send(it->second->getSocket(),block, len,MSG_NOSIGNAL);
 		sendt = true;
 	}else
-		cerr<<"ERROR CLIENT NOT FOUND id="<<id<<endl;
+		cerr<<"ERROR CLIENT NOT FOUND id="<<clientId<<endl;
 	pthread_mutex_unlock(&_clientLock);
 	if(sendt)
 		return 0;
@@ -67,6 +69,10 @@ void NetworkControler::addClient(Client* client){
 	cerr<<"add cli ="<<client->getId()<<endl;
 	_connections[client->getId()] = client;
 	pthread_mutex_unlock(&_clientLock);
+	
+	for(map<uint8_t,Processor*>::iterator it = processors.begin(); it != processors.end();it++){
+		it->second->addClientView(client->getId());
+	}
 }
 void NetworkControler::removeClient(Client* client){
 	_connections.erase(client->getId());
