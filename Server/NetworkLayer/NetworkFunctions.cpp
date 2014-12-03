@@ -261,7 +261,7 @@ uint32_t parseBuffer(Client* client, uint32_t len){
 								sd = &(((SerialObjDataPos*)sd)[1]);
 							}
 							default:{
-								t->addData(((SerialObjDataValue*)sd)->_dataType,((SerialObjDataValue*)sd)->_value);
+								t->addData((OBJDATA::Enum)((SerialObjDataValue*)sd)->_dataType,((SerialObjDataValue*)sd)->_value);
 								sd = &(((SerialObjDataValue*)sd)[1]);
 							}
 						}
