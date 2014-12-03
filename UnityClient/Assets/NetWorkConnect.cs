@@ -1,11 +1,26 @@
-﻿using UnityEngine;
+﻿#if unity
+using UnityEngine;
+#endif
+
+using System.Net;
+using System.Net.Sockets;
 using System.Collections;
 using System.Threading;
 using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 
+using System.Text;
+#if unity
+
+#else
+public class Debug {
+
+	public static void Log(string debug){
+		System.Console.WriteLine(debug);
+
+	}
+}
+#endif
+#if unity
 public class NetWorkConnect : MonoBehaviour{
 	
 	// Use this for initialization
@@ -18,7 +33,7 @@ public class NetWorkConnect : MonoBehaviour{
 		
 	}
 }
-
+#endif
 
 public class StateObject {
 	
@@ -53,7 +68,7 @@ public class AsynchronousClient {
 			// The name of the 
 			// remote device is "host.contoso.com".
 			//IPHostEntry ipHostInfo =  new IPHostEntry();
-			IPAddress ipAddress = IPAddress.Parse("192.168.1.180");
+			IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
 			IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11142);
 			
 			// Create a TCP/IP socket.
@@ -67,8 +82,8 @@ public class AsynchronousClient {
 			Console.WriteLine("BeginConnect", response);
 			// Send test data to the remote device.
 			//Send(client,"This is a test<EOF>");
-			//sendDone.WaitOne();
-			
+			connectDone.WaitOne();
+			Console.WriteLine("done wait", response);
 			// Receive the response from the remote device.
 
 			//receiveDone.WaitOne();
@@ -85,6 +100,7 @@ public class AsynchronousClient {
 	}
 	
 	private static void ConnectCallback(IAsyncResult ar) {
+		Console.WriteLine("hest");
 		try {
 			// Retrieve the socket from the state object.
 			Socket client = (Socket) ar.AsyncState;
