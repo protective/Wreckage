@@ -12,12 +12,12 @@ public class AsynchronousSocketListener {
 	public AsynchronousSocketListener() {
 	}
 
-	public static void StartListening() {
+	public static void StartListening(int port) {
 		// Data buffer for incoming data.
 		byte[] bytes = new Byte[1024];
 
 		// Establish the local endpoint for the socket.
-		IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, 11000);
+		IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, port);
 
 		// Create a TCP/IP socket.
 		Socket listener = new Socket(AddressFamily.InterNetwork,

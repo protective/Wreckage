@@ -10,9 +10,15 @@ public class Mainclass {
 	static void Main(string[] args)
 	{
 		// Display the number of command line arguments:
-		System.Console.WriteLine(args.Length);
-		AsynchronousSocketListener.StartListening ();
-		AsynchronousClient.StartClient ();
+		System.Console.WriteLine (args.Length);
+		if (args.Length >= 2){
+			AsynchronousSocketListener.StartListening (int.Parse (args [1]));
+		}else {
+			System.Console.WriteLine ("to few arguments");
+			return;
+		}
+
+		//AsynchronousClient.StartClient ();
 
 		while (true) {
 
