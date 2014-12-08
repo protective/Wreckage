@@ -11,8 +11,8 @@ public class Mainclass {
 	{
 		// Display the number of command line arguments:
 		System.Console.WriteLine (args.Length);
-		if (args.Length >= 2){
-			AsynchronousSocketListener.StartListening (int.Parse (args [1]));
+		if (args.Length >= 1){
+			AsynchronousSocketListener.StartListening (int.Parse (args [0]));
 		}else {
 			System.Console.WriteLine ("to few arguments");
 			return;
