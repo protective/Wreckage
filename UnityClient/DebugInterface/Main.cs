@@ -5,14 +5,17 @@ using System.Threading;
 using System;
 using System.Text;
 
+
+
 public class Mainclass {
 
 	static void Main(string[] args)
 	{
+
 		// Display the number of command line arguments:
 		System.Console.WriteLine (args.Length);
-		if (args.Length >= 1){
-			AsynchronousSocketListener.StartListening (int.Parse (args [0]));
+		if (args.Length >= 0){
+			AsynchronousSocketListener.StartListening (7002);
 		}else {
 			System.Console.WriteLine ("to few arguments");
 			return;

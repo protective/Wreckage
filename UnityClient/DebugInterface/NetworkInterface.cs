@@ -7,30 +7,43 @@ using System.Text;
 
 public class AsynchronousSocketListener {
 	// Thread signal.
-	public static ManualResetEvent allDone = new ManualResetEvent(false);
+	private static ManualResetEvent connectDone = 
+		new ManualResetEvent(false);
+	private static ManualResetEvent sendDone = 
+		new ManualResetEvent(false);
+	private static ManualResetEvent receiveDone = 
+		new ManualResetEvent(false);
+
+
+	// The response from the remote device.
+	private static string response = String.Empty;
+	private static StateObject connectedDebug;
 
 	public AsynchronousSocketListener() {
 	}
 
 	public static void StartListening(int port) {
-		// Data buffer for incoming data.
-		byte[] bytes = new Byte[1024];
+		// Connect to a remote device.
 
-		// Establish the local endpoint for the socket.
-		IPEndPoint localEndPoint = new IPEndPoint( IPAddress.Any, port);
+		// Establish the remote endpoint for the socket.
+		// The name of the 
+		// remote device is "host.contoso.com".
+		//IPHostEntry ipHostInfo =  new IPHostEntry();
+		IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+		IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
 
 		// Create a TCP/IP socket.
 		Socket listener = new Socket(AddressFamily.InterNetwork,
 			SocketType.Stream, ProtocolType.Tcp );
 
 		// Bind the socket to the local endpoint and listen for incoming connections.
-		try {
-			listener.Bind(localEndPoint);
+		//try {
+			listener.Bind(remoteEP);
 			listener.Listen(100);
 
 			while (true) {
 				// Set the event to nonsignaled state.
-				allDone.Reset();
+				connectDone.Reset();
 
 				// Start an asynchronous socket to listen for connections.
 				Console.WriteLine("Waiting for a connection...");
@@ -39,21 +52,18 @@ public class AsynchronousSocketListener {
 					listener );
 
 				// Wait until a connection is made before continuing.
-				allDone.WaitOne();
+				connectDone.WaitOne();
 			}
 
-		} catch (Exception e) {
-			Console.WriteLine(e.ToString());
-		}
-
-		Console.WriteLine("\nPress ENTER to continue...");
-		Console.Read();
+		//} catch (Exception e) {
+		//	Console.WriteLine(e.ToString());
+		//}
 
 	}
 
 	public static void AcceptCallback(IAsyncResult ar) {
 		// Signal the main thread to continue.
-		allDone.Set();
+		connectDone.Set();
 
 		// Get the socket that handles the client request.
 		Socket listener = (Socket) ar.AsyncState;
@@ -61,44 +71,49 @@ public class AsynchronousSocketListener {
 
 		// Create the state object.
 		StateObject state = new StateObject();
+		connectedDebug = state;
 		state.workSocket = handler;
 		handler.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,
-			new AsyncCallback(ReadCallback), state);
+			new AsyncCallback(ReceiveCallback), state);
 	}
 
-	public static void ReadCallback(IAsyncResult ar) {
-		String content = String.Empty;
 
-		// Retrieve the state object and the handler socket
-		// from the asynchronous state object.
+	public static void ReceiveCallback(IAsyncResult ar) {
 		StateObject state = (StateObject) ar.AsyncState;
-		Socket handler = state.workSocket;
+		Socket client = state.workSocket;
 
-		// Read data from the client socket. 
-		int bytesRead = handler.EndReceive(ar);
-
+		// Read data from the remote device.
+		int bytesRead = client.EndReceive(ar);
+		Debug.Log("length " + bytesRead.ToString());
 		if (bytesRead > 0) {
-			// There  might be more data, so store the data received so far.
-			state.sb.Append(Encoding.ASCII.GetString(
-				state.buffer,0,bytesRead));
 
-			// Check for end-of-file tag. If it is not there, read 
-			// more data.
-			content = state.sb.ToString();
-			if (content.IndexOf("<EOF>") > -1) {
-				// All the data has been read from the 
-				// client. Display it on the console.
-				Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-					content.Length, content );
-				// Echo the data back to the client.
-				Send(handler, content);
-			} else {
-				// Not all data received. Get more.
-				handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-					new AsyncCallback(ReadCallback), state);
+			byte[] recByte = new byte[bytesRead];
+
+			StringBuilder hex = new StringBuilder ();
+			StringBuilder cha = new StringBuilder ();
+			for (int i = 0; i < bytesRead; i++) {
+				hex.AppendFormat ("{0:x2}", state.buffer [i]);
 			}
+			String s = System.Text.Encoding.Default.GetString(state.buffer);
+			s = s.TrimEnd ('\0');
+			MessageHandler.dispatchMsg(s);
+			Array.Clear (state.buffer, 0, StateObject.BufferSize -1);
+			string temp = "Rec from controler " + response.Length + ": " + s;
+			Debug.Log(temp);
+			// Signal that all bytes have been received.
+			//receiveDone.Set();
+
+			client.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,
+				new AsyncCallback(ReceiveCallback), state);
 		}
+
 	}
+
+	public static void Send(String data) {
+		if (connectedDebug != null)
+			Send (connectedDebug.workSocket, data);
+	}
+
 
 	private static void Send(Socket handler, String data) {
 		// Convert the string data to byte data using ASCII encoding.
@@ -116,10 +131,7 @@ public class AsynchronousSocketListener {
 
 			// Complete sending the data to the remote device.
 			int bytesSent = handler.EndSend(ar);
-			Console.WriteLine("Sent {0} bytes to client.", bytesSent);
-
-			handler.Shutdown(SocketShutdown.Both);
-			handler.Close();
+			Console.WriteLine("Sent {0} bytes controler.", bytesSent);
 
 		} catch (Exception e) {
 			Console.WriteLine(e.ToString());

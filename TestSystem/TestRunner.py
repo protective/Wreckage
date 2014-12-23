@@ -43,16 +43,18 @@ class TestRunner:
 		#	print("ERROR testcase \"" + str(self.testname) + "\" do not implement the testSetup method")
 		#except Exception:
 		#	print("fail to alloc required Resourses")
+		#try:
 		self.X.testRun()
-
+		#except Exception:
+		#	print("Test Failed")
 		self.X.postamble()
 
 
 	def loadUnityRes(self):
-		try:
-			c = UnityResource("127.0.0.1", 7001)
-			return c
-		except Exception:
-			print("fail to start resource")
-			return FALSE
+		#try:
+		c = UnityResource("127.0.0.1", 7002)
+		return c
+		#except Exception:
+		#	print("ERROR fail to start resource")
+		#	return False
 

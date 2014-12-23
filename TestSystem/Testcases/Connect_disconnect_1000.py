@@ -24,11 +24,21 @@ def postMortom():
 
 def setUnityResourses(unity2):
 	global unity
-	print("set")
-	unity = unity2
+	print("set unity type=" + str(type(unity2[0])))
+
+	unity = unity2[0]
 
 def testRun():
+	global unity
 	print("run testcase")
 
+	for i in range(1,100):
+		unity.send("connect")
+		unity.recv("connected", 10)
+
+		unity.send("disconnect")
+		unity.recv("disconnected", 10)
+
+	print("Test passed")	
 
 
