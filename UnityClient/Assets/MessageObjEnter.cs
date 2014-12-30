@@ -5,14 +5,14 @@ public class MessageObjEnter : Message{
 
 	public MessageObjEnter(int objId,int modelType,Vector3 position){
 		this.objId = objId;
-		this.modelType = modelType;
+		this.fadetime = modelType;
 		this.position = position;
 
 	}
 
 	public MessageObjEnter(byte[] message){
 		this.objId = BitConverter.ToInt32 (message, 8);
-		this.modelType = BitConverter.ToInt32 (message, 34);
+		this.fadetime = BitConverter.ToInt32 (message, 34);
 		this.position = new Vector3(BitConverter.ToInt32 (message, 20),BitConverter.ToInt32 (message, 24), BitConverter.ToInt32 (message, 28),BitConverter.ToInt16 (message, 32));
 
 	}
@@ -23,7 +23,7 @@ public class MessageObjEnter : Message{
 	}
 
 	int objId;
-	int modelType;
+	int fadetime;
 	Vector3 position;
 
 }

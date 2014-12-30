@@ -15,7 +15,9 @@ public class MessageFactory{
 	private const int ModelStaticObjExit = 2;
 
 	public static int passNetwork(byte[] message){
-
+		if (message.Length < 8 || message.Length < BitConverter.ToInt32 (message, 4)) {
+			return 0;
+		}
 		switch (BitConverter.ToInt32 (message,0)) {
 			case SerialComp:
 			{
@@ -32,7 +34,7 @@ public class MessageFactory{
 							}
 							case ModelStaticObjExit:
 							{
-
+								handleMessage(new MessageObjExit (message));
 								break;
 							}
 						}
@@ -45,7 +47,7 @@ public class MessageFactory{
 			}
 
 		}
-		return 0;
+		return BitConverter.ToInt32 (message, 4);
 	}
 
 	public static void handleMessage(Message msg){

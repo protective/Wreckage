@@ -170,7 +170,15 @@ public class AsynchronousClient {
 				string temp = "server rec " + bytesRead.ToString() + ": " + hex;
 				System.Console.WriteLine(temp);
 
-				MessageFactory.passNetwork(recByte);
+
+				while(true){
+					int res = MessageFactory.passNetwork(recByte);
+					if(res == 0)
+						break;
+					byte[] tempByte = new byte[recByte.Length - res];
+					Array.Copy(recByte,res,tempByte,0,tempByte.Length);
+					recByte = tempByte;
+				}
 
 	
 

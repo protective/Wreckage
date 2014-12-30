@@ -31,6 +31,8 @@ def testRun():
 
 
 	unity.recv("ObjEnter", 5)
+	unity.recv("ObjEnter", 5)
+	unity.recv("ObjEnter", 5)
 
 	unity.send("disconnect")
 	unity.recv("disconnected", 5)
