@@ -12,25 +12,30 @@ import time
 class UnityResource (TestResource):
 
 	def reader(self):
-		print("reader sock recv")
-		while True:		
-			line = self.sock.recv(1024).decode()
-			self.queue.put(line)
+		while True:
+			try:
+				line = self.sock.recv(1024).decode()
+				self.queue.put(line)
+
+			except (KeyboardInterrupt, SystemExit):
+				sys.exit()
+			
 
 	def __init__(self, host, port):
 		self.host = host
 		self.port = port
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.connect()
-		print("connected")
+
 		self.recThread = Thread(target = self.reader, args=())
-		self.recThread.deamon = True
+		self.recThread.setDaemon( True)
 		self.recThread.start();
 
-		print("tread started")
 		self.queue = Queue()	
 
 
+	def deallocate(self):
+		self.sock.close()
 
 	def connect(self):
 		self.sock.connect((self.host, self.port))
@@ -38,10 +43,6 @@ class UnityResource (TestResource):
 	def send(self, message):
 		totaltsent = 0
 		self.sock.send(message.encode())
-		print("send Unity " + str(message))
-
-
-		
 
 	def recv(self, regX, timeout):
 		r = re.compile(regX)

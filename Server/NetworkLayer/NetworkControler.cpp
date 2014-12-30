@@ -51,7 +51,7 @@ uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len)
 	map<uint32_t, Client*>::iterator it = _connections.find(clientId);
 	if (it!= _connections.end()){
 		//cerr<<"network send len ="<<len<<endl;
-		cerr<<"send IT!!"<<endl;
+		cerr<<"send IT len="<<len<<endl;
 		send(it->second->getSocket(),block, len,MSG_NOSIGNAL);
 		sendt = true;
 	}else

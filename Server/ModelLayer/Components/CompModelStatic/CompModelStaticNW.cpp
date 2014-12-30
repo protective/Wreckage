@@ -8,7 +8,9 @@
 void CompModelStatic::sendEnter(uint32_t clientId){
 	cerr<<"CompModelStatic::sendEnter obj"<<_obj<<endl;
 	if(_obj->getPos()){
+		cerr<<_obj->getId()<<endl;
 		SerialObjEnter s(_obj->getId(),_obj->getPos(),_modelId);
+		cerr<<"x="<<_obj->getPos()->x()<<" y="<<_obj->getPos()->y()<<" z="<<_obj->getPos()->z()<<" d="<<_obj->getPos()->d()<<endl;
 		networkControl->sendToC(clientId, &s, sizeof(s));
 		cerr<<"send enter"<<endl;
 	}else

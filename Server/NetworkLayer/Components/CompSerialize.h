@@ -21,7 +21,7 @@ struct SerialComp : public SerialData{
 	OBJID objid;
 	uint32_t compId;
 	uint32_t op;
-};
+}__attribute__((__packed__));
 
 #endif	/* COMPSERIALIZE_H */
 

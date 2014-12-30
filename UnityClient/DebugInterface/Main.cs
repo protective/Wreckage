@@ -14,11 +14,11 @@ public class Mainclass {
 
 		// Display the number of command line arguments:
 		System.Console.WriteLine (args.Length);
-		if (args.Length >= 0){
+		if (args.Length >= 1){
 			AsynchronousSocketListener.StartListening (7002);
 		}else {
-			System.Console.WriteLine ("to few arguments");
-			return;
+			System.Console.WriteLine ("to few arguments default to 7002");
+			AsynchronousSocketListener.StartListening (7002);
 		}
 
 		//AsynchronousClient.StartClient ();

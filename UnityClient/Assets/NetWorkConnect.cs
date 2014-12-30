@@ -154,7 +154,7 @@ public class AsynchronousClient {
 			
 			// Read data from the remote device.
 			int bytesRead = client.EndReceive(ar);
-			Debug.Log("length " + bytesRead.ToString());
+			System.Console.WriteLine("rec length " + bytesRead.ToString());
 			if (bytesRead > 0) {
 				// There might be more data, so store the data received so far.
 
@@ -163,13 +163,23 @@ public class AsynchronousClient {
 				StringBuilder hex = new StringBuilder();
 				for(int i = 0; i < bytesRead; i++){
 					hex.AppendFormat("{0:x2}", state.buffer[i]);
+					if(i % 4 == 3)
+						hex.AppendFormat(" ");
+					recByte[i] = state.buffer[i];
 				}
+				string temp = "server rec " + bytesRead.ToString() + ": " + hex;
+				System.Console.WriteLine(temp);
 
-				string temp = "server rec " + response.Length + ": " + hex;
-				Debug.Log(temp);
+				MessageFactory.passNetwork(recByte);
+
+	
+
 				// Signal that all bytes have been received.
 				receiveDone.Set();
 			}
+
+			client.BeginReceive( state.buffer, 0, StateObject.BufferSize, 0,
+				new AsyncCallback(ReceiveCallback), state);
 
 
 		} catch (Exception e) {

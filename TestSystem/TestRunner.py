@@ -21,9 +21,7 @@ class TestRunner:
 
 		ures = []
 		if 'unity' in toAlloc and toAlloc['unity'] > 0:
-			print("holy")
-			for unity in range(0, toAlloc['unity']):
-				print("priest")				
+			for unity in range(0, toAlloc['unity']):		
 				ures.append(self.loadUnityRes())
 
 		#	try:
@@ -32,9 +30,12 @@ class TestRunner:
 		#		print("ERROR testcase \"" + str(self.testname) + "\" do not implement the setUnity method")
 		#	except Exception as e:
 		#		print("fail to alloc required Resourses", e)
-
+		self.allocatedures = ures
 				
-
+	def deallocateResources(self):
+		for unity in self.allocatedures:		
+			unity.deallocate()
+	
 
 	def begin(self):
 		#try:
@@ -43,12 +44,19 @@ class TestRunner:
 		#	print("ERROR testcase \"" + str(self.testname) + "\" do not implement the testSetup method")
 		#except Exception:
 		#	print("fail to alloc required Resourses")
-		#try:
-		self.X.testRun()
-		#except Exception:
-		#	print("Test Failed")
-		self.X.postamble()
+		
+		print("RUN " + str(self.testname))
 
+		try:
+			self.X.testRun()
+			print("PASS")
+		except Exception:
+			print("FAIL")
+
+		self.X.postamble()
+		
+		
+		self.deallocateResources()
 
 	def loadUnityRes(self):
 		#try:

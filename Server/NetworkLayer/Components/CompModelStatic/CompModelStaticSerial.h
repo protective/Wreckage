@@ -24,10 +24,12 @@ struct SerialObjEnter : public SerialComp{
 	SerialComp(objId, COMPID::modelStatic, (uint32_t)SerialCompModelStatic::ObjEnter, sizeof(SerialObjEnter)){
 		this->modelId = modelId;
 		this->pos = *pos;
+		cerr<<"hh x="<<pos->x()<<" y="<<pos->y()<<" z="<<pos->z()<<" d="<<pos->d()<<endl;
+
 	}
 	SPos pos;
     uint32_t modelId;
-};
+}__attribute__((__packed__));
 
 struct SerialObjExit : public SerialComp{
 	SerialObjExit(OBJID objId, SPos* pos, uint32_t fadetime):
@@ -37,7 +39,7 @@ struct SerialObjExit : public SerialComp{
 	}
 	SPos pos;
     uint32_t fadetime;
-};
+}__attribute__((__packed__));
 
 
 #endif	/* COMPMODELSTATICSERIAL_H */
