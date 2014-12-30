@@ -24,5 +24,12 @@ private:
 	uint16_t _d;
 };
 
+struct SerialPOS {
+	int32_t _x;
+	int32_t _y;
+	int32_t _z;
+	uint16_t _d;
+};
+
 #endif	/* SPOS_H */
 
