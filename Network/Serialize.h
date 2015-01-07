@@ -9,6 +9,7 @@
 #define	SERIALIZE_H
 
 #include "../GShare/GGlobals.h"
+using namespace std;
 namespace SerialType{
 	/** Identifiers for each serializable type
 	  */

@@ -19,3 +19,4 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 	}
 
 }
+

@@ -52,6 +52,24 @@ public:
 	int32_t getData(OBJDATA::Enum dataId){
 		return _data[dataId];
 	}
+	
+	bool getData(OBJDATA::Enum dataId, int32_t* ret){
+		if(_data.find(dataId) != _data.end()){
+			*ret = _data[dataId];
+			return true;
+		}
+		return false;
+	}
+	
+	bool getData(OBJDATA::Enum dataId, int32_t* ret, int32_t def){
+		if(_data.find(dataId) != _data.end()){
+			*ret = _data[dataId];
+			return true;
+		}
+		*ret = def;
+		return false;
+	}
+	
 	void setData(OBJDATA::Enum dataId, int32_t value){
 		_data[dataId] = value;
 	}

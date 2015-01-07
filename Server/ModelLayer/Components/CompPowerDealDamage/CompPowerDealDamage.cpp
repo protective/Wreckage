@@ -34,7 +34,9 @@ void CompPowerDealDamage::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::casterStatsRsp:{
 			if(_obj->getData(OBJDATA::target)){
-				MessageProjectileStats* msg = new MessageProjectileStats(_obj->getId());
+				map<PROJECTILESTATS::Enum, int32_t> temp;
+				
+				MessageProjectileStats* msg = new MessageProjectileStats(_obj->getId(),temp);
 				_obj->getProcessor()->sendMessage((OBJID)_obj->getData(OBJDATA::target), msg);
 			}
 			break;

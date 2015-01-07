@@ -38,9 +38,12 @@ namespace OBJDATA {
 	enum Enum {
 		invalid = 0,
 		hp,
+		level,
 		maxhp,
 		hitP,
 		dodgeP,
+		parryP,
+		blockP,
 		target,
 		owner,
 		position,

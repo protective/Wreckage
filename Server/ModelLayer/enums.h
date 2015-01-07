@@ -19,6 +19,7 @@ namespace COMPID {
 		targeted = 12,
 		modelStatic = 13,
 		position = 14,
+		powerBase = 15,
 
 	};
 }
@@ -66,6 +67,9 @@ namespace STATS {
 		invalid = 0,
 		hp,
 		maxhp,
+		level,
+		parryP,
+		blockP,
 		hitP,
 		dodgeP,
 		
@@ -75,7 +79,12 @@ namespace STATS {
 namespace PROJECTILESTATS {
 	enum Enum {
 		invalid = 0,
+		type,
 		level,
+		critP,
+		attackRoll,
+		whitedamageRoll,
+		whiteDamage,
 		hitP,
 	};
 }

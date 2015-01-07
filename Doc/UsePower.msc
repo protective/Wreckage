@@ -1,0 +1,27 @@
+msc {
+ arcgradient = 8;
+
+ a [label="a"],c [label="c"],b [label="b"],d [label="d"], e [label="e"] , f [label="f"];
+
+a rbox a [label="SpellBook", textbgcolour="#7fff7f"],
+c rbox c [label="AbilityInput", textbgcolour="#7fff7f"],
+e rbox e [label="PowerDealDamage", textbgcolour="#7fff7f"],
+
+b rbox b [label="PowerUseCheck", textbgcolour="#7fff7f"],
+d rbox d [label="PowerActivateInstant", textbgcolour="#7fff7f"],
+f rbox f [label="Targeted", textbgcolour="#7fff7f"];
+
+
+a rbox c [label="Caster", textbgcolour="#7fff7f"],
+b rbox e [label="Power", textbgcolour="#7fff7f"],
+
+f rbox f [label="Target", textbgcolour="#7fff7f"];
+
+ a=>b [label="ActivatePowerOnTarget"];
+ b=>c [label="PowerCheck"];
+ c=>d [label="PowerCheckRsp"];
+ d->e [label="powerHit"];
+ e=>c [label="casterStatsReq"];
+ c=>e [label="casterStatsRsp"];
+ e=>f [label="ProjectileStats"];
+}

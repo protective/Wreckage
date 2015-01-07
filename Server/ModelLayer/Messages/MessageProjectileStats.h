@@ -11,13 +11,15 @@
 #include "Message.h"
 
 struct MessageProjectileStats : public Message {
-	MessageProjectileStats(OBJID from):
+	MessageProjectileStats(OBJID from, map<PROJECTILESTATS::Enum, int32_t> stats):
 	Message(MESSAGE::ProjectileStats, from){
+		_stats = stats;
 	}
 	MessageProjectileStats(MessageProjectileStats& m):
 	Message(MESSAGE::ProjectileStats, m._fromId){
+		_stats = m._stats;
 	}
-	map<STATS::Enum, int32_t> _stats;
+	map<PROJECTILESTATS::Enum, int32_t> _stats;
 };
 
 #endif	/* MESSAGEPROJECTILESTATS_H */
