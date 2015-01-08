@@ -109,6 +109,7 @@ int main(int argc, char** argv) {
 	}
 	networkControl = new NetworkControler();
 
+	cout<<"Server Active"<<endl;
 	//GAME LOOP************************
 	uint32_t timer;
 	uint32_t fpstimer = 0;
