@@ -22,7 +22,7 @@ public class MessageObjExit : Message{
 
 	public override void execute(){
 		System.Console.WriteLine("ObjExit id=" + this.objId.ToString() + " fadetime=" + this.modelType.ToString() + " " + this.position.ToString() + "");
-		AsynchronousSocketListener.Send("ObjExit id=" + this.objId.ToString() + " fadetime=" + this.modelType.ToString() + " " + this.position.ToString() + "\n");
+		Mainclass.writeOut("ObjExit id=" + this.objId.ToString() + " fadetime=" + this.modelType.ToString() + " " + this.position.ToString() + "\n");
 	}
 
 

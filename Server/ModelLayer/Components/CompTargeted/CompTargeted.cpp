@@ -24,7 +24,7 @@ void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 			
 			
 			MessageProjectileStats* msg = (MessageProjectileStats*)data;
-
+			cout<<"Projectile Hit"<<endl;
 			int32_t type, level, attackRoll, critP, damageRoll;
 			
 			int32_t def_hp, def_dodge, def_parry, def_block, def_level;

@@ -18,8 +18,8 @@ public class MessageObjEnter : Message{
 	}
 
 	public override void execute(){
-		System.Console.WriteLine("ObjEnter id=" + this.objId.ToString() + " modelID=" + this.modelType.ToString() + " " + this.position.ToString() + "");
-		AsynchronousSocketListener.Send("ObjEnter id=" + this.objId.ToString() + " modelID=" + this.modelType.ToString() + " " + this.position.ToString() + "\n");
+		System.Console.WriteLine("ObjEnter id=" + this.objId.ToString() + " fadetime=" + this.fadetime.ToString() + " " + this.position.ToString() + "");
+		Mainclass.writeOut("ObjEnter id=" + this.objId.ToString() + " fadetime=" + this.fadetime.ToString() + " " + this.position.ToString() + "\n");
 	}
 
 	int objId;

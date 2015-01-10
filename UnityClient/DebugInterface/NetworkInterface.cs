@@ -99,7 +99,7 @@ public class AsynchronousSocketListener {
 			MessageHandler.dispatchMsg(s);
 			Array.Clear (state.buffer, 0, StateObject.BufferSize -1);
 			string temp = "Rec from controler " + response.Length + ": " + s;
-			Debug.Log(temp);
+			Mainclass.writeOut(temp);
 			// Signal that all bytes have been received.
 			//receiveDone.Set();
 

@@ -50,7 +50,7 @@ class TestRunner:
 		for unity in self.allocatedures:		
 			unity.deallocate()
 
-		for server in self.allocatedures:		
+		for server in self.allocatedsres:		
 			server.deallocate()	
 
 	def begin(self):
@@ -73,8 +73,11 @@ class TestRunner:
 			print(e)
 			print("FAIL")
 
-		self.X.postamble()
-		
+		try:
+			self.X.postamble()
+		except Exception as e:
+			print(e)
+			print("FAIL")		
 		
 		self.deallocateResources()
 

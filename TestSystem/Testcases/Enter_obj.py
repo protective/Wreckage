@@ -35,7 +35,7 @@ def testRun():
 
 	print("run test")
 	server.send("start")
-	server.recv("Server Active", 5)
+	server.recv("Server Active", 15)
 	
 	unity.send("connect")
 	unity.recv("connected", 5)
@@ -49,5 +49,5 @@ def testRun():
 	unity.recv("disconnected", 5)
 
 	server.send("close")
-	server.recv("exit", 5)
+	#server.recv("exit", 5)
 

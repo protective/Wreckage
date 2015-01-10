@@ -26,20 +26,19 @@ parser.add_argument('-c', '--campaign', help='Test campaign to run')
 
 args = parser.parse_args()
 
-testqueue = Queue()
+try:
+	testqueue = Queue()
 
-testqueue.put("Enter_obj")
+	testqueue.put("Enter_obj")
 
-for i in range(0, 1):
-
-	try:
-		t = threading.Thread(target=workerRunTest) 
-		t.setDaemon(True)
-		t.start() 
-	except (KeyboardInterrupt, SystemExit):
-		sys.exit()
+	for i in range(0, 1):
 
 	
-testqueue.join()
+			t = threading.Thread(target=workerRunTest) 
+			t.setDaemon(True)
+			t.start() 	
+	testqueue.join()
 
+except (KeyboardInterrupt, SystemExit):
+	pass
 

@@ -6,7 +6,9 @@ import socket
 import re
 import io
 import time
-
+import os
+import signal
+import subprocess
 
 
 class UnityResource (TestResource):
@@ -14,17 +16,18 @@ class UnityResource (TestResource):
 	def reader(self):
 		while True:
 			try:
-				line = self.sock.recv(1024).decode()
-				self.queue.put(line)
+				line = self.p.stdout.readline()
+				self.queue.put(line.decode("utf-8"))
 
 			except (KeyboardInterrupt, SystemExit):
-				sys.exit()
+				self.deallocate()
+			
 			
 
 	def __init__(self, host, port):
 		self.host = host
 		self.port = port
-		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.p = None
 		self.connect()
 
 		self.recThread = Thread(target = self.reader, args=())
@@ -35,33 +38,54 @@ class UnityResource (TestResource):
 
 
 	def deallocate(self):
-		self.sock.close()
+		print("dealocate unity")
+		try:
+			print("kill" + str(self.p.pid))
+			#os.killpg(self.p.pid, signal.SIGTERM)
+			self.p.kill()
+		except Exception as e:
+			print(e)
+			pass
 
 	def connect(self):
-		self.sock.connect((self.host, self.port))
+		try:
+			self.p = subprocess.Popen("/home/karsten/Wreckage/UnityClient/bin/unityScriptInterface", stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+		except KeyboardInterrupt:
+			pass
+		except Exception as e:
+			print(e)
 
 	def send(self, message):
-		totaltsent = 0
-		self.sock.send(message.encode())
+		try:
+			totaltsent = 0
+			print("send")
+			message += str("\n")
+			print(message)
+			self.p.stdin.write(message.encode("utf-8"))
+			self.p.stdin.flush()
+			print("done sent" )
+		except (KeyboardInterrupt):
+			return False
 
 	def recv(self, regX, timeout):
-		r = re.compile(regX)
-		end = time.time() + timeout
-		buff = io.StringIO()
+		try:
+			r = re.compile(regX)
+		
+			end = time.time() + timeout
+			while( end > time.time()):
+				try: 
+					line = ( self.queue.get_nowait())
+					print("Unity >> " + str(line.replace("\n","")))
+					if(r.match(line)):
+						return True
 
-		while( end > time.time()):
-			try: buff.write( self.queue.get_nowait())
-			except Empty:
-				time.sleep(0.1)
-				continue
-			else:
+				except Empty:
+					time.sleep(0.1)
+					continue
+		except (KeyboardInterrupt):
+			return False
 
-				line = buff.getvalue()
-				if(r.match(line)):
-					return True
-
-
-		raise Exception("Test Failed message " + str(regX) + " not received")
+		raise Exception("Test Failed message " + str(regX) + " not received on unity")
 		return False
 	
 

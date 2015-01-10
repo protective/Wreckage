@@ -7,6 +7,7 @@ import re
 import io
 import time
 import os
+import signal
 import subprocess
 
 
@@ -15,13 +16,12 @@ class ServerResource (TestResource):
 	def reader(self):
 		while True:
 			try:
-				print("try read")
-				line = self.p.communicate().stdout
-				print("done read")
+				line = self.p.stdout.readline().decode("utf-8")
+				#print("\"" + str(line) + "\"")
 				self.queue.put(line)
 
 			except (KeyboardInterrupt, SystemExit):
-				sys.exit()
+				self.deallocate()
 			
 
 	def __init__(self, host, port):
@@ -29,20 +29,29 @@ class ServerResource (TestResource):
 		self.port = port
 		self.p = None
 		self.connect()
-
+		self.queue = Queue()	
 		self.recThread = Thread(target = self.reader, args=())
 		self.recThread.setDaemon( True)
 		self.recThread.start();
 
-		self.queue = Queue()	
+		
 
 
 	def deallocate(self):
-		self.sock.close()
+		print("dealocate server")
+		try:
+			self.p.kill()
+		except Exception as e:
+			print(e)
+			pass
 
 	def connect(self):
-		self.p = subprocess.Popen("/home/karsten/Wreckage/Server/dist/Debug/GNU-Linux-x86/server", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		print("server running")
+		try:
+			self.p = subprocess.Popen("/home/karsten/Wreckage/Server/dist/Debug/GNU-Linux-x86/server", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		except KeyboardInterrupt:
+			pass
+		except Exception as e:
+			print(e)
 
 	def send(self, message):
 		totaltsent = 0
@@ -51,23 +60,22 @@ class ServerResource (TestResource):
 		#print("done")
 
 	def recv(self, regX, timeout):
-		r = re.compile(regX)
-		end = time.time() + timeout
-		buff = io.StringIO()
+		try:	
+			r = re.compile(regX)
+			end = time.time() + timeout
+			while( end > time.time()):
+				try: 
+					line = ( self.queue.get_nowait())
+					if(r.match(line)):
+						return True
 
-		while( end > time.time()):
-			try: buff.write( self.queue.get_nowait())
-			except Empty:
-				time.sleep(0.1)
-				continue
-			else:
+				except Empty:
+					time.sleep(0.1)
+					continue
+		except (KeyboardInterrupt):
+			return False
 
-				line = buff.getvalue()
-				if(r.match(line)):
-					return True
-
-
-		raise Exception("Test Failed message " + str(regX) + " not received")
+		raise Exception("Test Failed Server message " + str(regX) + " not received on server")
 		return False
 	
 

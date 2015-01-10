@@ -102,7 +102,7 @@ public class AsynchronousClient {
 	} 
 	private static void DisconnectCallback(IAsyncResult ar) {
 		Console.WriteLine("DisconnectCallback");
-		AsynchronousSocketListener.Send ("disconnected\n");
+		Mainclass.writeOut("disconnected\n");
 		connectionObj = null;
 	}
 
@@ -117,7 +117,7 @@ public class AsynchronousClient {
 			
 			Console.WriteLine("Socket connected to {0}",
 			                  client.RemoteEndPoint.ToString());
-			AsynchronousSocketListener.Send("connected\n");
+			Mainclass.writeOut("connected\n");
 			// Signal that the connection has been made.
 
 

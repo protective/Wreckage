@@ -32,7 +32,7 @@ int threadsReady;
 int main(int argc, char** argv) {
 
 	
-	
+	cout<<"Server hello"<<endl;
 	printbufferbool = true;
 	
 	pqxx::connection con("dbname= wreckage user=karsten");

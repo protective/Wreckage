@@ -5,11 +5,11 @@ public static class MessageHandler {
 	public static void dispatchMsg(String msg){
 		switch (msg.Trim()) {
 		case "connect":
-			Debug.Log ("recived connect");
+			Mainclass.writeOut ("recived connect");
 			AsynchronousClient.StartClient ();
 			break;
 		case "disconnect":
-			Debug.Log ("recived disconnect");
+			Mainclass.writeOut ("recived disconnect");
 			AsynchronousClient.disconnect ();
 			break;
 		}
