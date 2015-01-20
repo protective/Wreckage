@@ -3,6 +3,7 @@
 #include "../../../Tasks/TaskRemoveObj.h"
 #include "../../../Processor/Processor.h"
 #include "../../Messages/MessageProjectileStats.h"
+#include "GFunctions.h"
 #include <math.h>
 CompTargeted::CompTargeted() :
 SComponent(COMPID::targeted){
@@ -56,8 +57,16 @@ void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 					else
 						miss = min((int32_t)99, (int32_t)(6 + pow(def_level - level, 2)));
 					
-					
-					
+					uint32_t roll = myrandom(0, 99);
+					string result;
+					uint32_t d = 0;
+					if(roll < d += miss)
+						result = "miss";
+
+					else if(roll < d += def_dodge)
+						result = "parry";
+					else if(roll < d += def_parry)
+						result = "parry";
 				}	
 			}
 			

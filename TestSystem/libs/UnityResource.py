@@ -58,12 +58,11 @@ class UnityResource (TestResource):
 	def send(self, message):
 		try:
 			totaltsent = 0
-			print("send")
 			message += str("\n")
-			print(message)
+			
 			self.p.stdin.write(message.encode("utf-8"))
 			self.p.stdin.flush()
-			print("done sent" )
+			print("Unity << " + message)
 		except (KeyboardInterrupt):
 			return False
 

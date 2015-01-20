@@ -29,7 +29,7 @@ struct SerialInputPayload{
 struct SerialInputCastPower : public SerialInputPayload{ //id = 5
     OBJID _power;
 	OBJID _target;
-};
+}__attribute__((__packed__));
 
 #endif	/* SERIALIZE_H */
 

@@ -29,7 +29,7 @@ args = parser.parse_args()
 try:
 	testqueue = Queue()
 
-	testqueue.put("Enter_obj")
+	testqueue.put("UnityUnit_sendUsePower")
 
 	for i in range(0, 1):
 
