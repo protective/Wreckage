@@ -58,6 +58,7 @@ class ServerResource (TestResource):
 		##print("sent="+ str(message))
 		##self.p.communicate(message)
 		#print("done")
+		print("Server << " + message)
 
 	def recv(self, regX, timeout):
 		try:	
@@ -66,6 +67,8 @@ class ServerResource (TestResource):
 			while( end > time.time()):
 				try: 
 					line = ( self.queue.get_nowait())
+					print("Server >> " + str(line.replace("\n","")))
+
 					if(r.match(line)):
 						return True
 

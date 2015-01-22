@@ -84,7 +84,6 @@ void* thread_Listen(){
 
 
 void* thread_Recive(Client* client){
-	printf ("recv test....\n");
 	int recsize;
 	uint32_t timeout = 0;
 

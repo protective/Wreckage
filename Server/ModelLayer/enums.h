@@ -82,10 +82,21 @@ namespace PROJECTILESTATS {
 		type,
 		level,
 		critP,
-		attackRoll,
-		whitedamageRoll,
+		missP,
+		attack,
 		whiteDamage,
-		hitP,
+		whiteDamageCrit,
+		
+	};
+}
+
+namespace DAMAGETYPES {
+	enum Enum {
+		invalid = 0,
+		pircing,
+		slashing,
+		crushing,
+		
 	};
 }
 #endif	/* ENUMS_H */

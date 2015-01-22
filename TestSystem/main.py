@@ -30,6 +30,7 @@ try:
 	testqueue = Queue()
 
 	testqueue.put("UnityUnit_sendUsePower")
+	testqueue.put("ServerProjectileHit")
 
 	for i in range(0, 1):
 

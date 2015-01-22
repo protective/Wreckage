@@ -39,6 +39,7 @@ namespace OBJDATA {
 		invalid = 0,
 		hp,
 		level,
+		AC,
 		maxhp,
 		hitP,
 		dodgeP,
