@@ -37,11 +37,17 @@ class UnityResource (TestResource):
 		self.queue = Queue()	
 
 
-	def deallocate(self):
-		print("dealocate unity")
+	def close(self):
+		print("close unity")
 		try:
-			print("kill" + str(self.p.pid))
-			#os.killpg(self.p.pid, signal.SIGTERM)
+			self.p.kill()
+		except Exception as e:
+			print(e)
+			pass
+
+	def reset(self):
+		print("reset unity")
+		try:
 			self.p.kill()
 		except Exception as e:
 			print(e)

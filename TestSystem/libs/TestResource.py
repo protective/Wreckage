@@ -8,3 +8,8 @@ class TestResource (object):
 	def recv(self):
 		print("recv TestResouece")
 
+	def reset(self):
+		print("reset TestResouece")
+		
+	def close(self):
+		print("close TestResouece")
