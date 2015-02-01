@@ -1,12 +1,12 @@
 
-from libs.UnityResource import UnityResource
-from libs.ServerResource import ServerResource
+
 import argparse
 import imp
 import time
 import traceback
 import queue
 import time
+import sys
 
 class TestRunner:
 
@@ -17,8 +17,11 @@ class TestRunner:
 		self.X = imp.load_source(testcase, "Testcases/"+ testcase +".py")
 		self.allocatedures = []
 		self.allocatedsres = []
-		self.allocResources()
-		print("TEST INIT NO RESOURCES")
+		if self.allocResources():
+			print("TEST INIT OK")
+		else:
+			print("TEST INIT NO RESOURCES")
+		sys.stdout.flush()
 		self.begin()
 
 	def allocResources(self):
@@ -26,24 +29,29 @@ class TestRunner:
 
 		toAlloc = self.X.requiredResourses()
 
-		ures = []
+		
 		restypes = [('unity',loadUnityRes), ('server',loadServerRes)]
 		
-		if 'unity' in toAlloc and toAlloc['unity'] > 0:
-			for unity in range(0, toAlloc['unity']):
-				self.allocatedures.append(loadUnityRes(20004))
+		
+		allocatedResoueces = testServerReq(toAlloc)
+		if(allocatedResoueces == None)
+			return False
+		
+		
+		ures = []
+		if 'unity' in allocatedResoueces:
+			for unity in allocatedResoueces['unity']:
+				self.allocatedures.append(unity)
 
 				
 		sres = []
-		if 'server' in toAlloc and toAlloc['server'] > 0:
-			for server in range(0, toAlloc['server']):					
-				self.allocatedsres.append(loadServerRes(100023))
+		if 'server' in allocatedResoueces :
+			for server in allocatedResoueces['server']:					
+				self.allocatedsres.append(server)
 
 
 		self.X.setUnityResourses(self.allocatedures)
 		self.X.setServerResourses(self.allocatedsres)
-
-		print("true")
 
 		return True
 				
@@ -83,10 +91,14 @@ class TestRunner:
 			print("FAIL")		
 		
 		self.deallocateResources()
+		print("COMPLETE")
+
+def testServerReq(req):
+	print("TODO")
 
 def loadUnityRes(port):
 	#try:
-	c = UnityResource("127.0.0.1", port)
+	c = TestResource()
 
 	return c
 	#except Exception:
@@ -96,7 +108,7 @@ def loadUnityRes(port):
 
 def loadServerRes(port):
 	#try:
-	c = ServerResource("127.0.0.1", port)
+	c = TestResource()
 	return c
 	#except Exception:
 	#	print("ERROR fail to start resource")
