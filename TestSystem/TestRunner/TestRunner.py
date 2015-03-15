@@ -7,7 +7,7 @@ import traceback
 import queue
 import time
 import sys
-from libs.ServerResource import ServerResource
+from ServerResource import ServerResource
 from queue import Queue, Empty
 from threading import Thread
 from threading import Event
@@ -19,7 +19,7 @@ class TestRunner:
 	def __init__(self, testname):
 		self.testname = testname
 		testcase = str(self.testname)
-		self.X = imp.load_source(testcase, "Testcases/"+ testcase +".py")
+		self.X = imp.load_source(testcase, "../Testcases/"+ testcase +".py")
 		self.allocatedResoueces = {}
 
 	def begin(self):
@@ -41,8 +41,12 @@ class TestRunner:
 		return True
 
 	@asyncio.coroutine
-	def testServerReq(self, req):
+	def testServerReq(self, req, reader, writer):
 		print("TODO STUB")
+		data ="req;abc;server:1;client:1\n"
+		writer.write(data.encode("utf-8"))
+		yield from writer.drain()
+		
 		server = self.loadServerRes( 2222)
 		print("create server res type= " + str(type(server)) + "   " + str(server))
 		server.reader, server.writer = yield from server.res
@@ -72,11 +76,11 @@ class TestRunner:
 	def run_Resources(self):
 		print("RUN resources")
 		#connect to Resource Server
-		resource_server = yield from asyncio.open_connection('127.0.0.1', 8888)
+		reader, writer = yield from asyncio.open_connection('127.0.0.1', 8888)
 
 		toAlloc = self.X.requiredResourses()
 		print("ALLOC resources")
-		self.allocatedResoueces = yield from self.testServerReq(toAlloc)
+		self.allocatedResoueces = yield from self.testServerReq(toAlloc, reader, writer)
 		print("SET resources")
 		
 		if 'unity' in self.allocatedResoueces:

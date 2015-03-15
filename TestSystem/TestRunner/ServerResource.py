@@ -1,7 +1,7 @@
 import asyncio
 
 import sys
-from libs.TestResource import TestResource
+from TestResource import TestResource
 from queue import Queue, Empty
 import socket
 import re

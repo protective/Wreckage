@@ -1,21 +1,21 @@
 import asyncio
 import re
 import sys
-import io
 from queue import Queue, Empty
 from asyncio.locks import Event
-from cgitb import reset
 pToc = Queue()
-restart = Event()
-restart.clear()
+terminate = Event()
+terminate.clear()
+start = Event()
+start.clear()
 port = ""
 proc = None
 
 @asyncio.coroutine
 def handle_pTocQueue(pToc, writer):
-	global restart
+	global terminate
 	try:
-		while not restart.is_set():
+		while not terminate.is_set():
 			try: 
 				line = (pToc.get_nowait())
 				writer.write(line)
@@ -36,7 +36,7 @@ def handle_cTop(reader):
 		while True:
 			message = yield from reader.read(100)
 			print("Despatcher >> Deamon " + str(message))
-			if not restart.is_set() and proc != None and len(message) > 0: 
+			if not terminate.is_set() and proc != None and len(message) > 0: 
 				print("Deamon >> Process " + str(message))
 				sys.stdout.flush()
 				proc.stdin.write(message)
@@ -66,10 +66,10 @@ def handle_clients(reader, writer):
 
 @asyncio.coroutine
 def monitorState(proc):
-	global restart
-	print(type(restart))
-	print(restart.is_set())
-	yield from restart.wait()
+	global terminate
+	print(type(terminate))
+	print(terminate.is_set())
+	yield from terminate.wait()
 	
 	proc.terminate()
 
@@ -93,18 +93,23 @@ def handle_resource():
 	global restart
 	global proc
 	while True:
-		print("restart resources")
+		yield from start.wait()
+		start.clear()
+		terminate.clear()
 		sys.stdout.flush()
-		restart.clear()
+		
 		create = asyncio.create_subprocess_exec(childName, stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE)
 		proc = yield from create
+		print("INFO resources started")
 		taksStream = streamToQueue(proc.stdout)
 		taksMonitor = monitorState(proc)
 		
 		yield from asyncio.gather(taksMonitor,taksStream)
 		# Wait for the subprocess exit
 		yield from proc.wait()
+		print("INFO resources stopped")
 		yield from asyncio.sleep(1)
+		terminate.clear()
 	return True
 
 try:
@@ -115,16 +120,39 @@ except Exception as e:
 	sys.stdout.flush()
 	exit(1)
 
+@asyncio.coroutine
+def handleResourceServer(loop):
+	print("rdy to read from resourceServer")
+	sys.stdout.flush()
+	data = sys.stdin.readline()
+
+	data = data.strip()
+	if len(data) == 0:
+		return
+	print("Resserver>>deamon " + str(data))	
+	sys.stdout.flush()
+	if(data == "start"):
+		sys.stdout.flush()
+		start.set()
+	if(data == "stop"):
+		terminate.set()
+	if(data == "restart"):
+		terminate.set()
+		start.set()			
+	print("ResourceServer >> deamon: " + str(data))
+	sys.stdout.flush()
+
+
 print("deamon")
 sys.stdout.flush()
- 
+
 loop = asyncio.get_event_loop()
 
 coro = asyncio.start_server(handle_clients, '127.0.0.1', port, loop=loop)
 server = loop.run_until_complete(coro)
-
+loop.add_reader(sys.stdin.fileno(), handleResourceServer)
 asyncio.async(handle_resource())
-
+asyncio.async(handleResourceServer(sys.stdin))
 
 try:
 	loop.run_forever()
