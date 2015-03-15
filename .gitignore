@@ -5,3 +5,6 @@ nbproject/
 *.pyc
 .dep.inc
 TestSystem/Resources/
+.pydevproject
+.project
+.metadata/

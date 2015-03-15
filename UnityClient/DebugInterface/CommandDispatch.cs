@@ -3,6 +3,7 @@ using System.Text;
 
 public static class MessageHandler {
 	public static void dispatchMsg(String msg){
+		Mainclass.writeOutErr("unity error" + msg);
 		msg = msg.Trim();
 		switch (msg.IndexOf (' ') == -1 ? msg : msg.Remove(msg.IndexOf (' '))) {
 		case "connect":
