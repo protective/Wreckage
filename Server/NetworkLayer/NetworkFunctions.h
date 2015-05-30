@@ -16,10 +16,8 @@
 
 class Client;
 void* thread_Listen();
+void* thread_Listen_websock();
 void* thread_Recive(Client* client);
-uint32_t parseBuffer(Client* client,uint32_t len);
-void* ReadBuffer(Client* client);
-void sendtoC(Client* cli, char* buffer, uint32_t len);
 
 #endif	/* NETWORKFUNCTIONS_H */
 

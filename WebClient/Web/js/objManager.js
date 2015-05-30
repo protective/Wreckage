@@ -2,10 +2,10 @@
 
 define(function ( require ) {
 
-    var obj = require(obj)
+    var Obj = require("obj")
+    var webGL = require('webGL');
 
-
-    var _list = [];
+    var _list = {};
     
     
     
@@ -16,21 +16,21 @@ define(function ( require ) {
     function removeObj( obj ){
     
     }
+    
+    function getObjById(id) {
+        if(id in _list)
+            return _list[id];
+        else
+            return _list[id] = new Obj(id);
+    }
 
     function Obj( id ) {
         this.id = id;    
     }
-    
-    
-    function render( gl, modelView, projection ){
-    
-        for (i = 0; i < _list.length; i++) {
-        
-            //_list[i].render(modelVIew, projection);
-        
-        }
-    
-    }
-    
+
+    return {
+            'addObj': addObj,
+            'getObjById': getObjById
+    };
 
 });

@@ -94,6 +94,9 @@ int main(int argc, char** argv) {
 
 	pthread_t listenThread;
 	pthread_create(&listenThread, NULL, (void*(*)(void*))thread_Listen, NULL);
+	
+	pthread_t listenWebsockThread;
+	pthread_create(&listenWebsockThread, NULL, (void*(*)(void*))thread_Listen_websock, NULL);
 	srand((unsigned)time(0));
         cerr<<"hello world"<<endl;
 	//LOAD GAME DATA

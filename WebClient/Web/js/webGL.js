@@ -83,16 +83,16 @@ define(function()
         
     }
 
-    function addObj ( ) {
-    
-		
+    function addObj (_x,_y,_z ) {
+        
+            var x = _x; 
+		    var y = _y; 
+		    var z = _z; 
             enshureLoad('models/monster.js', function(geometry, faceMaterial) {
             
             
             // random placement in a grid
                 var i = 1;
-				var x = 0;
-				var z = 0;
 
 
 				morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
@@ -172,6 +172,7 @@ define(function()
 
 	return {
 		initWebGL : initWebGL,
-		addObj : addObj
+		addObj : addObj,
+		render : render
 	}
 });

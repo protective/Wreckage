@@ -21,7 +21,7 @@ NetworkControler::NetworkControler() {
 
 void NetworkControler::readBuffers(){
 	for (map<uint32_t, Client*>::iterator ci = _connections.begin(); ci != _connections.end(); ci++){
-		ReadBuffer(ci->second);
+		ci->second->ReadBuffer();
 		ci->second->proces();
 	}
 }
@@ -52,7 +52,7 @@ uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len)
 	if (it!= _connections.end()){
 		//cerr<<"network send len ="<<len<<endl;
 		cerr<<"send IT len="<<len<<endl;
-		send(it->second->getSocket(),block, len,MSG_NOSIGNAL);
+		it->second->sendToC(block, len);
 		sendt = true;
 	}else
 		cerr<<"ERROR CLIENT NOT FOUND id="<<clientId<<endl;

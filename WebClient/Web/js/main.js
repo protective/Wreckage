@@ -1,10 +1,13 @@
 
 define(function (require) {
-    var objManager = require('webGL');
+
+
+    var webGL = require('webGL');
+    var networkSock = require('Network/webSocket')
     
-    objManager.initWebGL();
-    objManager.addObj();
-    //objManager.render();
+    webGL.initWebGL();
+    //webGL.addObj();
+    webGL.render();
 
 });
 

@@ -58,6 +58,18 @@ public:
 		pthread_mutex_unlock(&this->_lockState);
 	}
 	
+	
+	//send a block
+	virtual void sendToC(void* buffer, uint32_t len);
+	
+	//reads the stream handles websocket
+	virtual void ReadBuffer();
+	
+	//parse and execute the commands
+	uint32_t parseBuffer(uint32_t len);
+	
+	
+	
 	void initTransfere();
 	virtual ~Client();
 	pthread_mutex_t& getlocksubscriber() {return locksubscriber;}
