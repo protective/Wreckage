@@ -2,8 +2,10 @@
 
 define(function ( require ) {
 
-    var Obj = require("obj")
-    var webGL = require('webGL');
+    var Obj = require("obj");
+    var webSocket = require('Network/webSocket');
+    
+    //var webGL = require('webGL');
 
     var _list = {};
     
@@ -27,6 +29,7 @@ define(function ( require ) {
     function Obj( id ) {
         this.id = id;    
     }
+    
 
     return {
             'addObj': addObj,

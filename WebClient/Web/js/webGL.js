@@ -1,9 +1,15 @@
-define(function()
+define(function( require )
 {
 
     var container, stats;
 
     var camera, scene, renderer, objects;
+    
+	var raycaster = new THREE.Raycaster();
+	var mouse = new THREE.Vector2(),
+	offset = new THREE.Vector3(),
+	INTERSECTED, SELECTED;
+
     var particleLight, pointLight;
     var dae;
 
@@ -46,7 +52,10 @@ define(function()
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			container.appendChild( renderer.domElement );
-
+			
+			renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 			// Stats
 
 			stats = new Stats();
@@ -83,11 +92,11 @@ define(function()
         
     }
 
-    function addObj (_x,_y,_z ) {
+    function addObj (obj) {
         
-            var x = _x; 
-		    var y = _y; 
-		    var z = _z; 
+            var x = obj.x; 
+		    var y = obj.y; 
+		    var z = obj.z; 
             enshureLoad('models/monster.js', function(geometry, faceMaterial) {
             
             
@@ -96,7 +105,7 @@ define(function()
 
 
 				morph = new THREE.MorphAnimMesh( geometry, faceMaterial );
-
+                morph.obj = obj;
 				// one second duration
 
 				morph.duration = 1000;
@@ -156,6 +165,36 @@ define(function()
 
 	}
 
+	function onDocumentMouseMove( event ) {
+
+		event.preventDefault();
+
+		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+
+	}
+	function onDocumentMouseDown( event ) {
+	
+		event.preventDefault();
+
+		var vector = new THREE.Vector3( mouse.x, mouse.y, 0.5 ).unproject( camera );
+
+		var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+		var intersects = raycaster.intersectObjects( morphs );
+
+		if ( intersects.length > 0 ) {
+
+			intersects[ 0 ].object.obj.onClick();
+
+		}
+	}
+
+	function onDocumentMouseUp( event ) {
+
+		event.preventDefault();
+	}
 	function render() {
 
 		var timer = Date.now() * 0.0005;
@@ -168,7 +207,10 @@ define(function()
 
 		renderer.render( scene, camera );
 
-	}		
+	}
+
+
+	
 
 	return {
 		initWebGL : initWebGL,

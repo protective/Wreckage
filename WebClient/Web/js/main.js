@@ -1,9 +1,17 @@
 
-define(function (require) {
+define(function ( require ) {
 
-
+    var webSocket = require('Network/webSocket');
+    
+    //var SerialComp = require('Network/Comp/SerialComp')
+    var msgObjEnter = require('Network/Comp/modelStatic/msgObjEnter');
+    
+    msgObjEnter.call();
+    
+    webSocket.connect();
+    
     var webGL = require('webGL');
-    var networkSock = require('Network/webSocket')
+    
     
     webGL.initWebGL();
     //webGL.addObj();

@@ -1,19 +1,23 @@
 define(function ( require ) {
 
      
-     
-    var objManager = require("objManager")
-    var componentHandles = {
-        13 : require("Network/Comp/modelStatic/msgObjEnter")
     
-    };
+    var webSocket = require('Network/webSocket');
+
+
+    var componentHandles = {};
     
-    function decode(len, block){
+    function hook(type,callback){
+        webSocket.hook(0x09, decode )
+        componentHandles[type] = callback;
+    }
+    
+    function decode(block){
         
         var objId = new Uint32Array(block.slice(0,4))[0];
         var type = new Uint32Array(block.slice(4,8))[0];
 
-        componentHandles[type].decode(len,objManager.getObjById(objId), block.slice(8));
+        componentHandles[type](objId, block.slice(8));
     }
     
     function encode(  ){
@@ -22,8 +26,5 @@ define(function ( require ) {
     }
    
     
-    return {
-            'encode': encode,
-            'decode': decode
-    };
+    return {'hook' : hook};
 });
