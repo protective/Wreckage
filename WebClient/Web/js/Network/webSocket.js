@@ -61,5 +61,7 @@ define(function ( require ) {
         }  
     
     return {'hook' : hook,
-            'connect' : connect};
+            'connect' : connect,
+            'handlers' : handlers,
+            'send' : send};
 });

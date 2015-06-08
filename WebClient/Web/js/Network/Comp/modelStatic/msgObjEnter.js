@@ -12,11 +12,10 @@ define(function ( require ) {
         var y = new Uint32Array(block.slice(4,8))[0];
         var z = new Uint32Array(block.slice(8,12))[0];
         
-        var obj = objManager.getObjById(objId);
+        var obj = objManager.gotObjEnter(objId);
         obj['x'] = x / 50;
         obj['y'] = y / 50;
         obj['z'] = z / 50;
-        
         
         webGL.addObj(obj);
     }

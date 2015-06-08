@@ -5,10 +5,15 @@ define(function ( require ) {
     
     //var SerialComp = require('Network/Comp/SerialComp')
     var msgObjEnter = require('Network/Comp/modelStatic/msgObjEnter');
-    
+    var msgSpellBook = require('Network/Comp/spellBook/msgSpellBook');
+        
     msgObjEnter.call();
+    msgSpellBook.call();
     
     webSocket.connect();
+    
+    
+    var UIMain = require('UI/UIMain');
     
     var webGL = require('webGL');
     

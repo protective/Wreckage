@@ -17,7 +17,9 @@ define(function( require )
     var morphs = [];
 
     var models = [];
-			
+	
+    var UIOnClickCallBack = null;
+    
     function initWebGL() {
    
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -209,12 +211,15 @@ define(function( require )
 
 	}
 
-
+	function setOnClickCallback(callback){
+		UIOnClickCallBack = callback;
+	}
 	
 
 	return {
 		initWebGL : initWebGL,
 		addObj : addObj,
-		render : render
+		render : render,
+		'setOnClickCallback': setOnClickCallback
 	}
 });
