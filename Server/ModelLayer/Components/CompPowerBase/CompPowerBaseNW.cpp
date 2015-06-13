@@ -1,7 +1,10 @@
 
 #include "CompPowerBase.h"
 
+#include "../../../NetworkLayer/NetworkControler.h"
+
 #include "../../../NetworkLayer/Components/CompPowerBase/CompPowerBaseSerial.h"
+
 
 void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 	cerr<<"CompPowerBase::acceptNetwork type="<<data->_type<<endl;
@@ -13,14 +16,14 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 
 }
 
-void CompPowerBase::sendPowerFull(uint32_t clientId){
-	cerr<<"CompModelStatic::sendPowerFull obj"<<_obj<<endl;
-	if(_obj->getPos()){
-		cerr<<_obj->getId()<<endl;
-		//SerialPowerFull s(_obj->getId(),_obj->getPos(),_modelId);
-		//networkControl->sendToC(clientId, &s, sizeof(s));
-		cerr<<"send enter"<<endl;
-	}else
-		cerr<<"ERROR CompModelStatic::sendEnter no pos"<<endl;
+void CompPowerBase::sendFull(uint32_t clientId){
+	cerr<<"SObj::sendall obj "<<this->_obj->getId()<<endl;
+	SerialCompPowerBase::SerialSendFull* tmp = SerialCompPowerBase::allocSendFull(
+			this->_obj->getId(),
+			this->_name,
+			this->_description);
+	
+	networkControl->sendToC(clientId, &tmp, tmp->_size);
+	free(tmp);
 }
 

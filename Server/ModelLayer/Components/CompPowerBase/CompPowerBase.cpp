@@ -1,6 +1,9 @@
 
 #include "CompPowerBase.h"
 
+#include "../../Signals/SignalEnterDevClient.h"
+
+
 CompPowerBase::CompPowerBase() :
 SComponent(COMPID::powerBase){
 	init();
@@ -13,6 +16,11 @@ SComponent(COMPID::powerBase){
 
 void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
 		case SIGNAL::enterClient:{
 			cerr<<"signal enter"<<endl;
 			//SignalEnterClient* s = (SignalEnterClient*)data;

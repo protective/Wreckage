@@ -32,7 +32,7 @@ define(function ( require ) {
 
                     var type = new Uint32Array(receivedMsg.slice(0,4))[0];
                     var len = new Uint32Array(receivedMsg.slice(4,8))[0];
-                    handlers[type](receivedMsg.slice(8));
+                    handlers[type](receivedMsg.slice(8) ,len - 8);
                 
                 };
                 fr.readAsArrayBuffer(evt.data);

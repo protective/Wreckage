@@ -47,12 +47,19 @@ public:
 	void message(MESSAGE::Enum type, Message* data);
 	void input(SerialInputPayload* data);
 	
+	
+	void sendall(uint32_t clientId);
+	
+	
 	Processor* getProcessor(){return _processor;}
 	
 	int32_t getData(OBJDATA::Enum dataId){
 		return _data[dataId];
 	}
 	
+	uint32_t getDataSize(){
+		return _data.size();
+	}	
 	bool getData(OBJDATA::Enum dataId, int32_t* ret){
 		if(_data.find(dataId) != _data.end()){
 			*ret = _data[dataId];
@@ -73,6 +80,8 @@ public:
 	void setData(OBJDATA::Enum dataId, int32_t value){
 		_data[dataId] = value;
 	}
+	
+	map<OBJDATA::Enum, int32_t>& getData() {return this->_data;}
 	
 	SPos* getPos(){
 		return _pos;

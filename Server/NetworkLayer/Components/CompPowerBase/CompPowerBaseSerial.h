@@ -1,9 +1,3 @@
-/* 
- * File:   CompPowerBase.h
- * Author: karsten
- *
- * Created on 2. januar 2015, 15:03
- */
 
 #ifndef COMPPOWERBASESERIAL_H
 #define	COMPPOWERBASESERIAL_H
@@ -12,34 +6,27 @@
 
 
 namespace SerialCompPowerBase{
-	/** Identifiers for each serializable type
-	  */
 	enum Enum{
-		/** Dummy entry for serialization of incomplete types
-		  */
 		Invalid = 0,
 		SendFull = 1,
 		ObjExit  = 2,
-		
 	};
-}
 
-
-
-struct SerialPowerFull : public SerialComp{
-	SerialPowerFull(OBJID objId, string name, string description):
-	SerialComp(objId, COMPID::powerBase, (uint32_t)SerialCompPowerBase::SendFull, sizeof(SerialPowerFull)){
+struct SerialSendFull : public SerialComp{
+	SerialSendFull(OBJID objId, string name, string description):
+	SerialComp(objId, COMPID::powerBase, (uint32_t)SendFull, sizeof(SerialSendFull)){
 
 	}
+	
 	uint16_t _lenName;
 	uint16_t _lenDescription;
 	char _strings[1];
 }__attribute__((__packed__));
 
-SerialPowerFull* SerialPowerFull_Alloc(OBJID objId, string name, string description){
+SerialSendFull* allocSendFull(OBJID objId, string name, string description){
 
-	size_t size = sizeof(SerialPowerFull) + name.length() + description.length();
-	SerialPowerFull* s = (SerialPowerFull*)malloc(size);
+	size_t size = sizeof(SerialSendFull) + name.length() + description.length();
+	SerialSendFull* s = (SerialSendFull*)malloc(size);
 	s->_type = SerialType::SerialComp;
 	s->_size = size;
 	s->objid = objId;
@@ -52,5 +39,6 @@ SerialPowerFull* SerialPowerFull_Alloc(OBJID objId, string name, string descript
 	return s;
 }
 
+}
 #endif	/* COMPPOWERBASESERIAL_H */
 

@@ -6,7 +6,8 @@ define(function ( require ) {
     //var SerialComp = require('Network/Comp/SerialComp')
     var msgObjEnter = require('Network/Comp/modelStatic/msgObjEnter');
     var msgSpellBook = require('Network/Comp/spellBook/msgSpellBook');
-        
+    var msgObjAll = require('Network/msgObjAll').call();
+           
     msgObjEnter.call();
     msgSpellBook.call();
     

@@ -12,7 +12,7 @@ define(function ( require ) {
         componentHandles[type] = callback;
     }
     
-    function decode(block){
+    function decode(block, len){
         
         var objId = new Uint32Array(block.slice(0,4))[0];
         var type = new Uint32Array(block.slice(4,8))[0];

@@ -216,6 +216,7 @@ void Processor::addClientView(uint32_t id){
 	for(map<OBJID, SObj*>::iterator it = _localObjs.begin(); it != _localObjs.end(); it++){
 		SignalEnterClient s(id);
 		it->second->signal(SIGNAL::enterClient, &s);
+		it->second->signal(SIGNAL::enterDevClient, &s);
 	}
 }
 

@@ -14,7 +14,7 @@ define(function ( require ) {
         };
     
         this.id = id;
-        
+        this.data = {}
         //TODO this should be dynamic
         //as not all unit have all components
 		require('Model/CompSpellBook').call(this);

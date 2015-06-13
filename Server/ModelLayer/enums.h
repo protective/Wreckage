@@ -36,6 +36,7 @@ namespace SIGNAL {
 		powerHit,
 		enterClient,
 		exitClient,
+		enterDevClient,
 	};
 }
 

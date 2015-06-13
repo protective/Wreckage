@@ -10,6 +10,10 @@
 #include "Signals/Signal.h"
 #include "../Processor/Processor.h"
 
+#include "../NetworkLayer/ObjSerial.h"
+#include "Signals/SignalEnterDevClient.h"
+
+
 SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
 	_id = id;
 	_pos = NULL;
@@ -60,6 +64,15 @@ void SObj::addData(OBJDATA::Enum id, int32_t value){
 void SObj::signal(SIGNAL::Enum type, Signal* data){
 	//map<SIGNAL::Enum, list<SComponent*> >::iterator it = _signalAccept.find(type);
 	//if (it != _signalAccept.end()){
+	
+	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendall(s->_clientId);
+			break;
+		}
+	}
+	
 	for (map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end(); it++){
 		it->second->acceptSignal(type, data);
 	}

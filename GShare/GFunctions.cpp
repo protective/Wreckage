@@ -8,8 +8,11 @@
 #include <math.h>
 
 #include "GFunctions.h"
+#include "../Server/NetworkLayer/ObjSerial.h"
 #include "../Network/Serialize.h"
 #include "../Network/InputSerial.h"
+
+
 #include "Enums.h"
 
 void printBuffer(char* buffer, uint32_t len){
@@ -71,6 +74,20 @@ void printBuffer(char* buffer, uint32_t len){
 							}
 						}
 						cerr<<"****************************"<<endl;
+						break;
+					}
+					case SerialType::SerialObjAll:{
+						SerialObjAll* st = (SerialObjAll*)(buffer+offset);
+						cerr<<"Recived SerialObjAll*************"<<endl
+						<<"\tid "<<st->_id<<endl
+						<<"\txitems "<<st->_xitems<<endl;
+						for (int i = 0 ; i < st->_xitems ; i++){
+							SerialDataKeyVal* sd = (SerialDataKeyVal*)(buffer+offset+ (sizeof(SerialDataKeyVal) * i));
+							cerr<<"\t\t key "<<sd->_key<<" value "<<sd->_val<<endl;
+						}
+						
+						cerr<<"****************************"<<endl;
+						
 						break;
 					}
 					case SerialType::SerialCmdCreateObj:{

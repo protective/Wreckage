@@ -47,6 +47,11 @@ define(function ( require ) {
     	}
     	return tmpObj;
     }
+    
+    function gotObjFull(objId){
+    	
+    	
+    }
 
     
     function getObjById(id) {
