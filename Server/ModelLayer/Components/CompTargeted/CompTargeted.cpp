@@ -2,7 +2,11 @@
 #include "CompTargeted.h"
 #include "../../../Tasks/TaskRemoveObj.h"
 #include "../../../Processor/Processor.h"
+
+#include "../../Signals/SignalEnterDevClient.h"
+
 #include "../../Messages/MessageProjectileStats.h"
+
 #include "GFunctions.h"
 #include <math.h>
 CompTargeted::CompTargeted() :
@@ -16,7 +20,13 @@ SComponent(COMPID::targeted){
 }
 
 void CompTargeted::acceptSignal(SIGNAL::Enum type, Signal* data){
-
+	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
+	}
 }
 
 void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){

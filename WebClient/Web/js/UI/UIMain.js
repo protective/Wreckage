@@ -7,13 +7,13 @@ define(function ( require ) {
     var objManager = require('objManager');
     var webGL = require('webGL');
     var Obj = require('obj');
+    var _panels = {};
     
-    
-    var _playerObj = null;
     var _playerTarget = null;
     
+    var maindiv = webGL.container;
     
-    objManager.hook('PlayerObjEnter', setPlayerUnit)
+    //
     
     function castspell() {
     	_playerObj.compSpellBook.castSpellTarget(_playerTarget);
@@ -29,7 +29,19 @@ define(function ( require ) {
     }
     Obj.prototype.targetMe = setTarget;
     
+    
+    function addPanel(id, panel) {
+    	_panels[id] = panel;
+
+    }
+    
     webGL.setOnClickCallback(setTarget);
  
-    return {'setTarget' : setTarget};
+    return {'init' : function(){
+    	objManager.hook('PlayerObjEnter', setPlayerUnit);
+    },
+    	
+    		'maindiv' : maindiv,
+    		'setTarget' : setTarget,
+    		'addPanel': addPanel};
 });

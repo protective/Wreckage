@@ -14,13 +14,10 @@ namespace SerialCompPowerBase{
 
 struct SerialSendFull : public SerialComp{
 	SerialSendFull(OBJID objId, string name, string description):
-	SerialComp(objId, COMPID::powerBase, (uint32_t)SendFull, sizeof(SerialSendFull)){
-
-	}
+		SerialComp(objId, COMPID::powerBase, (uint32_t)SendFull, sizeof(SerialSendFull)){}
 	
 	uint16_t _lenName;
 	uint16_t _lenDescription;
-	char _strings[1];
 }__attribute__((__packed__));
 
 SerialSendFull* allocSendFull(OBJID objId, string name, string description){
@@ -34,8 +31,8 @@ SerialSendFull* allocSendFull(OBJID objId, string name, string description){
 	s->op = (uint32_t)SerialCompPowerBase::SendFull;
 	s->_lenName = name.length();
 	s->_lenDescription = description.length();
-	memcpy(s->_strings, name.c_str(),name.size());
-	memcpy(s->_strings + name.size(), description.c_str(),description.size());
+	memcpy(s + sizeof(SerialSendFull), name.c_str(), name.size());
+	memcpy(s + sizeof(SerialSendFull) + name.size(), description.c_str(),description.size());
 	return s;
 }
 

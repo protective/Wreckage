@@ -4,22 +4,23 @@ define(function ( require ) {
     var webSocket = require('Network/webSocket');
     
     //var SerialComp = require('Network/Comp/SerialComp')
-    var msgObjEnter = require('Network/Comp/modelStatic/msgObjEnter');
-    var msgSpellBook = require('Network/Comp/spellBook/msgSpellBook');
-    var msgObjAll = require('Network/msgObjAll').call();
+    require('Network/Comp/modelStatic/msgObjEnter').call();
+    require('Network/Comp/spellBook/msgSpellBook').call();
+    require('Network/Comp/targeted/msgCompTargeted').call();
+    require('Network/msgObjAll').call();
            
-    msgObjEnter.call();
-    msgSpellBook.call();
-    
+
     webSocket.connect();
     
     
     var UIMain = require('UI/UIMain');
-    
+	require('UI/Panels/UIDevObjInfoPanel');
+	
     var webGL = require('webGL');
     
     
     webGL.initWebGL();
+    UIMain.init();
     //webGL.addObj();
     webGL.render();
 

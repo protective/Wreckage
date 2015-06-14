@@ -14,6 +14,8 @@ public:
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	
+	void sendFull(uint32_t clientId);
+		
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);
 	void virtual dbSave();

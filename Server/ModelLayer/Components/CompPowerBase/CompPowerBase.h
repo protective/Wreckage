@@ -13,7 +13,6 @@ public:
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	void virtual acceptNetwork(SerialInputPayload* data);
-
 	
 	void sendFull(uint32_t clientId);
 	

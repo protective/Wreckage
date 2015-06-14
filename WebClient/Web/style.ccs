@@ -1,0 +1,9 @@
+div.devObjView {
+
+    position:absolute;
+    color: white;
+    top: 200px;
+    border-style: solid;
+    border-color: #303030;
+    background-color: grey;
+}

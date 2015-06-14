@@ -19,14 +19,14 @@ define(function( require )
     var models = [];
 	
     var UIOnClickCallBack = null;
-    
+    container = document.createElement( 'div' );
     function initWebGL() {
    
 		if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 
 
-			container = document.createElement( 'div' );
+			
 			document.body.appendChild( container );
 
 			camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
@@ -133,6 +133,10 @@ define(function( require )
     
     
     }
+    
+    function addScene(element){
+    	scene.add(element);
+    }
 
 
 	function onWindowResize( event ) {
@@ -220,6 +224,9 @@ define(function( require )
 		initWebGL : initWebGL,
 		addObj : addObj,
 		render : render,
-		'setOnClickCallback': setOnClickCallback
+		'setOnClickCallback': setOnClickCallback,
+		'addElement' : addScene,
+		'container' : container
+		
 	}
 });

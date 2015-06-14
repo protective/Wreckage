@@ -17,13 +17,13 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 }
 
 void CompPowerBase::sendFull(uint32_t clientId){
-	cerr<<"SObj::sendall obj "<<this->_obj->getId()<<endl;
+	cerr<<"CompPowerBase::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompPowerBase::SerialSendFull* tmp = SerialCompPowerBase::allocSendFull(
 			this->_obj->getId(),
 			this->_name,
 			this->_description);
 	
-	networkControl->sendToC(clientId, &tmp, tmp->_size);
+	networkControl->sendToC(clientId, tmp, tmp->_size);
 	free(tmp);
 }
 

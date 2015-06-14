@@ -1,10 +1,5 @@
 define(function ( require ) {
-
-     
-    
     var webSocket = require('Network/webSocket');
-
-
     var componentHandles = {};
     
     function hook(type,callback){
