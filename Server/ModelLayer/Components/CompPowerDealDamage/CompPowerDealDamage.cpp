@@ -3,6 +3,8 @@
 
 #include "../../../Processor/Processor.h"
 
+#include "../../Signals/SignalEnterDevClient.h"
+
 #include "../../Messages/MessageCasterStats.h"
 #include "../../Messages/MessageProjectileStats.h"
 
@@ -20,6 +22,11 @@ SComponent(COMPID::abilityInput){
 
 void CompPowerDealDamage::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
 		case SIGNAL::powerHit:{
 			
 			MessageCasterStats* msg = new MessageCasterStats(_obj->getId());

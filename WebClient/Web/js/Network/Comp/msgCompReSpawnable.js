@@ -1,12 +1,12 @@
 define(function ( require ) {
 
     var SerialComp = require('Network/Comp/SerialComp');
-    var objManager = require("../../../objManager");
+    var objManager = require("../../objManager");
     
     var full = function(objId, block) {
     
         var obj = objManager.gotObjEnter(objId);
-        require('Model/CompTargeted').call(obj);
+        require('Model/CompReSpawnable').call(obj);
     }
 
     var messageHandles = {1 : full};
@@ -16,7 +16,7 @@ define(function ( require ) {
         messageHandles[op](obj, block.slice(4));
     }
 
-    return function msgCompTargeted() {
-        SerialComp.hook(12, decode);
+    return function msg() {
+        SerialComp.hook(8, decode);
     };
 });

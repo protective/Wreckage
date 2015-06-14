@@ -24,7 +24,12 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
     	var table = document.createElement("TABLE");
     	overlay.appendChild(table);
     	
-    	var tempComponents = ['compTargeted', 'compSpellBook'];
+    	var tempComponents = ['compTargeted',
+    	                      'compSpellBook',
+    	                      'compPowerDealDamage',
+    	                      'compPowerActivateInstant',
+    	                      'compPowerUseCheck',
+    	                      'compReSpawnable'];
     	for (var i in tempComponents){
         	if(tempComponents[i] in obj){
 

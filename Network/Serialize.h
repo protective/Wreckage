@@ -57,10 +57,6 @@ struct SerialReqJoin : public SerialData{
     uint32_t _pass;
 };
 
-struct SerialCompReSpawnable{
-	OBJID _spawner;
-};
-
 struct SerialAddComponent : public SerialData{
     uint32_t _unitId;
     uint32_t _compid;

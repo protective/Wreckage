@@ -4,7 +4,7 @@ define(function ( require ) {
     var webGL = require('webGL');
     var SerialComp = require('Network/Comp/SerialComp');
     //var Obj = require("obj");
-    var objManager = require("../../../objManager");
+    var objManager = require("../../objManager");
     
     var objEnter = function(objId, block) {
     

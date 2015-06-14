@@ -1,7 +1,10 @@
 
 #include "CompReSpawnable.h"
 #include "../../../Processor/Processor.h"
+
 #include "../../Signals/SignalProcess.h"
+#include "../../Signals/SignalEnterDevClient.h"
+
 #include "../../Messages/MessageKilled.h"
 #include "../../Messages/MessageHeartBeatReq.h"
 #include "../../Messages/MessageHeartBeatRsp.h"
@@ -34,6 +37,11 @@ void CompReSpawnable::init(){
 
 void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
 		case SIGNAL::killed:{
 			if(_spawner){
 				MessageKilled* msg = new MessageKilled(_obj->getId());

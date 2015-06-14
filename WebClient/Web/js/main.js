@@ -4,9 +4,13 @@ define(function ( require ) {
     var webSocket = require('Network/webSocket');
     
     //var SerialComp = require('Network/Comp/SerialComp')
-    require('Network/Comp/modelStatic/msgObjEnter').call();
-    require('Network/Comp/spellBook/msgSpellBook').call();
-    require('Network/Comp/targeted/msgCompTargeted').call();
+    require('Network/Comp/msgObjEnter').call();
+    require('Network/Comp/msgSpellBook').call();
+    require('Network/Comp/msgCompTargeted').call();
+    require('Network/Comp/msgCompPowerUseCheck').call();
+    require('Network/Comp/msgCompPowerDealDamage').call();
+    require('Network/Comp/msgCompPowerActivateInstant').call();
+    require('Network/Comp/msgCompReSpawnable').call();
     require('Network/msgObjAll').call();
            
 

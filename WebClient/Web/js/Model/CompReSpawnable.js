@@ -1,18 +1,18 @@
 define( ['require','jquery-ui'], function( require)
 {
-	function CompTargeted(obj)
+	function CompReSpawnable(obj)
 	{
 		this.obj = obj;
 	}
 
-	CompTargeted.prototype.getHTMLContentTable = function (parrent){
+	CompReSpawnable.prototype.getHTMLContentTable = function (parrent){
 		
     	var button = document.createElement('button');
     	button.className = "ko";
-    	button["title"] = "CompTargeted";
+    	button["title"] = "CompReSpawnable";
     	button["data-toggle"] = "popover";
     	button["data-content"]= "Content";
-    	button.innerText = "CompTargeted";
+    	button.innerText = "CompReSpawnable";
     	parrent.appendChild(button);
     	$('.ko').popover();
     	
@@ -21,7 +21,6 @@ define( ['require','jquery-ui'], function( require)
 	
 	return function Init()
 	{
-		this.compTargeted = new CompTargeted(this);
+		this.compReSpawnable = new CompReSpawnable(this);
 	};
 });
-

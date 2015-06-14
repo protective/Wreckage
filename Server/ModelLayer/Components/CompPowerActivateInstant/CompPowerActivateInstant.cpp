@@ -1,6 +1,8 @@
 
 #include "CompPowerActivateInstant.h"
 
+#include "../../Signals/SignalEnterDevClient.h"
+
 CompPowerActivateInstant::CompPowerActivateInstant() :
 SComponent(COMPID::powerActivateInstant){
 	init();
@@ -12,7 +14,13 @@ SComponent(COMPID::powerActivateInstant){
 }
 
 void CompPowerActivateInstant::acceptSignal(SIGNAL::Enum type, Signal* data){
-
+	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
+	}
 }
 
 void CompPowerActivateInstant::acceptMessage(MESSAGE::Enum type, Message* data){

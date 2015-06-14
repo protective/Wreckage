@@ -1,13 +1,7 @@
 define( function( require )
 {
-	
-	
 	var webSocket = require('Network/webSocket');
-	
-	
-	/**
-	 * Cast constructor
-	 */
+
 	function CompSpellBook(obj)
 	{
 		this.obj = obj;

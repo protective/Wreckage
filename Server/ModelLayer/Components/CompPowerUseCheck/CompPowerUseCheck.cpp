@@ -3,6 +3,8 @@
 
 #include "../../../Processor/Processor.h"
 
+#include "../../Signals/SignalEnterDevClient.h"
+
 #include "../../Messages/MessageActivatePowerOnTarget.h"
 #include "../../Messages/MessagePowerCheck.h"
 
@@ -18,7 +20,13 @@ SComponent(COMPID::powerUseCheck){
 
 
 void CompPowerUseCheck::acceptSignal(SIGNAL::Enum type, Signal* data){
-
+	switch(type){
+		case SIGNAL::enterDevClient:{
+			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			this->sendFull(s->_clientId);
+			break;
+		}
+	}
 }
 
 void CompPowerUseCheck::acceptMessage(MESSAGE::Enum type, Message* data){

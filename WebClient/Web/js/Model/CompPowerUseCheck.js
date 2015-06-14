@@ -1,18 +1,18 @@
 define( ['require','jquery-ui'], function( require)
 {
-	function CompTargeted(obj)
+	function CompPowerUseCheck(obj)
 	{
 		this.obj = obj;
 	}
 
-	CompTargeted.prototype.getHTMLContentTable = function (parrent){
+	CompPowerUseCheck.prototype.getHTMLContentTable = function (parrent){
 		
     	var button = document.createElement('button');
     	button.className = "ko";
-    	button["title"] = "CompTargeted";
+    	button["title"] = "CompPowerUseCheck";
     	button["data-toggle"] = "popover";
     	button["data-content"]= "Content";
-    	button.innerText = "CompTargeted";
+    	button.innerText = "CompPowerUseCheck";
     	parrent.appendChild(button);
     	$('.ko').popover();
     	
@@ -21,7 +21,6 @@ define( ['require','jquery-ui'], function( require)
 	
 	return function Init()
 	{
-		this.compTargeted = new CompTargeted(this);
+		this.compPowerUseCheck = new CompPowerUseCheck(this);
 	};
 });
-

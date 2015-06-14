@@ -26,7 +26,7 @@ define(function ( require ) {
         this.data = {}
         //TODO this should be dynamic
         //as not all unit have all components
-		require('Model/CompSpellBook').call(this);
+		//require('Model/CompSpellBook').call(this);
     }
     
     return Obj;
