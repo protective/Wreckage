@@ -4,20 +4,13 @@ define( ['require','jquery-ui'], function( require)
 	{
 		this.obj = obj;
 	}
-
-	CompReSpawnable.prototype.getHTMLContentTable = function (parrent){
+	
+	CompReSpawnable.prototype.getKeyValues = function() {
 		
-    	var button = document.createElement('button');
-    	button.className = "ko";
-    	button["title"] = "CompReSpawnable";
-    	button["data-toggle"] = "popover";
-    	button["data-content"]= "Content";
-    	button.innerText = "CompReSpawnable";
-    	parrent.appendChild(button);
-    	$('.ko').popover();
-    	
-    	return button;
+		return {'compName': 'CompReSpawnable', 'timer' : 1};
+		
 	}
+	
 	
 	return function Init()
 	{

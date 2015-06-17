@@ -22,6 +22,10 @@ define(function ( require ) {
     
     }
     
+    function getObjs(){
+    	return _list;
+    }
+    
     function hook(event, callback){
     	_UIEventCallback[event].push(callback);
     }
@@ -69,7 +73,8 @@ define(function ( require ) {
             'addObj': addObj,
             'getObjById': getObjById,
             'gotObjEnter' : gotObjEnter,
-            'hook' : hook
+            'hook' : hook,
+            'getObjs' : getObjs
     };
 
 });

@@ -5,18 +5,10 @@ define( ['require','jquery-ui'], function( require)
 		this.obj = obj;
 	}
 
-	CompPowerActivateInstant.prototype.getHTMLContentTable = function (parrent){
+	CompPowerActivateInstant.prototype.getKeyValues = function() {
 		
-    	var button = document.createElement('button');
-    	button.className = "ko";
-    	button["title"] = "CompPowerActivateInstant";
-    	button["data-toggle"] = "popover";
-    	button["data-content"]= "Content";
-    	button.innerText = "CompPowerActivateInstant";
-    	parrent.appendChild(button);
-    	$('.ko').popover();
-    	
-    	return button;
+		return {'compName': 'CompPowerActivateInstant', 'timer' : 1};
+		
 	}
 	
 	return function Init()

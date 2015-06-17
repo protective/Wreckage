@@ -4,6 +4,12 @@
 }
 
 
+.key-value-table {
+    color: black;
+    border-style: solid;
+    border-color: #303030;
+    background-color: grey;
+}
 
 div.devObjView {
 

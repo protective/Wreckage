@@ -16,13 +16,10 @@ define(function ( require ) {
         	var val = new Int32Array(block.slice(i+4,i+8))[0];        	
         	obj.data[key] = val;
     	}
+        
     };
 
     
-    function encode(  ){
-       
-        alert("got msg obj enter");
-    }
     return function msgObjAll() {
     	webSocket.hook( 12, ObjAll);
     };

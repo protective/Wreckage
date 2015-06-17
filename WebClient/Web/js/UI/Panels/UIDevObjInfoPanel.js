@@ -1,8 +1,9 @@
-define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
+define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         'UI/UIMain',
         'Model/CompSpellBook',
         'Model/CompTargeted',
-        'obj'],function ( require) {
+        'obj',
+        'text!templates/keyValueTable.html'],function ( require) {
 
     var _panels = {};
     
@@ -10,7 +11,10 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
     var CompSpellBook = require('Model/CompSpellBook');
     var CompTargeted = require('Model/CompTargeted');
     var Obj = require('obj');
-           
+
+	var keyValueTable = require('text!templates/keyValueTable.html');
+
+    
     Obj.prototype.createObjInfoPanel = function (obj) {
     	
     	if('UIDevObjInfoPanel' in obj)
@@ -21,7 +25,9 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
     	overlay.className  = "devObjView";
     	UIMain.maindiv.appendChild(overlay);
     	
-    	var table = document.createElement("TABLE");
+
+    	var table = document.createElement('TABLE');
+
     	overlay.appendChild(table);
     	
     	var tempComponents = ['compTargeted',
@@ -35,7 +41,26 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
 
 	    		var row = table.insertRow(0);
 	        	var cell1 = row.insertCell(0);
-	    		obj[tempComponents[i]].getHTMLContentTable(cell1); 	
+	        	
+	        	var button = document.createElement('button');
+	        	button.className = "ko";
+	        	button["title"] = "hest";
+	        	button["data-toggle"] = "popover";
+	        	
+	    		var keyval = {'keyval' : obj[tempComponents[i]].getKeyValues()}; 	
+
+	    		
+	    		var yy = _.template(keyValueTable)(keyval);
+	        	
+	        	//button["data-content"]= yy;
+	        	button.innerText = "CompReSpawnable";
+	        	cell1.appendChild(button);
+	        	$('.ko').popover({
+	                'html' : true,
+	                content: function() {
+	                    return yy;
+	                }});
+	        	
         	}
     	}
 

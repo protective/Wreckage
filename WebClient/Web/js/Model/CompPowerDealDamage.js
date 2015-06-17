@@ -5,18 +5,10 @@ define( ['require','jquery-ui'], function( require)
 		this.obj = obj;
 	}
 
-	CompPowerDealDamage.prototype.getHTMLContentTable = function (parrent){
+	CompPowerDealDamage.prototype.getKeyValues = function() {
 		
-    	var button = document.createElement('button');
-    	button.className = "ko";
-    	button["title"] = "CompPowerDealDamage";
-    	button["data-toggle"] = "popover";
-    	button["data-content"]= "Content";
-    	button.innerText = "CompPowerDealDamage";
-    	parrent.appendChild(button);
-    	$('.ko').popover();
-    	
-    	return button;
+		return {'compName': 'CompPowerDealDamage', 'timer' : 1};
+		
 	}
 	
 	return function Init()

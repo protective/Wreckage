@@ -1,15 +1,22 @@
 define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
         'Model/CompSpellBook',
         'Model/CompTargeted',
+        'objManager',
         'obj',
         'text!templates/navbar.html'],function ( require) {
 
 	var navBar = require('text!templates/navbar.html');
 
+	var objManager = require('objManager');
+	//var Obj = require('obj');
 	
 	function UI_show_templates(){
+		//alert("hest");
+		var tmp = objManager.getObjs();
+		for (var ob in tmp){
+			tmp[ob].createObjInfoPanel(tmp[ob]);
+		}
 		
-		alert("hest");
 	}
 
     function init(maindiv){
@@ -19,7 +26,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
     	maindiv.appendChild(host.firstChild);
 
     	$("body").on("click", "#UIshowtemplates", function(e){
-    		UI_show_templates(); return false; });
+    		UI_show_templates()});
     	
     }
     

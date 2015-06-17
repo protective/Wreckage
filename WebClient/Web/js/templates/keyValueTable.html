@@ -1,0 +1,26 @@
+<table class="table key-value-table">
+    <thead>
+    
+    <tr>
+        <th>
+            <button class="btn-submit-comp"></button>
+        </th>
+        <th></th>
+    </tr>
+    <tr>
+        <th>Key</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for(var i in keyval) { %>
+    <tr>
+        <td class="filterable-cell"><%= i %></td>
+        <td class="filterable-cell">
+            <input class="form-control" type="text" value= <%= keyval[i] %> >
+        </td>
+
+    </tr>
+    <% } %>
+    </tbody>  
+</table>

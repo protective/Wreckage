@@ -5,18 +5,10 @@ define( ['require','jquery-ui'], function( require)
 		this.obj = obj;
 	}
 
-	CompTargeted.prototype.getHTMLContentTable = function (parrent){
+	CompTargeted.prototype.getKeyValues = function() {
 		
-    	var button = document.createElement('button');
-    	button.className = "ko";
-    	button["title"] = "CompTargeted";
-    	button["data-toggle"] = "popover";
-    	button["data-content"]= "Content";
-    	button.innerText = "CompTargeted";
-    	parrent.appendChild(button);
-    	$('.ko').popover();
-    	
-    	return button;
+		return {'compName': 'CompTargeted', 'timer' : 1};
+		
 	}
 	
 	return function Init()
