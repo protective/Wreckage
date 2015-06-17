@@ -35,7 +35,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     	                      'compPowerDealDamage',
     	                      'compPowerActivateInstant',
     	                      'compPowerUseCheck',
-    	                      'compReSpawnable'];
+    	                      'compReSpawnable',
+    	                      'compPowerBase'];
     	for (var i in tempComponents){
         	if(tempComponents[i] in obj){
 
@@ -53,7 +54,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	    		var yy = _.template(keyValueTable)(keyval);
 	        	
 	        	//button["data-content"]= yy;
-	        	button.innerText = "CompReSpawnable";
+	        	button.innerText = tempComponents[i];
 	        	cell1.appendChild(button);
 	        	$('.ko').popover({
 	                'html' : true,

@@ -8,64 +8,62 @@ SComponent(COMPID::powerBase){
 	init();
 	pqxx::work w(con);
 	stringstream s; 
-	s<<"select powerTemplateID from compspellbook_knownpowers where objId = "<<id<<"";
+	s<<"select name, description from CompPowerBase where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
-
+	if(r.size() != 1){
+		cerr<<"ERROR CompPowerBase loadsize="<<r.size()<<endl;
+		_name = "";
+		_description = "";
+	}else{
+		_name = r[0][0].as<string>();
+		_description = r[0][1].as<string>();
+	}
 	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 
 void CompPowerBase::dbSave(){
 	if(_obj->getProcessor()){
-		
-		pqxx::work w(_obj->getProcessor()->getDB());
-		stringstream s; 
-		s<<"delete from compspellbook_knownpowers where objId = "
-		<<_obj->getId()<< ";";
-		w.exec(s);
-		s.clear();
-		/*
-		for(list<OBJID>::iterator it = _knownPowers.begin();it!=_knownPowers.end();it++){
-			s<<"insert into compspellbook_knownpowers values("
-				<<_obj->getId()<<","
-				<<*it<<")";
+		if(isInit()){
+			pqxx::work w(_obj->getProcessor()->getDB());
+			stringstream s; 
+			s<<"update CompPowerBase set "
+				"name='"<<_name<<"', "
+				"description='"<<_description<<"' "
+				"where objId = "<<_obj->getId()<<"";
 			w.exec(s);
 			w.commit();
-			s.clear();
-		}
-		 * */
-		if(!isInit()){
+		}else{
 			dbInit();
 		}
-		
 	}
 }
 
 void CompPowerBase::dbInit(){
 	if(!_obj){
-		cerr<<"ERROR CompSpawnNode::init no obj"<<endl;
+		cerr<<"ERROR CompPowerBase::init no obj"<<endl;
 		return;
-	}		
+	}
+	pqxx::work w(_obj->getProcessor()->getDB());
+	stringstream s; 
+	s<<"insert into CompPowerBase values( "
+		<<_obj->getId()<<", '"
+		<<_name<<"', '"
+		<<_description<<"');";
+	w.exec(s);
+	w.commit();
 	_flags |= COMPFLAGINIT;
 }
 
 void CompPowerBase::dbTableInit(pqxx::connection& con){
 	pqxx::work w(con);
-	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='compspellbook');");
+	pqxx::result r = w.exec("select EXISTS(select * from information_schema.tables where table_name='comppowerbase');");
 	if(!r[0][0].as<bool>()){
-		cerr<<"compspellbook::dbInit compspellbook do not exist create"<<endl;
-		w.exec("create table compspellbook (objId BIGINT PRIMARY KEY);");
-		w.commit();
+		cerr<<"comppowerbase::dbInit comppowerbase do not exist create"<<endl;
+		w.exec("create table comppowerbase (objId BIGINT PRIMARY KEY, name TEXT, description TEXT);");
+		//w.commit();
 	}
-
-	pqxx::result r2 = w.exec("select EXISTS(select * from information_schema.tables where table_name='compspellbook_knownpowers');");
-	if(!r2[0][0].as<bool>()){
-		cerr<<"compspellbook_knownpower::dbInit compspellbook_knownpower do not exist create"<<endl;
-		w.exec("create table compspellbook_knownpowers (objId BIGINT, powerTemplateID BIGINT);");
-		w.commit();
-	}
-	w.exec("delete from compspellbook where objid NOT IN (select objid from objs);");
-	w.exec("delete from compspellbook_knownpowers where objid NOT IN (select objid from objs);");
+	w.exec("delete from comppowerbase where objid NOT IN (select objid from objs);");
 	w.commit();
 	
 }

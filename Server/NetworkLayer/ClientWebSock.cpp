@@ -83,6 +83,7 @@ void ClientWebSock::handshake(){
 
 void ClientWebSock::sendToC(void* block, uint32_t len){
 	stringstream sstream;
+	cerr<<"send"<<endl;
 	for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
 		sstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
 	}		
@@ -105,6 +106,7 @@ void ClientWebSock::sendToC(void* block, uint32_t len){
 	}
 	*/
 	send(this->getSocket(), (void*)buffer, len+2,MSG_NOSIGNAL);
+	cerr<<"done send"<<endl;
 }
 
 void ClientWebSock::ReadBuffer(){

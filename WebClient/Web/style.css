@@ -6,6 +6,8 @@
 
 .key-value-table {
     color: black;
+    
+    margin-bottom: 0px;
     border-style: solid;
     border-color: #303030;
     background-color: grey;

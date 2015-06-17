@@ -10,6 +10,7 @@ define(function ( require ) {
     require('Network/Comp/msgCompPowerUseCheck').call();
     require('Network/Comp/msgCompPowerDealDamage').call();
     require('Network/Comp/msgCompPowerActivateInstant').call();
+    require('Network/Comp/msgCompPowerBase').call();
     require('Network/Comp/msgCompReSpawnable').call();
     require('Network/msgObjAll').call();
            
