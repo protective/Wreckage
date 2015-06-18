@@ -2,8 +2,14 @@
 #include "CompSpellBook.h"
 #include "../../../Processor/Processor.h"
 
+#include "../../../NetworkLayer/NetworkControler.h"
+
 #include "../../../../Network/InputSerial.h"
 #include "../../Messages/MessageActivatePowerOnTarget.h"
+
+#include "../../../NetworkLayer/Components/CompSpellBook/CompSpellBookSerial.h"
+
+
 
 void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 	cerr<<"CompSpellBook::acceptNetwork type="<<data->_type<<endl;
@@ -20,3 +26,12 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 
 }
 
+
+void CompSpellBook::sendFull(uint32_t clientId){
+	cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
+	SerialCompSpellBook::SerialSendFull* tmp = SerialCompSpellBook::allocSendFull(
+			this->_obj->getId());
+
+	networkControl->sendToC(clientId, tmp, tmp->_size);
+	free(tmp);
+}

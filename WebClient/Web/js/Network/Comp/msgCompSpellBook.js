@@ -1,7 +1,9 @@
 define(function ( require ) {
 
 	var webSocket = require('Network/webSocket');
-  
+    var SerialComp = require('Network/Comp/SerialComp');	
+    var objManager = require("../../objManager");
+      
 
     function encodeCastSpellTarget(caster, target, spellId){
        
@@ -24,7 +26,20 @@ define(function ( require ) {
     	webSocket.send(buffer);
     }
     
+    var full = function(objId, block) {
+        var obj = objManager.gotObjEnter(objId);
+        require('Model/CompSpellBook').call(obj);
+    }
+    
+    var messageHandles = {1 : full};
+
+    function decode(obj, block){
+        var op = new Uint32Array(block.slice(0,4))[0];
+        messageHandles[op](obj, block.slice(4));
+    }
+    
     return function msgSpellBook() {
     	webSocket.hook("castSpellTarget", encodeCastSpellTarget )
+    	SerialComp.hook(4, decode);
     };
 });

@@ -146,7 +146,6 @@ uint32_t Client::parseBuffer(uint32_t len){
 						case SERIALINPUT::SerialInputCastPower:{
 							data = (SerialInputPayload*)malloc(sizeof(SerialInputCastPower));
 							memcpy(data, &st[1], sizeof(SerialInputCastPower));
-							cerr<<"cp data"<<endl;
 							break;
 						}
 						default:{

@@ -5,7 +5,7 @@ define(function ( require ) {
     
     //var SerialComp = require('Network/Comp/SerialComp')
     require('Network/Comp/msgObjEnter').call();
-    require('Network/Comp/msgSpellBook').call();
+    require('Network/Comp/msgCompSpellBook').call();
     require('Network/Comp/msgCompTargeted').call();
     require('Network/Comp/msgCompPowerUseCheck').call();
     require('Network/Comp/msgCompPowerDealDamage').call();
