@@ -3,9 +3,12 @@
 #include "../../../Processor/Processor.h"
 #include "../../../Tasks/TaskCreateObj.h"
 
+#include "../../Messages/MessageObjDeleted.h"
+#include "../../Messages/MessageRequestRefObj.h"
+
+
 CompSpellBook::CompSpellBook(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::spellbook){
-	init();
 	pqxx::work w(con);
 	stringstream s; 
 	s<<"select powerTemplateID from compspellbook_knownpowers where objId = "<<id<<"";
@@ -18,8 +21,14 @@ SComponent(COMPID::spellbook){
 			obj->getProcessor()->addTask(task);
 		}
 	}
+	
+	for (list<OBJID>::iterator it = _knownPowers.begin(); it != _knownPowers.end(); it++){
+		networkControl->sendMessage(*it, new MessageRequestRefObj(obj->getId()));
+	}
+	
 	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
+	init();
 }
 
 void CompSpellBook::dbSave(){

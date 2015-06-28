@@ -4,14 +4,13 @@
 
 #include "Task.h"
 class Message;
-class SObj;
 class TaskSendMessage : public Task {
 public:
-	TaskSendMessage(SObj* _toId, Message* _message);
+	TaskSendMessage(OBJID _toId, Message* _message);
 	virtual uint32_t execute();
 	virtual ~TaskSendMessage();
 private:
-	SObj* _toId;
+	OBJID _toId;
 	Message* _message;
 };
 

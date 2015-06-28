@@ -39,7 +39,7 @@ define(function ( require ) {
 	    	for (var i in _UIEventCallback["ObjEnter"]){
 	    		_UIEventCallback["ObjEnter"][i](tmpObj);
 	    	}
-	    	if(objId == 16777224 ){
+	    	if(objId == 16777221 ){
 		    	for (var i in _UIEventCallback["PlayerObjEnter"]){
 		    		_UIEventCallback["PlayerObjEnter"][i](tmpObj);
 		    	}	    		

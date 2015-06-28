@@ -10,13 +10,40 @@
 #include "NetworkFunctions.h"
 
 #include "../Processor/Processor.h"
+
+#include "../Tasks/TaskSendMessage.h"
+
 #include "../ModelLayer/SObj.h"
+#include "../ModelLayer/Messages/Message.h"
+#include "../ModelLayer/Messages/MessageObjDeleted.h"
 
 #include "../Tasks/Task.h"
 
 NetworkControler::NetworkControler() {
 	
 	pthread_mutex_init(&_clientLock ,NULL);
+	pthread_mutex_init(&_objRegistrationListLock ,NULL);
+}
+
+void NetworkControler::registerObj(OBJID obj, Processor* processor){
+	pthread_mutex_lock(&_objRegistrationListLock);
+	_objRegistration[obj] = processor;
+	pthread_mutex_unlock(&_objRegistrationListLock);
+}
+
+void NetworkControler::deRegisterObj(OBJID obj){
+	pthread_mutex_lock(&_objRegistrationListLock);
+	_objRegistration.erase(obj);
+	map<OBJID, list<OBJID> >::iterator it = _objRefs.find(obj);
+	if( it != _objRefs.end()){
+		for(list<OBJID>::iterator it2 = it->second.begin(); it2 != it->second.end(); it2++){
+			sendObjDel(*it2 , obj);
+		}
+		_objRefs.erase(it);
+	}
+		
+	pthread_mutex_unlock(&_objRegistrationListLock);
+
 }
 
 void NetworkControler::readBuffers(){
@@ -33,6 +60,34 @@ SObj* NetworkControler::getObj(OBJID obj){
 	return NULL;
 }
 
+void NetworkControler::sendObjDel(OBJID to, OBJID deleted){
+	MessageObjDeleted* msg = new MessageObjDeleted(0, deleted);
+	sendMessage(to, msg);
+}
+
+
+void  NetworkControler::sendMessage(OBJID to, Message* message){
+
+	Processor* processor ;
+	map<OBJID, Processor*>::iterator it = _objRegistration.find(to);
+	if(it != _objRegistration.end()){
+		if(message->_type == MESSAGE::requestRefObj){
+			pthread_mutex_lock(&_objRegistrationListLock);
+			_objRefs[to].push_back(message->_fromId);
+			pthread_mutex_unlock(&_objRegistrationListLock);
+			delete message;
+			return;
+		}
+		if (processor){
+			TaskSendMessage* cmd = new TaskSendMessage(to, message);
+			processor->addTask(cmd);
+		}
+	}else{
+		if(to != 0)
+			sendObjDel(message->_fromId, to);
+		delete message;
+	}
+}
 
 uint32_t NetworkControler::addTaskToObj(Task* task, OBJID obj){
 	Processor* temp = processors[1];

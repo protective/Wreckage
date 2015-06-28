@@ -12,6 +12,8 @@
 #include "../enums.h"
 #include "../Network/InputSerial.h"
 #include "../Network/Serialize.h"
+#include "../../NetworkLayer/NetworkControler.h"
+
 
 #include "../Signals/Signal.h"
 #include "../Messages/Message.h"

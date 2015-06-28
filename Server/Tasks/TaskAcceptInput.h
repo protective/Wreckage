@@ -1,12 +1,7 @@
-/* 
- * File:   TaskAcceptInput.h
- * Author: karsten
- *
- * Created on 24. oktober 2014, 22:00
- */
 
 #ifndef TASKACCEPTINPUT_H
 #define	TASKACCEPTINPUT_H
+
 #include "Task.h"
 #include "../../Network/InputSerial.h"
 

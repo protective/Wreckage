@@ -21,6 +21,7 @@ namespace SerialType{
                 SerialReqJoin = 5,
 				SerialAddComponent = 6,
 				SerialInput = 7,
+				SerialEdit = 8,
 				SerialComp = 9,
 				SerialObjEnter = 10,
 				SerialObjExit = 11,
@@ -65,6 +66,7 @@ struct SerialAddComponent : public SerialData{
 struct SerialInput : public SerialData{
     OBJID _unitId;
 };
+
 
 struct SerialObjData {
 	uint16_t _dataType;

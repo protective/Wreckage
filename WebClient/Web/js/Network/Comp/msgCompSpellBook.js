@@ -9,12 +9,12 @@ define(function ( require ) {
        
     	alert("send " + caster.id + " " + target.id + " " + spellId);
     	
-    	spellId = 16777224;
+    	spellId = 16777223;
     	var buffer = new ArrayBuffer(24);
     	var base = new Uint32Array(buffer);
     	base[0] = 7; //cmdindput
     	base[1] = 24; //length
-    	base[2] = spellId; //InputObj
+    	base[2] = caster.id; //InputObj
     	var cast16View = new Uint16Array(buffer, 12);
     	cast16View[0] = 1 //castPower
     	cast16View[1] = 8 //inputlength

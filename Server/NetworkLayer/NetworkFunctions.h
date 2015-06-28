@@ -13,6 +13,7 @@
 #include "../ModelLayer/enums.h"
 #include "../Network/Serialize.h"
 #include "../Network/InputSerial.h"
+#include "../Network/editSerial.h"
 
 class Client;
 void* thread_Listen();

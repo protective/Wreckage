@@ -60,6 +60,8 @@ namespace MESSAGE {
 		casterStatsReq,
 		casterStatsRsp,
 		activatePowerOnt,
+		requestRefObj,
+		objDeleted
 	};
 }
 

@@ -1,6 +1,7 @@
 
 #include "CompSpellBook.h"
 
+
 #include "../../Signals/SignalEnterDevClient.h"
 
 CompSpellBook::CompSpellBook() :
@@ -28,6 +29,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 }
 
 void CompSpellBook::init(){
+
 }
 
 CompSpellBook::~CompSpellBook() {

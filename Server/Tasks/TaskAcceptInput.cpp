@@ -1,9 +1,3 @@
-/* 
- * File:   TaskAcceptInput.cpp
- * Author: karsten
- * 
- * Created on 24. oktober 2014, 22:00
- */
 
 #include "TaskAcceptInput.h"
 

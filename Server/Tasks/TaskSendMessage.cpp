@@ -5,14 +5,16 @@
 #include "../ModelLayer/SObj.h"
 
 
-TaskSendMessage::TaskSendMessage(SObj* toId, Message* message) :
+TaskSendMessage::TaskSendMessage(OBJID toId, Message* message) :
 Task(0) {
 	_toId = toId;
 	_message = message;
 }
 
 uint32_t TaskSendMessage::execute(){
-	_toId->message(_message->_type, _message);
+	SObj* toobj = _processor->getObj(_toId);
+	if(toobj)
+		toobj->message(_message->_type, _message);
 	delete _message;
 	return COMMAND_FINAL;
 }

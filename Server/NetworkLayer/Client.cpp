@@ -158,6 +158,28 @@ uint32_t Client::parseBuffer(uint32_t len){
 
 					break;
 				}
+				
+				case SerialType::SerialEdit:{
+					cerr<<"SerialType::SerialEdit"<<endl;
+					SerialData* st = (SerialData*)(buffer+offset);
+
+					switch (((SerialEdit::header*)(&st[1]))->_type){
+						case SerialEdit::op::DeleteObj:{
+							SerialEdit::DeleteObj* tmp = (SerialEdit::DeleteObj*)&st[1];
+							TaskRemoveObj * t = new TaskRemoveObj(tmp->_id);
+							networkControl->addTaskToObj(t, tmp->_id);
+							break;
+						}
+						default:{
+							break;
+						}
+						
+					}
+
+					break;
+				}
+
+
 				case SerialType::SerialCmdCreateObj:{
 					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
 					

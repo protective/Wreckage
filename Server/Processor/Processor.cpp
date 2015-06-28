@@ -109,11 +109,10 @@ SObj* Processor::getObj(OBJID id){
 }
 
 void  Processor::sendMessage(OBJID to, Message* message){
-	SObj* t = getObj(to);
-	if (t){
-		TaskSendMessage* cmd = new TaskSendMessage(t, message);
-		this->addTask(cmd);
-	}
+
+	TaskSendMessage* cmd = new TaskSendMessage(to, message);
+	this->addTask(cmd);
+	
 }
 OBJID Processor::getFreeID(){
 	OBJID ret;
