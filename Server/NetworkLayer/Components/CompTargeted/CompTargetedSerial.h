@@ -25,7 +25,6 @@ SerialSendFull* allocSendFull(OBJID objId){
 	s->op = (uint32_t)SerialCompTargeted::SendFull;
 	return s;
 }
-
 }
 
 #endif	/* COMPTARGETEDSERIAL_H */

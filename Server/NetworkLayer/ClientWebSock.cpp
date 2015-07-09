@@ -138,7 +138,13 @@ void ClientWebSock::ReadBuffer(){
 		uint32_t headerlength = 2;
 		uint32_t maskLength = 4;
 		
-		for (uint32_t i = 6; i < this->outputnetworkBuf->recived; i+=1){
+		uint32_t delta = headerlength + maskLength;
+		uint32_t payloadLen = (this->outputnetworkBuf->networkBuf[1] & 0x7F);
+		cerr<<"delta "<<delta<<endl;
+		cerr<<"payloadLen "<<payloadLen<<endl;
+		
+		//decode the message using mask
+		for (uint32_t i = delta; i < delta + payloadLen; i+=1){
 			this->outputnetworkBuf->networkBuf[i] =
 					this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-6) % 4) + 2];
 		}
@@ -146,22 +152,20 @@ void ClientWebSock::ReadBuffer(){
 			maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
 		}
 		
-		uint32_t delta = headerlength + maskLength;
-		uint32_t payloadLen = (this->outputnetworkBuf->networkBuf[1] & 0x7F);
-		
+		//remove header
 		memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);
 		this->outputnetworkBuf->recived -= delta;
 		
 		result = maskstream.str();
 		cout<<"unmasked="<<result<<endl;
 		
-		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
+		for (uint32_t i = 0; i < payloadLen; i+=1){
 			cout<<this->outputnetworkBuf->networkBuf[i];
 		}	
 		cout<<endl;
 		
 		
-		parseBuffer(this->outputnetworkBuf->recived);
+		parseBuffer(payloadLen);
 
 		delta = payloadLen;
 		memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);

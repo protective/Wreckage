@@ -49,7 +49,7 @@ public:
 	
 	
 	void sendall(uint32_t clientId);
-	
+	void sendEventTargetStatChange(OBJID caster, STATS::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result);
 	
 	Processor* getProcessor(){return _processor;}
 	
@@ -97,7 +97,7 @@ public:
 		}
 	}
 	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
-	
+
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
 	bool isInit(){return (_flags & OBJFLAGINIT) ? true : false;}
 	bool isTemplate(){return (_flags & OBJFLAGTEMPLATE) ? true : false;}

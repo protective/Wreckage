@@ -15,7 +15,7 @@ define(function( require )
 
     var clock = new THREE.Clock();
     var morphs = [];
-
+    var spriteDamageNotifications = [];
     var models = [];
 	
     var UIOnClickCallBack = null;
@@ -70,7 +70,6 @@ define(function( require )
 
         animate();
     }
-    
     
     function enshureLoad (model, f) {
         if (models[0] == null) {
@@ -133,8 +132,13 @@ define(function( require )
     
     
     }
-    
     function addScene(element){
+    	scene.add(element);
+    }
+    
+    function sceneAddDamageNotification(element){
+    	spriteDamageNotifications.push(element);
+    	element['removetime'] = 5000;
     	scene.add(element);
     }
 
@@ -165,7 +169,22 @@ define(function( require )
 				morphs[ i ].updateAnimation( 1000 * delta );
 
 		}
+		
+		if ( spriteDamageNotifications.length ) {
 
+			for ( var i = 0; i < spriteDamageNotifications.length; i ++ ){
+				spriteDamageNotifications[ i ].updateAnimation(delta);
+				if(spriteDamageNotifications[ i ].animateTime <= 0){
+					scene.remove(spriteDamageNotifications[ i ]);
+					spriteDamageNotifications.splice( i, 1 );
+					i--;
+				}
+					
+			}
+
+		}
+
+		
 		render();
 		stats.update();
 
@@ -224,6 +243,7 @@ define(function( require )
 		initWebGL : initWebGL,
 		addObj : addObj,
 		render : render,
+		'sceneAddDamageNotification' : sceneAddDamageNotification,
 		'setOnClickCallback': setOnClickCallback,
 		'addElement' : addScene,
 		'container' : container

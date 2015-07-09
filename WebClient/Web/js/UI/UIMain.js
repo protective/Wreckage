@@ -16,7 +16,8 @@ define(function ( require ) {
     
     var maindiv = webGL.container;
     
-    require('UI/UINaveBar')(maindiv);    
+    require('UI/UINaveBar')(maindiv);
+    
     //
     
     function castspell() {

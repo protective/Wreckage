@@ -12,6 +12,8 @@
 
 #include "../NetworkLayer/ObjSerial.h"
 #include "Signals/SignalEnterDevClient.h"
+#include "Signals/SignalExitClient.h"
+#include "Signals/SignalEnterClient.h"
 
 
 SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
@@ -68,7 +70,18 @@ void SObj::signal(SIGNAL::Enum type, Signal* data){
 	switch(type){
 		case SIGNAL::enterDevClient:{
 			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
+			_subscribers[s->_clientId] = 2;		
 			this->sendall(s->_clientId);
+			break;
+		}
+		case SIGNAL::enterClient:{
+			SignalEnterClient* s = (SignalEnterClient*)data;
+			_subscribers[s->_clientId] = 1;
+			break;
+		}
+		case SIGNAL::exitClient:{
+			SignalExitClient* s = (SignalExitClient*)data;
+			_subscribers.erase(s->_clientId);
 			break;
 		}
 	}

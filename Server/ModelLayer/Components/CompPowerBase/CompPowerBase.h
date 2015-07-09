@@ -4,6 +4,8 @@
 
 #include "../SComponent.h"
 
+typedef uint16_t CID;
+
 class CompPowerBase  : public SComponent {
 public:
 	CompPowerBase();
@@ -29,6 +31,8 @@ private:
 	string _name;
 	string _description;
 	
+	map<CID, map<STATS::Enum, int32_t> > _base;
+	map<CID, map<STATS::Enum, STATS::Enum> > _projectileForward;
 };
 
 #endif	/* COMPPOWERBASE_H */

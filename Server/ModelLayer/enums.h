@@ -89,7 +89,6 @@ namespace PROJECTILESTATS {
 		attack,
 		whiteDamage,
 		whiteDamageCrit,
-		
 	};
 }
 
@@ -102,5 +101,38 @@ namespace DAMAGETYPES {
 		
 	};
 }
+
+namespace PowerKeys {
+	enum Enum {
+		invalid = 0,
+		targetMode = 1,
+		target = 2,
+		targetType = 3,
+		targetRange = 4,
+		
+		
+	};
+}
+namespace powerResults {
+	enum Enum {
+		invalid = 0,
+		hit,
+		miss,
+		crit
+	};
+}
+
+namespace outKeys {
+	enum Enum {
+		invalid = 0,
+		result = 1,
+		damageDone = 2,
+		healingDone = 3,
+		pos = 4
+		
+	};
+}
+
+
 #endif	/* ENUMS_H */
 

@@ -1,6 +1,11 @@
 
 #include "CompPowerBase.h"
 
+#include "../../../Processor/Processor.h"
+
+#include "../../Messages/MessageActivatePowerOnTarget.h"
+#include "../../Messages/MessagePowerCheck.h"
+
 #include "../../Signals/SignalEnterDevClient.h"
 
 
@@ -36,7 +41,16 @@ void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 }
 
 void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
-
+	switch(type){
+		case MESSAGE::activatePowerOnt:{
+			//cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
+			//MessageActivatePowerOnTarget* d = (MessageActivatePowerOnTarget*)data;
+			//_obj->setData(OBJDATA::target,(int32_t)d->target);
+			//MessagePowerCheck* msg = new MessagePowerCheck(_obj->getId());
+			//_obj->getProcessor()->sendMessage(data->_fromId, msg);
+			break;
+		}
+	}
 }
 
 void CompPowerBase::init(){

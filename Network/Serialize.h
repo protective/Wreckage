@@ -26,6 +26,7 @@ namespace SerialType{
 				SerialObjEnter = 10,
 				SerialObjExit = 11,
 				SerialObjAll = 12,
+				SerialTargetStatChange = 13,
 				SerialCmdCreateObj = 100,
 			
 	};

@@ -7,6 +7,7 @@
 
 #include "../../Messages/MessageProjectileStats.h"
 
+
 #include "GFunctions.h"
 #include <math.h>
 CompTargeted::CompTargeted() :
@@ -109,7 +110,7 @@ void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 				}
 					
 			}
-
+			this->_obj->sendEventTargetStatChange(data->_fromId, STATS::hp, 10, 5, powerResults::hit);
 			//TaskRemoveObj* task = new TaskRemoveObj(_obj->getId());
 			//_obj->getProcessor()->addTask(task);
 			break;

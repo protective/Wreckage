@@ -7,8 +7,6 @@ define(function ( require ) {
 
     function encodeCastSpellTarget(caster, target, spellId){
        
-    	alert("send " + caster.id + " " + target.id + " " + spellId);
-    	
     	spellId = 16777223;
     	var buffer = new ArrayBuffer(24);
     	var base = new Uint32Array(buffer);
