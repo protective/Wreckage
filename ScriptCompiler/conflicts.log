@@ -1,0 +1,99 @@
+Conflict:
+         {expr -> expr [plus] expr ~, [minus]}
+Choose:  {expr -> expr ~ [minus] expr, [dot]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [dot]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [plus]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [minus]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [left_c]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [right_p]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [comma]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [semicolon]}
+Choose:  {expr -> expr [plus] expr ~, [plus]}
+Conflict:
+         {expr -> expr [plus] expr ~, [dot]}
+Choose:  {varexpr -> expr ~ [dot] [id], [assignment]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [dot]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [plus]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [minus]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [left_c]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [right_p]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [comma]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [minus] expr, [semicolon]}
+Choose:  {expr -> expr [minus] expr ~, [minus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [dot]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [plus]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [minus]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [left_c]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [right_p]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [comma]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr ~ [plus] expr, [semicolon]}
+Choose:  {expr -> expr [minus] expr ~, [plus]}
+Conflict:
+         {expr -> expr [minus] expr ~, [dot]}
+Choose:  {varexpr -> expr ~ [dot] [id], [assignment]}
+Conflict:
+         {expr -> varexpr [assignment] expr ~, [minus]}
+Choose:  {expr -> expr ~ [minus] expr, [dot]}
+Conflict:
+         {expr -> varexpr [assignment] expr ~, [plus]}
+Choose:  {expr -> expr ~ [plus] expr, [dot]}
+Conflict:
+         {expr -> varexpr [assignment] expr ~, [dot]}
+Choose:  {varexpr -> expr ~ [dot] [id], [assignment]}
+Conflict:
+         {tuprefs -> tuprefs ~ [comma] tuprefs, [comma]}
+Choose:  {tuprefs -> tuprefs [comma] tuprefs ~, [comma]}
+Conflict:
+         {tuprefs -> tuprefs ~ [comma] tuprefs, [right_p]}
+Choose:  {tuprefs -> tuprefs [comma] tuprefs ~, [comma]}
+Conflict:
+         {inDecl -> inDecl ~ [comma] inDecl, [comma]}
+Choose:  {inDecl -> inDecl [comma] inDecl ~, [comma]}
+Conflict:
+         {inDecl -> inDecl ~ [comma] inDecl, [semicolon]}
+Choose:  {inDecl -> inDecl [comma] inDecl ~, [comma]}
+Conflict:
+         {varexpr -> [id] ~, [semicolon]}
+Choose:  {varDecl -> [id] ~, [semicolon]}
+Conflict:
+         {varexpr -> [id] ~, [assignment]}
+Choose:  {varDecl -> [id] ~ [assignment] expr, [semicolon]}

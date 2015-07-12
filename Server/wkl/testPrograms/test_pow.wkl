@@ -1,0 +1,16 @@
+
+def __hit__(){
+    in damage, dmgType;
+    
+    in wkl_target, wkl_missChance, wkl_critChance;
+    amount = 4;
+    hest = 45;
+    result = 1;
+    
+    a = 6;
+    b = 7;
+    (result, damage) = doPhycicalDamage(wkl_missChance, 1 + 6);
+    
+
+}
+

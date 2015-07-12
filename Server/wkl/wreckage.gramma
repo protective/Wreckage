@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include "Lexer.h"
+
+#include "Nodes/Nodes.h"
+#include "Terminals/Terminals.h"
+using namespace wkl;
+#define BinOp(a,b,c)		new BinaryOperatorExpr((NodeExpr*)a, (Terminal*)b, (NodeExpr*)c)
+
+/*** Grammar ***
+
+program		-> newline top_defs					{result = arg1;}
+			 | top_defs							{result = arg0;}
+			 | error				            {cerr<<"PARSE error"<<endl;result = arg0;}
+			 
+top_defs	-> top_def top_defs		            {((NodeTop*)arg0)->setNext((NodeTop*)arg1); result = arg0;}
+			 | top_def				            {result = arg0;}
+
+top_def		-> method							{result = arg0;}
+
+method      -> def id paramsblock block         {cerr<<"PARSE method"<<endl;result = new NodeMethod((TypeDenoter*)arg0, (Identifier*)arg1, (NodeParam*)arg2, (NodeStmt*)arg3);}
+
+stmts		-> stmt semicolon stmts				{cerr<<"PARSE stmt semicolon stmts"<<endl;((NodeStmt*)arg0)->setNext((NodeStmt*)arg2); result = arg0;}
+			 | closedStmt stmts					{cerr<<"PARSE stmt semicolon stmts"<<endl;((NodeStmt*)arg0)->setNext((NodeStmt*)arg1); result = arg0;}
+			 | stmt	semicolon					{cerr<<"PARSE stmt"<<endl;result = arg0;}
+			 | closedStmt						{cerr<<"PARSE stmt semicolon stmts"<<endl; result = arg0;}
+
+stmt		-> out outDecl						{cerr<<"PARSE out outDecl"<<endl;result = arg1;}
+			 | in inDecl						{cerr<<"PARSE in inDecl"<<endl;result = arg1;}
+             | return returnStmt                {cerr<<"PARSE return returnStmt"<<endl;result = arg1;}
+             | varDecl                          {cerr<<"PARSE varDecl Stmt"<<endl;result = arg0;}
+             | expr								{cerr<<"PARSE expr"<<endl; result = new NodeExprStmt((NodeExpr*)arg0);}
+             | tuprefblock assignment expr      {cerr<<"PARSE tuprefblock assignment expr"<<endl;result = new NodeTupAssignStmt((NodeTupDref*)arg0, (NodeExpr*)arg2);}
+
+paramsblock	-> left_p params right_p			{result = arg1;}
+			 | left_p right_p					{result = NULL;}
+params		-> param comma params				{((NodeParam*)arg0)->setNext((NodeParam*)arg2); result = arg0;}
+			 | param							{result = arg0;}
+param		-> id							    {result = new NodeParam(NULL, (Identifier*)arg0);}
+
+
+outDecl     -> id assignment expr               {cerr<<"PARSE id assignment expr"<<endl;result = new NodeOutdeclStmt((Identifier*)arg0,(NodeExpr*)arg2, NULL);}
+
+
+inDecl      -> inDecl comma inDecl              {cerr<<"PARSE in decl block"<<endl;((NodeIndeclStmt*)arg0)->setNext((NodeIndeclStmt*)arg2); result = arg0;}
+             | id                               {cerr<<"PARSE in decl"<<endl;result = new NodeIndeclStmt((Identifier*)arg0, NULL);}
+
+
+returnStmt  -> expr                             {cerr<<"PARSE returnStmt"<<endl;result = new NodeRtnStmt((NodeExpr*)arg0);}
+
+			 
+varDecl		-> id 							    {cerr<<"PARSE id"<<endl;result = new NodeVardeclStmt(NULL,(Identifier*)arg0, NULL, NULL);}
+			 | id assignment expr			    {cerr<<"PARSE id assignment expr"<<endl;result = new NodeVardeclStmt(NULL, (Identifier*)arg0,(NodeExpr*)arg2, NULL);}
+
+varexpr		-> id								{cerr<<"PARSE varexpr: id"<<endl;result = new NodeVariable((Identifier*)arg0);}
+			 | expr dot id						{cerr<<"PARSE varexpr: expr dot id"<<endl;result = new NodeAttributeAccessVariable((NodeExpr*)arg0, (Identifier*)arg2);}	
+
+block		-> left_c stmts right_c				{cerr<<"PARSE block"<<endl;result = arg1;}
+
+closedStmt	-> if expr block 					{cerr<<"PARSE closedStmt"<<endl; result = new NodeIfStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL, NULL);}
+		     | while expr block					{cerr<<"PARSE closedStmt"<<endl; result = new NodeWhileStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL);}
+
+type		-> id								{result = new TypeDenoter((Identifier*)arg0);}
+
+argblock	-> left_p args right_p 				{cerr<<"PARSE argblock"<<endl; result = arg1;}
+			 | left_p right_p					{cerr<<"PARSE argblock"<<endl; result = NULL;}
+
+args		-> arg comma args					{cerr<<"PARSE args"<<endl; ((NodeArg*)arg0)->setNext((NodeArg*)arg2); result = arg0;}
+			 | arg								{cerr<<"PARSE args"<<endl; result = arg0;}
+			 
+arg			-> expr								{cerr<<"PARSE arg"<<endl; result = new NodeArg((NodeExpr*)arg0);}
+
+
+
+tupblock	-> left_p tups right_p 				{cerr<<"PARSE tupblock"<<endl; result = arg1;}
+			 | left_p right_p					{cerr<<"PARSE tupblock"<<endl; result = NULL;}
+
+tups		-> tup comma tups					{cerr<<"PARSE tups"<<endl; ((NodeArg*)arg0)->setNext((NodeArg*)arg2); result = arg0;}
+			 | tup								{cerr<<"PARSE tups"<<endl; result = arg0;}
+			 
+tup			-> expr								{cerr<<"PARSE tup"<<endl; result = new NodeArg((NodeExpr*)arg0);}
+
+
+tuprefblock	-> left_p tuprefs right_p 			{cerr<<"PARSE tuprefblock: left_p tuprefs right_p "<<endl; result = arg1;}
+
+tuprefs		-> tuprefs comma tuprefs			{cerr<<"PARSE reftups: varexpr comma tups"<<endl; ((NodeTupDref*)arg0)->setNext((NodeTupDref*)arg2); result = arg0;}
+			 | id							    {cerr<<"PARSE reftups: varexpr"<<endl; result = new NodeTupDref(new NodeVariable((Identifier*)arg0)) ;}
+
+
+expr		-> expr minus expr					{cerr<<"PARSE minus"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr plus expr					{cerr<<"PARSE plus"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | int								{cerr<<"PARSE int"<<endl;result = new NodeLiteralExpr((IntegerLiteral*)arg0);}
+			 | varexpr argblock					{cerr<<"PARSE call"<<endl; result = new NodeCallExpr(new NodeVariableExpr((NodeVariable*)arg0), (NodeArg*)arg1);}
+			 | varexpr							{cerr<<"PARSE varexpr"<<endl;result = new NodeVariableExpr((NodeVariable*)arg0);}	
+			 | varexpr assignment expr			{cerr<<"PARSE varexpr assignment expr"<<endl;result = new NodeAssignExpr((NodeVariable*)arg0, (NodeExpr*)arg2);}	
+             	
+*/
+
