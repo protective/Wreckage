@@ -7,7 +7,7 @@
 namespace SerialEventTargetStatChange{
 
 struct SerialTargetStatChange : public SerialData{
-	STATS::Enum _statType;
+	OBJDATA::Enum _statType;
 	OBJID _target;
 	OBJID _caster;
 	powerResults::Enum _result;
@@ -15,7 +15,7 @@ struct SerialTargetStatChange : public SerialData{
 	int32_t _newVal;
 }__attribute__((__packed__));
 
-SerialTargetStatChange* allocStatChange(OBJID target, OBJID caster, STATS::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result){
+SerialTargetStatChange* allocStatChange(OBJID target, OBJID caster, OBJDATA::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result){
 	size_t size = sizeof(SerialTargetStatChange);
 	SerialTargetStatChange* s = (SerialTargetStatChange*)malloc(size);
 	s->_type = SerialType::SerialTargetStatChange;

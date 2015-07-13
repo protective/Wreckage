@@ -30,9 +30,9 @@ ProgramExecutor::ProgramExecutor(string name, SObj* obj,  Program* program, map<
 }
 
 
-uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> stack, map<uint32_t, int32_t> envContext){
+uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> stack, map<uint32_t, Variable> envContext){
 //cerr<<"execure CommandOrderThread"<<endl;
-	_mipsCredit = 100;
+	_mipsCredit = 1000;
 
 	
 	
@@ -123,7 +123,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 			case inst::sysCall:{
 				uint32_t stackArg = _program->program()[_programCounter+1];
 				_stack[_stackTop - stackArg + 1] =
-						_systemCallFuncs[ARG(ins)](_obj,(void*)(&_stack[_stackTop - stackArg +1]));
+						_systemCallFuncs[ARG(ins)](_obj, envContext, (void*)(&_stack[_stackTop - stackArg +1]));
 				_programCounter += 2;
 				break;
 			}
@@ -198,7 +198,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				uint32_t src = _program->program()[_programCounter+2];
 				for(int i = 0 ; i< ARG(ins); i++){
 					if(dest + i < _stackMax){
-						map<uint32_t, int32_t>::iterator it = envContext.find(src);
+						map<uint32_t, Variable>::iterator it = envContext.find(src);
 						if (it == envContext.end()){
 							stringstream s;
 							s<<"env variable id="<<src<<" not found";

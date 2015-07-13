@@ -3,7 +3,7 @@
 #define	COMPPOWERBASE_H
 
 #include "../SComponent.h"
-
+#include "../../../wkl/Program.h"
 typedef uint16_t CID;
 
 class CompPowerBase  : public SComponent {
@@ -33,6 +33,7 @@ private:
 	
 	map<CID, map<STATS::Enum, int32_t> > _base;
 	map<CID, map<STATS::Enum, STATS::Enum> > _projectileForward;
+	wkl::Program* _program;
 };
 
 #endif	/* COMPPOWERBASE_H */

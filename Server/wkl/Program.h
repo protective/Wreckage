@@ -17,11 +17,12 @@
 #include "Compiler/Compiler.h"
 
 using namespace std;
+namespace wkl {
 class Program {
 public:
 	friend Compiler;
 	Program(string name);
-
+	Program(const Program* p);
 	PROGRAM& program(){return _program;}
 	string name(){return _name;}
 
@@ -32,6 +33,7 @@ private:
 	map<uint32_t, uint32_t> _interruptHandlers;
 	PROGRAM _program;
 };
+}
 
 #endif	/* PROGRAM_H */
 

@@ -37,7 +37,7 @@ using namespace std;
  * 
  */
 
-wkl::Variable doDamage( SObj* obj, void* arg){
+wkl::Variable doDamage( SObj* obj, map<uint32_t, Variable> envContext,  void* arg){
 	cerr<<"HELLO WORLD"<<endl;
 	wkl::Variable u;
 	u.v = 123456;
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 	stack.push_back(0xBBBB); //retVal
 	ProgramExecutor* e = new ProgramExecutor("test", NULL, p, syscall);
 	
-	map<uint32_t, int32_t> envContext;
+	map<uint32_t, Variable> envContext;
 	envContext[1] = 9000;
 	e->run(0,1,stack, envContext);
 	

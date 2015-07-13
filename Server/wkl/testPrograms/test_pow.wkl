@@ -9,7 +9,7 @@ def __hit__(){
     
     a = 6;
     b = 7;
-    (result, damage) = doPhycicalDamage(wkl_missChance, 1 + 6);
+    (result, damage) = doPhycicalDamage(wkl_missChance, 1 + 6, 99);
     
 
 }

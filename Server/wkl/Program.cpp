@@ -15,6 +15,13 @@ Program::Program(string path){
 	
 }
 
+
+Program::Program(const Program* p){
+	_name = p->_name;
+	_program = p->_program;
+	_interruptHandlers = p->_interruptHandlers;
+}
+
 Program::~Program() {
 }
 

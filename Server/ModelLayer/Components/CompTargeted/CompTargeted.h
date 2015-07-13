@@ -4,6 +4,8 @@
 
 #include "../SComponent.h"
 
+#include "../../../wkl/Compiler/systemCallLib.h"
+
 class CompTargeted  : public SComponent {
 public:
 	CompTargeted();
@@ -24,8 +26,11 @@ public:
 	virtual ~CompTargeted();
 private:
 	virtual void init();
-	
+	map<uint32_t, wkl::systemCallFunc> _syscall;
+
 };
+
+wkl::Variable doDamage( SObj* target, map<uint32_t, wkl::Variable>, void* arg);
 
 #endif	/* COMPTARGETED_H */
 

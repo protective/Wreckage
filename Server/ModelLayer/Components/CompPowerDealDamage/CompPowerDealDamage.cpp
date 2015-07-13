@@ -43,8 +43,8 @@ void CompPowerDealDamage::acceptMessage(MESSAGE::Enum type, Message* data){
 			if(_obj->getData(OBJDATA::target)){
 				map<PROJECTILESTATS::Enum, int32_t> temp;
 				
-				MessageProjectileStats* msg = new MessageProjectileStats(_obj->getId(),temp);
-				_obj->getProcessor()->sendMessage((OBJID)_obj->getData(OBJDATA::target), msg);
+				//MessageProjectileStats* msg = new MessageProjectileStats(_obj->getId(),temp, NULL);
+				//_obj->getProcessor()->sendMessage((OBJID)_obj->getData(OBJDATA::target), msg);
 			}
 			break;
 		}

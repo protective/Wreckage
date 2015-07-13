@@ -10,7 +10,7 @@
 
 #include "../Utils/Visitor.h"
 #include "InstructionSet.h"
-using namespace wkl;
+namespace wkl{
 namespace varloc{
 	enum Enum {
 		rel = 1,
@@ -144,5 +144,5 @@ private:
 	uint32_t emitJumpToRef(uint32_t ref);
     uint32_t emitCondJumpToRef(uint32_t ref);	
 };
-
+}
 #endif	/* COMPILER_H */

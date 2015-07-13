@@ -13,7 +13,7 @@ void SObj::sendall(uint32_t clientId){
 	networkControl->sendToC(clientId, tmp, size);
 	free(tmp);
 }
-void SObj::sendEventTargetStatChange(OBJID caster, STATS::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result){
+void SObj::sendEventTargetStatChange(OBJID caster, OBJDATA::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result){
 	SerialEventTargetStatChange::SerialTargetStatChange* tmp = SerialEventTargetStatChange::allocStatChange(
 		this->getId(),
 		caster,

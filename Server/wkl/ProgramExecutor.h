@@ -19,7 +19,7 @@ class ProgramExecutor {
 public:
 	ProgramExecutor(string name, SObj* obj, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs);
 
-	uint32_t run(uint32_t obj, uint32_t functionId, list<uint32_t> stack, map<uint32_t, int32_t> envContext);
+	uint32_t run(uint32_t obj, uint32_t functionId, list<uint32_t> stack, map<uint32_t, Variable> envContext);
 	
 	uint32_t segfault(string message);	
 	uint32_t segfault();

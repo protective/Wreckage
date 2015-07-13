@@ -15,10 +15,10 @@
 
 using namespace std;
 
-
+class SObj;
 namespace wkl {
-	class SObj;
-	typedef Variable (*systemCallFunc)(SObj* obj, void*);
+	
+	typedef Variable (*systemCallFunc)(SObj* obj, map<uint32_t, Variable> envContext, void*);
 	
 	typedef struct systemCallEntry{
 		uint32_t _id;
