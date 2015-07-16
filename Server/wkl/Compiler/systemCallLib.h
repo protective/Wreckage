@@ -15,21 +15,50 @@
 
 using namespace std;
 
-class SObj;
+class SComponent;
 namespace wkl {
+	class Program;
+	typedef Variable (*systemCallFunc)(SComponent* _this, Program* program, map<uint32_t, Variable> envContext, void*);
 	
-	typedef Variable (*systemCallFunc)(SObj* obj, map<uint32_t, Variable> envContext, void*);
-	
-	typedef struct systemCallEntry{
-		uint32_t _id;
-		string _name;
-	}systemCallBack_t;	
+	typedef string systemCallBack_t;	
 
-	extern systemCallBack_t systemCallLib[];
+	typedef string systemCallBackEntry_t;
+
+	typedef string systemEnvEntry_t;
+	namespace systemCallLib{
+		
+		enum Enum {
+			phycicalDamage = 1,
+			burnMana,
+			hitTarget,
+			consume,
+			channel,
+			checkrange
+		};
+		
+		extern map<uint32_t, systemCallBack_t> lib;
+	}
+	namespace systemCallBackLib {
+		
+		enum Enum {
+			__hit__ = 1,
+			__cast__,
+			__activate_target__
+		};
+		
+		extern map<uint32_t, systemCallBackEntry_t> lib;
+	}
+	namespace systemEnvLib {
 	
-	extern systemCallBack_t systemCallBackLib[];
-	
-	extern systemCallBack_t systemEnvLib[];
+		enum Enum {
+			wkl_level = 1,
+			wkl_target,
+			wkl_missChance,
+			wkl_critChance
+		};	
+		
+		extern map<uint32_t, systemCallBack_t> lib;
+	}
 	//void initSystemCallLib(){
 	//	systemCallLib["doPhycicalDamage"] = 1;
 	//}

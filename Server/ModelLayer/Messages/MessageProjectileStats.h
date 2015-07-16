@@ -13,15 +13,19 @@
 #include "../../wkl/Program.h"
 
 struct MessageProjectileStats : public Message {
-	MessageProjectileStats(OBJID from,  wkl::Program* program, map<uint32_t, wkl::Variable> env):
+	MessageProjectileStats(OBJID from, const wkl::Program* program, map<uint32_t, wkl::Variable> env):
 	Message(MESSAGE::ProjectileStats, from){
 		_env = env;
-		_program = program;
+		_program = new wkl::Program(program);
 	}
 	MessageProjectileStats(MessageProjectileStats& m):
 	Message(MESSAGE::ProjectileStats, m._fromId){
 		_env = m._env;
-		_program = m._program;
+		_program = new wkl::Program(m._program);
+	}
+	~MessageProjectileStats(){
+		if (_program)
+			delete _program;
 	}
 	map<uint32_t, wkl::Variable> _env;
 	wkl::Program* _program;

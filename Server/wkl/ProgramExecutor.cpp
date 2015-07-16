@@ -10,9 +10,9 @@
 #include "ProgramExecutor.h"
 #include "Compiler/Compiler.h"
 
-ProgramExecutor::ProgramExecutor(string name, SObj* obj,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs) {
+ProgramExecutor::ProgramExecutor(string name, SComponent* comp,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs) {
 	_name = name;
-	_obj = obj;
+	_comp = comp;
 	_program = program;
 	_systemCallFuncs = systemCallFuncs;
 	
@@ -29,15 +29,23 @@ ProgramExecutor::ProgramExecutor(string name, SObj* obj,  Program* program, map<
 	_stackMax = 100;
 }
 
+uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, map<uint32_t, Variable> envContext){
+	list<uint32_t> arg;
+	this->run(obj, functionId, arg, envContext);
+}
 
-uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> stack, map<uint32_t, Variable> envContext){
+uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> args, map<uint32_t, Variable> envContext){
 //cerr<<"execure CommandOrderThread"<<endl;
 	_mipsCredit = 1000;
-
-	
 	
 	_programCounter = _program->getInterruptHandlers()[functionId];
 	int i = 0;
+	list<uint32_t> stack;
+	stack.push_back(0x0); //pc EOP
+	stack.push_back(0xBBBB); //retVal
+	for(auto it : args)
+		stack.push_back(it);
+	
 	for (list<uint32_t>::iterator stackit = stack.begin(); stackit!= stack.end();stackit++){
 		_stack[i++] = *stackit;
 		_stackTop = i;
@@ -123,7 +131,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 			case inst::sysCall:{
 				uint32_t stackArg = _program->program()[_programCounter+1];
 				_stack[_stackTop - stackArg + 1] =
-						_systemCallFuncs[ARG(ins)](_obj, envContext, (void*)(&_stack[_stackTop - stackArg +1]));
+						_systemCallFuncs[ARG(ins)](_comp, _program, envContext, (void*)(&_stack[_stackTop - stackArg +1]));
 				_programCounter += 2;
 				break;
 			}
@@ -244,6 +252,8 @@ void ProgramExecutor::interrupt(uint32_t programId, uint32_t handlerId, uint32_t
 		cerr<<"SProgrammable::interrupt ERROR handler not found "<<endl;
 		return;
 	}
+	
+	
 	//cerr<<"INTERRUPT "<<endl;
 	_stackTop +=1;
 	_stack[_stackTop] = _programCounter;

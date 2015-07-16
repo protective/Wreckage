@@ -26,10 +26,11 @@ void wkl::printProgram(ofstream& out, PROGRAM& p, map<uint32_t, uint32_t> interr
 	out<<endl;
 	out<<"function"<<tabPad("function", 20)<<"line"<<endl;
 	for (map<uint32_t, uint32_t>::iterator it = interruptshandlers.begin(); it!= interruptshandlers.end(); it++){
-		for(int i = 0; wkl::systemCallBackLib[i]._id; i++){
-			if (wkl::systemCallBackLib[i]._id == it->first);
-				out<<wkl::systemCallBackLib[i]._name<<tabPad(wkl::systemCallBackLib[i]._name,20)<<it->second<<endl;
-		}	
+		
+		for(auto& it2 : systemCallBackLib::lib){
+			if (it2.first == it->first);
+				out<<it2.second<<tabPad(it2.second,20)<<it->second<<endl;
+		}
 	}
 	out<<endl;
 	/*

@@ -29,6 +29,7 @@ pthread_cond_t  procesConBegin = PTHREAD_COND_INITIALIZER;
 pthread_cond_t  procesConallReady = PTHREAD_COND_INITIALIZER;
 pthread_t procesThreads[NRTHREADS];
 int threadsReady;
+std::vector<int> v = {1, 2, 3, 4};
 /*
  * 
  */

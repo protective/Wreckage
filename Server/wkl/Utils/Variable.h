@@ -37,11 +37,16 @@ namespace wkl {
 	public:
 		int32_t v;
 		VObject* t;
-		
+
 		Variable (){
 			this->v = 0;
 			this->t = NULL;
 		}	
+		
+		Variable (int32_t v){
+			this->v = v;
+			this->t = NULL;
+		}
 		
 		Variable (const Variable& v){
 			this->v = v.v;
@@ -55,11 +60,19 @@ namespace wkl {
 				delete this->t;
 		}
 		
-		inline Variable & operator+=(const Variable &rhs) {
+		inline Variable & operator+=(const Variable &rhs)
+		{
+			if(this->t)
+				delete this->t;
+			this->t = NULL;
 			this->v += rhs.v;
 			return *this;
 		}
-		inline Variable & operator-=(const Variable &rhs) {
+		inline Variable & operator-=(const Variable &rhs)
+		{
+			if(this->t)
+				delete this->t;
+			this->t = NULL;
 			this->v -= rhs.v;
 			return *this;
 		}
@@ -70,15 +83,23 @@ namespace wkl {
 				delete this->t;
 			if(rhs.t)
 				this->t = rhs.t->clone();
+			else
+				this->t = NULL;
 			return *this;
 		}
 		
 		inline Variable & operator+=(const int rhs) {
 			this->v += rhs;
+			if(this->t)
+				delete this->t;
+			this->t = NULL;
 			return *this;
 		}
 		inline Variable & operator-=(const int rhs) {
 			this->v -= rhs;
+			if(this->t)
+				delete this->t;
+			this->t = NULL;
 			return *this;
 		}
 		inline Variable & operator=(const int rhs)
@@ -91,7 +112,7 @@ namespace wkl {
 		}
 
 		operator bool() const {
-			return this->v;
+			return this->v || this->t;
 		  }
 		
 	};

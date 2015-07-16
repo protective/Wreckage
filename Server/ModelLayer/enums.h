@@ -55,13 +55,15 @@ namespace MESSAGE {
 		ProjectileStats,
 		powerCheck,
 		powerCheckRsp,
-		powerStatsReq,
+		powerStats,
 		powerStatsRsp,
 		casterStatsReq,
 		casterStatsRsp,
 		activatePowerOnt,
 		requestRefObj,
-		objDeleted
+		objDeleted,
+		programCallback
+				
 	};
 }
 

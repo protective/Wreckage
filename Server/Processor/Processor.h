@@ -28,6 +28,7 @@ public:
 	SObj* getObj(OBJID id);
 	void loadAllObjFromDb();
 	void sendMessage(OBJID to, Message* message);
+	void sendMessage(OBJID to, Message* message, uint32_t delay);
 	OBJID getFreeID();
 	pqxx::connection& getDB(){return *_dbCon;}
 	

@@ -8,7 +8,7 @@
 #include "../../Messages/MessageActivatePowerOnTarget.h"
 #include "../../Messages/MessagePowerCheck.h"
 #include "../../Messages/MessageProjectileStats.h"
-
+#include "../../Messages/MessagePowerStats.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 
@@ -46,20 +46,12 @@ void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
-		case MESSAGE::activatePowerOnt:{
+		case MESSAGE::powerStats :{
 			//cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
-			MessageActivatePowerOnTarget* msg = (MessageActivatePowerOnTarget*)data;
-			
-			
-			
-			map<uint32_t, Variable> envContext;
-			envContext[1] = 1;
-			envContext[2] = 2;
-			envContext[3] = 10;
-			envContext[4] = 90;
-			
-			MessageProjectileStats* outmsg = new MessageProjectileStats(_obj->getId(),_program,envContext);
-			//_obj->setData(OBJDATA::target,(int32_t)d->target);
+			MessagePowerStats* msg = (MessagePowerStats*)data;
+	
+			map<uint32_t, wkl::Variable> envContext;
+			MessagePowerStats* outmsg = new MessagePowerStats( _obj->getId(), _program, envContext, msg->_target);
 			
 			_obj->getProcessor()->sendMessage(data->_fromId, outmsg);
 			break;

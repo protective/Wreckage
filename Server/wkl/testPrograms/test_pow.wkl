@@ -1,4 +1,10 @@
 
+def __activate_target__(){
+    in wkl_target;
+    
+    _wkl_channel(wkl_target, 4, 1000);
+}
+
 def __hit__(){
     in damage, dmgType;
     
@@ -9,7 +15,7 @@ def __hit__(){
     
     a = 6;
     b = 7;
-    (result, damage) = doPhycicalDamage(wkl_missChance, 1 + 6, 99);
+    (result, damage) = _wkl_phycicalDamage(wkl_missChance, 1 + 6, 99);
     
 
 }

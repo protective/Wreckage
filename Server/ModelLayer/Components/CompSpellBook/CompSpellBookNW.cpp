@@ -6,6 +6,7 @@
 
 #include "../../../../Network/InputSerial.h"
 #include "../../Messages/MessageActivatePowerOnTarget.h"
+#include "../../Messages/MessagePowerStats.h"
 
 #include "../../../NetworkLayer/Components/CompSpellBook/CompSpellBookSerial.h"
 
@@ -16,9 +17,11 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 	switch(data->_type) {
 		case SERIALINPUT::SerialInputCastPower :{
 			SerialInputCastPower* d = (SerialInputCastPower*)data;
-			MessageActivatePowerOnTarget* msg = new MessageActivatePowerOnTarget(_obj->getId(),d->_target);
-			_loadedPowers[d->_power];
+			
+			MessagePowerStats* msg = new MessagePowerStats(_obj->getId(),d->_target);
+			//_loadedPowers[d->_power];
 			cerr<<"send msg"<<endl;
+
 			_obj->getProcessor()->sendMessage(d->_power, msg);
 			break;
 		}

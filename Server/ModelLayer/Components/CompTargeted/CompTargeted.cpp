@@ -3,11 +3,12 @@
 #include "../../../Tasks/TaskRemoveObj.h"
 #include "../../../Processor/Processor.h"
 #include "../../../wkl/ProgramExecutor.h"
+#include "../../../wkl/Program.h"
 #include "../../../ModelLayer/SObj.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 
-#include "../../Messages/MessageProjectileStats.h"
+#include "../../Messages/MessageProgramCallback.h"
 
 
 #include "GFunctions.h"
@@ -34,16 +35,16 @@ void CompTargeted::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
-		case MESSAGE::ProjectileStats:{
+		case MESSAGE::programCallback:{
 			
 			
-			MessageProjectileStats* msg = (MessageProjectileStats*)data;
+			MessageProgramCallback* msg = (MessageProgramCallback*)data;
 			
-			wkl::ProgramExecutor* p = new wkl::ProgramExecutor("", _obj, msg->_program, _syscall);
-			list<uint32_t> stack;
-			stack.push_back(0x0); //pc EOP
-			stack.push_back(0xBBBB); //retVal
-			p->run(_obj->getId(),1, stack, msg->_env);
+			wkl::ProgramExecutor* pe = new wkl::ProgramExecutor("" ,this, msg->_program, _syscall);
+
+			if(msg->_program->getInterruptHandlers().find(msg->_functionId) != msg->_program->getInterruptHandlers().end())
+				pe->run(_obj->getId(), msg->_functionId, msg->_env);
+
 		}
 
 	}
@@ -52,13 +53,15 @@ void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 void CompTargeted::init(){
 	_objDataAcces.push_back(OBJDATA::hp);
 	_objDataAcces.push_back(OBJDATA::maxhp);
-	
-	_syscall[1] = doDamage;
+
 }
 
-wkl::Variable doDamage(SObj* target, map<uint32_t, wkl::Variable> envContext, void* arg){
+map<uint32_t, wkl::systemCallFunc> CompTargeted::_syscall = 		
+	{{wkl::systemCallLib::phycicalDamage, CompTargeted::phycicalDamage}};
+
+wkl::Variable CompTargeted::phycicalDamage(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg){
 	
-	
+	SObj* target = _this->getObj();
 	wkl::Variable* args = (wkl::Variable*)arg;
 	cout<<"Projectile Hit"<<endl;
 	int32_t  level, attack, missP, critP, damageNormal, damageCrit;

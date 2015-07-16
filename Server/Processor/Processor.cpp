@@ -109,11 +109,16 @@ SObj* Processor::getObj(OBJID id){
 }
 
 void  Processor::sendMessage(OBJID to, Message* message){
-
 	TaskSendMessage* cmd = new TaskSendMessage(to, message);
 	this->addTask(cmd);
-	
 }
+
+void  Processor::sendMessage(OBJID to, Message* message, uint32_t delay){
+	TaskSendMessage* cmd = new TaskSendMessage(to, message, delay);
+	this->addTask(cmd);
+}
+
+
 OBJID Processor::getFreeID(){
 	OBJID ret;
 	pthread_mutex_lock(&_lockFreeID);

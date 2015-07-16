@@ -43,6 +43,7 @@ public:
 	void virtual dbLoad(){}
 	COMPID::Enum getType(){return _type;}
 	uint32_t serialize(const char*){}
+	SObj* getObj(){return _obj;};
 	list<OBJDATA::Enum>& getDataAccesUssage(){return _objDataAcces;}
 	virtual ~SComponent(){}
 protected:

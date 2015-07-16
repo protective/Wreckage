@@ -4,6 +4,8 @@
 
 #include "../SComponent.h"
 
+#include "../../../wkl/Compiler/systemCallLib.h"
+
 class CompSpellBook  : public SComponent {
 public:
 	CompSpellBook();
@@ -27,6 +29,11 @@ private:
 
 	list<OBJID> _knownPowers;
 	vector<OBJID> _loadedPowers;
+	
+	//systemCalls implemented by this component
+	static map<uint32_t, wkl::systemCallFunc> _syscall;
+	static wkl::Variable consume(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg);
+	static wkl::Variable channel(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg);
 };
 
 #endif	/* COMPSPELLBOOK_H */

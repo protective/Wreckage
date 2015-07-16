@@ -9,16 +9,16 @@ Compiler::Compiler(string programPath) {
 	_programPath = programPath;
 	_inStatic = true;
 	_step = Step::allocation;
-	for(int i = 0; wkl::systemCallLib[i]._id; i++){
-		vTableEntry temp(wkl::systemCallLib[i]._name, i, varloc::abs, 0, wkl::systemCallLib[i]._id);
+	
+	for (auto& it : systemCallLib::lib) {
+		vTableEntry temp(it.second, it.first, varloc::abs, 0, it.first);
+		_vtable.push_back(temp);	
+	}
+
+	for (auto& it : systemEnvLib::lib) {
+		vTableEntry temp(it.second, it.first, varloc::env, 0, 0);
 		_vtable.push_back(temp);
 	}
-	
-	for(int i = 0; wkl::systemEnvLib[i]._id; i++){
-		vTableEntry temp(wkl::systemEnvLib[i]._name, i, varloc::env, 0, 0);
-		_vtable.push_back(temp);
-	}	
-
 
 }
 
@@ -191,11 +191,11 @@ void Compiler::visit(NodeMethod* node){
 		vTableEntry v(node->variable()->name(),program().size(),varloc::abs);
 		_vtable.push_back(v);
 		
-		for(int i = 0 ; wkl::systemCallBackLib[i]._id; i++){
-			if (wkl::systemCallBackLib[i]._name == node->variable()->name()){
+		for (auto& it : systemCallBackLib::lib) {
+			if (it.second == node->variable()->name()){
 				cerr<<"found interrupt handler"<<endl;
-				_interruptHandlers[wkl::systemCallBackLib[i]._id] = program().size();
-			}
+				_interruptHandlers[it.first] = program().size();
+			}			
 		}
 		if(node->block()){
 			_scopeRef.push_back(0);

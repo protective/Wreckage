@@ -7,6 +7,7 @@ class Message;
 class TaskSendMessage : public Task {
 public:
 	TaskSendMessage(OBJID _toId, Message* _message);
+	TaskSendMessage(OBJID _toId, Message* _message, uint32_t delay);
 	virtual uint32_t execute();
 	virtual ~TaskSendMessage();
 private:
