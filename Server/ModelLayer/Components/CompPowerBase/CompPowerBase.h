@@ -18,8 +18,13 @@ public:
 	
 	void sendFull(uint32_t clientId);
 	
+	//setFunctions
+	void setName(string name);
+	void setDescription(string description);
+	void compileProgram(string src);
+	
 	void virtual dbInit();
-	void virtual dbTableInit(pqxx::connection& con);
+	void static dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();
@@ -30,9 +35,8 @@ private:
 	
 	string _name;
 	string _description;
-	
-	map<CID, map<STATS::Enum, int32_t> > _base;
-	map<CID, map<STATS::Enum, STATS::Enum> > _projectileForward;
+	string _programSource;
+	string _sym;
 	wkl::Program* _program;
 };
 

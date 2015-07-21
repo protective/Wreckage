@@ -3,11 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sstream>
 #include <assert.h>
 
 #define token 	bufstart
 
-Lexer::Lexer(istream* input)
+Lexer::Lexer(stringstream* input)
 	: pos(1, 0) {
 	this->input = input;
 	indent = 0;
@@ -39,12 +40,15 @@ void Lexer::fill(){
 	//Read data
 	int reqbyte =  buffer + BUF_SIZE - limit;
 	input->read(limit, reqbyte);
-	limit += input->gcount();
+	uint32_t move = input->gcount();
+	limit += move;
 
 	//Handle EOF and possible errors
 	if(input->eof()){
-		*limit = 0x4; //eof
-		limit++;
+		//*limit = 0x4; //eof
+		uint8_t* tmp = (uint8_t*)limit;
+		*tmp = 0x4;
+		//limit++;
 	}else if(input->fail()){
 		//TODO: Handle IO error
 		fprintf(stderr, "Error reading input file!\n");

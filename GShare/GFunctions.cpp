@@ -69,6 +69,11 @@ void printBuffer(char* buffer, uint32_t len){
 								<<"\ttarget "<<scp->_target<<endl;
 								break;
 							}
+							case SERIALINPUT::SerialIndputSetCompValue:{
+								SerialInputPayload* scp = (SerialInputPayload*)(&st[1]);
+								
+								break;
+							}
 							default:{
 								cerr<<"UNKNOWN Serial Input Type"<<endl;
 							}

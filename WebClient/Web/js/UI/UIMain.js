@@ -23,10 +23,11 @@ define(function ( require ) {
     function castspell() {
     	_playerObj.compSpellBook.castSpellTarget(_playerTarget);
     }
-    
+
     function setPlayerUnit(obj) {
     	_playerObj = obj;
-    	UIKeyInput.hookKey(81,castspell);	
+    	UIKeyInput.hookKey(81,castspell);
+    	//UIKeyInput.hookKey(87,setCompPowerBaseProgram);
     }
      
     function setTarget(obj) {

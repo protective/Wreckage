@@ -16,6 +16,7 @@ define( ['jquery'], function( jQuery )
     	
     	
         switch(e.which) {
+        	/*
             case 37: // left
             break;
 
@@ -27,7 +28,7 @@ define( ['jquery'], function( jQuery )
 
             case 40: // down
             break;
-
+	*/
             default: return; // exit this handler for other keys
         }
         e.preventDefault(); // prevent the default action (scroll / move caret)

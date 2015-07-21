@@ -14,7 +14,31 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 
 	var keyValueTable = require('text!templates/keyValueTable.html');
 
-    
+	var tmp3 = $('body');
+	tmp3.on('keydown', '.mytextarea', function(event) {
+		/*
+		var target = event.target;
+		
+        if (event.keyCode === 9) { // tab was pressed
+
+            // get caret position/selection
+            var val = target.value,
+                start = target.selectionStart,
+                end = target.selectionEnd;
+
+            // set textarea value to: text before caret + tab + text after caret
+            target.value = val.substring(0, start) + '\t' + val.substring(end);
+
+            // put caret at right position again
+            target.selectionStart = target.selectionEnd = start + 1;
+
+            // prevent the focus lose
+            return false;
+
+        }
+        */
+	});
+	
     Obj.prototype.createObjInfoPanel = function (obj) {
     	
     	if('UIDevObjInfoPanel' in obj)
@@ -44,23 +68,40 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	        	var cell1 = row.insertCell(0);
 	        	
 	        	var button = document.createElement('button');
-	        	button.className = "ko";
+	        	button.id = obj.id + '_' + i ;
 	        	button["title"] = "hest";
 	        	button["data-toggle"] = "popover";
 	        	
-	    		var keyval = {'keyval' : obj[tempComponents[i]].getKeyValues()}; 	
-
-	    		
-	    		var yy = _.template(keyValueTable)(keyval);
+	        	button.keyval = {'id' : button.id,
+	        			'keyval' : obj[tempComponents[i]].getKeyValues()}; 	
 	        	
-	        	//button["data-content"]= yy;
+	        	button.myhest = function(){alert(1);};
+
 	        	button.innerText = tempComponents[i];
 	        	cell1.appendChild(button);
-	        	$('.ko').popover({
+	        	var tmp = $('#' + obj.id + '_' + i);
+	        	tmp.popover({
 	                'html' : true,
 	                content: function() {
+	                	var yy = _.template(keyValueTable)(this.keyval);
 	                    return yy;
 	                }});
+            	var tmp2 = $('body');
+
+            	tmp2.on('click', '#comsave'+ button.id, function() {
+            		
+            		for (var j in button.keyval['keyval']['entries']){
+            			if (button.keyval['keyval']['entries'][j]['save']){
+            				var value = $('#comfield' + j + button.id)[0].value;    
+            				
+            				button.keyval['keyval']['entries'][j]['save'].call(obj[tempComponents[i]], value);
+            			}
+            		}
+            		//button.keyval.sendProgramSrc(this.value)
+            		
+            	} );
+	        	
+	        	
 	        	
         	}
     	}

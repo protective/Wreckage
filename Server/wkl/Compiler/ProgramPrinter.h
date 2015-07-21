@@ -19,7 +19,7 @@ namespace wkl {
 	void printProgram(ofstream& out, PROGRAM& p, map<uint32_t, uint32_t> interruptshandlers);
 	string toHex(uint32_t hex, uint32_t pad);
 	string tabPad(string topad, uint32_t len);
-	void printProgram(ofstream& out, PROGRAM& p, map<uint32_t, uint32_t> interruptshandlers);
+	void printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interruptshandlers);
 }
 
 #endif	/* SPROGARMPRINTER_H */

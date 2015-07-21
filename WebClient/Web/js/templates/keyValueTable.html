@@ -3,21 +3,21 @@
     
     <tr>
         <th>
-            <button class="btn-submit-comp"></button>
+            <button class="btn-submit-comp" id="comsave<%= id %>">Save</button>
         </th>
-        <th></th>
+        <th><%= id  %></th>
     </tr>
     <tr>
-        <th>Key</th>
-        <th>Value</th>
+        <th> <%= keyval["compName"] %> </th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
-    <% for(var i in keyval) { %>
+    <% for(var i in keyval["entries"]) { %>
     <tr>
         <td class="filterable-cell"><%= i %></td>
         <td class="filterable-cell">
-            <input class="form-control" type="text" value= <%= keyval[i] %> >
+            <textarea class="mytextarea" id="comfield<%= i + id  %>" type="text"> <%= keyval["entries"][i].value %></textarea>
         </td>
 
     </tr>

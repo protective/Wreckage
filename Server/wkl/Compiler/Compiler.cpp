@@ -5,10 +5,25 @@
 #include "ProgramPrinter.h"
 #include "../Program.h"
 
-Compiler::Compiler(string programPath) {
+Compiler::Compiler(string programPath, bool fromFile) {
 	_programPath = programPath;
 	_inStatic = true;
+	_fromFile = fromFile;
+	if(!_fromFile)
+		_programSrc = programPath;
 	_step = Step::allocation;
+}
+
+Compiler::Compiler(string programScr) {
+	_programSrc = programScr;
+	_inStatic = true;
+	_step = Step::allocation;
+	_fromFile = false;
+}
+
+
+uint32_t Compiler::compile(Program* program, ostream& outAsm){
+	cerr<<"execute Compiler"<<endl;
 	
 	for (auto& it : systemCallLib::lib) {
 		vTableEntry temp(it.second, it.first, varloc::abs, 0, it.first);
@@ -19,16 +34,29 @@ Compiler::Compiler(string programPath) {
 		vTableEntry temp(it.second, it.first, varloc::env, 0, 0);
 		_vtable.push_back(temp);
 	}
-
-}
-
-uint32_t Compiler::compile(Program* program){
-	cerr<<"execute Compiler"<<endl;
-	stringstream s;
+	
+	
+	stringstream s(_programPath);
 	s<<_programPath;
 	cerr<<s.str()<<endl;
-	ifstream is(s.str().c_str());
-	Lexer lexer(&is);
+	
+	
+	stringstream input;
+	if(_fromFile){
+		ifstream file(s.str().c_str());
+		while (!file.eof()){
+			int c = file.get();
+			cerr<<"c="<<c<<endl;
+			if(c>=0 && c != 4)
+				input.put(c);
+		}
+	}else{
+		cerr<<_programSrc<<endl;
+		input.write(_programSrc.c_str(),_programSrc.size());
+		//input.setstate(ios_base::eofbit);
+	}
+	
+	Lexer lexer(&input);
 	
 	Node* result = parse(&lexer);
 
@@ -37,12 +65,12 @@ uint32_t Compiler::compile(Program* program){
 	s.clear();
 	s<<_programPath<<".dot";
 	cerr<<s.str()<<endl;
-	ofstream dotfile(s.str().c_str());
-	DotBuilder dot(dotfile);
-	dot.visit(result);
-	result->accept(&dot);
-	dot.finalise();
-	dotfile.flush();
+	//ofstream dotfile(s.str().c_str());
+	//DotBuilder dot(dotfile);
+	//dot.visit(result);
+	//result->accept(&dot);
+	//dot.finalise();
+	//dotfile.flush();
 	
 	
 	//TypeChecker typecheck;
@@ -64,8 +92,8 @@ uint32_t Compiler::compile(Program* program){
 	s.str("");
 	s.clear();
 	s<<_programPath<<".asm";	
-	ofstream asmPrinter(s.str().c_str());
-	wkl::printProgram(asmPrinter,_program, _interruptHandlers);
+	//ofstream asmPrinter(s.str().c_str());
+	wkl::printProgram(outAsm,_program, _interruptHandlers);
 	program->_interruptHandlers = _interruptHandlers;
 	program->_program = _program;
 	//_processor->getPrograms()[_programPath] = p;
@@ -184,7 +212,7 @@ void Compiler::visit(NodeWhileStmt* node){
 
 void Compiler::visit(NodeMethod* node){
 	if(_step == Step::main){
-		emitNOP();
+		
 		if(node->variable()->name() == "main"){
 			_mainFunctionPC = program().size();
 		}
@@ -195,8 +223,11 @@ void Compiler::visit(NodeMethod* node){
 			if (it.second == node->variable()->name()){
 				cerr<<"found interrupt handler"<<endl;
 				_interruptHandlers[it.first] = program().size();
+				emitFUN(it.first);
+				break;
 			}			
 		}
+		
 		if(node->block()){
 			_scopeRef.push_back(0);
 			if(node->param())

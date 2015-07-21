@@ -5,9 +5,9 @@ var require = {
     },
     paths: {
     
-        "jquery" : "//code.jquery.com/jquery-2.1.1.min",
-        "jquery-ui" : "//code.jquery.com/ui/1.11.4/jquery-ui",
-        "bootstrap" :  "libs/bootstrap-min",
+        "jquery" : "libs/jquery-2.1.1",
+        "jquery-ui" : "libs/jquery-ui",
+        "bootstrap" :  "libs/bootstrap",
         'text': "libs/text",
         'underscore': "libs/underscore-min",
         'backbone': "libs/backbone-min"

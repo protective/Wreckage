@@ -15,11 +15,13 @@
 
 CompPowerBase::CompPowerBase() :
 SComponent(COMPID::powerBase){
+	_program = NULL;
 	init();
 }
 
 CompPowerBase::CompPowerBase(const CompPowerBase& orig) :
 SComponent(COMPID::powerBase){
+	_program = NULL;
 	init();
 }
 
@@ -60,9 +62,35 @@ void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
 }
 
 void CompPowerBase::init(){
-	
-	_program = new wkl::Program("wkl/testPrograms/test_pow.wkl");
-	
+	if (_program == NULL){
+		//_program = new wkl::Program("wkl/testPrograms/test_pow.wkl", false);
+		_description = "";
+		_name = "FROST BOLT";
+		_programSource = "";
+		_sym = "";
+	}else{
+		_description = "";
+		_name = "";
+		_programSource = "";
+		_sym = "";
+	}
+}
+
+void CompPowerBase::compileProgram(string src){
+	stringstream outasm;
+	if(_program)
+		delete _program;
+	_program = new wkl::Program(src, outasm);
+	_sym = outasm.str();
+	_programSource = src;
+	cerr<<_sym<<endl;
+	dbSave();
+}
+void CompPowerBase::setName(string name){
+	_name = name;
+}
+void CompPowerBase::setDescription(string description){
+	_description = description;
 }
 
 CompPowerBase::~CompPowerBase() {

@@ -12,6 +12,14 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 		case SERIALINPUT::SerialInputCastPower :{
 			break;
 		}
+		case SERIALINPUT::SerialIndputSetCompValue : {
+			SerialIndputSetCompValue* d = (SerialIndputSetCompValue*)data;
+			if(d->_compId == COMPID::powerBase){
+				SerialCompPowerBase::setvalue(this, (SerialCompPowerBase::SerialSetField*)&d[1]);
+				
+			}
+		
+		}
 	}
 
 }
@@ -21,7 +29,8 @@ void CompPowerBase::sendFull(uint32_t clientId){
 	SerialCompPowerBase::SerialSendFull* tmp = SerialCompPowerBase::allocSendFull(
 			this->_obj->getId(),
 			this->_name,
-			this->_description);
+			this->_description,
+			this->_programSource);
 	
 	networkControl->sendToC(clientId, tmp, tmp->_size);
 	free(tmp);

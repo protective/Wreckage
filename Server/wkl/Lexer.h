@@ -6,6 +6,7 @@
 class Lexer;
 
 #include <iostream>
+#include <streambuf>
 #include "Utils/SourcePosition.h"
 
 using namespace std;
@@ -13,7 +14,7 @@ class Terminal;
 class Lexer{
 public:
 	/** Create lexer from input stream */
-	Lexer(istream* input);
+	Lexer(stringstream* input);
 	/** Get next token from the lexer */
 	Terminal* nextToken();
 	/** Destruct and release buffer */
@@ -24,7 +25,7 @@ private:
 	/** Fill the buffer */
 	void fill();
 	/** Current input stream */
-	istream* input;
+	stringstream* input;
 	/** Start of unread buffer contents */
 	char* cursor;
 	/** Marks the end of buffer contents */

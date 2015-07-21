@@ -53,18 +53,22 @@ void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 			}
 			if(_spawn == 0){
 				if( world->getTime() > _spawnTime){
-					
+					/*
 					OBJID id = _obj->getProcessor()->getFreeID();
 					cerr<<"Spwan new unit id ="<<id<<endl;
-					TaskCreateObj* task = new TaskCreateObj(id,1,true);
-					CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
-					if(!task->addComponent(cmp))
-						delete cmp;
-					task->addPos(new SPos(*(_obj->getPos())));
-					_obj->getProcessor()->addTask(task);
-					_spawn = id;
-					__timeout = 10000;
-					this->dbSave();
+					cerr<<"_spawn="<<_spawn<<endl;
+					cerr<<"_timeout="<<__timeout<<endl;
+					cerr<<"_spawnTime="<<_spawnTime<<endl;
+					//TaskCreateObj* task = new TaskCreateObj(id,1,true);
+					//CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
+					//if(!task->addComponent(cmp))
+					//	delete cmp;
+					//task->addPos(new SPos(*(_obj->getPos())));
+					//_obj->getProcessor()->addTask(task);
+					//_spawn = id;
+					//__timeout = 10000;
+					//this->dbSave();
+					 * */
 				}
 			}
 			SignalProcess* dataP = (SignalProcess*)data;

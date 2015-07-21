@@ -11,6 +11,7 @@ namespace wkl {
 namespace inst{
 	enum Enum{
 		NOP			= 0x00000000,
+		FUN		= 0x00100000,
 		EOP         = 0x00010000, //i
 		jmpR        = 0x00310000,
 		jmpA_1      = 0x00320000,

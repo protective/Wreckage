@@ -20,16 +20,18 @@ string wkl::tabPad(string topad, uint32_t len){
         tab<<" ";
     return tab.str();
 }
-void wkl::printProgram(ofstream& out, PROGRAM& p, map<uint32_t, uint32_t> interruptshandlers){
+void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interruptshandlers){
     uint32_t line = 0;
     out<<"no instruction ="<<p.size()<<endl;
 	out<<endl;
-	out<<"function"<<tabPad("function", 20)<<"line"<<endl;
+	out<<"function"<<tabPad("function", 25)<<"line"<<endl;
 	for (map<uint32_t, uint32_t>::iterator it = interruptshandlers.begin(); it!= interruptshandlers.end(); it++){
 		
 		for(auto& it2 : systemCallBackLib::lib){
-			if (it2.first == it->first);
-				out<<it2.second<<tabPad(it2.second,20)<<it->second<<endl;
+			if (it2.first == it->first){
+				out<<it2.second<<tabPad(it2.second,25)<<it->second<<endl;
+				break;
+			}
 		}
 	}
 	out<<endl;
@@ -56,6 +58,12 @@ void wkl::printProgram(ofstream& out, PROGRAM& p, map<uint32_t, uint32_t> interr
             {
                 name = "...NOP...";
                 haveArg = false;
+                break;
+            }
+			case inst::FUN:
+            {
+                name = "...FUN...";
+                haveArg = true;
                 break;
             }
 			case inst::EOP:

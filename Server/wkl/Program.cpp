@@ -7,14 +7,33 @@
 
 #include "Program.h"
 
-Program::Program(string path){
-	_name = path;
-	Compiler* c = new Compiler(path); 
-	c->compile(this);
+Program::Program(string scr, ostream& outAsm){
+	_name = "testProgram";
+	Compiler* c = new Compiler(scr); 
+	c->compile(this, outAsm);
 	delete c;
-	
 }
 
+Program::Program(string path, bool fromFile, ostream& outAsm){
+	_name = "testProgram";
+	Compiler* c = new Compiler(path, fromFile); 
+	c->compile(this, outAsm);
+	delete c;
+}
+
+Program::Program(string name, const PROGRAM& praw){
+	_name = name;
+	_program = praw;
+	
+	uint32_t i = 0;
+	for(wkl::INSTRUCTION& it : _program){
+		if (OPCODE(it) == wkl::inst::FUN){
+			_interruptHandlers[ARG(it)] = i;	
+		}
+		i++;
+ 	}
+
+}
 
 Program::Program(const Program* p){
 	_name = p->_name;

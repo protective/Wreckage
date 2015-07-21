@@ -68,8 +68,9 @@ typedef vector<INSTRUCTION> PROGRAM;
 class Program;
 class Compiler : public Visitor {
 public: 
-	Compiler(string programPath);
-	virtual uint32_t compile(Program* program);
+	Compiler(string programPath, bool fromFile);
+	Compiler(string programscr);
+	virtual uint32_t compile(Program* program, ostream& outAsm);
 	PROGRAM& program(){return _program;}
     //list<systemCallFunc> getGlobalSystemCallLibs();
 	virtual void visit(Node* node){};
@@ -106,8 +107,12 @@ private:
 	uint32_t _mainFunctionPC;
 	Step::Enum _step;
 	bool _inStatic;
+	bool _fromFile;
+	
 	vTableEntry* vtableFind(string id);
 	string _programPath;
+	string _programSrc;
+	
 	PROGRAM _program;
 
 	uint32_t relpos(uint32_t pos){
@@ -132,6 +137,7 @@ private:
 	void emitPushPC();
 	uint32_t emitPushRPC();
 	void emitNOP();
+	void emitFUN(uint32_t functionId);
 	void emitEOP();
 	void emitReturn();
 	void emitBOAddPush();

@@ -148,6 +148,14 @@ uint32_t Client::parseBuffer(uint32_t len){
 							memcpy(data, &st[1], sizeof(SerialInputCastPower));
 							break;
 						}
+						case SERIALINPUT::SerialIndputSetCompValue:{
+							//TODO security
+							uint32_t tmp = st->_size;
+							
+							data = (SerialInputPayload*)malloc(st->_size);
+							memcpy(data, &st[1], st->_size);
+							break;
+						}
 						default:{
 							break;
 						}

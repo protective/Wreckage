@@ -226,6 +226,10 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 1;
 				break;
 			}
+			case inst::FUN:{
+				_programCounter += 1;
+				break;
+			}
 			case inst::EOP:{
 				cerr<<"EOP exit OK"<<endl;
 				//TODO

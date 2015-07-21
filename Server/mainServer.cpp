@@ -84,8 +84,7 @@ int main(int argc, char** argv) {
 	CompModelStatic cms;
 	cms.dbTableInit(con);
 	
-	CompPowerBase cpb;
-	cpb.dbTableInit(con);
+	CompPowerBase::dbTableInit(con);
 	
 	world = new SWorld(NULL);
 	SDL_Init(SDL_INIT_TIMER);
@@ -133,7 +132,7 @@ int main(int argc, char** argv) {
 		//************
 		if ( SDL_GetTicks() > fpstimer +10000){
 			fpstimer = SDL_GetTicks();
-			cerr<<"fps "<<fpscounter/10<<endl;
+			//cerr<<"fps "<<fpscounter/10<<endl;
 			fpscounter = 0;
 		}
 		world->proces(0);

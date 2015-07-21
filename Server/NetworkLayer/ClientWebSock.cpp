@@ -82,30 +82,34 @@ void ClientWebSock::handshake(){
 
 
 void ClientWebSock::sendToC(void* block, uint32_t len){
+	
+
+	uint32_t header = 2;
+	if(len >= 126)
+		header = 4;
+	char buffer[len + header];
+	memcpy(buffer + header, block, len);
+	if(len < 126){
+		buffer[0] = (char)0x82;
+		buffer[1] = (char)( len);
+	}else{
+		buffer[0] = (char)0x82;
+		buffer[1] = (char)(126);
+		buffer[2] = len >> 8;
+		buffer[3] = len & 0xFF;
+		//uint16_t* tmp = (uint16_t*)&(buffer[2]);
+		//*tmp = len;
+	}
 	stringstream sstream;
-	cerr<<"send"<<endl;
-	for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
-		sstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
-	}		
+	for (uint32_t i = 0; i < len; i+=1){
+		sstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(buffer[i] & 0x00FF) << " ";
+	}
 	std::string result = sstream.str();
 	cout<<"send    ="<<result<<endl;	
-		
-	char buffer[len +2];
-	memcpy(buffer+2, block,len);
-	
-	buffer[0] = (char)0x82;
-	buffer[1] = (char)( len);
-	/*
-	buffer[2] = 0;
-	buffer[3] = 0;
-	buffer[4] = 0;
-	buffer[5] = 0;
-	
-	for (uint32_t i = 6; i < len + 6; i+=1){
-		buffer[i] = ((char*)block)[i] ^ buffer[((i-6) % 4) + 2];
-	}
-	*/
-	send(this->getSocket(), (void*)buffer, len+2,MSG_NOSIGNAL);
+	uint16_t* read;
+	read = (uint16_t*)buffer;
+
+	send(this->getSocket(), (void*)buffer, len + header, MSG_NOSIGNAL);
 	cerr<<"done send"<<endl;
 }
 
@@ -137,16 +141,20 @@ void ClientWebSock::ReadBuffer(){
 
 		uint32_t headerlength = 2;
 		uint32_t maskLength = 4;
-		
-		uint32_t delta = headerlength + maskLength;
 		uint32_t payloadLen = (this->outputnetworkBuf->networkBuf[1] & 0x7F);
+
+		if ((this->outputnetworkBuf->networkBuf[1] & 0x7F) == 126){
+			payloadLen = (uint32_t)(this->outputnetworkBuf->networkBuf[3] | (this->outputnetworkBuf->networkBuf[2]<<8));
+			headerlength = 4;
+		}
+		uint32_t delta = headerlength + maskLength;
 		cerr<<"delta "<<delta<<endl;
 		cerr<<"payloadLen "<<payloadLen<<endl;
 		
 		//decode the message using mask
 		for (uint32_t i = delta; i < delta + payloadLen; i+=1){
 			this->outputnetworkBuf->networkBuf[i] =
-					this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-6) % 4) + 2];
+					this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-delta) % 4) + headerlength];
 		}
 		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
 			maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";

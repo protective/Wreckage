@@ -21,7 +21,9 @@ namespace wkl {
 class Program {
 public:
 	friend Compiler;
-	Program(string name);
+	Program(string scr, ostream& outAsm);
+	Program(string path, bool fromFile, ostream& outAsm);
+	Program(string name, const PROGRAM& praw);
 	Program(const Program* p);
 	PROGRAM& program(){return _program;}
 	string name(){return _name;}

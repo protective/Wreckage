@@ -7,8 +7,9 @@ define( ['require','jquery-ui'], function( require)
 
 	CompPowerUseCheck.prototype.getKeyValues = function() {
 		
-		return {'compName': 'CompPowerUseCheck', 'timer' : 1};
-		
+		return {'compName' : 'CompPowerUseCheck',
+			'entries' : {}
+			}
 	}
 	
 	return function Init()

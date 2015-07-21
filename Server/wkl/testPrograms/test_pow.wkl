@@ -20,3 +20,7 @@ def __hit__(){
 
 }
 
+def test () {
+    amount  = 1;
+}
+

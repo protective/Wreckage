@@ -6,6 +6,10 @@ void Compiler::emitNOP(){
 	program().push_back(inst::NOP);
 }
 
+void Compiler::emitFUN(uint32_t functionId){
+	program().push_back(inst::FUN | functionId);
+}
+
 void Compiler::emitEOP(){
 	program().push_back(inst::EOP);
 }
