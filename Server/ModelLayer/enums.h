@@ -62,7 +62,8 @@ namespace MESSAGE {
 		activatePowerOnt,
 		requestRefObj,
 		objDeleted,
-		programCallback
+		programCallback,
+		systemBroadcast
 				
 	};
 }

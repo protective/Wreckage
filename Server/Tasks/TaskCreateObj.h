@@ -9,7 +9,9 @@ class SPos;
 class TaskCreateObj : public Task {
 public:
 	//TaskCreateObj(bool persistent, OBJID fromId);
-	TaskCreateObj(OBJID id, OBJID fromId, bool persistent);	
+	
+	TaskCreateObj(OBJID id, OBJID fromId, bool persistent, TIME spawntime);	
+	TaskCreateObj(OBJID id, OBJID fromId, bool persistent) : TaskCreateObj(id,fromId,persistent,0){}
 	bool addComponent(SComponent* cmp);
 	bool addData(OBJDATA::Enum dataid, int32_t value);
 	bool addPos(SPos* pos);

@@ -17,6 +17,8 @@
 #include "../ModelLayer/Components/CompSpawnNode/CompSpawnNode.h"
 #include "../ModelLayer/Components/CompReSpawnable/CompReSpawnable.h"
 
+#include "../ModelLayer/Messages/MessageSystemBroadcast.h"
+
 #include "../ModelLayer/Signals/SignalEnterClient.h"
 #include "../ModelLayer/Signals/SignalExitClient.h"
 
@@ -60,6 +62,7 @@ Processor::Processor() {
 	w.commit();
 	
 	loadAllObjFromDb();
+	
 	//TaskCreateObj* cmd = new TaskCreateObj(true);
 	//cmd->addComponent(new CompSpawnNode(1000,0,0));
 	//this->addTask(cmd);	
@@ -76,7 +79,13 @@ void Processor::loadAllObjFromDb(){
 	pqxx::result r = w.exec(s);
 	w.commit();
 	for(int i = 0; i < r.size();i++){
-		addTask(new TaskCreateObj(r[i][0].as<OBJID>(),r[i][0].as<OBJID>(), true));
+		OBJID id = r[i][0].as<OBJID>();
+		OBJID from = r[i][0].as<OBJID>();
+		addTask(new TaskCreateObj(id, from, true));
+		addTask(new TaskSendMessage(id, 
+					new MessageSystemBroadcast(0, MessageSystemBroadcast::dbloadObjComplete),
+				1000)
+				);
 	}
 	
 		
@@ -89,6 +98,7 @@ void Processor::addObj(SObj* obj){
 		TaskProcess* task = new TaskProcess(obj,1000);
 		addTask(task);
 		obj->setProcessTask(task);
+		networkControl->registerObj(obj->getId(),this);
 	}else
 		cerr<<"ERROR Processor::addObj obj = NULL"<<endl;
 }
@@ -97,6 +107,7 @@ void Processor::removeObj(SObj* obj){
 	if(obj){
 		_localObjs[obj->getId()] = obj;
 		obj->getProcessTask()->objDeleted();
+		networkControl->deRegisterObj(obj->getId());
 		delete obj;
 	}else
 		cerr<<"ERROR Processor::addObj obj = NULL"<<endl;

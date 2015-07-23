@@ -12,14 +12,16 @@
 
 #include "../Processor/Processor.h"
 
-TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent) :
-Task(0) {
+TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent, TIME spawnTime) :
+Task(spawnTime) {
 	_persistent = persistent;
 	_isTemplate = false;
 	_id = id;
 	_fromid = fromId;
 	_pos = NULL;
 }
+
+
 
 bool TaskCreateObj::addComponent(SComponent* cmp){
 	if(!cmp)

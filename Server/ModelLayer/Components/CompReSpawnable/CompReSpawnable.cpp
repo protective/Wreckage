@@ -60,7 +60,7 @@ void CompReSpawnable::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompReSpawnable::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::HeartBeatReq:{
-			MessageHeartBeatRsp* msg = new MessageHeartBeatRsp(_obj->getId());
+			MessageHeartBeatRsp* msg = new MessageHeartBeatRsp(_obj->getId(), true);
 			_obj->getProcessor()->sendMessage(data->_fromId, msg);
 			break;
 		}

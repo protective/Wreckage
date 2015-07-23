@@ -23,12 +23,13 @@ public:
 	virtual ~CompSpawnNode();
 private:
 	virtual void init();
+	void spawn(TIME spawnTime);
 	TIME _spawnTime;
 	OBJTPID _spawnTemplate;
 	OBJID _spawn;
 	
 	//NONSERIAL
-	TIME __timeout;
+	bool __initDone;
 };
 
 struct SerialCompSpawnNode : SerialObjComp{

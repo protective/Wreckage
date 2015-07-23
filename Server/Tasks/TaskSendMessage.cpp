@@ -18,6 +18,8 @@ Task(0) {
 
 TaskSendMessage::TaskSendMessage(OBJID toId, Message* message, uint32_t delay) :
 Task(world->getTime() + delay) {
+	uint32_t i = world->getTime() + delay;
+	
 	_toId = toId;
 	_message = message;
 }
@@ -26,6 +28,8 @@ uint32_t TaskSendMessage::execute(){
 	SObj* toobj = _processor->getObj(_toId);
 	if(toobj)
 		toobj->message(_message->_type, _message);
+	else
+		cerr<<"obj not found for msg"<<endl;
 	delete _message;
 	return COMMAND_FINAL;
 }

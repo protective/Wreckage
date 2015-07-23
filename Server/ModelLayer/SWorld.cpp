@@ -12,6 +12,7 @@
 
 SWorld::SWorld(Processor* processors) {
 	_processors = processors;
+	_time = SDL_GetTicks();
 }
 
 void SWorld::addGrid(SGrid* grid){

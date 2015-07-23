@@ -11,6 +11,7 @@
 #include "../../Signals/SignalProcess.h"
 #include "../../Messages/MessageHeartBeatReq.h"
 #include "../../Messages/MessageHeartBeatRsp.h"
+#include "../../Messages/MessageSystemBroadcast.h"
 
 #include "../CompReSpawnable/CompReSpawnable.h"
 
@@ -40,71 +41,70 @@ SComponent(COMPID::spawnNode){
 
 
 void CompSpawnNode::init(){
-	__timeout = 10000;
+	__initDone = false;
 }
 
 void CompSpawnNode::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
-		case SIGNAL::process:{
-			
-			if(__timeout < 5000 && _spawn){
-				MessageHeartBeatReq* msg = new MessageHeartBeatReq(_obj->getId());
-				_obj->getProcessor()->sendMessage(_spawn, msg);
-			}
-			if(_spawn == 0){
-				if( world->getTime() > _spawnTime){
-					/*
-					OBJID id = _obj->getProcessor()->getFreeID();
-					cerr<<"Spwan new unit id ="<<id<<endl;
-					cerr<<"_spawn="<<_spawn<<endl;
-					cerr<<"_timeout="<<__timeout<<endl;
-					cerr<<"_spawnTime="<<_spawnTime<<endl;
-					//TaskCreateObj* task = new TaskCreateObj(id,1,true);
-					//CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
-					//if(!task->addComponent(cmp))
-					//	delete cmp;
-					//task->addPos(new SPos(*(_obj->getPos())));
-					//_obj->getProcessor()->addTask(task);
-					//_spawn = id;
-					//__timeout = 10000;
-					//this->dbSave();
-					 * */
-				}
-			}
-			SignalProcess* dataP = (SignalProcess*)data;
-			if(dataP->_delta >= __timeout){
-				__timeout = 0;
-				_spawn = 0;
-			}else{
-				__timeout -= dataP->_delta;
-			}
-			break;
+		case SIGNAL::process:{		
+
 		}
 	}
 }
 
 void CompSpawnNode::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
+		case MESSAGE::systemBroadcast: {
+			MessageSystemBroadcast* msg = (MessageSystemBroadcast*)data;
+			
+			
+			if (msg->_message == MessageSystemBroadcast::dbloadObjComplete){
+				if(_spawn && __initDone == false) {
+					MessageHeartBeatReq* msg = new MessageHeartBeatReq(_obj->getId());
+					networkControl->sendMessage(_spawn, msg);
+					//_obj->getProcessor()->sendMessage(_spawn, msg);
+					__initDone = true;
+				}else if(_spawn == 0){
+					spawn(_spawnTime);
+				}
+			}
+			break;
+		}
 		case MESSAGE::killed:{
 			//cerr<<"CompSpawnNode::acceptMessage MESSAGE::killed"<<endl;
 			
-			if(data->_fromId == _spawn){
-				//cerr<<"CompSpawnNode::acceptMessage ID matches"<<endl;			
-			
+			if(data->_fromId == _spawn){		
+				spawn(_spawnTime);
 			}
 			break;
 		}
 		case MESSAGE::HeartBeatRsp:{
-			//cerr<<"CompSpawnNode::acceptMessage MESSAGE::HeartBeatRsp"<<endl;
-			//cerr<<"data->_fromId ="<<data->_fromId<<" _spawn="<<_spawn<<endl;
-			if(data->_fromId == _spawn){
-				__timeout = 10000;
+			MessageHeartBeatRsp* msg = (MessageHeartBeatRsp*)data;
+			if(msg->_fromId == _spawn && msg->_alive == false){
+				spawn(0);
 			}
 			break;
 		}
 	}
 }
 
+void CompSpawnNode::spawn(TIME spawnTime){
+	_spawn = 0;
+	if(_obj->getPos()){
+		OBJID id = _obj->getProcessor()->getFreeID();
+		cerr<<"Spwan new unit id ="<<id<<" in "<<spawnTime<<" ms"<<endl;
+		TaskCreateObj* task = new TaskCreateObj(id,1,true, spawnTime);
+		CompReSpawnable* cmp = new CompReSpawnable(_obj->getId());
+		if(!task->addComponent(cmp))
+			delete cmp;
+
+		task->addPos(new SPos(*(_obj->getPos())));
+		_obj->getProcessor()->addTask(task);
+		_spawn = id;
+	}else
+		cerr<<"ERROR CompSpawnNode no pos"<<endl;
+	this->dbSave();
+}
 
 CompSpawnNode::~CompSpawnNode() {
 }

@@ -11,12 +11,16 @@
 #include "Message.h"
 
 struct MessageHeartBeatRsp : public Message {
-	MessageHeartBeatRsp(OBJID from):
+	MessageHeartBeatRsp(OBJID from, bool alive):
 	Message(MESSAGE::HeartBeatRsp, from){
+		_alive = alive;
 	}
 	MessageHeartBeatRsp(MessageHeartBeatRsp& m):
 	Message(MESSAGE::HeartBeatRsp, m._fromId){
+		_alive = m._alive;
 	}
+	
+	bool _alive;
 };
 
 

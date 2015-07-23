@@ -85,9 +85,9 @@ int main(int argc, char** argv) {
 	cms.dbTableInit(con);
 	
 	CompPowerBase::dbTableInit(con);
-	
-	world = new SWorld(NULL);
 	SDL_Init(SDL_INIT_TIMER);
+	world = new SWorld(NULL);
+	
 	
 	for(int i = 0; i < NRTHREADS;i++)
 	{

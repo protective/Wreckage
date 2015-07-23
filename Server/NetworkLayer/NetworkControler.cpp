@@ -16,6 +16,8 @@
 #include "../ModelLayer/SObj.h"
 #include "../ModelLayer/Messages/Message.h"
 #include "../ModelLayer/Messages/MessageObjDeleted.h"
+#include "../ModelLayer/Messages/MessageHeartBeatReq.h"
+#include "../ModelLayer/Messages/MessageHeartBeatRsp.h"
 
 #include "../Tasks/Task.h"
 
@@ -68,7 +70,7 @@ void NetworkControler::sendObjDel(OBJID to, OBJID deleted){
 
 void  NetworkControler::sendMessage(OBJID to, Message* message){
 
-	Processor* processor ;
+	Processor* processor = NULL ;
 	map<OBJID, Processor*>::iterator it = _objRegistration.find(to);
 	if(it != _objRegistration.end()){
 		if(message->_type == MESSAGE::requestRefObj){
@@ -78,13 +80,20 @@ void  NetworkControler::sendMessage(OBJID to, Message* message){
 			delete message;
 			return;
 		}
-		if (processor){
+		
+		if (it->second){
 			TaskSendMessage* cmd = new TaskSendMessage(to, message);
-			processor->addTask(cmd);
+			it->second->addTask(cmd);
 		}
 	}else{
 		if(to != 0)
 			sendObjDel(message->_fromId, to);
+		if(message->_type == MESSAGE::HeartBeatReq){
+			MessageHeartBeatRsp* msg = new MessageHeartBeatRsp(to, false);
+			sendMessage(message->_fromId, msg);
+
+		}
+			
 		delete message;
 	}
 }
