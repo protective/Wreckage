@@ -15,7 +15,8 @@ namespace wkl {
 			{hitTarget, "_wkl_hitTarget"},
 			{consume, "_wkl_consume"},
 			{channel, "_wkl_channel"},
-			{checkrange, "_wkl_checkrange"}
+			{checkrange, "_wkl_checkrange"},
+			{getObjInRange, "_wkl_getObjInRange"}
 		};
 
 	}

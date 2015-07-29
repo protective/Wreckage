@@ -84,7 +84,7 @@ void Client::ReadBuffer(){
 
 
 uint32_t Client::parseBuffer(uint32_t len){
-	char* buffer = this->outputnetworkBuf->networkBuf;
+	unsigned char* buffer = this->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
 	uint32_t remaning = 0;
 	printBuffer(buffer,len);

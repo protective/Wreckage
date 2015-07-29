@@ -15,7 +15,7 @@
 
 #include "Enums.h"
 
-void printBuffer(char* buffer, uint32_t len){
+void printBuffer(unsigned char* buffer, uint32_t len){
 	int offset = 0;
 	int loopoffset = 0;
 	if (printbufferbool){

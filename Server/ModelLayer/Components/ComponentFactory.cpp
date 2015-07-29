@@ -16,6 +16,7 @@
 #include "CompModelStatic/CompModelStatic.h"
 #include "CompPosition/CompPosition.h"
 #include "CompPowerBase/CompPowerBase.h"
+#include "CompProgramable/CompProgramable.h"
 
 SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connection& con){
 	switch(type){
@@ -54,6 +55,9 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 		}
 		case COMPID::powerBase: {
 			return new CompPowerBase(obj, id, con);
+		}
+		case COMPID::programable: {
+			return new CompProgramable(obj, id, con);
 		}	
 		default:{
 			cerr<<"ERROR ComponentFactory::createComponent component not known"<<endl;			

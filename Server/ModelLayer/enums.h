@@ -20,7 +20,7 @@ namespace COMPID {
 		modelStatic = 13,
 		position = 14,
 		powerBase = 15,
-
+		programable = 16
 	};
 }
 namespace SIGNAL {
@@ -37,6 +37,8 @@ namespace SIGNAL {
 		enterClient,
 		exitClient,
 		enterDevClient,
+		runProgram,
+		created
 	};
 }
 
@@ -63,7 +65,10 @@ namespace MESSAGE {
 		requestRefObj,
 		objDeleted,
 		programCallback,
-		systemBroadcast
+		systemBroadcast,
+		destInRangeReq,
+		destInRangeRsp,
+		destUpdate
 				
 	};
 }

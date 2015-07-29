@@ -15,13 +15,30 @@
 
 using namespace std;
 namespace wkl {
+	enum registerFlags{
+		halt = 0x01,
+		interrupt = 0x2,
+		yield = 0x04,
+		segfault = 0x08
+		
+	};
+	
 class ProgramExecutor {
 public:
-	ProgramExecutor(string name, SComponent* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs);
+	ProgramExecutor(uint32_t runRefId, SComponent* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs, map<uint32_t, Variable> envContext);
 
-	uint32_t run(uint32_t obj, uint32_t functionId, map<uint32_t, Variable> envContext);
-	uint32_t run(uint32_t obj, uint32_t functionId, list<uint32_t> args, map<uint32_t, Variable> envContext);
 	
+	uint32_t run(uint32_t obj);
+	uint32_t run(uint32_t obj, uint32_t functionId);
+	uint32_t run(uint32_t obj, uint32_t functionId, list<uint32_t> args);
+	
+	void yield(Variable* retVar);
+	
+	uint32_t getRunRef() {return this->_runRefId;}
+	Program* getProgram() {return this->_program;}
+	uint32_t getRegister(){return this->_registerFlags;}
+	void setFlag(uint32_t flag){this->_registerFlags |= flag;}
+	map<uint32_t, Variable>& getEnvContext() {return this->_envContext;}
 	uint32_t segfault(string message);	
 	uint32_t segfault();
 	void dumpStack();
@@ -30,7 +47,7 @@ public:
 	
 	virtual ~ProgramExecutor();
 private:
-	string _name;
+	uint32_t _runRefId;
 	Program* _program;
 	SComponent* _comp;
 	map<uint32_t, systemCallFunc> _systemCallFuncs;
@@ -39,6 +56,8 @@ private:
 	uint32_t _programCounter;
 	uint32_t _stackTop;
 	vector<Variable> _stack;
+	uint32_t _locRet;
+	map<uint32_t, Variable> _envContext;
 	uint32_t _stackMax;
 };
 }

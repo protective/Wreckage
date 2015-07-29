@@ -1,15 +1,16 @@
 
 #include "CompSpellBook.h"
 
-#include "../../../wkl/ProgramExecutor.h"
 
 #include "../../../Processor/Processor.h"
+
+
 
 #include "../../Messages/MessagePowerStats.h"
 #include "../../Messages/MessageProgramCallback.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
-
+#include "../../Signals/SignalRunProgram.h"
 
 
 CompSpellBook::CompSpellBook() :
@@ -35,7 +36,7 @@ void CompSpellBook::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::powerStatsRsp :{
-				//cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
+			cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
 			MessagePowerStats* msg = (MessagePowerStats*)data;
 			
 			map<uint32_t, wkl::Variable> envContext;
@@ -45,12 +46,8 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			envContext[systemEnvLib::wkl_critChance] = 90;
 			
 			//that is leave it to wkl
-			wkl::ProgramExecutor* pe = new wkl::ProgramExecutor("" ,this, msg->_program, _syscall);
-
-			if(msg->_program->getInterruptHandlers().find(wkl::systemCallBackLib::__activate_target__) != msg->_program->getInterruptHandlers().end())
-				pe->run(_obj->getId(), wkl::systemCallBackLib::__activate_target__, envContext);
-			//MessageProjectileStats* outmsg = new MessageProjectileStats(_obj->getId(), msg->_program, envContext);
-			//_obj->getProcessor()->sendMessage(msg->_target, outmsg);
+			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0);
+			this->_obj->signal(SIGNAL::runProgram, &s);
 			break;
 		}
 	}
@@ -60,19 +57,23 @@ void CompSpellBook::init(){
 
 }
 
-map<uint32_t, wkl::systemCallFunc> CompSpellBook::_syscall = 		
-	{{wkl::systemCallLib::channel, CompSpellBook::channel},
-	{wkl::systemCallLib::consume, CompSpellBook::consume}};
+map<uint32_t, wkl::systemCallFunc> CompSpellBook::getSyscalls(){
+	return {
+		{wkl::systemCallLib::channel, CompSpellBook::channel},
+		{wkl::systemCallLib::consume, CompSpellBook::consume}
+	};
+} 		
 
 
-wkl::Variable CompSpellBook::consume(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg){
+
+wkl::Variable CompSpellBook::consume(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg){
 
 	wkl::Variable* args = (wkl::Variable*)arg;
 	cerr<<"consume"<<endl;
 	return wkl::Variable(0);
 }
 
-wkl::Variable CompSpellBook::channel(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg){
+wkl::Variable CompSpellBook::channel(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg){
 	
 	cerr<<"channel"<<endl;
 	wkl::Variable* args = (wkl::Variable*)arg;
@@ -84,10 +85,10 @@ wkl::Variable CompSpellBook::channel(SComponent* _this, wkl::Program* program, m
 	for(int i = 1 ; i <= count; i++){
 		MessageProgramCallback* outmsg = new MessageProgramCallback(
 				_this->getObj()->getId(),
-				program,
-				envContext,
-				wkl::systemCallBackLib::__hit__
-				);
+				programExe->getProgram(),
+				programExe->getEnvContext(),
+				wkl::systemCallBackLib::__hit__,
+				0);
 		_this->getObj()->getProcessor()->sendMessage(target, outmsg, delay * i);
 	}
 	return wkl::Variable(0);

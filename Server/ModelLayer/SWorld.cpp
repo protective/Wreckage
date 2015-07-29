@@ -9,10 +9,12 @@
 
 #include "../Tasks/Task.h"
 #include "../Processor/Processor.h"
+#include "Destiny/Destiny.h"
 
 SWorld::SWorld(Processor* processors) {
 	_processors = processors;
 	_time = SDL_GetTicks();
+	_destiny = new Destiny();
 }
 
 void SWorld::addGrid(SGrid* grid){

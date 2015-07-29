@@ -14,9 +14,12 @@
 #include "../Network/Serialize.h"
 #include "../../NetworkLayer/NetworkControler.h"
 
+#include "../../wkl/Compiler/systemCallLib.h"
 
 #include "../Signals/Signal.h"
+
 #include "../Messages/Message.h"
+
 #include "../SObj.h"
 #include <pqxx/pqxx>
 #define COMPFLAGINIT  0x01
@@ -45,6 +48,7 @@ public:
 	uint32_t serialize(const char*){}
 	SObj* getObj(){return _obj;};
 	list<OBJDATA::Enum>& getDataAccesUssage(){return _objDataAcces;}
+	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls(){return map<uint32_t, wkl::systemCallFunc>();}
 	virtual ~SComponent(){}
 protected:
 	void virtual dbInit(){}

@@ -17,8 +17,8 @@ using namespace std;
 
 class SComponent;
 namespace wkl {
-	class Program;
-	typedef Variable (*systemCallFunc)(SComponent* _this, Program* program, map<uint32_t, Variable> envContext, void*);
+	class ProgramExecutor;
+	typedef Variable (*systemCallFunc)(SComponent* _this, ProgramExecutor* programExe, void*);
 	
 	typedef string systemCallBack_t;	
 
@@ -33,7 +33,8 @@ namespace wkl {
 			hitTarget,
 			consume,
 			channel,
-			checkrange
+			checkrange,
+			getObjInRange
 		};
 		
 		extern map<uint32_t, systemCallBack_t> lib;

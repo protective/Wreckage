@@ -9,6 +9,7 @@
 #include "Client.h"
 #include "NetworkFunctions.h"
 
+#include "../ModelLayer/SWorld.h"
 #include "../Processor/Processor.h"
 
 #include "../Tasks/TaskSendMessage.h"
@@ -71,6 +72,8 @@ void NetworkControler::sendObjDel(OBJID to, OBJID deleted){
 void  NetworkControler::sendMessage(OBJID to, Message* message){
 
 	Processor* processor = NULL ;
+	if(to == 0)
+		world->getDestiny()->message(message->_type, message);
 	map<OBJID, Processor*>::iterator it = _objRegistration.find(to);
 	if(it != _objRegistration.end()){
 		if(message->_type == MESSAGE::requestRefObj){

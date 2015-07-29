@@ -12,6 +12,8 @@
 
 #include "../Processor/Processor.h"
 
+#include "../ModelLayer/Signals/SignalCreated.h"
+
 TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent, TIME spawnTime) :
 Task(spawnTime) {
 	_persistent = persistent;
@@ -135,6 +137,8 @@ uint32_t TaskCreateObj::execute(){
 			obj->save();
 		
 		_processor->addObj(obj);
+		SignalCreated s;
+		obj->signal(SIGNAL::created, &s);
 	
 	}
 	return COMMAND_FINAL;

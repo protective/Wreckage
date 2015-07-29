@@ -60,7 +60,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     	                      'compPowerActivateInstant',
     	                      'compPowerUseCheck',
     	                      'compReSpawnable',
-    	                      'compPowerBase'];
+    	                      'compPowerBase',
+    	                      'compProgramable'];
     	for (var i in tempComponents){
         	if(tempComponents[i] in obj){
 
@@ -74,7 +75,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	        	
 	        	button.keyval = {'id' : button.id,
 	        			'keyval' : obj[tempComponents[i]].getKeyValues()}; 	
-	        	
+	        	button.compName = tempComponents[i];
 	        	button.myhest = function(){alert(1);};
 
 	        	button.innerText = tempComponents[i];
@@ -89,12 +90,12 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
             	var tmp2 = $('body');
 
             	tmp2.on('click', '#comsave'+ button.id, function() {
-            		
+            		var compName = button.compName;
             		for (var j in button.keyval['keyval']['entries']){
             			if (button.keyval['keyval']['entries'][j]['save']){
             				var value = $('#comfield' + j + button.id)[0].value;    
             				
-            				button.keyval['keyval']['entries'][j]['save'].call(obj[tempComponents[i]], value);
+            				button.keyval['keyval']['entries'][j]['save'].call(obj[compName], value);
             			}
             		}
             		//button.keyval.sendProgramSrc(this.value)

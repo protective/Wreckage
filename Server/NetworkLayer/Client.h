@@ -11,7 +11,7 @@
 
 struct NetworkBuffer{
     uint32_t recived;
-    char networkBuf[1024];
+    unsigned char networkBuf[1024];
 };
 
 class Client {

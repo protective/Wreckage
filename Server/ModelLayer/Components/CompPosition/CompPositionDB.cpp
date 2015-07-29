@@ -7,6 +7,7 @@
 CompPosition::CompPosition(SObj* obj, OBJID id, pqxx::connection& con) :
 SComponent(COMPID::position){
 	init();
+	/*
 	pqxx::work w(con);
 	stringstream s; 
 	s<<"select modelid from CompPosition where objId = "<<id<<"";
@@ -17,12 +18,13 @@ SComponent(COMPID::position){
 	}else{
 		//_modelId = r[0][0].as<uint32_t>();
 	}
+	 * */
 	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }
 
 void CompPosition::dbSave(){
-	
+	/*
 	if(_obj->getProcessor()){
 		if(isInit()){
 			pqxx::work w(_obj->getProcessor()->getDB());
@@ -37,9 +39,11 @@ void CompPosition::dbSave(){
 		}
 		
 	}
+	*/
 }
 
 void CompPosition::dbInit(){
+	/*
 	if(!_obj){
 		cerr<<"ERROR CompPosition::init no obj"<<endl;
 		return;
@@ -51,6 +55,7 @@ void CompPosition::dbInit(){
 		<<0<<");";
 	w.exec(s);
 	w.commit();
+	 * */
 	_flags |= COMPFLAGINIT;
 }
 

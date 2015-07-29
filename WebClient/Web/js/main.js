@@ -12,6 +12,7 @@ define(function ( require ) {
     require('Network/Comp/msgCompPowerActivateInstant').call();
     require('Network/Comp/msgCompPowerBase').call();
     require('Network/Comp/msgCompReSpawnable').call();
+    require('Network/Comp/msgCompProgramable').call();
     require('Network/msgObjAll').call();
     require('Network/msgEvents').call();      
 

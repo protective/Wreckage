@@ -5,6 +5,9 @@
 #include "../SComponent.h"
 
 #include "../../../wkl/Compiler/systemCallLib.h"
+#include "../../../wkl/ProgramExecutor.h"
+
+#include "../../../wkl/Program.h"
 
 class CompSpellBook  : public SComponent {
 public:
@@ -18,6 +21,9 @@ public:
 	
 	void sendFull(uint32_t clientId);
 	
+	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
+
+		
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
@@ -31,9 +37,8 @@ private:
 	vector<OBJID> _loadedPowers;
 	
 	//systemCalls implemented by this component
-	static map<uint32_t, wkl::systemCallFunc> _syscall;
-	static wkl::Variable consume(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg);
-	static wkl::Variable channel(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg);
+	static wkl::Variable consume(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable channel(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
 };
 
 #endif	/* COMPSPELLBOOK_H */

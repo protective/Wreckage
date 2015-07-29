@@ -26,6 +26,7 @@ namespace wkl {
 			_vector = vector<Variable>(vo->_vector);
 		};
 		
+		
 		virtual VObject* clone(){
 			return new VObject(this);
 		};

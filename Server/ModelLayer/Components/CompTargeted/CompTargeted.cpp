@@ -7,6 +7,7 @@
 #include "../../../ModelLayer/SObj.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
+#include "../../Signals/SignalRunProgram.h"
 
 #include "../../Messages/MessageProgramCallback.h"
 
@@ -36,17 +37,34 @@ void CompTargeted::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::programCallback:{
-			
-			
+					
 			MessageProgramCallback* msg = (MessageProgramCallback*)data;
 			
-			wkl::ProgramExecutor* pe = new wkl::ProgramExecutor("" ,this, msg->_program, _syscall);
-
-			if(msg->_program->getInterruptHandlers().find(msg->_functionId) != msg->_program->getInterruptHandlers().end())
-				pe->run(_obj->getId(), msg->_functionId, msg->_env);
-
+			SignalRunProgram s(msg->_program, &msg->_env, msg->_functionId, 0);
+			this->_obj->signal(SIGNAL::runProgram, &s);
+			
+			/*
+			auto it = _programExe.find(msg->_runRef);
+			wkl::ProgramExecutor* pe;
+			if(it != _programExe.end()){
+				pe = it->second;
+				
+			}else{
+				uint32_t sesionProgramId = _programIdCounter++;
+				pe = new wkl::ProgramExecutor(sesionProgramId ,this, msg->_program, _syscall, msg->_env);
+				_programExe[sesionProgramId] = pe;
+			}
+				
+			if(msg->_functionId == 0 || msg->_program->getInterruptHandlers().find(msg->_functionId) != msg->_program->getInterruptHandlers().end()){
+				uint32_t ret = pe->run(_obj->getId(), msg->_functionId);
+				if(ret && wkl::registerFlags::halt){
+					_programExe.erase(pe->getRunRef());
+					delete pe;
+				}
+			}
+			 * */
+			break;
 		}
-
 	}
 }
 
@@ -56,10 +74,11 @@ void CompTargeted::init(){
 
 }
 
-map<uint32_t, wkl::systemCallFunc> CompTargeted::_syscall = 		
-	{{wkl::systemCallLib::phycicalDamage, CompTargeted::phycicalDamage}};
+map<uint32_t, wkl::systemCallFunc> CompTargeted::getSyscalls(){ 		
+	return {{wkl::systemCallLib::phycicalDamage, CompTargeted::phycicalDamage}};
+}
 
-wkl::Variable CompTargeted::phycicalDamage(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable> envContext, void* arg){
+wkl::Variable CompTargeted::phycicalDamage(SComponent* _this,  wkl::ProgramExecutor* programExe, void* arg){
 	
 	SObj* target = _this->getObj();
 	wkl::Variable* args = (wkl::Variable*)arg;
@@ -70,10 +89,10 @@ wkl::Variable CompTargeted::phycicalDamage(SComponent* _this, wkl::Program* prog
 	int32_t miss;
 	int32_t glancing;
 	
-	level = envContext[1].v;
-	attack = envContext[2].v;
-	missP = envContext[3].v;
-	critP = envContext[4].v;
+	level = programExe->getEnvContext()[wkl::systemEnvLib::wkl_level].v;
+	attack = programExe->getEnvContext()[wkl::systemEnvLib::wkl_target].v;
+	missP = programExe->getEnvContext()[wkl::systemEnvLib::wkl_missChance].v;
+	critP = programExe->getEnvContext()[wkl::systemEnvLib::wkl_critChance].v;
 	
 	dmgtype = (DAMAGETYPES::Enum)args[1].v;
 	damageNormal = args[2].v;

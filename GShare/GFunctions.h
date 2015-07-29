@@ -25,7 +25,7 @@
 #include <math.h>
 #include "GGlobals.h"
 using namespace std;
-void printBuffer(char* buffer, uint32_t len);
+void printBuffer(unsigned char* buffer, uint32_t len);
 uint32_t myrandom(uint32_t min,uint32_t max);
 
 int32_t Deg(double x, double y);

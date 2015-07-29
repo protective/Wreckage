@@ -25,6 +25,8 @@ Task(world->getTime() + delay) {
 }
 
 uint32_t TaskSendMessage::execute(){
+	if(_toId == 0)
+		world->getDestiny()->message(_message->_type, _message);
 	SObj* toobj = _processor->getObj(_toId);
 	if(toobj)
 		toobj->message(_message->_type, _message);

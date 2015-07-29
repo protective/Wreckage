@@ -5,6 +5,8 @@
 #include "../SComponent.h"
 
 #include "../../../wkl/Compiler/systemCallLib.h"
+#include "../../../wkl/ProgramExecutor.h"
+
 #include "../../../wkl/Program.h"
 
 class CompTargeted  : public SComponent {
@@ -18,7 +20,10 @@ public:
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	
 	void sendFull(uint32_t clientId);
-		
+	
+	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
+
+	
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
@@ -29,8 +34,7 @@ private:
 	virtual void init();
 	
 	//systemCalls implemented by this component
-	static map<uint32_t, wkl::systemCallFunc> _syscall;
-	static wkl::Variable phycicalDamage(SComponent* _this, wkl::Program* program, map<uint32_t, wkl::Variable>, void* arg);
+	static wkl::Variable phycicalDamage(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
 };
 
 
