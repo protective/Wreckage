@@ -12,6 +12,7 @@ void  Visitor::visit(NodeExpr* node){};
 void  Visitor::visit(NodeExprStmt* node){};
 void  Visitor::visit(NodeIfStmt* node){};
 void  Visitor::visit(NodeWhileStmt* node){};
+void  Visitor::visit(NodeForEachStmt* node){};
 void  Visitor::visit(NodeLiteralExpr* node){};
 void  Visitor::visit(NodeStmt* node){};
 void  Visitor::visit(NodeVardeclStmt* node){};

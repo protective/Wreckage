@@ -122,8 +122,33 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter = _stack[_stackTop--];
 				break;
 			}
+			case inst::pushUIndx:{
+				if(_programCounter + 1 >= _program->program().size())
+					return segfault();
+				uint32_t src = _stackTop - _program->program()[_programCounter + 1];
+				if(_stackTop++ >= _stackMax)
+					return segfault();
+				if(_stack[src].t == NULL)
+					return segfault("variable not iterable");
+				
+				_stack[_stackTop] = _stack[src].t->_vector.size();
+				_programCounter += 2;
+				break;
+			}
 			case inst::cjmpA_1:{
 				if (_stack[_stackTop]){
+					if(_program->program()[_programCounter+1] >= _program->program().size())
+						return segfault();
+					_programCounter =  _program->program()[_programCounter+1];
+				}else{
+					_programCounter += 2;
+				}
+				break;
+			}
+			case inst::cjmp2NeqA_1:{
+				if(_stackTop < 1)
+					return segfault();
+				if (_stack[_stackTop] != _stack[_stackTop-1]){
 					if(_program->program()[_programCounter+1] >= _program->program().size())
 						return segfault();
 					_programCounter =  _program->program()[_programCounter+1];
@@ -225,7 +250,21 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 3;
 				break;
 			}
-			
+			case inst::cpRIS2_T:{
+				uint32_t src = _stackTop - _program->program()[_programCounter+1];
+				if(ARG(ins) > _stackTop || _stackTop - ARG(ins) > _stackMax)
+					return segfault();
+				uint32_t index = _stack[_stackTop- ARG(ins)];
+				if(_stack[src].t == NULL)
+					return segfault("not iteratable");
+				if(_stack[src].t->_vector.size() < index)
+					return segfault("index out of range");
+				_stack[_stackTop] = _stack[src].t->_vector[index];
+
+				
+				_programCounter += 2;
+				break;
+			}			
 			
 			case inst::cpEN_DS2:{
 				uint32_t dest = _stackTop - _program->program()[_programCounter+1];

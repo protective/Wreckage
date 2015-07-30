@@ -17,6 +17,7 @@
 #include "NodeRtnStmt.h"
 #include "NodeIfStmt.h"
 #include "NodeWhileStmt.h"
+#include "NodeForEachStmt.h"
 #include "NodeStmt.h"
 #include "NodeVardeclStmt.h"
 #include "NodeOutdeclStmt.h"

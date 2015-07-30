@@ -72,6 +72,29 @@ void Compiler::emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t i
 	program().push_back(0); //copy from
 }
 
+void Compiler::emitLocRIndexToTopStack(uint32_t pos, varloc::Enum loc,uint32_t rIndexVar){
+    //coppy top stack at index to the rel loc 
+	inst::Enum ins;
+	uint32_t fromPos;
+	switch (loc) {
+		case varloc::abs:{
+			ins = inst::cpAIS2_T;
+			fromPos = pos;
+			break;}
+		case varloc::rel:{
+			ins = inst::cpRIS2_T;
+			fromPos = relpos(pos);
+			break;}
+		case varloc::env:{
+			ins = inst::cpEIS2_T;
+			fromPos = pos;
+			break;}
+	}
+	program().push_back(ins | rIndexVar); //rel stack to use as index variable
+	program().push_back(fromPos); //copy from
+	
+}
+
 void Compiler::emitPushStack(uint32_t value, uint32_t size){
     program().push_back(inst::pushN_1 | size);
     program().push_back(value); //value to push
@@ -94,6 +117,13 @@ void Compiler::emitPushPC(){
 	program().push_back(inst::pushPC);
 	return;
 }
+void Compiler::emitPushUIndx(uint32_t rel){
+	program().push_back(inst::pushUIndx);
+	program().push_back(rel);
+	_scopeRef.back() +=1;
+	return;
+}
+
 uint32_t Compiler::emitPushRPC(){
 	program().push_back(inst::pushRPC);
 	program().push_back(0x00);
@@ -160,6 +190,12 @@ uint32_t Compiler::emitJumpToRef(uint32_t ref){
 
 uint32_t Compiler::emitCondJumpToRef(uint32_t ref){
     program().push_back(inst::cjmpA_1);
+    program().push_back(ref);
+    return ref;
+}
+
+uint32_t Compiler::emitCond2NEQJumpToRef(uint32_t ref){
+    program().push_back(inst::cjmp2NeqA_1);
     program().push_back(ref);
     return ref;
 }

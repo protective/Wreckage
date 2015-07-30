@@ -43,11 +43,9 @@ void NodeIndeclStmt::accept(Visitor* v){
 void NodeVariable::accept(Visitor* v){
 	v->visit(this);
 }
-
 void NodeAttributeAccessVariable::accept(Visitor* v){
 	v->visit(this);
 }
-
 void NodeVariableExpr::accept(Visitor* v){
 	v->visit(this);
 }
@@ -60,11 +58,12 @@ void IntegerLiteral::accept(Visitor* v){
 void BinaryOperatorExpr::accept(Visitor* v){
 	v->visit(this);
 }
-
 void NodeWhileStmt::accept(Visitor* v){
 	v->visit(this);
 }
-
+void NodeForEachStmt::accept(Visitor* v){
+	v->visit(this);
+}
 void NodeArg::accept(Visitor* v){
 	v->visit(this);
 }

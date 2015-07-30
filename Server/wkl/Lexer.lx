@@ -74,6 +74,7 @@ rules:
 {def} 											{cerr<<"terminal def"<<endl; return new Terminal(TOKEN_def, pos);}
 {if} 											{cerr<<"terminal if"<<endl; return new Terminal(TOKEN_if, pos);}
 {while}											{cerr<<"terminal while"<<endl; return new Terminal(TOKEN_while, pos);}
+{for}											{cerr<<"terminal for"<<endl; return new Terminal(TOKEN_for, pos);}
 {in}											{cerr<<"terminal in"<<endl; return new Terminal(TOKEN_in, pos);}
 {out}											{cerr<<"terminal out"<<endl; return new Terminal(TOKEN_out, pos);}
 {return}										{cerr<<"terminal return"<<endl; return new Terminal(TOKEN_return, pos);}

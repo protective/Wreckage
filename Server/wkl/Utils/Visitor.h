@@ -25,6 +25,7 @@ public:
 	virtual void visit(NodeRtnStmt* node) = 0;
 	virtual void visit(NodeIfStmt* node) = 0;
 	virtual void visit(NodeWhileStmt* node) = 0;
+	virtual void visit(NodeForEachStmt* node) = 0;
 	virtual void visit(NodeLiteralExpr* node) = 0;
 	virtual void visit(NodeStmt* node) = 0;
 	virtual void visit(NodeVardeclStmt* node) = 0;

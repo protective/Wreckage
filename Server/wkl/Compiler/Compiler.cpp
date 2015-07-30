@@ -21,8 +21,11 @@ Compiler::Compiler(string programScr) {
 	_fromFile = false;
 }
 
+uint32_t Compiler::compile(Program* program, ostream& outAsm ){
+	this->compile(program, outAsm, NULL);
+}
 
-uint32_t Compiler::compile(Program* program, ostream& outAsm){
+uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 	cerr<<"execute Compiler"<<endl;
 	
 	for (auto& it : systemCallLib::lib) {
@@ -61,17 +64,14 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm){
 	Node* result = parse(&lexer);
 
 	
-	s.str("");
-	s.clear();
-	s<<_programPath<<".dot";
-	cerr<<s.str()<<endl;
-	//ofstream dotfile(s.str().c_str());
-	//DotBuilder dot(dotfile);
-	//dot.visit(result);
-	//result->accept(&dot);
-	//dot.finalise();
-	//dotfile.flush();
-	
+
+	if(outDot){
+		DotBuilder dot(*outDot);
+		dot.visit(result);
+		result->accept(&dot);
+		dot.finalise();
+		(*outDot).flush();
+	}
 	
 	//TypeChecker typecheck;
 	
@@ -205,6 +205,75 @@ void Compiler::visit(NodeWhileStmt* node){
 	_scopeRef.pop_back();
     emitCondJumpToRef(h);
 	emitPopStackIgnore(1);
+	if(node->next()){
+		node->next()->accept(this);
+	}
+}
+
+void Compiler::visit(NodeForEachStmt* node){
+   /*
+     *   eval E
+	 *   Push uindex E
+	 *   Push i = 0
+	 *   jump <g>
+     *-h
+	 *   dec var = E[i]
+     *   block   
+     *   pop var
+	 *   add 1
+     *-g 
+     *   conjump2topNeq <h>
+     *   pop E
+	 *   pop uindex E
+	 *   pop i
+     */
+	uint32_t tmp1 = _scopeRef.back();
+	_scopeRef.push_back(_scopeRef.back());
+	/*Eval E **********************/
+	uint32_t E;
+	if(node->expr()){
+
+		 node->expr()->accept(this);
+		 E = _scopeRef.back();
+    }else 
+		return; //ERROR
+	/******************************/
+	/*push uindex E ***************/
+	emitPushUIndx(0);
+	/*push i = 0 ******************/
+	emitPushStack(0x00, 1);
+	/*jump <g> ********************/
+	uint32_t g = emitJumpToRef();
+	/*-h ***********/ 
+	uint32_t h = program().size();
+	/*dec var = E[i] (new scope)***/
+	uint32_t tmp2 = _scopeRef.back();
+	_scopeRef.push_back(_scopeRef.back());
+    emitPushStack(0x00, 1);
+	emitLocRIndexToTopStack(E, varloc::rel, 1);
+    vTableEntry v(node->var()->name(), _scopeRef.back(), varloc::rel);
+    _vtable.push_back(v);
+	/*Block*********************/
+	if(node->block()){
+		node->block()->accept(this);
+    }
+	uint32_t oldRef = _scopeRef.back();
+	_scopeRef.pop_back();
+	emitPopStackIgnore(oldRef - _scopeRef.back());	
+	/*TODO Add one to index*********************/
+	emitPushStack(0x01,1);
+	emitBOAddPop();
+	/*-g ***********/
+	program().at(g) = program().size();
+	/*conjump2topNeq*********************/
+	emitCond2NEQJumpToRef(h);
+	
+	/*pop E uindex E and i*********************/
+	uint32_t oldRef2 = _scopeRef.back();
+	_scopeRef.pop_back();
+	emitPopStackIgnore(oldRef2 - _scopeRef.back());
+	
+	/*DONE*********************/
 	if(node->next()){
 		node->next()->accept(this);
 	}

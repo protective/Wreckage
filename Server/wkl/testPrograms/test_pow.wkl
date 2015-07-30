@@ -1,26 +1,11 @@
 
 def __activate_target__(){
-    in wkl_target;
-    
-    _wkl_channel(wkl_target, 4, 1000);
+    hest1 = 22;
+    a = 42;
+    heat2 = 24;
+    for i in a{
+        b = 666;
+        c = 667;
+        d = i;
+    }
 }
-
-def __hit__(){
-    in damage, dmgType;
-    
-    in wkl_target, wkl_missChance, wkl_critChance;
-    amount = 4;
-    hest = 45;
-    result = 1;
-    
-    a = 6;
-    b = 7;
-    (result, damage) = _wkl_phycicalDamage(wkl_missChance, 1 + 6, 99);
-    
-
-}
-
-def test () {
-    amount  = 1;
-}
-

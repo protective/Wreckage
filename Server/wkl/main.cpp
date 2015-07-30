@@ -32,61 +32,37 @@
 //#include "ProgramPrinter.h"
 
 using namespace std;
-
+using namespace wkl;
 /*
  * 
  */
 
-wkl::Variable doDamage( SObj* obj, map<uint32_t, Variable> envContext,  void* arg){
-	cerr<<"HELLO WORLD"<<endl;
-	wkl::Variable u;
-	u.v = 123456;
-	u.t = new wkl::VObject();
-	u.t->_vector.resize(2);
-	u.t->_vector[0] = 42;
-	u.t->_vector[1] = 1337;
-	return u;
-}
-
 
 int main(int argc, char** argv) {
 	stringstream s;
-	s<<"../testPrograms/"<<"test_pow"<<".wkl";
-	cerr<<s.str()<<endl;
-	ifstream is(s.str().c_str());
-	//ifstream is("testPrograms/test_pow.wkl");
-	/*
-	Lexer lexer(&is);
-	
-	Node* result = parse(&lexer);
 
-	//TypeChecker typecheck;
-	
-	//result->accept(&typecheck);
-	
+
 	s.str("");
 	s.clear();
 	s<<"../testPrograms/"<<"test_pow"<<".dot";
-	cerr<<s.str()<<endl;
 	ofstream dotfile(s.str().c_str());
-	DotBuilder dot(dotfile);
-	dot.visit(result);
-	result->accept(&dot);
-	dot.finalise();
-	dotfile.flush();
-	*/
-	Program* p = new Program("../testPrograms/test_pow.wkl");
+	
+	s.str("");
+	s.clear();
+	s<<"../testPrograms/"<<"test_pow"<<".asm";
+	ofstream asmfile(s.str().c_str());
+	Program* p = new Program("../testPrograms/test_pow.wkl", true, asmfile, &dotfile);
 	
 	map<uint32_t, systemCallFunc> syscall;
-	syscall[1] = doDamage;
+
 	list<uint32_t> stack;
 	stack.push_back(0x0); //pc EOP
 	stack.push_back(0xBBBB); //retVal
-	ProgramExecutor* e = new ProgramExecutor("test", NULL, p, syscall);
+	//ProgramExecutor* e = new ProgramExecutor("test", NULL, p, syscall);
 	
 	map<uint32_t, Variable> envContext;
 	envContext[1] = 9000;
-	e->run(0,1,stack, envContext);
+	//e->run(0,1,stack, envContext);
 	
 	return 0;
 }

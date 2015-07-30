@@ -44,6 +44,7 @@ public:
 	void visit(NodeRtnStmt* node);
 	void visit(NodeIfStmt* node);
 	void visit(NodeWhileStmt* node);
+	void visit(NodeForEachStmt* node);
 	void visit(NodeLiteralExpr* node);
 	void visit(NodeStmt* node);
 	void visit(NodeVardeclStmt* node);

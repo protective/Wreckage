@@ -161,6 +161,32 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[1] = "Rel src"; 
                 break;
             }
+	
+			case inst::cpAIS2_T:
+            {
+                name = "cpAIS2_T";
+                haveArg = true;
+                noParams = 1;
+                param[0] = "Abs src"; 
+                break;
+            }
+            case inst::cpRIS2_T:
+            {
+                name = "cpRIS2_T";
+                haveArg = true;
+                noParams = 1;
+                param[0] = "Rel src"; 
+                break;
+            }
+            case inst::cpEIS2_T:
+            {
+                name = "cpEIS2_T";
+                haveArg = true;
+                noParams = 1;
+                param[0] = "Env src"; 
+                break;
+            }			
+			
 			case inst::jmpA_1:
             {
                 name = "jmpA_1";
@@ -174,6 +200,15 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
             {
                 name = "cjmpA_1";
                 haveArg = true;
+                noParams = 1;
+                param[0] = "Line";
+				lineAddr[0] = true;
+                break;
+            }
+ 			case inst::cjmp2NeqA_1:
+            {
+                name = "cjmp2NeqA_1";
+                haveArg = false;
                 noParams = 1;
                 param[0] = "Line";
 				lineAddr[0] = true;
@@ -224,6 +259,14 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
  			case inst::popPC:
             {
                 name = "popPC";
+                break;
+            }
+ 			case inst::pushUIndx:
+            {
+                name = "pushUIndx";
+				haveArg = false;
+                noParams = 1;
+                param[0] = "Rel src";
                 break;
             }			
 			default:{

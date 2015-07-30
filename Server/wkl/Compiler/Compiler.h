@@ -71,6 +71,7 @@ public:
 	Compiler(string programPath, bool fromFile);
 	Compiler(string programscr);
 	virtual uint32_t compile(Program* program, ostream& outAsm);
+	virtual uint32_t compile(Program* program, ostream& outAsm, ostream* outDot);
 	PROGRAM& program(){return _program;}
     //list<systemCallFunc> getGlobalSystemCallLibs();
 	virtual void visit(Node* node){};
@@ -82,6 +83,7 @@ public:
 	virtual void visit(NodeRtnStmt* node){}
 	virtual void visit(NodeIfStmt* node);
 	virtual void visit(NodeWhileStmt* node);
+	virtual void visit(NodeForEachStmt* node);
 	virtual void visit(NodeLiteralExpr* node);
 	virtual void visit(NodeStmt* node){};
 	virtual void visit(NodeVardeclStmt* node);
@@ -132,9 +134,12 @@ private:
 	void emitTopStackToLoc(uint32_t pos, bool rel, uint32_t size);
 	void emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t index);
 	void emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum rel);
+	void emitLocRIndexToTopStack(uint32_t pos, varloc::Enum rel, uint32_t rIndexVar);
+	
 	void emitPushTopStackNtimesToStack(uint32_t size);
 	void emitCall(string name);
 	void emitPushPC();
+	void emitPushUIndx(uint32_t rel);
 	uint32_t emitPushRPC();
 	void emitNOP();
 	void emitFUN(uint32_t functionId);
@@ -148,7 +153,8 @@ private:
 	uint32_t emitJumpToRef();
     uint32_t emitCondJumpToRef();
 	uint32_t emitJumpToRef(uint32_t ref);
-    uint32_t emitCondJumpToRef(uint32_t ref);	
+    uint32_t emitCondJumpToRef(uint32_t ref);
+	uint32_t emitCond2NEQJumpToRef(uint32_t ref);	
 };
 }
 #endif	/* COMPILER_H */

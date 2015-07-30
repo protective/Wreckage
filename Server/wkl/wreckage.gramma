@@ -56,8 +56,9 @@ varexpr		-> id								{cerr<<"PARSE varexpr: id"<<endl;result = new NodeVariable
 
 block		-> left_c stmts right_c				{cerr<<"PARSE block"<<endl;result = arg1;}
 
-closedStmt	-> if expr block 					{cerr<<"PARSE closedStmt"<<endl; result = new NodeIfStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL, NULL);}
-		     | while expr block					{cerr<<"PARSE closedStmt"<<endl; result = new NodeWhileStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL);}
+closedStmt	-> if expr block 					{cerr<<"PARSE if"<<endl; result = new NodeIfStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL, NULL);}
+		     | while expr block					{cerr<<"PARSE while"<<endl; result = new NodeWhileStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL);}
+		     | for id in expr block			{cerr<<"PARSE for i in"<<endl; result = new NodeForEachStmt((Identifier*)arg1, (NodeExpr*)arg3, (NodeStmt*)arg4, NULL);}
 
 type		-> id								{result = new TypeDenoter((Identifier*)arg0);}
 

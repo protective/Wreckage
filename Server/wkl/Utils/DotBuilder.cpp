@@ -201,6 +201,20 @@ void DotBuilder::visit(NodeWhileStmt* node) {
 	node->body()->accept(this);
 }
 
+void DotBuilder::visit(NodeForEachStmt* node) { 
+	int myId = printNode("ForEachStmt");
+	//Visit next
+	if(node->next() != NULL)
+		node->next()->accept(this);
+	//Visit children
+	parentId = myId;
+	node->var()->accept(this);
+	parentId = myId;
+	node->expr()->accept(this);
+	parentId = myId;
+	node->block()->accept(this);
+}
+
 void DotBuilder::visit(NodeArg* node) { 
 	int myId = printNode("ArgNode");
 	//Visit next

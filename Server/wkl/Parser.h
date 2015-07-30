@@ -24,6 +24,7 @@ enum Token{
 	TOKEN_right_c,
 	TOKEN_if,
 	TOKEN_while,
+	TOKEN_for,
 	TOKEN_minus,
 	TOKEN_plus,
 	TOKEN_int

@@ -61,7 +61,7 @@ Node* parse(Lexer* lexer){
 	stack<void*> states = stack<void*>();
 	Symbol top_non_terminal;
 	Terminal* current_terminal = lexer->nextToken();
-	Node* result, *arg0, *arg1, *arg2, *arg3;
+	Node* result, *arg0, *arg1, *arg2, *arg3, *arg4;
 	goto START;
 	/*** States ****/
 Shift0:
@@ -74,20 +74,20 @@ START:
 State0:
 	states.push(&&Goto0);
 	switch(current_terminal->token()){
-		case TOKEN_newline: goto Shift79;
-		case TOKEN_error: goto Shift77;
+		case TOKEN_newline: goto Shift84;
+		case TOKEN_error: goto Shift82;
 		case TOKEN_def: goto Shift1;
 		default: goto ERROR;
 	}
 
 Goto0:
 	switch(top_non_terminal){
-		case SYMBOL_program: goto State81;
-		case SYMBOL_top_defs: goto State78;
-		case SYMBOL_top_def: goto State75;
-		case SYMBOL_method: goto State74;
+		case SYMBOL_program: goto State86;
+		case SYMBOL_top_defs: goto State83;
+		case SYMBOL_top_def: goto State80;
+		case SYMBOL_method: goto State79;
 		case SYMBOL_error:
-			goto Shift77;
+			goto Shift82;
 		default: goto FATAL_ERROR;
 	}
 
@@ -340,7 +340,7 @@ State11:
 
 Goto11:
 	switch(top_non_terminal){
-		case SYMBOL_block: goto State73;
+		case SYMBOL_block: goto State78;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -361,32 +361,34 @@ Shift12:
 {block -> [left_c] ~ stmts [right_c], [left_p]}
 {block -> [left_c] ~ stmts [right_c], [if]}
 {block -> [left_c] ~ stmts [right_c], [while]}
+{block -> [left_c] ~ stmts [right_c], [for]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State12:
 	states.push(&&Goto12);
 	switch(current_terminal->token()){
-		case TOKEN_if: goto Shift24;
-		case TOKEN_while: goto Shift14;
-		case TOKEN_out: goto Shift58;
-		case TOKEN_in: goto Shift53;
-		case TOKEN_return: goto Shift50;
-		case TOKEN_left_p: goto Shift39;
+		case TOKEN_if: goto Shift29;
+		case TOKEN_while: goto Shift26;
+		case TOKEN_for: goto Shift14;
+		case TOKEN_out: goto Shift63;
+		case TOKEN_in: goto Shift58;
+		case TOKEN_return: goto Shift55;
+		case TOKEN_left_p: goto Shift44;
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift70;
+		case TOKEN_id: goto Shift75;
 		default: goto ERROR;
 	}
 
 Goto12:
 	switch(top_non_terminal){
-		case SYMBOL_stmts: goto State68;
-		case SYMBOL_stmt: goto State65;
-		case SYMBOL_closedStmt: goto State63;
-		case SYMBOL_varDecl: goto State49;
-		case SYMBOL_expr: goto State48;
-		case SYMBOL_tuprefblock: goto State45;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_stmts: goto State73;
+		case SYMBOL_stmt: goto State70;
+		case SYMBOL_closedStmt: goto State68;
+		case SYMBOL_varDecl: goto State54;
+		case SYMBOL_expr: goto State53;
+		case SYMBOL_tuprefblock: goto State50;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -409,13 +411,13 @@ Shift13:
 State13:
 	states.push(&&Goto13);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce50;
-		case TOKEN_dot: goto Reduce50;
-		case TOKEN_plus: goto Reduce50;
-		case TOKEN_minus: goto Reduce50;
-		case TOKEN_left_c: goto Reduce50;
-		case TOKEN_right_p: goto Reduce50;
-		case TOKEN_comma: goto Reduce50;
+		case TOKEN_semicolon: goto Reduce51;
+		case TOKEN_dot: goto Reduce51;
+		case TOKEN_plus: goto Reduce51;
+		case TOKEN_minus: goto Reduce51;
+		case TOKEN_left_c: goto Reduce51;
+		case TOKEN_right_p: goto Reduce51;
+		case TOKEN_comma: goto Reduce51;
 		default: goto ERROR;
 	}
 
@@ -430,30 +432,28 @@ Goto13:
 
 Shift14:
 /*
-{closedStmt -> [while] ~ expr block, [right_c]}
-{closedStmt -> [while] ~ expr block, [out]}
-{closedStmt -> [while] ~ expr block, [in]}
-{closedStmt -> [while] ~ expr block, [return]}
-{closedStmt -> [while] ~ expr block, [id]}
-{closedStmt -> [while] ~ expr block, [int]}
-{closedStmt -> [while] ~ expr block, [left_p]}
-{closedStmt -> [while] ~ expr block, [if]}
-{closedStmt -> [while] ~ expr block, [while]}
+{closedStmt -> [for] ~ [id] [in] expr block, [right_c]}
+{closedStmt -> [for] ~ [id] [in] expr block, [out]}
+{closedStmt -> [for] ~ [id] [in] expr block, [in]}
+{closedStmt -> [for] ~ [id] [in] expr block, [return]}
+{closedStmt -> [for] ~ [id] [in] expr block, [id]}
+{closedStmt -> [for] ~ [id] [in] expr block, [int]}
+{closedStmt -> [for] ~ [id] [in] expr block, [left_p]}
+{closedStmt -> [for] ~ [id] [in] expr block, [if]}
+{closedStmt -> [for] ~ [id] [in] expr block, [while]}
+{closedStmt -> [for] ~ [id] [in] expr block, [for]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State14:
 	states.push(&&Goto14);
 	switch(current_terminal->token()){
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift15;
 		default: goto ERROR;
 	}
 
 Goto14:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State15;
-		case SYMBOL_varexpr: goto State27;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -463,15 +463,81 @@ Goto14:
 
 Shift15:
 /*
-{closedStmt -> [while] expr ~ block, [right_c]}
-{closedStmt -> [while] expr ~ block, [out]}
-{closedStmt -> [while] expr ~ block, [in]}
-{closedStmt -> [while] expr ~ block, [return]}
-{closedStmt -> [while] expr ~ block, [id]}
-{closedStmt -> [while] expr ~ block, [int]}
-{closedStmt -> [while] expr ~ block, [left_p]}
-{closedStmt -> [while] expr ~ block, [if]}
-{closedStmt -> [while] expr ~ block, [while]}
+{closedStmt -> [for] [id] ~ [in] expr block, [right_c]}
+{closedStmt -> [for] [id] ~ [in] expr block, [out]}
+{closedStmt -> [for] [id] ~ [in] expr block, [in]}
+{closedStmt -> [for] [id] ~ [in] expr block, [return]}
+{closedStmt -> [for] [id] ~ [in] expr block, [id]}
+{closedStmt -> [for] [id] ~ [in] expr block, [int]}
+{closedStmt -> [for] [id] ~ [in] expr block, [left_p]}
+{closedStmt -> [for] [id] ~ [in] expr block, [if]}
+{closedStmt -> [for] [id] ~ [in] expr block, [while]}
+{closedStmt -> [for] [id] ~ [in] expr block, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State15:
+	states.push(&&Goto15);
+	switch(current_terminal->token()){
+		case TOKEN_in: goto Shift16;
+		default: goto ERROR;
+	}
+
+Goto15:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift16:
+/*
+{closedStmt -> [for] [id] [in] ~ expr block, [right_c]}
+{closedStmt -> [for] [id] [in] ~ expr block, [out]}
+{closedStmt -> [for] [id] [in] ~ expr block, [in]}
+{closedStmt -> [for] [id] [in] ~ expr block, [return]}
+{closedStmt -> [for] [id] [in] ~ expr block, [id]}
+{closedStmt -> [for] [id] [in] ~ expr block, [int]}
+{closedStmt -> [for] [id] [in] ~ expr block, [left_p]}
+{closedStmt -> [for] [id] [in] ~ expr block, [if]}
+{closedStmt -> [for] [id] [in] ~ expr block, [while]}
+{closedStmt -> [for] [id] [in] ~ expr block, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State16:
+	states.push(&&Goto16);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto16:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State17;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift17:
+/*
+{closedStmt -> [for] [id] [in] expr ~ block, [right_c]}
+{closedStmt -> [for] [id] [in] expr ~ block, [out]}
+{closedStmt -> [for] [id] [in] expr ~ block, [in]}
+{closedStmt -> [for] [id] [in] expr ~ block, [return]}
+{closedStmt -> [for] [id] [in] expr ~ block, [id]}
+{closedStmt -> [for] [id] [in] expr ~ block, [int]}
+{closedStmt -> [for] [id] [in] expr ~ block, [left_p]}
+{closedStmt -> [for] [id] [in] expr ~ block, [if]}
+{closedStmt -> [for] [id] [in] expr ~ block, [while]}
+{closedStmt -> [for] [id] [in] expr ~ block, [for]}
 {expr -> expr ~ [minus] expr, [left_c]}
 {expr -> expr ~ [minus] expr, [dot]}
 {expr -> expr ~ [minus] expr, [plus]}
@@ -489,19 +555,19 @@ Shift15:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State15:
-	states.push(&&Goto15);
+State17:
+	states.push(&&Goto17);
 	switch(current_terminal->token()){
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		case TOKEN_left_c: goto Shift12;
 		default: goto ERROR;
 	}
 
-Goto15:
+Goto17:
 	switch(top_non_terminal){
-		case SYMBOL_block: goto State22;
+		case SYMBOL_block: goto State24;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -509,7 +575,7 @@ Goto15:
 		default: goto FATAL_ERROR;
 	}
 
-Shift16:
+Shift18:
 /*
 {expr -> expr [plus] ~ expr, [left_c]}
 {expr -> expr [plus] ~ expr, [dot]}
@@ -521,18 +587,18 @@ Shift16:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State16:
-	states.push(&&Goto16);
+State18:
+	states.push(&&Goto18);
 	switch(current_terminal->token()){
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift25;
 		default: goto ERROR;
 	}
 
-Goto16:
+Goto18:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State17;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_expr: goto State19;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -540,7 +606,7 @@ Goto16:
 		default: goto FATAL_ERROR;
 	}
 
-Shift17:
+Shift19:
 /*
 {expr -> expr [plus] expr ~, [left_c]}
 {expr -> expr [plus] expr ~, [dot]}
@@ -575,20 +641,20 @@ Shift17:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State17:
-	states.push(&&Goto17);
+State19:
+	states.push(&&Goto19);
 	switch(current_terminal->token()){
-		case TOKEN_left_c: goto Reduce49;
-		case TOKEN_plus: goto Reduce49;
-		case TOKEN_right_p: goto Reduce49;
-		case TOKEN_comma: goto Reduce49;
-		case TOKEN_semicolon: goto Reduce49;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_left_c: goto Reduce50;
+		case TOKEN_plus: goto Reduce50;
+		case TOKEN_right_p: goto Reduce50;
+		case TOKEN_comma: goto Reduce50;
+		case TOKEN_semicolon: goto Reduce50;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
-Goto17:
+Goto19:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -597,7 +663,7 @@ Goto17:
 		default: goto FATAL_ERROR;
 	}
 
-Shift18:
+Shift20:
 /*
 {expr -> expr [minus] ~ expr, [left_c]}
 {expr -> expr [minus] ~ expr, [dot]}
@@ -609,18 +675,18 @@ Shift18:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State18:
-	states.push(&&Goto18);
+State20:
+	states.push(&&Goto20);
 	switch(current_terminal->token()){
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift25;
 		default: goto ERROR;
 	}
 
-Goto18:
+Goto20:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State19;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_expr: goto State21;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -628,7 +694,7 @@ Goto18:
 		default: goto FATAL_ERROR;
 	}
 
-Shift19:
+Shift21:
 /*
 {expr -> expr [minus] expr ~, [left_c]}
 {expr -> expr [minus] expr ~, [dot]}
@@ -663,84 +729,16 @@ Shift19:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State19:
-	states.push(&&Goto19);
-	switch(current_terminal->token()){
-		case TOKEN_left_c: goto Reduce48;
-		case TOKEN_plus: goto Reduce48;
-		case TOKEN_minus: goto Reduce48;
-		case TOKEN_right_p: goto Reduce48;
-		case TOKEN_comma: goto Reduce48;
-		case TOKEN_semicolon: goto Reduce48;
-		case TOKEN_dot: goto Shift20;
-		default: goto ERROR;
-	}
-
-Goto19:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift20:
-/*
-{varexpr -> expr [dot] ~ [id], [assignment]}
-{varexpr -> expr [dot] ~ [id], [dot]}
-{varexpr -> expr [dot] ~ [id], [left_p]}
-{varexpr -> expr [dot] ~ [id], [plus]}
-{varexpr -> expr [dot] ~ [id], [minus]}
-{varexpr -> expr [dot] ~ [id], [left_c]}
-{varexpr -> expr [dot] ~ [id], [right_p]}
-{varexpr -> expr [dot] ~ [id], [comma]}
-{varexpr -> expr [dot] ~ [id], [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State20:
-	states.push(&&Goto20);
-	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift21;
-		default: goto ERROR;
-	}
-
-Goto20:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift21:
-/*
-{varexpr -> expr [dot] [id] ~, [assignment]}
-{varexpr -> expr [dot] [id] ~, [dot]}
-{varexpr -> expr [dot] [id] ~, [left_p]}
-{varexpr -> expr [dot] [id] ~, [plus]}
-{varexpr -> expr [dot] [id] ~, [minus]}
-{varexpr -> expr [dot] [id] ~, [left_c]}
-{varexpr -> expr [dot] [id] ~, [right_p]}
-{varexpr -> expr [dot] [id] ~, [comma]}
-{varexpr -> expr [dot] [id] ~, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State21:
 	states.push(&&Goto21);
 	switch(current_terminal->token()){
-		case TOKEN_assignment: goto Reduce30;
-		case TOKEN_dot: goto Reduce30;
-		case TOKEN_left_p: goto Reduce30;
-		case TOKEN_plus: goto Reduce30;
-		case TOKEN_minus: goto Reduce30;
-		case TOKEN_left_c: goto Reduce30;
-		case TOKEN_right_p: goto Reduce30;
-		case TOKEN_comma: goto Reduce30;
-		case TOKEN_semicolon: goto Reduce30;
+		case TOKEN_left_c: goto Reduce49;
+		case TOKEN_plus: goto Reduce49;
+		case TOKEN_minus: goto Reduce49;
+		case TOKEN_right_p: goto Reduce49;
+		case TOKEN_comma: goto Reduce49;
+		case TOKEN_semicolon: goto Reduce49;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
@@ -755,30 +753,22 @@ Goto21:
 
 Shift22:
 /*
-{closedStmt -> [while] expr block ~, [right_c]}
-{closedStmt -> [while] expr block ~, [out]}
-{closedStmt -> [while] expr block ~, [in]}
-{closedStmt -> [while] expr block ~, [return]}
-{closedStmt -> [while] expr block ~, [id]}
-{closedStmt -> [while] expr block ~, [int]}
-{closedStmt -> [while] expr block ~, [left_p]}
-{closedStmt -> [while] expr block ~, [if]}
-{closedStmt -> [while] expr block ~, [while]}
+{varexpr -> expr [dot] ~ [id], [assignment]}
+{varexpr -> expr [dot] ~ [id], [dot]}
+{varexpr -> expr [dot] ~ [id], [left_p]}
+{varexpr -> expr [dot] ~ [id], [plus]}
+{varexpr -> expr [dot] ~ [id], [minus]}
+{varexpr -> expr [dot] ~ [id], [left_c]}
+{varexpr -> expr [dot] ~ [id], [right_p]}
+{varexpr -> expr [dot] ~ [id], [comma]}
+{varexpr -> expr [dot] ~ [id], [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State22:
 	states.push(&&Goto22);
 	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Reduce33;
-		case TOKEN_out: goto Reduce33;
-		case TOKEN_in: goto Reduce33;
-		case TOKEN_return: goto Reduce33;
-		case TOKEN_id: goto Reduce33;
-		case TOKEN_int: goto Reduce33;
-		case TOKEN_left_p: goto Reduce33;
-		case TOKEN_if: goto Reduce33;
-		case TOKEN_while: goto Reduce33;
+		case TOKEN_id: goto Shift23;
 		default: goto ERROR;
 	}
 
@@ -793,30 +783,30 @@ Goto22:
 
 Shift23:
 /*
-{varexpr -> [id] ~, [assignment]}
-{varexpr -> [id] ~, [dot]}
-{varexpr -> [id] ~, [left_p]}
-{varexpr -> [id] ~, [plus]}
-{varexpr -> [id] ~, [minus]}
-{varexpr -> [id] ~, [left_c]}
-{varexpr -> [id] ~, [right_p]}
-{varexpr -> [id] ~, [comma]}
-{varexpr -> [id] ~, [semicolon]}
+{varexpr -> expr [dot] [id] ~, [assignment]}
+{varexpr -> expr [dot] [id] ~, [dot]}
+{varexpr -> expr [dot] [id] ~, [left_p]}
+{varexpr -> expr [dot] [id] ~, [plus]}
+{varexpr -> expr [dot] [id] ~, [minus]}
+{varexpr -> expr [dot] [id] ~, [left_c]}
+{varexpr -> expr [dot] [id] ~, [right_p]}
+{varexpr -> expr [dot] [id] ~, [comma]}
+{varexpr -> expr [dot] [id] ~, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State23:
 	states.push(&&Goto23);
 	switch(current_terminal->token()){
-		case TOKEN_assignment: goto Reduce29;
-		case TOKEN_dot: goto Reduce29;
-		case TOKEN_left_p: goto Reduce29;
-		case TOKEN_plus: goto Reduce29;
-		case TOKEN_minus: goto Reduce29;
-		case TOKEN_left_c: goto Reduce29;
-		case TOKEN_right_p: goto Reduce29;
-		case TOKEN_comma: goto Reduce29;
-		case TOKEN_semicolon: goto Reduce29;
+		case TOKEN_assignment: goto Reduce30;
+		case TOKEN_dot: goto Reduce30;
+		case TOKEN_left_p: goto Reduce30;
+		case TOKEN_plus: goto Reduce30;
+		case TOKEN_minus: goto Reduce30;
+		case TOKEN_left_c: goto Reduce30;
+		case TOKEN_right_p: goto Reduce30;
+		case TOKEN_comma: goto Reduce30;
+		case TOKEN_semicolon: goto Reduce30;
 		default: goto ERROR;
 	}
 
@@ -831,30 +821,37 @@ Goto23:
 
 Shift24:
 /*
-{closedStmt -> [if] ~ expr block, [right_c]}
-{closedStmt -> [if] ~ expr block, [out]}
-{closedStmt -> [if] ~ expr block, [in]}
-{closedStmt -> [if] ~ expr block, [return]}
-{closedStmt -> [if] ~ expr block, [id]}
-{closedStmt -> [if] ~ expr block, [int]}
-{closedStmt -> [if] ~ expr block, [left_p]}
-{closedStmt -> [if] ~ expr block, [if]}
-{closedStmt -> [if] ~ expr block, [while]}
+{closedStmt -> [for] [id] [in] expr block ~, [right_c]}
+{closedStmt -> [for] [id] [in] expr block ~, [out]}
+{closedStmt -> [for] [id] [in] expr block ~, [in]}
+{closedStmt -> [for] [id] [in] expr block ~, [return]}
+{closedStmt -> [for] [id] [in] expr block ~, [id]}
+{closedStmt -> [for] [id] [in] expr block ~, [int]}
+{closedStmt -> [for] [id] [in] expr block ~, [left_p]}
+{closedStmt -> [for] [id] [in] expr block ~, [if]}
+{closedStmt -> [for] [id] [in] expr block ~, [while]}
+{closedStmt -> [for] [id] [in] expr block ~, [for]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State24:
 	states.push(&&Goto24);
 	switch(current_terminal->token()){
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_right_c: goto Reduce34;
+		case TOKEN_out: goto Reduce34;
+		case TOKEN_in: goto Reduce34;
+		case TOKEN_return: goto Reduce34;
+		case TOKEN_id: goto Reduce34;
+		case TOKEN_int: goto Reduce34;
+		case TOKEN_left_p: goto Reduce34;
+		case TOKEN_if: goto Reduce34;
+		case TOKEN_while: goto Reduce34;
+		case TOKEN_for: goto Reduce34;
 		default: goto ERROR;
 	}
 
 Goto24:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State25;
-		case SYMBOL_varexpr: goto State27;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -864,15 +861,88 @@ Goto24:
 
 Shift25:
 /*
-{closedStmt -> [if] expr ~ block, [right_c]}
-{closedStmt -> [if] expr ~ block, [out]}
-{closedStmt -> [if] expr ~ block, [in]}
-{closedStmt -> [if] expr ~ block, [return]}
-{closedStmt -> [if] expr ~ block, [id]}
-{closedStmt -> [if] expr ~ block, [int]}
-{closedStmt -> [if] expr ~ block, [left_p]}
-{closedStmt -> [if] expr ~ block, [if]}
-{closedStmt -> [if] expr ~ block, [while]}
+{varexpr -> [id] ~, [assignment]}
+{varexpr -> [id] ~, [dot]}
+{varexpr -> [id] ~, [left_p]}
+{varexpr -> [id] ~, [plus]}
+{varexpr -> [id] ~, [minus]}
+{varexpr -> [id] ~, [left_c]}
+{varexpr -> [id] ~, [right_p]}
+{varexpr -> [id] ~, [comma]}
+{varexpr -> [id] ~, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State25:
+	states.push(&&Goto25);
+	switch(current_terminal->token()){
+		case TOKEN_assignment: goto Reduce29;
+		case TOKEN_dot: goto Reduce29;
+		case TOKEN_left_p: goto Reduce29;
+		case TOKEN_plus: goto Reduce29;
+		case TOKEN_minus: goto Reduce29;
+		case TOKEN_left_c: goto Reduce29;
+		case TOKEN_right_p: goto Reduce29;
+		case TOKEN_comma: goto Reduce29;
+		case TOKEN_semicolon: goto Reduce29;
+		default: goto ERROR;
+	}
+
+Goto25:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift26:
+/*
+{closedStmt -> [while] ~ expr block, [right_c]}
+{closedStmt -> [while] ~ expr block, [out]}
+{closedStmt -> [while] ~ expr block, [in]}
+{closedStmt -> [while] ~ expr block, [return]}
+{closedStmt -> [while] ~ expr block, [id]}
+{closedStmt -> [while] ~ expr block, [int]}
+{closedStmt -> [while] ~ expr block, [left_p]}
+{closedStmt -> [while] ~ expr block, [if]}
+{closedStmt -> [while] ~ expr block, [while]}
+{closedStmt -> [while] ~ expr block, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State26:
+	states.push(&&Goto26);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto26:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State27;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift27:
+/*
+{closedStmt -> [while] expr ~ block, [right_c]}
+{closedStmt -> [while] expr ~ block, [out]}
+{closedStmt -> [while] expr ~ block, [in]}
+{closedStmt -> [while] expr ~ block, [return]}
+{closedStmt -> [while] expr ~ block, [id]}
+{closedStmt -> [while] expr ~ block, [int]}
+{closedStmt -> [while] expr ~ block, [left_p]}
+{closedStmt -> [while] expr ~ block, [if]}
+{closedStmt -> [while] expr ~ block, [while]}
+{closedStmt -> [while] expr ~ block, [for]}
 {expr -> expr ~ [minus] expr, [left_c]}
 {expr -> expr ~ [minus] expr, [dot]}
 {expr -> expr ~ [minus] expr, [plus]}
@@ -890,19 +960,19 @@ Shift25:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State25:
-	states.push(&&Goto25);
+State27:
+	states.push(&&Goto27);
 	switch(current_terminal->token()){
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		case TOKEN_left_c: goto Shift12;
 		default: goto ERROR;
 	}
 
-Goto25:
+Goto27:
 	switch(top_non_terminal){
-		case SYMBOL_block: goto State26;
+		case SYMBOL_block: goto State28;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -910,7 +980,130 @@ Goto25:
 		default: goto FATAL_ERROR;
 	}
 
-Shift26:
+Shift28:
+/*
+{closedStmt -> [while] expr block ~, [right_c]}
+{closedStmt -> [while] expr block ~, [out]}
+{closedStmt -> [while] expr block ~, [in]}
+{closedStmt -> [while] expr block ~, [return]}
+{closedStmt -> [while] expr block ~, [id]}
+{closedStmt -> [while] expr block ~, [int]}
+{closedStmt -> [while] expr block ~, [left_p]}
+{closedStmt -> [while] expr block ~, [if]}
+{closedStmt -> [while] expr block ~, [while]}
+{closedStmt -> [while] expr block ~, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State28:
+	states.push(&&Goto28);
+	switch(current_terminal->token()){
+		case TOKEN_right_c: goto Reduce33;
+		case TOKEN_out: goto Reduce33;
+		case TOKEN_in: goto Reduce33;
+		case TOKEN_return: goto Reduce33;
+		case TOKEN_id: goto Reduce33;
+		case TOKEN_int: goto Reduce33;
+		case TOKEN_left_p: goto Reduce33;
+		case TOKEN_if: goto Reduce33;
+		case TOKEN_while: goto Reduce33;
+		case TOKEN_for: goto Reduce33;
+		default: goto ERROR;
+	}
+
+Goto28:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift29:
+/*
+{closedStmt -> [if] ~ expr block, [right_c]}
+{closedStmt -> [if] ~ expr block, [out]}
+{closedStmt -> [if] ~ expr block, [in]}
+{closedStmt -> [if] ~ expr block, [return]}
+{closedStmt -> [if] ~ expr block, [id]}
+{closedStmt -> [if] ~ expr block, [int]}
+{closedStmt -> [if] ~ expr block, [left_p]}
+{closedStmt -> [if] ~ expr block, [if]}
+{closedStmt -> [if] ~ expr block, [while]}
+{closedStmt -> [if] ~ expr block, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State29:
+	states.push(&&Goto29);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto29:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State30;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift30:
+/*
+{closedStmt -> [if] expr ~ block, [right_c]}
+{closedStmt -> [if] expr ~ block, [out]}
+{closedStmt -> [if] expr ~ block, [in]}
+{closedStmt -> [if] expr ~ block, [return]}
+{closedStmt -> [if] expr ~ block, [id]}
+{closedStmt -> [if] expr ~ block, [int]}
+{closedStmt -> [if] expr ~ block, [left_p]}
+{closedStmt -> [if] expr ~ block, [if]}
+{closedStmt -> [if] expr ~ block, [while]}
+{closedStmt -> [if] expr ~ block, [for]}
+{expr -> expr ~ [minus] expr, [left_c]}
+{expr -> expr ~ [minus] expr, [dot]}
+{expr -> expr ~ [minus] expr, [plus]}
+{expr -> expr ~ [minus] expr, [minus]}
+{expr -> expr ~ [plus] expr, [left_c]}
+{expr -> expr ~ [plus] expr, [dot]}
+{expr -> expr ~ [plus] expr, [plus]}
+{expr -> expr ~ [plus] expr, [minus]}
+{varexpr -> expr ~ [dot] [id], [assignment]}
+{varexpr -> expr ~ [dot] [id], [dot]}
+{varexpr -> expr ~ [dot] [id], [left_p]}
+{varexpr -> expr ~ [dot] [id], [plus]}
+{varexpr -> expr ~ [dot] [id], [minus]}
+{varexpr -> expr ~ [dot] [id], [left_c]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State30:
+	states.push(&&Goto30);
+	switch(current_terminal->token()){
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
+		case TOKEN_left_c: goto Shift12;
+		default: goto ERROR;
+	}
+
+Goto30:
+	switch(top_non_terminal){
+		case SYMBOL_block: goto State31;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift31:
 /*
 {closedStmt -> [if] expr block ~, [right_c]}
 {closedStmt -> [if] expr block ~, [out]}
@@ -921,11 +1114,12 @@ Shift26:
 {closedStmt -> [if] expr block ~, [left_p]}
 {closedStmt -> [if] expr block ~, [if]}
 {closedStmt -> [if] expr block ~, [while]}
+{closedStmt -> [if] expr block ~, [for]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State26:
-	states.push(&&Goto26);
+State31:
+	states.push(&&Goto31);
 	switch(current_terminal->token()){
 		case TOKEN_right_c: goto Reduce32;
 		case TOKEN_out: goto Reduce32;
@@ -936,10 +1130,11 @@ State26:
 		case TOKEN_left_p: goto Reduce32;
 		case TOKEN_if: goto Reduce32;
 		case TOKEN_while: goto Reduce32;
+		case TOKEN_for: goto Reduce32;
 		default: goto ERROR;
 	}
 
-Goto26:
+Goto31:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -948,7 +1143,7 @@ Goto26:
 		default: goto FATAL_ERROR;
 	}
 
-Shift27:
+Shift32:
 /*
 {expr -> varexpr ~ argblock, [semicolon]}
 {expr -> varexpr ~ argblock, [dot]}
@@ -974,24 +1169,24 @@ Shift27:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State27:
-	states.push(&&Goto27);
+State32:
+	states.push(&&Goto32);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce52;
-		case TOKEN_dot: goto Reduce52;
-		case TOKEN_plus: goto Reduce52;
-		case TOKEN_minus: goto Reduce52;
-		case TOKEN_left_c: goto Reduce52;
-		case TOKEN_right_p: goto Reduce52;
-		case TOKEN_comma: goto Reduce52;
-		case TOKEN_assignment: goto Shift37;
-		case TOKEN_left_p: goto Shift29;
+		case TOKEN_semicolon: goto Reduce53;
+		case TOKEN_dot: goto Reduce53;
+		case TOKEN_plus: goto Reduce53;
+		case TOKEN_minus: goto Reduce53;
+		case TOKEN_left_c: goto Reduce53;
+		case TOKEN_right_p: goto Reduce53;
+		case TOKEN_comma: goto Reduce53;
+		case TOKEN_assignment: goto Shift42;
+		case TOKEN_left_p: goto Shift34;
 		default: goto ERROR;
 	}
 
-Goto27:
+Goto32:
 	switch(top_non_terminal){
-		case SYMBOL_argblock: goto State28;
+		case SYMBOL_argblock: goto State33;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -999,7 +1194,7 @@ Goto27:
 		default: goto FATAL_ERROR;
 	}
 
-Shift28:
+Shift33:
 /*
 {expr -> varexpr argblock ~, [semicolon]}
 {expr -> varexpr argblock ~, [dot]}
@@ -1011,20 +1206,20 @@ Shift28:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State28:
-	states.push(&&Goto28);
+State33:
+	states.push(&&Goto33);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce51;
-		case TOKEN_dot: goto Reduce51;
-		case TOKEN_plus: goto Reduce51;
-		case TOKEN_minus: goto Reduce51;
-		case TOKEN_left_c: goto Reduce51;
-		case TOKEN_right_p: goto Reduce51;
-		case TOKEN_comma: goto Reduce51;
+		case TOKEN_semicolon: goto Reduce52;
+		case TOKEN_dot: goto Reduce52;
+		case TOKEN_plus: goto Reduce52;
+		case TOKEN_minus: goto Reduce52;
+		case TOKEN_left_c: goto Reduce52;
+		case TOKEN_right_p: goto Reduce52;
+		case TOKEN_comma: goto Reduce52;
 		default: goto ERROR;
 	}
 
-Goto28:
+Goto33:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -1033,7 +1228,7 @@ Goto28:
 		default: goto FATAL_ERROR;
 	}
 
-Shift29:
+Shift34:
 /*
 {argblock -> [left_p] ~ args [right_p], [semicolon]}
 {argblock -> [left_p] ~ args [right_p], [dot]}
@@ -1052,156 +1247,21 @@ Shift29:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State29:
-	states.push(&&Goto29);
-	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Shift35;
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
-		default: goto ERROR;
-	}
-
-Goto29:
-	switch(top_non_terminal){
-		case SYMBOL_expr: goto State36;
-		case SYMBOL_varexpr: goto State27;
-		case SYMBOL_args: goto State33;
-		case SYMBOL_arg: goto State30;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift30:
-/*
-{args -> arg ~ [comma] args, [right_p]}
-{args -> arg ~, [right_p]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State30:
-	states.push(&&Goto30);
-	switch(current_terminal->token()){
-		case TOKEN_comma: goto Shift31;
-		case TOKEN_right_p: goto Reduce38;
-		default: goto ERROR;
-	}
-
-Goto30:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift31:
-/*
-{args -> arg [comma] ~ args, [right_p]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State31:
-	states.push(&&Goto31);
-	switch(current_terminal->token()){
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
-		default: goto ERROR;
-	}
-
-Goto31:
-	switch(top_non_terminal){
-		case SYMBOL_expr: goto State36;
-		case SYMBOL_varexpr: goto State27;
-		case SYMBOL_args: goto State32;
-		case SYMBOL_arg: goto State30;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift32:
-/*
-{args -> arg [comma] args ~, [right_p]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State32:
-	states.push(&&Goto32);
-	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Reduce37;
-		default: goto ERROR;
-	}
-
-Goto32:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift33:
-/*
-{argblock -> [left_p] args ~ [right_p], [semicolon]}
-{argblock -> [left_p] args ~ [right_p], [dot]}
-{argblock -> [left_p] args ~ [right_p], [plus]}
-{argblock -> [left_p] args ~ [right_p], [minus]}
-{argblock -> [left_p] args ~ [right_p], [left_c]}
-{argblock -> [left_p] args ~ [right_p], [right_p]}
-{argblock -> [left_p] args ~ [right_p], [comma]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State33:
-	states.push(&&Goto33);
-	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Shift34;
-		default: goto ERROR;
-	}
-
-Goto33:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift34:
-/*
-{argblock -> [left_p] args [right_p] ~, [semicolon]}
-{argblock -> [left_p] args [right_p] ~, [dot]}
-{argblock -> [left_p] args [right_p] ~, [plus]}
-{argblock -> [left_p] args [right_p] ~, [minus]}
-{argblock -> [left_p] args [right_p] ~, [left_c]}
-{argblock -> [left_p] args [right_p] ~, [right_p]}
-{argblock -> [left_p] args [right_p] ~, [comma]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State34:
 	states.push(&&Goto34);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce35;
-		case TOKEN_dot: goto Reduce35;
-		case TOKEN_plus: goto Reduce35;
-		case TOKEN_minus: goto Reduce35;
-		case TOKEN_left_c: goto Reduce35;
-		case TOKEN_right_p: goto Reduce35;
-		case TOKEN_comma: goto Reduce35;
+		case TOKEN_right_p: goto Shift40;
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
 		default: goto ERROR;
 	}
 
 Goto34:
 	switch(top_non_terminal){
+		case SYMBOL_expr: goto State41;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_args: goto State38;
+		case SYMBOL_arg: goto State35;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1211,26 +1271,16 @@ Goto34:
 
 Shift35:
 /*
-{argblock -> [left_p] [right_p] ~, [semicolon]}
-{argblock -> [left_p] [right_p] ~, [dot]}
-{argblock -> [left_p] [right_p] ~, [plus]}
-{argblock -> [left_p] [right_p] ~, [minus]}
-{argblock -> [left_p] [right_p] ~, [left_c]}
-{argblock -> [left_p] [right_p] ~, [right_p]}
-{argblock -> [left_p] [right_p] ~, [comma]}
+{args -> arg ~ [comma] args, [right_p]}
+{args -> arg ~, [right_p]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State35:
 	states.push(&&Goto35);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce36;
-		case TOKEN_dot: goto Reduce36;
-		case TOKEN_plus: goto Reduce36;
-		case TOKEN_minus: goto Reduce36;
-		case TOKEN_left_c: goto Reduce36;
-		case TOKEN_right_p: goto Reduce36;
-		case TOKEN_comma: goto Reduce36;
+		case TOKEN_comma: goto Shift36;
+		case TOKEN_right_p: goto Reduce39;
 		default: goto ERROR;
 	}
 
@@ -1244,6 +1294,151 @@ Goto35:
 	}
 
 Shift36:
+/*
+{args -> arg [comma] ~ args, [right_p]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State36:
+	states.push(&&Goto36);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto36:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State41;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_args: goto State37;
+		case SYMBOL_arg: goto State35;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift37:
+/*
+{args -> arg [comma] args ~, [right_p]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State37:
+	states.push(&&Goto37);
+	switch(current_terminal->token()){
+		case TOKEN_right_p: goto Reduce38;
+		default: goto ERROR;
+	}
+
+Goto37:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift38:
+/*
+{argblock -> [left_p] args ~ [right_p], [semicolon]}
+{argblock -> [left_p] args ~ [right_p], [dot]}
+{argblock -> [left_p] args ~ [right_p], [plus]}
+{argblock -> [left_p] args ~ [right_p], [minus]}
+{argblock -> [left_p] args ~ [right_p], [left_c]}
+{argblock -> [left_p] args ~ [right_p], [right_p]}
+{argblock -> [left_p] args ~ [right_p], [comma]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State38:
+	states.push(&&Goto38);
+	switch(current_terminal->token()){
+		case TOKEN_right_p: goto Shift39;
+		default: goto ERROR;
+	}
+
+Goto38:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift39:
+/*
+{argblock -> [left_p] args [right_p] ~, [semicolon]}
+{argblock -> [left_p] args [right_p] ~, [dot]}
+{argblock -> [left_p] args [right_p] ~, [plus]}
+{argblock -> [left_p] args [right_p] ~, [minus]}
+{argblock -> [left_p] args [right_p] ~, [left_c]}
+{argblock -> [left_p] args [right_p] ~, [right_p]}
+{argblock -> [left_p] args [right_p] ~, [comma]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State39:
+	states.push(&&Goto39);
+	switch(current_terminal->token()){
+		case TOKEN_semicolon: goto Reduce36;
+		case TOKEN_dot: goto Reduce36;
+		case TOKEN_plus: goto Reduce36;
+		case TOKEN_minus: goto Reduce36;
+		case TOKEN_left_c: goto Reduce36;
+		case TOKEN_right_p: goto Reduce36;
+		case TOKEN_comma: goto Reduce36;
+		default: goto ERROR;
+	}
+
+Goto39:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift40:
+/*
+{argblock -> [left_p] [right_p] ~, [semicolon]}
+{argblock -> [left_p] [right_p] ~, [dot]}
+{argblock -> [left_p] [right_p] ~, [plus]}
+{argblock -> [left_p] [right_p] ~, [minus]}
+{argblock -> [left_p] [right_p] ~, [left_c]}
+{argblock -> [left_p] [right_p] ~, [right_p]}
+{argblock -> [left_p] [right_p] ~, [comma]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State40:
+	states.push(&&Goto40);
+	switch(current_terminal->token()){
+		case TOKEN_semicolon: goto Reduce37;
+		case TOKEN_dot: goto Reduce37;
+		case TOKEN_plus: goto Reduce37;
+		case TOKEN_minus: goto Reduce37;
+		case TOKEN_left_c: goto Reduce37;
+		case TOKEN_right_p: goto Reduce37;
+		case TOKEN_comma: goto Reduce37;
+		default: goto ERROR;
+	}
+
+Goto40:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift41:
 /*
 {arg -> expr ~, [right_p]}
 {arg -> expr ~, [comma]}
@@ -1267,18 +1462,18 @@ Shift36:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State36:
-	states.push(&&Goto36);
+State41:
+	states.push(&&Goto41);
 	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Reduce39;
-		case TOKEN_comma: goto Reduce39;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_right_p: goto Reduce40;
+		case TOKEN_comma: goto Reduce40;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
-Goto36:
+Goto41:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -1287,7 +1482,7 @@ Goto36:
 		default: goto FATAL_ERROR;
 	}
 
-Shift37:
+Shift42:
 /*
 {expr -> varexpr [assignment] ~ expr, [semicolon]}
 {expr -> varexpr [assignment] ~ expr, [dot]}
@@ -1299,18 +1494,18 @@ Shift37:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State37:
-	states.push(&&Goto37);
+State42:
+	states.push(&&Goto42);
 	switch(current_terminal->token()){
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift25;
 		default: goto ERROR;
 	}
 
-Goto37:
+Goto42:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State38;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_expr: goto State43;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1318,7 +1513,7 @@ Goto37:
 		default: goto FATAL_ERROR;
 	}
 
-Shift38:
+Shift43:
 /*
 {expr -> varexpr [assignment] expr ~, [semicolon]}
 {expr -> varexpr [assignment] expr ~, [dot]}
@@ -1353,136 +1548,16 @@ Shift38:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State38:
-	states.push(&&Goto38);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce53;
-		case TOKEN_left_c: goto Reduce53;
-		case TOKEN_right_p: goto Reduce53;
-		case TOKEN_comma: goto Reduce53;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
-		default: goto ERROR;
-	}
-
-Goto38:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift39:
-/*
-{tuprefblock -> [left_p] ~ tuprefs [right_p], [assignment]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State39:
-	states.push(&&Goto39);
-	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift44;
-		default: goto ERROR;
-	}
-
-Goto39:
-	switch(top_non_terminal){
-		case SYMBOL_tuprefs: goto State40;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift40:
-/*
-{tuprefblock -> [left_p] tuprefs ~ [right_p], [assignment]}
-{tuprefs -> tuprefs ~ [comma] tuprefs, [right_p]}
-{tuprefs -> tuprefs ~ [comma] tuprefs, [comma]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State40:
-	states.push(&&Goto40);
-	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Shift43;
-		case TOKEN_comma: goto Shift41;
-		default: goto ERROR;
-	}
-
-Goto40:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift41:
-/*
-{tuprefs -> tuprefs [comma] ~ tuprefs, [right_p]}
-{tuprefs -> tuprefs [comma] ~ tuprefs, [comma]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State41:
-	states.push(&&Goto41);
-	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift44;
-		default: goto ERROR;
-	}
-
-Goto41:
-	switch(top_non_terminal){
-		case SYMBOL_tuprefs: goto State42;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift42:
-/*
-{tuprefs -> tuprefs [comma] tuprefs ~, [right_p]}
-{tuprefs -> tuprefs [comma] tuprefs ~, [comma]}
-{tuprefs -> tuprefs ~ [comma] tuprefs, [comma]}
-{tuprefs -> tuprefs ~ [comma] tuprefs, [right_p]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State42:
-	states.push(&&Goto42);
-	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Reduce46;
-		case TOKEN_comma: goto Reduce46;
-		default: goto ERROR;
-	}
-
-Goto42:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift43:
-/*
-{tuprefblock -> [left_p] tuprefs [right_p] ~, [assignment]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State43:
 	states.push(&&Goto43);
 	switch(current_terminal->token()){
-		case TOKEN_assignment: goto Reduce45;
+		case TOKEN_semicolon: goto Reduce54;
+		case TOKEN_left_c: goto Reduce54;
+		case TOKEN_right_p: goto Reduce54;
+		case TOKEN_comma: goto Reduce54;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
@@ -1497,21 +1572,20 @@ Goto43:
 
 Shift44:
 /*
-{tuprefs -> [id] ~, [right_p]}
-{tuprefs -> [id] ~, [comma]}
+{tuprefblock -> [left_p] ~ tuprefs [right_p], [assignment]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State44:
 	states.push(&&Goto44);
 	switch(current_terminal->token()){
-		case TOKEN_right_p: goto Reduce47;
-		case TOKEN_comma: goto Reduce47;
+		case TOKEN_id: goto Shift49;
 		default: goto ERROR;
 	}
 
 Goto44:
 	switch(top_non_terminal){
+		case SYMBOL_tuprefs: goto State45;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1521,14 +1595,17 @@ Goto44:
 
 Shift45:
 /*
-{stmt -> tuprefblock ~ [assignment] expr, [semicolon]}
+{tuprefblock -> [left_p] tuprefs ~ [right_p], [assignment]}
+{tuprefs -> tuprefs ~ [comma] tuprefs, [right_p]}
+{tuprefs -> tuprefs ~ [comma] tuprefs, [comma]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State45:
 	states.push(&&Goto45);
 	switch(current_terminal->token()){
-		case TOKEN_assignment: goto Shift46;
+		case TOKEN_right_p: goto Shift48;
+		case TOKEN_comma: goto Shift46;
 		default: goto ERROR;
 	}
 
@@ -1543,22 +1620,21 @@ Goto45:
 
 Shift46:
 /*
-{stmt -> tuprefblock [assignment] ~ expr, [semicolon]}
+{tuprefs -> tuprefs [comma] ~ tuprefs, [right_p]}
+{tuprefs -> tuprefs [comma] ~ tuprefs, [comma]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State46:
 	states.push(&&Goto46);
 	switch(current_terminal->token()){
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift49;
 		default: goto ERROR;
 	}
 
 Goto46:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State47;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_tuprefs: goto State47;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1567,6 +1643,125 @@ Goto46:
 	}
 
 Shift47:
+/*
+{tuprefs -> tuprefs [comma] tuprefs ~, [right_p]}
+{tuprefs -> tuprefs [comma] tuprefs ~, [comma]}
+{tuprefs -> tuprefs ~ [comma] tuprefs, [comma]}
+{tuprefs -> tuprefs ~ [comma] tuprefs, [right_p]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State47:
+	states.push(&&Goto47);
+	switch(current_terminal->token()){
+		case TOKEN_right_p: goto Reduce47;
+		case TOKEN_comma: goto Reduce47;
+		default: goto ERROR;
+	}
+
+Goto47:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift48:
+/*
+{tuprefblock -> [left_p] tuprefs [right_p] ~, [assignment]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State48:
+	states.push(&&Goto48);
+	switch(current_terminal->token()){
+		case TOKEN_assignment: goto Reduce46;
+		default: goto ERROR;
+	}
+
+Goto48:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift49:
+/*
+{tuprefs -> [id] ~, [right_p]}
+{tuprefs -> [id] ~, [comma]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State49:
+	states.push(&&Goto49);
+	switch(current_terminal->token()){
+		case TOKEN_right_p: goto Reduce48;
+		case TOKEN_comma: goto Reduce48;
+		default: goto ERROR;
+	}
+
+Goto49:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift50:
+/*
+{stmt -> tuprefblock ~ [assignment] expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State50:
+	states.push(&&Goto50);
+	switch(current_terminal->token()){
+		case TOKEN_assignment: goto Shift51;
+		default: goto ERROR;
+	}
+
+Goto50:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift51:
+/*
+{stmt -> tuprefblock [assignment] ~ expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State51:
+	states.push(&&Goto51);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto51:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State52;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift52:
 /*
 {stmt -> tuprefblock [assignment] expr ~, [semicolon]}
 {expr -> expr ~ [minus] expr, [dot]}
@@ -1586,17 +1781,17 @@ Shift47:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State47:
-	states.push(&&Goto47);
+State52:
+	states.push(&&Goto52);
 	switch(current_terminal->token()){
 		case TOKEN_semicolon: goto Reduce17;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
-Goto47:
+Goto52:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -1605,7 +1800,7 @@ Goto47:
 		default: goto FATAL_ERROR;
 	}
 
-Shift48:
+Shift53:
 /*
 {stmt -> expr ~, [semicolon]}
 {expr -> expr ~ [minus] expr, [semicolon]}
@@ -1625,17 +1820,17 @@ Shift48:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State48:
-	states.push(&&Goto48);
+State53:
+	states.push(&&Goto53);
 	switch(current_terminal->token()){
 		case TOKEN_semicolon: goto Reduce16;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
-Goto48:
+Goto53:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -1644,20 +1839,20 @@ Goto48:
 		default: goto FATAL_ERROR;
 	}
 
-Shift49:
+Shift54:
 /*
 {stmt -> varDecl ~, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State49:
-	states.push(&&Goto49);
+State54:
+	states.push(&&Goto54);
 	switch(current_terminal->token()){
 		case TOKEN_semicolon: goto Reduce15;
 		default: goto ERROR;
 	}
 
-Goto49:
+Goto54:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -1666,25 +1861,25 @@ Goto49:
 		default: goto FATAL_ERROR;
 	}
 
-Shift50:
+Shift55:
 /*
 {stmt -> [return] ~ returnStmt, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State50:
-	states.push(&&Goto50);
+State55:
+	states.push(&&Goto55);
 	switch(current_terminal->token()){
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift25;
 		default: goto ERROR;
 	}
 
-Goto50:
+Goto55:
 	switch(top_non_terminal){
-		case SYMBOL_returnStmt: goto State52;
-		case SYMBOL_expr: goto State51;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_returnStmt: goto State57;
+		case SYMBOL_expr: goto State56;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1692,7 +1887,7 @@ Goto50:
 		default: goto FATAL_ERROR;
 	}
 
-Shift51:
+Shift56:
 /*
 {returnStmt -> expr ~, [semicolon]}
 {expr -> expr ~ [minus] expr, [dot]}
@@ -1712,133 +1907,13 @@ Shift51:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State51:
-	states.push(&&Goto51);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce26;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
-		default: goto ERROR;
-	}
-
-Goto51:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift52:
-/*
-{stmt -> [return] returnStmt ~, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State52:
-	states.push(&&Goto52);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce14;
-		default: goto ERROR;
-	}
-
-Goto52:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift53:
-/*
-{stmt -> [in] ~ inDecl, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State53:
-	states.push(&&Goto53);
-	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift57;
-		default: goto ERROR;
-	}
-
-Goto53:
-	switch(top_non_terminal){
-		case SYMBOL_inDecl: goto State54;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift54:
-/*
-{stmt -> [in] inDecl ~, [semicolon]}
-{inDecl -> inDecl ~ [comma] inDecl, [comma]}
-{inDecl -> inDecl ~ [comma] inDecl, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State54:
-	states.push(&&Goto54);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce13;
-		case TOKEN_comma: goto Shift55;
-		default: goto ERROR;
-	}
-
-Goto54:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift55:
-/*
-{inDecl -> inDecl [comma] ~ inDecl, [comma]}
-{inDecl -> inDecl [comma] ~ inDecl, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State55:
-	states.push(&&Goto55);
-	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift57;
-		default: goto ERROR;
-	}
-
-Goto55:
-	switch(top_non_terminal){
-		case SYMBOL_inDecl: goto State56;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift56:
-/*
-{inDecl -> inDecl [comma] inDecl ~, [comma]}
-{inDecl -> inDecl [comma] inDecl ~, [semicolon]}
-{inDecl -> inDecl ~ [comma] inDecl, [comma]}
-{inDecl -> inDecl ~ [comma] inDecl, [semicolon]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State56:
 	states.push(&&Goto56);
 	switch(current_terminal->token()){
-		case TOKEN_comma: goto Reduce24;
-		case TOKEN_semicolon: goto Reduce24;
+		case TOKEN_semicolon: goto Reduce26;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
@@ -1853,16 +1928,14 @@ Goto56:
 
 Shift57:
 /*
-{inDecl -> [id] ~, [comma]}
-{inDecl -> [id] ~, [semicolon]}
+{stmt -> [return] returnStmt ~, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State57:
 	states.push(&&Goto57);
 	switch(current_terminal->token()){
-		case TOKEN_comma: goto Reduce25;
-		case TOKEN_semicolon: goto Reduce25;
+		case TOKEN_semicolon: goto Reduce14;
 		default: goto ERROR;
 	}
 
@@ -1877,20 +1950,20 @@ Goto57:
 
 Shift58:
 /*
-{stmt -> [out] ~ outDecl, [semicolon]}
+{stmt -> [in] ~ inDecl, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State58:
 	states.push(&&Goto58);
 	switch(current_terminal->token()){
-		case TOKEN_id: goto Shift60;
+		case TOKEN_id: goto Shift62;
 		default: goto ERROR;
 	}
 
 Goto58:
 	switch(top_non_terminal){
-		case SYMBOL_outDecl: goto State59;
+		case SYMBOL_inDecl: goto State59;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1900,14 +1973,17 @@ Goto58:
 
 Shift59:
 /*
-{stmt -> [out] outDecl ~, [semicolon]}
+{stmt -> [in] inDecl ~, [semicolon]}
+{inDecl -> inDecl ~ [comma] inDecl, [comma]}
+{inDecl -> inDecl ~ [comma] inDecl, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State59:
 	states.push(&&Goto59);
 	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce12;
+		case TOKEN_semicolon: goto Reduce13;
+		case TOKEN_comma: goto Shift60;
 		default: goto ERROR;
 	}
 
@@ -1922,19 +1998,21 @@ Goto59:
 
 Shift60:
 /*
-{outDecl -> [id] ~ [assignment] expr, [semicolon]}
+{inDecl -> inDecl [comma] ~ inDecl, [comma]}
+{inDecl -> inDecl [comma] ~ inDecl, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State60:
 	states.push(&&Goto60);
 	switch(current_terminal->token()){
-		case TOKEN_assignment: goto Shift61;
+		case TOKEN_id: goto Shift62;
 		default: goto ERROR;
 	}
 
 Goto60:
 	switch(top_non_terminal){
+		case SYMBOL_inDecl: goto State61;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1944,22 +2022,23 @@ Goto60:
 
 Shift61:
 /*
-{outDecl -> [id] [assignment] ~ expr, [semicolon]}
+{inDecl -> inDecl [comma] inDecl ~, [comma]}
+{inDecl -> inDecl [comma] inDecl ~, [semicolon]}
+{inDecl -> inDecl ~ [comma] inDecl, [comma]}
+{inDecl -> inDecl ~ [comma] inDecl, [semicolon]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State61:
 	states.push(&&Goto61);
 	switch(current_terminal->token()){
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_comma: goto Reduce24;
+		case TOKEN_semicolon: goto Reduce24;
 		default: goto ERROR;
 	}
 
 Goto61:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State62;
-		case SYMBOL_varexpr: goto State27;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -1968,6 +2047,122 @@ Goto61:
 	}
 
 Shift62:
+/*
+{inDecl -> [id] ~, [comma]}
+{inDecl -> [id] ~, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State62:
+	states.push(&&Goto62);
+	switch(current_terminal->token()){
+		case TOKEN_comma: goto Reduce25;
+		case TOKEN_semicolon: goto Reduce25;
+		default: goto ERROR;
+	}
+
+Goto62:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift63:
+/*
+{stmt -> [out] ~ outDecl, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State63:
+	states.push(&&Goto63);
+	switch(current_terminal->token()){
+		case TOKEN_id: goto Shift65;
+		default: goto ERROR;
+	}
+
+Goto63:
+	switch(top_non_terminal){
+		case SYMBOL_outDecl: goto State64;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift64:
+/*
+{stmt -> [out] outDecl ~, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State64:
+	states.push(&&Goto64);
+	switch(current_terminal->token()){
+		case TOKEN_semicolon: goto Reduce12;
+		default: goto ERROR;
+	}
+
+Goto64:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift65:
+/*
+{outDecl -> [id] ~ [assignment] expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State65:
+	states.push(&&Goto65);
+	switch(current_terminal->token()){
+		case TOKEN_assignment: goto Shift66;
+		default: goto ERROR;
+	}
+
+Goto65:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift66:
+/*
+{outDecl -> [id] [assignment] ~ expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State66:
+	states.push(&&Goto66);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto66:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State67;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift67:
 /*
 {outDecl -> [id] [assignment] expr ~, [semicolon]}
 {expr -> expr ~ [minus] expr, [dot]}
@@ -1987,156 +2182,13 @@ Shift62:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State62:
-	states.push(&&Goto62);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce23;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
-		default: goto ERROR;
-	}
-
-Goto62:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift63:
-/*
-{stmts -> closedStmt ~ stmts, [right_c]}
-{stmts -> closedStmt ~, [right_c]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State63:
-	states.push(&&Goto63);
-	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Reduce11;
-		case TOKEN_if: goto Shift24;
-		case TOKEN_while: goto Shift14;
-		case TOKEN_out: goto Shift58;
-		case TOKEN_in: goto Shift53;
-		case TOKEN_return: goto Shift50;
-		case TOKEN_left_p: goto Shift39;
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift70;
-		default: goto ERROR;
-	}
-
-Goto63:
-	switch(top_non_terminal){
-		case SYMBOL_stmts: goto State64;
-		case SYMBOL_stmt: goto State65;
-		case SYMBOL_closedStmt: goto State63;
-		case SYMBOL_varDecl: goto State49;
-		case SYMBOL_expr: goto State48;
-		case SYMBOL_tuprefblock: goto State45;
-		case SYMBOL_varexpr: goto State27;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift64:
-/*
-{stmts -> closedStmt stmts ~, [right_c]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State64:
-	states.push(&&Goto64);
-	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Reduce9;
-		default: goto ERROR;
-	}
-
-Goto64:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift65:
-/*
-{stmts -> stmt ~ [semicolon] stmts, [right_c]}
-{stmts -> stmt ~ [semicolon], [right_c]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State65:
-	states.push(&&Goto65);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Shift66;
-		default: goto ERROR;
-	}
-
-Goto65:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift66:
-/*
-{stmts -> stmt [semicolon] ~ stmts, [right_c]}
-{stmts -> stmt [semicolon] ~, [right_c]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State66:
-	states.push(&&Goto66);
-	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Reduce10;
-		case TOKEN_if: goto Shift24;
-		case TOKEN_while: goto Shift14;
-		case TOKEN_out: goto Shift58;
-		case TOKEN_in: goto Shift53;
-		case TOKEN_return: goto Shift50;
-		case TOKEN_left_p: goto Shift39;
-		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift70;
-		default: goto ERROR;
-	}
-
-Goto66:
-	switch(top_non_terminal){
-		case SYMBOL_stmts: goto State67;
-		case SYMBOL_stmt: goto State65;
-		case SYMBOL_closedStmt: goto State63;
-		case SYMBOL_varDecl: goto State49;
-		case SYMBOL_expr: goto State48;
-		case SYMBOL_tuprefblock: goto State45;
-		case SYMBOL_varexpr: goto State27;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift67:
-/*
-{stmts -> stmt [semicolon] stmts ~, [right_c]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State67:
 	states.push(&&Goto67);
 	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Reduce8;
+		case TOKEN_semicolon: goto Reduce23;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
 		default: goto ERROR;
 	}
 
@@ -2151,29 +2203,36 @@ Goto67:
 
 Shift68:
 /*
-{block -> [left_c] stmts ~ [right_c], [def]}
-{block -> [left_c] stmts ~ [right_c], [EOF]}
-{block -> [left_c] stmts ~ [right_c], [right_c]}
-{block -> [left_c] stmts ~ [right_c], [out]}
-{block -> [left_c] stmts ~ [right_c], [in]}
-{block -> [left_c] stmts ~ [right_c], [return]}
-{block -> [left_c] stmts ~ [right_c], [id]}
-{block -> [left_c] stmts ~ [right_c], [int]}
-{block -> [left_c] stmts ~ [right_c], [left_p]}
-{block -> [left_c] stmts ~ [right_c], [if]}
-{block -> [left_c] stmts ~ [right_c], [while]}
+{stmts -> closedStmt ~ stmts, [right_c]}
+{stmts -> closedStmt ~, [right_c]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State68:
 	states.push(&&Goto68);
 	switch(current_terminal->token()){
-		case TOKEN_right_c: goto Shift69;
+		case TOKEN_right_c: goto Reduce11;
+		case TOKEN_if: goto Shift29;
+		case TOKEN_while: goto Shift26;
+		case TOKEN_for: goto Shift14;
+		case TOKEN_out: goto Shift63;
+		case TOKEN_in: goto Shift58;
+		case TOKEN_return: goto Shift55;
+		case TOKEN_left_p: goto Shift44;
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift75;
 		default: goto ERROR;
 	}
 
 Goto68:
 	switch(top_non_terminal){
+		case SYMBOL_stmts: goto State69;
+		case SYMBOL_stmt: goto State70;
+		case SYMBOL_closedStmt: goto State68;
+		case SYMBOL_varDecl: goto State54;
+		case SYMBOL_expr: goto State53;
+		case SYMBOL_tuprefblock: goto State50;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -2183,34 +2242,14 @@ Goto68:
 
 Shift69:
 /*
-{block -> [left_c] stmts [right_c] ~, [def]}
-{block -> [left_c] stmts [right_c] ~, [EOF]}
-{block -> [left_c] stmts [right_c] ~, [right_c]}
-{block -> [left_c] stmts [right_c] ~, [out]}
-{block -> [left_c] stmts [right_c] ~, [in]}
-{block -> [left_c] stmts [right_c] ~, [return]}
-{block -> [left_c] stmts [right_c] ~, [id]}
-{block -> [left_c] stmts [right_c] ~, [int]}
-{block -> [left_c] stmts [right_c] ~, [left_p]}
-{block -> [left_c] stmts [right_c] ~, [if]}
-{block -> [left_c] stmts [right_c] ~, [while]}
+{stmts -> closedStmt stmts ~, [right_c]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State69:
 	states.push(&&Goto69);
 	switch(current_terminal->token()){
-		case TOKEN_def: goto Reduce31;
-		case TOKEN_EOF: goto Reduce31;
-		case TOKEN_right_c: goto Reduce31;
-		case TOKEN_out: goto Reduce31;
-		case TOKEN_in: goto Reduce31;
-		case TOKEN_return: goto Reduce31;
-		case TOKEN_id: goto Reduce31;
-		case TOKEN_int: goto Reduce31;
-		case TOKEN_left_p: goto Reduce31;
-		case TOKEN_if: goto Reduce31;
-		case TOKEN_while: goto Reduce31;
+		case TOKEN_right_c: goto Reduce9;
 		default: goto ERROR;
 	}
 
@@ -2225,26 +2264,15 @@ Goto69:
 
 Shift70:
 /*
-{varexpr -> [id] ~, [assignment]}
-{varexpr -> [id] ~, [dot]}
-{varexpr -> [id] ~, [left_p]}
-{varexpr -> [id] ~, [plus]}
-{varexpr -> [id] ~, [minus]}
-{varexpr -> [id] ~, [semicolon]}
-{varDecl -> [id] ~, [semicolon]}
-{varDecl -> [id] ~ [assignment] expr, [semicolon]}
+{stmts -> stmt ~ [semicolon] stmts, [right_c]}
+{stmts -> stmt ~ [semicolon], [right_c]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State70:
 	states.push(&&Goto70);
 	switch(current_terminal->token()){
-		case TOKEN_dot: goto Reduce29;
-		case TOKEN_left_p: goto Reduce29;
-		case TOKEN_plus: goto Reduce29;
-		case TOKEN_minus: goto Reduce29;
-		case TOKEN_semicolon: goto Reduce27;
-		case TOKEN_assignment: goto Shift71;
+		case TOKEN_semicolon: goto Shift71;
 		default: goto ERROR;
 	}
 
@@ -2259,22 +2287,36 @@ Goto70:
 
 Shift71:
 /*
-{varDecl -> [id] [assignment] ~ expr, [semicolon]}
+{stmts -> stmt [semicolon] ~ stmts, [right_c]}
+{stmts -> stmt [semicolon] ~, [right_c]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State71:
 	states.push(&&Goto71);
 	switch(current_terminal->token()){
+		case TOKEN_right_c: goto Reduce10;
+		case TOKEN_if: goto Shift29;
+		case TOKEN_while: goto Shift26;
+		case TOKEN_for: goto Shift14;
+		case TOKEN_out: goto Shift63;
+		case TOKEN_in: goto Shift58;
+		case TOKEN_return: goto Shift55;
+		case TOKEN_left_p: goto Shift44;
 		case TOKEN_int: goto Shift13;
-		case TOKEN_id: goto Shift23;
+		case TOKEN_id: goto Shift75;
 		default: goto ERROR;
 	}
 
 Goto71:
 	switch(top_non_terminal){
-		case SYMBOL_expr: goto State72;
-		case SYMBOL_varexpr: goto State27;
+		case SYMBOL_stmts: goto State72;
+		case SYMBOL_stmt: goto State70;
+		case SYMBOL_closedStmt: goto State68;
+		case SYMBOL_varDecl: goto State54;
+		case SYMBOL_expr: goto State53;
+		case SYMBOL_tuprefblock: goto State50;
+		case SYMBOL_varexpr: goto State32;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -2283,6 +2325,164 @@ Goto71:
 	}
 
 Shift72:
+/*
+{stmts -> stmt [semicolon] stmts ~, [right_c]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State72:
+	states.push(&&Goto72);
+	switch(current_terminal->token()){
+		case TOKEN_right_c: goto Reduce8;
+		default: goto ERROR;
+	}
+
+Goto72:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift73:
+/*
+{block -> [left_c] stmts ~ [right_c], [def]}
+{block -> [left_c] stmts ~ [right_c], [EOF]}
+{block -> [left_c] stmts ~ [right_c], [right_c]}
+{block -> [left_c] stmts ~ [right_c], [out]}
+{block -> [left_c] stmts ~ [right_c], [in]}
+{block -> [left_c] stmts ~ [right_c], [return]}
+{block -> [left_c] stmts ~ [right_c], [id]}
+{block -> [left_c] stmts ~ [right_c], [int]}
+{block -> [left_c] stmts ~ [right_c], [left_p]}
+{block -> [left_c] stmts ~ [right_c], [if]}
+{block -> [left_c] stmts ~ [right_c], [while]}
+{block -> [left_c] stmts ~ [right_c], [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State73:
+	states.push(&&Goto73);
+	switch(current_terminal->token()){
+		case TOKEN_right_c: goto Shift74;
+		default: goto ERROR;
+	}
+
+Goto73:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift74:
+/*
+{block -> [left_c] stmts [right_c] ~, [def]}
+{block -> [left_c] stmts [right_c] ~, [EOF]}
+{block -> [left_c] stmts [right_c] ~, [right_c]}
+{block -> [left_c] stmts [right_c] ~, [out]}
+{block -> [left_c] stmts [right_c] ~, [in]}
+{block -> [left_c] stmts [right_c] ~, [return]}
+{block -> [left_c] stmts [right_c] ~, [id]}
+{block -> [left_c] stmts [right_c] ~, [int]}
+{block -> [left_c] stmts [right_c] ~, [left_p]}
+{block -> [left_c] stmts [right_c] ~, [if]}
+{block -> [left_c] stmts [right_c] ~, [while]}
+{block -> [left_c] stmts [right_c] ~, [for]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State74:
+	states.push(&&Goto74);
+	switch(current_terminal->token()){
+		case TOKEN_def: goto Reduce31;
+		case TOKEN_EOF: goto Reduce31;
+		case TOKEN_right_c: goto Reduce31;
+		case TOKEN_out: goto Reduce31;
+		case TOKEN_in: goto Reduce31;
+		case TOKEN_return: goto Reduce31;
+		case TOKEN_id: goto Reduce31;
+		case TOKEN_int: goto Reduce31;
+		case TOKEN_left_p: goto Reduce31;
+		case TOKEN_if: goto Reduce31;
+		case TOKEN_while: goto Reduce31;
+		case TOKEN_for: goto Reduce31;
+		default: goto ERROR;
+	}
+
+Goto74:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift75:
+/*
+{varexpr -> [id] ~, [assignment]}
+{varexpr -> [id] ~, [dot]}
+{varexpr -> [id] ~, [left_p]}
+{varexpr -> [id] ~, [plus]}
+{varexpr -> [id] ~, [minus]}
+{varexpr -> [id] ~, [semicolon]}
+{varDecl -> [id] ~, [semicolon]}
+{varDecl -> [id] ~ [assignment] expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State75:
+	states.push(&&Goto75);
+	switch(current_terminal->token()){
+		case TOKEN_dot: goto Reduce29;
+		case TOKEN_left_p: goto Reduce29;
+		case TOKEN_plus: goto Reduce29;
+		case TOKEN_minus: goto Reduce29;
+		case TOKEN_semicolon: goto Reduce27;
+		case TOKEN_assignment: goto Shift76;
+		default: goto ERROR;
+	}
+
+Goto75:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift76:
+/*
+{varDecl -> [id] [assignment] ~ expr, [semicolon]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State76:
+	states.push(&&Goto76);
+	switch(current_terminal->token()){
+		case TOKEN_int: goto Shift13;
+		case TOKEN_id: goto Shift25;
+		default: goto ERROR;
+	}
+
+Goto76:
+	switch(top_non_terminal){
+		case SYMBOL_expr: goto State77;
+		case SYMBOL_varexpr: goto State32;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift77:
 /*
 {varDecl -> [id] [assignment] expr ~, [semicolon]}
 {expr -> expr ~ [minus] expr, [dot]}
@@ -2302,137 +2502,14 @@ Shift72:
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
-State72:
-	states.push(&&Goto72);
-	switch(current_terminal->token()){
-		case TOKEN_semicolon: goto Reduce28;
-		case TOKEN_minus: goto Shift18;
-		case TOKEN_plus: goto Shift16;
-		case TOKEN_dot: goto Shift20;
-		default: goto ERROR;
-	}
-
-Goto72:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift73:
-/*
-{method -> [def] [id] paramsblock block ~, [def]}
-{method -> [def] [id] paramsblock block ~, [EOF]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State73:
-	states.push(&&Goto73);
-	switch(current_terminal->token()){
-		case TOKEN_def: goto Reduce7;
-		case TOKEN_EOF: goto Reduce7;
-		default: goto ERROR;
-	}
-
-Goto73:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift74:
-/*
-{top_def -> method ~, [def]}
-{top_def -> method ~, [EOF]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State74:
-	states.push(&&Goto74);
-	switch(current_terminal->token()){
-		case TOKEN_def: goto Reduce6;
-		case TOKEN_EOF: goto Reduce6;
-		default: goto ERROR;
-	}
-
-Goto74:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift75:
-/*
-{top_defs -> top_def ~ top_defs, [EOF]}
-{top_defs -> top_def ~, [EOF]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State75:
-	states.push(&&Goto75);
-	switch(current_terminal->token()){
-		case TOKEN_EOF: goto Reduce5;
-		case TOKEN_def: goto Shift1;
-		default: goto ERROR;
-	}
-
-Goto75:
-	switch(top_non_terminal){
-		case SYMBOL_top_defs: goto State76;
-		case SYMBOL_top_def: goto State75;
-		case SYMBOL_method: goto State74;
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift76:
-/*
-{top_defs -> top_def top_defs ~, [EOF]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
-State76:
-	states.push(&&Goto76);
-	switch(current_terminal->token()){
-		case TOKEN_EOF: goto Reduce4;
-		default: goto ERROR;
-	}
-
-Goto76:
-	switch(top_non_terminal){
-		case SYMBOL_error:
-			states.pop();
-			symbols.pop();
-			goto *states.top();
-		default: goto FATAL_ERROR;
-	}
-
-Shift77:
-/*
-{program -> [error] ~, [EOF]}
-*/
-	symbols.push(current_terminal);
-	current_terminal = lexer->nextToken();
 State77:
 	states.push(&&Goto77);
-Switch77:
 	switch(current_terminal->token()){
-		case TOKEN_EOF: goto Reduce3;
-		default:
-			((ErrorTerminal*)symbols.top())->discard(current_terminal);
-			current_terminal = lexer->nextToken();
-			goto Switch77;
+		case TOKEN_semicolon: goto Reduce28;
+		case TOKEN_minus: goto Shift20;
+		case TOKEN_plus: goto Shift18;
+		case TOKEN_dot: goto Shift22;
+		default: goto ERROR;
 	}
 
 Goto77:
@@ -2446,14 +2523,16 @@ Goto77:
 
 Shift78:
 /*
-{program -> top_defs ~, [EOF]}
+{method -> [def] [id] paramsblock block ~, [def]}
+{method -> [def] [id] paramsblock block ~, [EOF]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State78:
 	states.push(&&Goto78);
 	switch(current_terminal->token()){
-		case TOKEN_EOF: goto Reduce2;
+		case TOKEN_def: goto Reduce7;
+		case TOKEN_EOF: goto Reduce7;
 		default: goto ERROR;
 	}
 
@@ -2468,22 +2547,21 @@ Goto78:
 
 Shift79:
 /*
-{program -> [newline] ~ top_defs, [EOF]}
+{top_def -> method ~, [def]}
+{top_def -> method ~, [EOF]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State79:
 	states.push(&&Goto79);
 	switch(current_terminal->token()){
-		case TOKEN_def: goto Shift1;
+		case TOKEN_def: goto Reduce6;
+		case TOKEN_EOF: goto Reduce6;
 		default: goto ERROR;
 	}
 
 Goto79:
 	switch(top_non_terminal){
-		case SYMBOL_top_defs: goto State80;
-		case SYMBOL_top_def: goto State75;
-		case SYMBOL_method: goto State74;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -2493,19 +2571,24 @@ Goto79:
 
 Shift80:
 /*
-{program -> [newline] top_defs ~, [EOF]}
+{top_defs -> top_def ~ top_defs, [EOF]}
+{top_defs -> top_def ~, [EOF]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State80:
 	states.push(&&Goto80);
 	switch(current_terminal->token()){
-		case TOKEN_EOF: goto Reduce1;
+		case TOKEN_EOF: goto Reduce5;
+		case TOKEN_def: goto Shift1;
 		default: goto ERROR;
 	}
 
 Goto80:
 	switch(top_non_terminal){
+		case SYMBOL_top_defs: goto State81;
+		case SYMBOL_top_def: goto State80;
+		case SYMBOL_method: goto State79;
 		case SYMBOL_error:
 			states.pop();
 			symbols.pop();
@@ -2515,18 +2598,135 @@ Goto80:
 
 Shift81:
 /*
-{root -> program ~, [EOF]}
+{top_defs -> top_def top_defs ~, [EOF]}
 */
 	symbols.push(current_terminal);
 	current_terminal = lexer->nextToken();
 State81:
 	states.push(&&Goto81);
 	switch(current_terminal->token()){
-		case TOKEN_EOF: return symbols.top();
+		case TOKEN_EOF: goto Reduce4;
 		default: goto ERROR;
 	}
 
 Goto81:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift82:
+/*
+{program -> [error] ~, [EOF]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State82:
+	states.push(&&Goto82);
+Switch82:
+	switch(current_terminal->token()){
+		case TOKEN_EOF: goto Reduce3;
+		default:
+			((ErrorTerminal*)symbols.top())->discard(current_terminal);
+			current_terminal = lexer->nextToken();
+			goto Switch82;
+	}
+
+Goto82:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift83:
+/*
+{program -> top_defs ~, [EOF]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State83:
+	states.push(&&Goto83);
+	switch(current_terminal->token()){
+		case TOKEN_EOF: goto Reduce2;
+		default: goto ERROR;
+	}
+
+Goto83:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift84:
+/*
+{program -> [newline] ~ top_defs, [EOF]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State84:
+	states.push(&&Goto84);
+	switch(current_terminal->token()){
+		case TOKEN_def: goto Shift1;
+		default: goto ERROR;
+	}
+
+Goto84:
+	switch(top_non_terminal){
+		case SYMBOL_top_defs: goto State85;
+		case SYMBOL_top_def: goto State80;
+		case SYMBOL_method: goto State79;
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift85:
+/*
+{program -> [newline] top_defs ~, [EOF]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State85:
+	states.push(&&Goto85);
+	switch(current_terminal->token()){
+		case TOKEN_EOF: goto Reduce1;
+		default: goto ERROR;
+	}
+
+Goto85:
+	switch(top_non_terminal){
+		case SYMBOL_error:
+			states.pop();
+			symbols.pop();
+			goto *states.top();
+		default: goto FATAL_ERROR;
+	}
+
+Shift86:
+/*
+{root -> program ~, [EOF]}
+*/
+	symbols.push(current_terminal);
+	current_terminal = lexer->nextToken();
+State86:
+	states.push(&&Goto86);
+	switch(current_terminal->token()){
+		case TOKEN_EOF: return symbols.top();
+		default: goto ERROR;
+	}
+
+Goto86:
 	switch(top_non_terminal){
 		case SYMBOL_error:
 			states.pop();
@@ -3019,7 +3219,7 @@ Reduce32: //closedStmt -> [if] expr block
 	states.pop();
 	result = NULL;
 	{
-	cerr<<"PARSE closedStmt"<<endl; result = new NodeIfStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL, NULL);
+	cerr<<"PARSE if"<<endl; result = new NodeIfStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL, NULL);
 	}
 	symbols.push(result);
 	top_non_terminal = SYMBOL_closedStmt;
@@ -3037,13 +3237,37 @@ Reduce33: //closedStmt -> [while] expr block
 	states.pop();
 	result = NULL;
 	{
-	cerr<<"PARSE closedStmt"<<endl; result = new NodeWhileStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL);
+	cerr<<"PARSE while"<<endl; result = new NodeWhileStmt((NodeExpr*)arg1, (NodeStmt*)arg2, NULL);
 	}
 	symbols.push(result);
 	top_non_terminal = SYMBOL_closedStmt;
 	goto *states.top();
 
-Reduce34: //type -> [id]
+Reduce34: //closedStmt -> [for] [id] [in] expr block
+	arg4 = symbols.top();
+	symbols.pop();
+	states.pop();
+	arg3 = symbols.top();
+	symbols.pop();
+	states.pop();
+	delete symbols.top();
+	symbols.pop();
+	states.pop();
+	arg1 = symbols.top();
+	symbols.pop();
+	states.pop();
+	delete symbols.top();
+	symbols.pop();
+	states.pop();
+	result = NULL;
+	{
+	cerr<<"PARSE for i in"<<endl; result = new NodeForEachStmt((Identifier*)arg1, (NodeExpr*)arg3, (NodeStmt*)arg4, NULL);
+	}
+	symbols.push(result);
+	top_non_terminal = SYMBOL_closedStmt;
+	goto *states.top();
+
+Reduce35: //type -> [id]
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3055,7 +3279,7 @@ Reduce34: //type -> [id]
 	top_non_terminal = SYMBOL_type;
 	goto *states.top();
 
-Reduce35: //argblock -> [left_p] args [right_p]
+Reduce36: //argblock -> [left_p] args [right_p]
 	delete symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3073,7 +3297,7 @@ Reduce35: //argblock -> [left_p] args [right_p]
 	top_non_terminal = SYMBOL_argblock;
 	goto *states.top();
 
-Reduce36: //argblock -> [left_p] [right_p]
+Reduce37: //argblock -> [left_p] [right_p]
 	delete symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3088,7 +3312,7 @@ Reduce36: //argblock -> [left_p] [right_p]
 	top_non_terminal = SYMBOL_argblock;
 	goto *states.top();
 
-Reduce37: //args -> arg [comma] args
+Reduce38: //args -> arg [comma] args
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3106,7 +3330,7 @@ Reduce37: //args -> arg [comma] args
 	top_non_terminal = SYMBOL_args;
 	goto *states.top();
 
-Reduce38: //args -> arg
+Reduce39: //args -> arg
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3118,7 +3342,7 @@ Reduce38: //args -> arg
 	top_non_terminal = SYMBOL_args;
 	goto *states.top();
 
-Reduce39: //arg -> expr
+Reduce40: //arg -> expr
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3130,7 +3354,7 @@ Reduce39: //arg -> expr
 	top_non_terminal = SYMBOL_arg;
 	goto *states.top();
 
-Reduce40: //tupblock -> [left_p] tups [right_p]
+Reduce41: //tupblock -> [left_p] tups [right_p]
 	delete symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3148,7 +3372,7 @@ Reduce40: //tupblock -> [left_p] tups [right_p]
 	top_non_terminal = SYMBOL_tupblock;
 	goto *states.top();
 
-Reduce41: //tupblock -> [left_p] [right_p]
+Reduce42: //tupblock -> [left_p] [right_p]
 	delete symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3163,7 +3387,7 @@ Reduce41: //tupblock -> [left_p] [right_p]
 	top_non_terminal = SYMBOL_tupblock;
 	goto *states.top();
 
-Reduce42: //tups -> tup [comma] tups
+Reduce43: //tups -> tup [comma] tups
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3181,7 +3405,7 @@ Reduce42: //tups -> tup [comma] tups
 	top_non_terminal = SYMBOL_tups;
 	goto *states.top();
 
-Reduce43: //tups -> tup
+Reduce44: //tups -> tup
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3193,7 +3417,7 @@ Reduce43: //tups -> tup
 	top_non_terminal = SYMBOL_tups;
 	goto *states.top();
 
-Reduce44: //tup -> expr
+Reduce45: //tup -> expr
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3205,7 +3429,7 @@ Reduce44: //tup -> expr
 	top_non_terminal = SYMBOL_tup;
 	goto *states.top();
 
-Reduce45: //tuprefblock -> [left_p] tuprefs [right_p]
+Reduce46: //tuprefblock -> [left_p] tuprefs [right_p]
 	delete symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3223,7 +3447,7 @@ Reduce45: //tuprefblock -> [left_p] tuprefs [right_p]
 	top_non_terminal = SYMBOL_tuprefblock;
 	goto *states.top();
 
-Reduce46: //tuprefs -> tuprefs [comma] tuprefs
+Reduce47: //tuprefs -> tuprefs [comma] tuprefs
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3241,7 +3465,7 @@ Reduce46: //tuprefs -> tuprefs [comma] tuprefs
 	top_non_terminal = SYMBOL_tuprefs;
 	goto *states.top();
 
-Reduce47: //tuprefs -> [id]
+Reduce48: //tuprefs -> [id]
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3253,7 +3477,7 @@ Reduce47: //tuprefs -> [id]
 	top_non_terminal = SYMBOL_tuprefs;
 	goto *states.top();
 
-Reduce48: //expr -> expr [minus] expr
+Reduce49: //expr -> expr [minus] expr
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3271,7 +3495,7 @@ Reduce48: //expr -> expr [minus] expr
 	top_non_terminal = SYMBOL_expr;
 	goto *states.top();
 
-Reduce49: //expr -> expr [plus] expr
+Reduce50: //expr -> expr [plus] expr
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3289,7 +3513,7 @@ Reduce49: //expr -> expr [plus] expr
 	top_non_terminal = SYMBOL_expr;
 	goto *states.top();
 
-Reduce50: //expr -> [int]
+Reduce51: //expr -> [int]
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3301,7 +3525,7 @@ Reduce50: //expr -> [int]
 	top_non_terminal = SYMBOL_expr;
 	goto *states.top();
 
-Reduce51: //expr -> varexpr argblock
+Reduce52: //expr -> varexpr argblock
 	arg1 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3316,7 +3540,7 @@ Reduce51: //expr -> varexpr argblock
 	top_non_terminal = SYMBOL_expr;
 	goto *states.top();
 
-Reduce52: //expr -> varexpr
+Reduce53: //expr -> varexpr
 	arg0 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3328,7 +3552,7 @@ Reduce52: //expr -> varexpr
 	top_non_terminal = SYMBOL_expr;
 	goto *states.top();
 
-Reduce53: //expr -> varexpr [assignment] expr
+Reduce54: //expr -> varexpr [assignment] expr
 	arg2 = symbols.top();
 	symbols.pop();
 	states.pop();
@@ -3376,6 +3600,7 @@ string TokenToString(Token token){
 		case TOKEN_right_c: return "right_c";
 		case TOKEN_if: return "if";
 		case TOKEN_while: return "while";
+		case TOKEN_for: return "for";
 		case TOKEN_minus: return "minus";
 		case TOKEN_plus: return "plus";
 		case TOKEN_int: return "int";

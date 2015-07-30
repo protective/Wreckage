@@ -23,6 +23,7 @@ public:
 	friend Compiler;
 	Program(string scr, ostream& outAsm);
 	Program(string path, bool fromFile, ostream& outAsm);
+	Program(string path, bool fromFile, ostream& outAsm, ostream* outDot);
 	Program(string name, const PROGRAM& praw);
 	Program(const Program* p);
 	PROGRAM& program(){return _program;}
