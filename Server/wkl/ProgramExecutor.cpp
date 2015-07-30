@@ -195,6 +195,30 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 1;
 				break;
 			}
+			case inst::minusS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] - _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::eqS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] == _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::neqS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] != _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
 			case inst::cpI_DS2:{
 				uint32_t dest = _stackTop - _program->program()[_programCounter+1];
 				uint32_t src = _stackTop - _program->program()[_programCounter+2];
@@ -286,7 +310,15 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 3;
 				break;
 			}
-			
+			case inst::cpT_EN:{
+				if(_programCounter + 1 >= _program->program().size())
+					return segfault();
+				uint32_t dest = _program->program()[_programCounter+1];
+				_envContext[dest] = _stack[_stackTop];
+				
+				_programCounter += 2;
+				break;
+			}			
 			case inst::NOP:{
 				_programCounter += 1;
 				break;

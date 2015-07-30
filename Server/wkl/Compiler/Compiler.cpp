@@ -35,6 +35,8 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 
 	for (auto& it : systemEnvLib::lib) {
 		vTableEntry temp(it.second, it.first, varloc::env, 0, 0);
+		if(it.first >= _freeEnvPos)
+			_freeEnvPos = it.first + 1;
 		_vtable.push_back(temp);
 	}
 	
@@ -142,7 +144,7 @@ void Compiler::visit(NodeIfStmt* node){
      *   pop
      *-g
      */
-    _scopeRef.push_back(0);
+    _scopeRef.push_back(_scopeRef.back());
     if(node->condition()){
         node->condition()->accept(this);
     }
@@ -150,7 +152,7 @@ void Compiler::visit(NodeIfStmt* node){
     uint32_t h = emitCondJumpToRef();
 	emitPopStackIgnore(1);
     if(node->elseBlock()){
-        _scopeRef.push_back(0);
+        _scopeRef.push_back(_scopeRef.back());
         node->elseBlock()->accept(this);
 		emitPopStack(_scopeRef.back());
         _scopeRef.pop_back();
@@ -161,7 +163,7 @@ void Compiler::visit(NodeIfStmt* node){
     program().at(h) = program().size();
 	emitPopStackIgnore(1);
     if(node->ifBlock()){
-        _scopeRef.push_back(0);
+        _scopeRef.push_back(_scopeRef.back());
 		node->ifBlock()->accept(this);
 		emitPopStack(_scopeRef.back());
         _scopeRef.pop_back();
@@ -351,6 +353,25 @@ void Compiler::visit(NodeIndeclStmt* node){
         node->next()->accept(this);
 }
 
+void Compiler::visit(NodeOutdeclStmt* node){
+    
+	//TODO check that variable is in env
+	if(node->expr()){
+		node->expr()->accept(this);
+		vTableEntry* ve = NULL;
+		ve = this->vtableFind(node->variable()->name());
+		if(!ve){
+			vTableEntry v(node->variable()->name(), _freeEnvPos++, varloc::env);
+			_vtable.push_back(v);
+			ve = this->vtableFind(node->variable()->name());
+		}
+		emitTopStackToEnv(ve->pos);
+		emitPopStack(1);
+	}
+    if(node->next())
+        node->next()->accept(this);
+}
+
 void Compiler::visit(NodeParam* node){
 	_scopeRef.back()+=1;
 	vTableEntry v(node->id()->name(),_scopeRef.back(), varloc::rel);
@@ -444,6 +465,14 @@ void Compiler::visit(BinaryOperatorExpr* node){
 		}
 		case TOKEN_minus:{
 			emitBOMinusPop();
+			break;
+		}
+		case TOKEN_eq:{
+			emitBOEQPop();
+			break;
+		}
+		case TOKEN_neq:{
+			emitBONEQPop();
 			break;
 		}
 	}

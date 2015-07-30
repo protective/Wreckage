@@ -1,11 +1,8 @@
 
 def __activate_target__(){
-    hest1 = 22;
-    a = 42;
-    heat2 = 24;
-    for i in a{
-        b = 666;
-        c = 667;
-        d = i;
+    c = 22;
+    if c {
+    out mydmg = c;
+    out ko = 42;
     }
 }

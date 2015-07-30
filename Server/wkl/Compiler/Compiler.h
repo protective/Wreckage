@@ -87,7 +87,7 @@ public:
 	virtual void visit(NodeLiteralExpr* node);
 	virtual void visit(NodeStmt* node){};
 	virtual void visit(NodeVardeclStmt* node);
-	virtual	void visit(NodeOutdeclStmt* node){}
+	virtual	void visit(NodeOutdeclStmt* node);
 	virtual void visit(NodeIndeclStmt* node);
 	virtual void visit(NodeVariable* node);
 	virtual void visit(NodeAttributeAccessVariable* node){}
@@ -123,6 +123,7 @@ private:
 	}
 	list<uint32_t> _scopeRef;
 	list<vTableEntry> _vtable;
+	uint32_t _freeEnvPos;
 	//  codepoint, jmppoint
 	map<uint32_t, string> _lables;
 	map<uint32_t, uint32_t> _interruptHandlers;
@@ -132,6 +133,7 @@ private:
 	void emitPushStack(uint32_t value, uint32_t size);
 	void emitPopTopStackToLoc(uint32_t pos, uint32_t size);
 	void emitTopStackToLoc(uint32_t pos, bool rel, uint32_t size);
+	void emitTopStackToEnv(uint32_t envId);
 	void emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t index);
 	void emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum rel);
 	void emitLocRIndexToTopStack(uint32_t pos, varloc::Enum rel, uint32_t rIndexVar);
@@ -149,6 +151,10 @@ private:
 	void emitBOMinusPush();
 	void emitBOAddPop();
 	void emitBOMinusPop();
+	void emitBOEQPop();
+	void emitBONEQPop();
+	
+	
 	void emitSysCall(uint32_t pos, uint32_t functionId);
 	uint32_t emitJumpToRef();
     uint32_t emitCondJumpToRef();

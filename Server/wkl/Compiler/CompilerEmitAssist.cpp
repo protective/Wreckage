@@ -46,6 +46,10 @@ void Compiler::emitTopStackToLoc(uint32_t pos, bool rel, uint32_t size){
     program().push_back(0x00); //copy from
 }
 
+void Compiler::emitTopStackToEnv(uint32_t envId){
+    program().push_back(inst::cpT_EN);
+    program().push_back(envId); //copy to
+}
 
 void Compiler::emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t index){
 
@@ -217,5 +221,15 @@ void Compiler::emitBOAddPop(){
 
 void Compiler::emitBOMinusPop(){
 	program().push_back(inst::minusS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOEQPop(){	
+	program().push_back(inst::eqS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBONEQPop(){
+	program().push_back(inst::neqS01dS1);
 	_scopeRef.back() -= 1;
 }

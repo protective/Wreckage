@@ -79,6 +79,8 @@ rules:
 {out}											{cerr<<"terminal out"<<endl; return new Terminal(TOKEN_out, pos);}
 {return}										{cerr<<"terminal return"<<endl; return new Terminal(TOKEN_return, pos);}
 {=}												{cerr<<"terminal assignment"<<endl; return new Terminal(TOKEN_assignment, pos);}
+{==}										    {cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_eq, pos);}
+{!=}											{cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_neq, pos);}
 {,} 											{cerr<<"terminal comma"<<endl;return new Terminal(TOKEN_comma, pos);}
 {.} 											{cerr<<"terminal dot"<<endl;return new Terminal(TOKEN_dot, pos);}
 {+} 											{cerr<<"terminal plus"<<endl;return new Terminal(TOKEN_plus, pos);}

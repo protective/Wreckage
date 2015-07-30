@@ -42,6 +42,7 @@ namespace inst{
 		cpRIS2_T    = 0x00560000, //copy rel S0 [S1] to top
 		cpAIS2_T    = 0x00550000, //copy abs S0 [S1] to top
 		cpEIS2_T	= 0x00620000, //copy env[S0][S1] to top
+		cpT_EN   	= 0x00630000, //copy top to env [N]
 		
 		cpI_DS2     = 0x00530000, 
 		cpI_RDS2    = 0x00540000,
@@ -50,7 +51,11 @@ namespace inst{
 		addS01      = 0x00200000,
 		minusS01    = 0x00210000,	 
 		addS01dS1   = 0x00220000, //i
-		minusS01dS1 = 0x00230000,
+		minusS01dS1 = 0x00230000, //i
+		eqS01dS1    = 0x00240000, //i
+		neqS01dS1   = 0x00250000, //i
+		
+		
 		sysCall     = 0x00F00000, //i
 	};
 }

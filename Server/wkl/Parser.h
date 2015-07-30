@@ -27,6 +27,8 @@ enum Token{
 	TOKEN_for,
 	TOKEN_minus,
 	TOKEN_plus,
+	TOKEN_eq,
+	TOKEN_neq,
 	TOKEN_int
 };
 

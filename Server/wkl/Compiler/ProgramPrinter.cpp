@@ -186,7 +186,14 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[0] = "Env src"; 
                 break;
             }			
-			
+            case inst::cpT_EN:
+            {
+                name = "cpT_EN";
+                haveArg = false;
+                noParams = 1;
+                param[0] = "Env dest"; 
+                break;
+            }				
 			case inst::jmpA_1:
             {
                 name = "jmpA_1";
@@ -232,6 +239,16 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
  			case inst::minusS01dS1:
             {
                 name = "minusS01dS1";
+                break;
+            }
+ 			case inst::eqS01dS1:
+            {
+                name = "eqS01dS1";
+                break;
+            }
+ 			case inst::neqS01dS1:
+            {
+                name = "neqS01dS1";
                 break;
             }
  			case inst::sysCall:
