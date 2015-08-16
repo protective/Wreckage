@@ -8,9 +8,9 @@ define(function ( require ) {
     
     var objEnter = function(objId, block) {
     
-        var x = new Uint32Array(block.slice(0,4))[0];
-        var y = new Uint32Array(block.slice(4,8))[0];
-        var z = new Uint32Array(block.slice(8,12))[0];
+        var x = new Int32Array(block.slice(0,4))[0];
+        var y = new Int32Array(block.slice(4,8))[0];
+        var z = new Int32Array(block.slice(8,12))[0];
         
         var obj = objManager.gotObjEnter(objId);
         obj['x'] = x / 50;

@@ -22,3 +22,48 @@ div.devObjView {
     border-color: #303030;
     background-color: grey;
 }
+
+
+.rcorners1 {
+    position:absolute;
+    border-spacing: 2px;
+    border-collapse: separate;
+    top: 100px;
+    left: 200px;
+    border-radius: 15px;
+    background: #666666;
+    border: 1px solid #666666;
+    padding: 2px;
+    width: 250px;
+    line-height: normal;
+}
+
+.UIStatHpBar {
+
+    background: #8AC007;
+    height: 10px;
+}
+.UIbagr {
+    border-collapse: separate;
+    background: #666666;
+    height: 10px;
+    width:100%;
+}
+
+.UIStatManaBar {
+    border-collapse: separate;
+    background: #0000FF;
+    height: 10px;
+    width:100%;
+}
+
+.noselect {
+    pointer-events: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -webkit-user-drag : none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

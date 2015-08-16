@@ -65,7 +65,7 @@ void TaskCreateObj::loadData(SObj* obj, OBJID id){
 	"objid = "<<id<<";";
 	pqxx::result r = w.exec(s); w.commit();	
 	for (int i = 0; i< r.size(); i++){
-		obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][0].as<int32_t>());
+		obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][1].as<int32_t>());
 	}
 }
 

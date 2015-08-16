@@ -13,12 +13,15 @@ define(function ( require ) {
         var target = new Uint32Array(block.slice(4,8))[0];  
         var caster = new Uint32Array(block.slice(8,12))[0];
         var result = new Uint32Array(block.slice(12,16))[0];
-        var newVal = new Int32Array(block.slice(16,20))[0];
-        var oldVal = new Int32Array(block.slice(20,24))[0];
+        var oldVal = new Int32Array(block.slice(16,20))[0];
+        var newVal = new Int32Array(block.slice(20,24))[0];
+       
         var obj = objManager.getObjById(target);
-        
-        var damageHealingDone = oldVal - newVal
-        UIDamageNotification.createDamangeNotification(obj, damageHealingDone, result);
+        if(statType == 1){
+        var damageHealingDone = oldVal - newVal;
+	        UIDamageNotification.createDamangeNotification(obj, damageHealingDone, result);
+	    }
+        obj.setData(statType, newVal)
         //.;
     };
 

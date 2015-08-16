@@ -41,7 +41,12 @@ define(function ( require ) {
 
                 //alert("Message is received...");
             };
+            ws.onerror = function()
+            { 
+                // websocket is closed.
+                alert("Connection error..."); 
 
+            };  
             ws.onclose = function()
             { 
                 // websocket is closed.

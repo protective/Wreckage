@@ -3,7 +3,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         'Model/CompSpellBook',
         'Model/CompTargeted',
         'obj',
-        'text!templates/keyValueTable.html'],function ( require) {
+        'text!templates/keyValueTable.html',
+        'text!templates/hpbar.html'],function ( require) {
 
     var _panels = {};
     
@@ -13,32 +14,49 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     var Obj = require('obj');
 
 	var keyValueTable = require('text!templates/keyValueTable.html');
+	var hpBarTable = require('text!templates/hpbar.html');
 
 	var tmp3 = $('body');
 	tmp3.on('keydown', '.mytextarea', function(event) {
-		/*
-		var target = event.target;
-		
-        if (event.keyCode === 9) { // tab was pressed
 
-            // get caret position/selection
-            var val = target.value,
-                start = target.selectionStart,
-                end = target.selectionEnd;
-
-            // set textarea value to: text before caret + tab + text after caret
-            target.value = val.substring(0, start) + '\t' + val.substring(end);
-
-            // put caret at right position again
-            target.selectionStart = target.selectionEnd = start + 1;
-
-            // prevent the focus lose
-            return false;
-
-        }
-        */
 	});
-	
+
+    Obj.prototype.createHpPanel = function (obj) {
+    	if('UIDevObjHpPanel' in obj)
+    		return;
+        var a = {'id' : obj.id};
+        this.UIbars = _.template(hpBarTable)(a);
+        //tmp2[0].innerText = this.UIbars;
+       // var overlay = document.createElement('div');
+        
+        var parser = new DOMParser()
+        , doc = parser.parseFromString(this.UIbars, "text/html");
+        
+        //overlay.innerHTML = this.UIbars;
+        var overlay = doc.firstChild;
+        UIMain.maindiv.appendChild(overlay);
+        
+        
+        /*
+        var tmp2 = $('body');
+        
+        tmp2.on('mousedown', '.rcorners1', function() {
+        	event.preventDefault();
+    	} );
+    	*/
+        obj.UIDevObjHpPanel = overlay;
+        
+        
+        obj.UIDevObjHpPanel.updateHp = function(value){
+        	if(2 in obj.data && obj.data[2] > 0 && value >= 0){
+	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
+	        	//var tmp2 = tmp.find('#hpbar');
+	        	var p = 100 - ((value / obj.data[2]) * 100);
+	        	tmp[0].style['padding-right'] = p +'%';
+        	}
+        }
+    }
+    	
     Obj.prototype.createObjInfoPanel = function (obj) {
     	
     	if('UIDevObjInfoPanel' in obj)
@@ -78,7 +96,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	        	button.compName = tempComponents[i];
 	        	button.myhest = function(){alert(1);};
 
-	        	button.innerText = tempComponents[i];
+	        	button.innerHTML = tempComponents[i];
 	        	cell1.appendChild(button);
 	        	var tmp = $('#' + obj.id + '_' + i);
 	        	tmp.popover({

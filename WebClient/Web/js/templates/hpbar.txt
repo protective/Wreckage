@@ -1,0 +1,45 @@
+<table  class="rcorners1">
+    <tr>
+        <td style="width:100%;position:relative">
+            <lable style="position: absolute;width:100%;text-align: center;font-size: 1.3em; border: 0; padding: 0; margin: 0;">tt</lable>
+            <table class="UIbagr" style="padding-right:50%">
+                <tr>
+                    <td class="UIStatHpBar"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="UIbagr" style="padding-right:1%">
+                <tr>
+                    <td class="UIStatManaBar"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+.rcorners1 {
+    border-radius: 15px;
+    background: #666666;
+    border: 1px solid #666666;
+    padding: 2px;
+    width: 250px;
+}
+
+.UIStatHpBar {
+    background: #8AC007;
+    height: 10px;
+}
+.UIbagr {
+    background: #666666;
+    height: 10px;
+    width:100%;
+}
+
+.UIStatManaBar {
+    background: #0000FF;
+    height: 10px;
+    width:100%;
+}

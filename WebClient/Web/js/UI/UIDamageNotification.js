@@ -31,7 +31,7 @@ define(function ( require ) {
         texture.minFilter = THREE.LinearFilter;
         texture.needsUpdate = true;
 
-        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: true , transparent: true} );
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false , transparent: true} );
         var sprite = new THREE.Sprite( spriteMaterial );
         sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
         
@@ -44,6 +44,7 @@ define(function ( require ) {
 			a = ( (this.animateTime / 3000));
 			//this.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
 			this.material.opacity = a;
+			this.position.y += 0.003 * delta * 1000;
         }
         
         return sprite;  
@@ -70,10 +71,10 @@ define(function ( require ) {
     
     
     function createDamangeNotification(obj, value, result) {
-    	var Color = (value > 0) ? {r:0, g:255, b:0} : {r:255, g:0, b:0};
+    	var Color = (value < 0) ? {r:0, g:255, b:0} : {r:255, g:0, b:0};
     	var spritey = makeTextSprite( value, 
     			{ fontsize: 24, textColor : Color, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
-    		spritey.position.set(0,0,0);
+    		spritey.position.set(obj.x, obj.y, obj.z);
     	webGL.sceneAddDamageNotification(spritey);
     }
     
