@@ -14,12 +14,18 @@ SComponent(COMPID::spellbook){
 	s<<"select powerTemplateID from compspellbook_knownpowers where objId = "<<id<<"";
 	pqxx::result r = w.exec(s);
 	for (int i = 0; i < r.size(); i++) {
-		_knownPowers.push_back(r[i][0].as<OBJID>());
+		
+		OBJID templateId = r[i][0].as<OBJID>();
 		if(!obj->isTemplate()){
-			TaskCreateObj* task = new TaskCreateObj(obj->getProcessor()->getFreeID(), _knownPowers.back(),false);
+			OBJID tmp = obj->getProcessor()->getFreeID();
+			TaskCreateObj* task = new TaskCreateObj(tmp, templateId, false);
 			task->addData(OBJDATA::owner, obj->getId());
+			_loadedPowers.push_back(tmp);
 			obj->getProcessor()->addTask(task);
+		}else{
+			_loadedPowers.push_back(templateId);
 		}
+		_knownPowers.push_back(templateId);
 	}
 	
 	for (list<OBJID>::iterator it = _knownPowers.begin(); it != _knownPowers.end(); it++){

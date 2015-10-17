@@ -31,7 +31,7 @@ define(function ( require ) {
         texture.minFilter = THREE.LinearFilter;
         texture.needsUpdate = true;
 
-        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false , transparent: true} );
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false, transparent: true} );
         var sprite = new THREE.Sprite( spriteMaterial );
         sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
         

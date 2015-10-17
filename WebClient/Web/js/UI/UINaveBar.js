@@ -14,7 +14,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
 		//alert("hest");
 		var tmp = objManager.getObjs();
 		for (var ob in tmp){
-			tmp[ob].createObjInfoPanel(tmp[ob]);
+			if (tmp[ob].id < (1 <<24))
+				tmp[ob].createObjInfoPanel(tmp[ob]);
 		}
 		
 	}

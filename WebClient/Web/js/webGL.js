@@ -3,7 +3,7 @@ define(function( require )
 
     var container, stats;
 
-    var camera, scene, renderer, objects;
+    var camera, cameraOrtho, scene, sceneOrtho, renderer, objects;
     
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2(),
@@ -16,6 +16,8 @@ define(function( require )
     var clock = new THREE.Clock();
     var morphs = [];
     var spriteDamageNotifications = [];
+    var UIsprites = [];
+    
     var models = [];
 	
     var UIOnClickCallBack = null;
@@ -32,9 +34,13 @@ define(function( require )
 			camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
 			camera.position.set( 2, 4, 5 );
 
+			cameraOrtho = new THREE.OrthographicCamera( - window.innerWidth / 2, window.innerWidth / 2, window.innerHeight / 2, - window.innerHeight / 2, 1, 10 );
+			cameraOrtho.position.z = 10;			
+			
 			scene = new THREE.Scene();
 			scene.fog = new THREE.FogExp2( 0x000000, 0.035 );
 
+			sceneOrtho = new THREE.Scene();
 
 			// Add the COLLADA
 
@@ -53,7 +59,10 @@ define(function( require )
 			renderer = new THREE.WebGLRenderer();
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.autoClear = false; // To allow render overlay on top of sprited sphere
+			
 			container.appendChild( renderer.domElement );
+			
 			
 			renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
 			renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
@@ -142,6 +151,10 @@ define(function( require )
     	scene.add(element);
     }
 
+    function sceneAddUISprite(element){
+    	UIsprites.push(element);
+    	sceneOrtho.add(element);
+    }
 
 	function onWindowResize( event ) {
 
@@ -229,9 +242,10 @@ define(function( require )
 		camera.position.z = Math.sin( 0 ) * 10;
 
 		camera.lookAt( scene.position );
-
+		renderer.clear();
 		renderer.render( scene, camera );
-
+		renderer.clearDepth();
+		renderer.render( sceneOrtho, cameraOrtho );
 	}
 
 	function setOnClickCallback(callback){
@@ -244,6 +258,7 @@ define(function( require )
 		addObj : addObj,
 		render : render,
 		'sceneAddDamageNotification' : sceneAddDamageNotification,
+		'sceneAddUISprite' : sceneAddUISprite,
 		'setOnClickCallback': setOnClickCallback,
 		'addElement' : addScene,
 		'container' : container

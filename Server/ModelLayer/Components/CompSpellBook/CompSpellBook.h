@@ -34,7 +34,7 @@ private:
 	virtual void init();
 
 	list<OBJID> _knownPowers;
-	vector<OBJID> _loadedPowers;
+	list<OBJID> _loadedPowers;
 	
 	//systemCalls implemented by this component
 	static wkl::Variable consume(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);

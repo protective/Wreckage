@@ -3,6 +3,7 @@ define(function ( require ) {
 	
     var webSocket = require('Network/webSocket');
     var UIKeyInput = require('UI/UIKeyInput');
+    var UISpellbook = require('UI/UISpellbook');
     
     var CompSpellBook = require('Model/CompSpellBook');
     var objManager = require('objManager');

@@ -2,10 +2,11 @@ define( function( require )
 {
 	var webSocket = require('Network/webSocket');
 
-	function CompSpellBook(obj)
+	function CompSpellBook(obj, powers)
 	{
 		this.obj = obj;
-		this.tick       =  0;
+		this.tick = 0;
+		this.powers = powers;
 	}
 	
 	CompSpellBook.prototype.getKeyValues = function() {

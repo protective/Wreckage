@@ -151,15 +151,16 @@ void* thread_Recive(Client* client){
 	while(!client->isDisconnecting()){
 
 		recsize = recv(client->getSocket(), (client->inputnetworkBuf->networkBuf) + client->inputnetworkBuf->recived, 512,0);
-
+		cerr<<"rec timeout="<<timeout<<endl;
 		if (recsize < 0){
 			
 			fprintf(stderr, "RECV  ERROR WEBSOCK***************\n");
 			client->disconnect();
 			break;
 		}
-		if (recsize)
+		if (recsize){
 			timeout = 0;
+		}
 		client->inputnetworkBuf->recived +=recsize;
 		bool switchdone = false;
 		while (!switchdone){
@@ -175,7 +176,7 @@ void* thread_Recive(Client* client){
 			pthread_mutex_unlock(&client->networkBufLock);
 		}
 		timeout+=1;
-		if (timeout < 20)
+		if (timeout < 200000)
 			usleep(400);
 		else{
 			client->disconnect();

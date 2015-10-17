@@ -3,7 +3,8 @@ define(function ( require ) {
 	var webSocket = require('Network/webSocket');
     var SerialComp = require('Network/Comp/SerialComp');	
     var objManager = require("../../objManager");
-      
+    var UISpellbook = require('UI/UISpellbook');
+    
 
     function encodeCastSpellTarget(caster, target, spellId){
        
@@ -26,7 +27,17 @@ define(function ( require ) {
     
     var full = function(objId, block) {
         var obj = objManager.gotObjEnter(objId);
-        require('Model/CompSpellBook').call(obj);
+        
+        var dv = new DataView(block, 0);
+        var len = dv.getUint16(0,true);
+        var powers = new Array();
+        for (var i = 0; i< len; i++ ){
+        	var powerid = dv.getUint32(2+(i*4),true);
+        	powers[powerid] = null;
+        	if (powerid >= 1 << 24)
+        		UISpellbook.addAvilPower(powerid);
+        }
+        require('Model/CompSpellBook').call(obj, powers);
     }
     
     var messageHandles = {1 : full};
