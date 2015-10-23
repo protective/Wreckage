@@ -20,7 +20,7 @@ Task(0) {
 
 
 uint32_t TaskRemoveObj::execute(){
-	cerr<<"TaskRemoveObj::execute"<<endl;
+	//cerr<<"TaskRemoveObj::execute"<<endl;
 	SObj* obj = _processor->getObj(_obj);
 	if(!obj)
 		return COMMAND_FINAL;
@@ -33,7 +33,7 @@ uint32_t TaskRemoveObj::execute(){
 	}
 	obj->getComponents().clear();
 	
-	cerr<<"obj init = "<<obj->isInit()<< " persistent = "<<obj->isPersistent()<<endl;
+	//cerr<<"obj init = "<<obj->isInit()<< " persistent = "<<obj->isPersistent()<<endl;
 	
 	if(obj->isInit() && obj->isPersistent()){
 		obj->DBdelete();

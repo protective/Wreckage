@@ -10,9 +10,9 @@
 #include "ProgramExecutor.h"
 #include "Compiler/Compiler.h"
 
-ProgramExecutor::ProgramExecutor(uint32_t runRefId, SComponent* comp,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs , map<uint32_t, Variable> envContext) {
+ProgramExecutor::ProgramExecutor(uint32_t runRefId, SObj* obj,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs , map<uint32_t, Variable> envContext) {
 	_runRefId = runRefId;
-	_comp = comp;
+	_obj = obj;
 	_program = program;
 	_systemCallFuncs = systemCallFuncs;
 	_envContext = envContext;
@@ -82,8 +82,10 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 			return segfault();
 		uint32_t ins = _program->program()[_programCounter];
 		
-		cerr<<"exe line "<<std::hex<<_programCounter<<std::dec<<" stack top "<<_stackTop<<endl;
+		//cerr<<"exe line "<<std::hex<<_programCounter<<std::dec<<" stack top "<<_stackTop<<endl;
+#ifdef WKL_DEBUG
 		dumpStack();
+#endif
 		switch(OPCODE(ins)){
 			case inst::pushN_1:{
 				for(int i = 0 ; i < ARG(ins);i++){
@@ -176,7 +178,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				
 				if(_systemCallFuncs.find(ARG(ins)) != _systemCallFuncs.end()){
 					_stack[_stackTop - stackArg + 1] =
-							_systemCallFuncs[ARG(ins)](_comp, this, (void*)(&_stack[_stackTop - stackArg +1]));
+							_systemCallFuncs[ARG(ins)](_obj, this, (void*)(&_stack[_stackTop - stackArg +1]));
 					if(_registerFlags & registerFlags::yield){
 						_locRet = _stackTop - stackArg + 1;
 					}		
@@ -328,8 +330,9 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				break;
 			}
 			case inst::EOP:{
+#ifdef WKL_DEBUG
 				cerr<<"EOP exit OK"<<endl;
-				
+#endif				
 				_registerFlags |= registerFlags::halt;
 				//TODO
 				//free(_stack);

@@ -88,7 +88,7 @@ public:
 	}
 	
 	void setPos(SPos& pos){
-		cerr<<"set pos"<<endl;
+		//cerr<<"set pos"<<endl;
 		if(!_pos)
 			_pos = new SPos(pos);
 		else{
@@ -97,7 +97,7 @@ public:
 		}
 	}
 	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
-
+	map<uint32_t, uint32_t>& getSubscribers(){return _subscribers;}
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
 	bool isInit(){return (_flags & OBJFLAGINIT) ? true : false;}
 	bool isTemplate(){return (_flags & OBJFLAGTEMPLATE) ? true : false;}

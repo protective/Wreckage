@@ -13,14 +13,14 @@ SGrid::SGrid(uint32_t id) {
 	
 	_spaceHight = 10;
 	_spaceWight = 10;
-	cerr<<"init grid"<<endl;
+	//cerr<<"init grid"<<endl;
 }
 
 SGrid::SGrid(uint32_t id, uint32_t spaceWight, uint32_t spaceHight) {
 	this->_id = id;
 	_spaceHight = spaceHight;
 	_spaceWight = spaceWight;
-	cerr<<"init grid"<<endl;
+	//cerr<<"init grid"<<endl;
 }
 
 SGrid::~SGrid() {

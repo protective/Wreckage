@@ -25,7 +25,7 @@
 Client::Client(int socket) {
 
 	this->socket = socket;
-	_id = 0;
+	_id = socket;
 	playerID = 0;
 	
 	_teamId = 2;
@@ -87,7 +87,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 	unsigned char* buffer = this->outputnetworkBuf->networkBuf;
 	uint32_t offset = 0;
 	uint32_t remaning = 0;
-	printBuffer(buffer,len);
+	//printBuffer(buffer,len);
 	while (offset < len && !this->isDisconnecting()){
 		SerialData* temp = (SerialData*)(buffer + offset);
 		if(temp->_size < sizeof(SerialData))
@@ -134,7 +134,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 					break;
 				}
 				case SerialType::SerialInput:{
-					cerr<<"SerialType::SerialInput"<<endl;
+					//cerr<<"SerialType::SerialInput"<<endl;
 					SerialInput* st = (SerialInput*)(buffer+offset);
 					SObj* obj = networkControl->getObj(st->_unitId);
 					if(!obj){
@@ -168,7 +168,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 				}
 				
 				case SerialType::SerialEdit:{
-					cerr<<"SerialType::SerialEdit"<<endl;
+					//cerr<<"SerialType::SerialEdit"<<endl;
 					SerialData* st = (SerialData*)(buffer+offset);
 
 					switch (((SerialEdit::header*)(&st[1]))->_type){
@@ -192,10 +192,8 @@ uint32_t Client::parseBuffer(uint32_t len){
 					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
 					
 					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
-					cerr<<"st "<<st<<endl;
 					TaskCreateObj* t = new TaskCreateObj(0, st->_template, true);
 					SerialObjData* sd = (SerialObjData*)st->_data;
-					cerr<<"sd "<<sd<<endl;
 					while(sd->_dataType){
 						switch(sd->_dataType){
 							case OBJDATA::position: {
@@ -212,7 +210,6 @@ uint32_t Client::parseBuffer(uint32_t len){
 						break;
 					}
 					SerialObjComp* sc = (SerialObjComp*) (&sd[1]);
-					cerr<<"sc "<<sc<<endl;
 					while(sc->_compType){
 						cerr<<"WARNING shoudl also be empty "<<sc->_compType<<endl;
 				

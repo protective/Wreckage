@@ -36,7 +36,7 @@ void CompSpellBook::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::powerStatsRsp :{
-			cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
+			//cerr<<"MESSAGE::powerStatsRsp"<<endl;
 			MessagePowerStats* msg = (MessagePowerStats*)data;
 			
 			map<uint32_t, wkl::Variable> envContext;
@@ -66,16 +66,15 @@ map<uint32_t, wkl::systemCallFunc> CompSpellBook::getSyscalls(){
 
 
 
-wkl::Variable CompSpellBook::consume(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg){
+wkl::Variable CompSpellBook::consume(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
 
 	wkl::Variable* args = (wkl::Variable*)arg;
 	cerr<<"consume"<<endl;
 	return wkl::Variable(0);
 }
 
-wkl::Variable CompSpellBook::channel(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg){
+wkl::Variable CompSpellBook::channel(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
 	
-	cerr<<"channel"<<endl;
 	wkl::Variable* args = (wkl::Variable*)arg;
 	OBJID target = (OBJID)args[1].v;
 	uint32_t count = (uint32_t)args[2].v;
@@ -84,12 +83,12 @@ wkl::Variable CompSpellBook::channel(SComponent* _this, wkl::ProgramExecutor* pr
 	//MessagePowerStats* msg = (MessagePowerStats*)data;
 	for(int i = 1 ; i <= count; i++){
 		MessageProgramCallback* outmsg = new MessageProgramCallback(
-				_this->getObj()->getId(),
+				_this->getId(),
 				programExe->getProgram(),
 				programExe->getEnvContext(),
 				wkl::systemCallBackLib::__hit__,
 				0);
-		_this->getObj()->getProcessor()->sendMessage(target, outmsg, delay * i);
+		_this->getProcessor()->sendMessage(target, outmsg, delay * i);
 	}
 	return wkl::Variable(0);
 }

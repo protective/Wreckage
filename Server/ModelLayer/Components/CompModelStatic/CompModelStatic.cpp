@@ -30,7 +30,7 @@ void CompModelStatic::acceptSignal(SIGNAL::Enum type, Signal* data){
 	
 	switch(type){
 		case SIGNAL::enterClient:{
-			cerr<<"signal enter"<<endl;
+			//cerr<<"signal enter"<<endl;
 			SignalEnterClient* s = (SignalEnterClient*)data;
 			sendEnter(s->_clientId);
 			break;

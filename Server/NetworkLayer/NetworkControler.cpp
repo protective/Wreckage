@@ -50,10 +50,12 @@ void NetworkControler::deRegisterObj(OBJID obj){
 }
 
 void NetworkControler::readBuffers(){
+	pthread_mutex_lock(&_clientLock);
 	for (map<uint32_t, Client*>::iterator ci = _connections.begin(); ci != _connections.end(); ci++){
 		ci->second->ReadBuffer();
 		ci->second->proces();
 	}
+	pthread_mutex_unlock(&_clientLock);
 }
 
 SObj* NetworkControler::getObj(OBJID obj){
@@ -66,10 +68,13 @@ SObj* NetworkControler::getObj(OBJID obj){
 void NetworkControler::sendObjDel(OBJID to, OBJID deleted){
 	MessageObjDeleted* msg = new MessageObjDeleted(0, deleted);
 	sendMessage(to, msg);
+	
+}
+void  NetworkControler::sendMessage(OBJID to, Message* message){
+	this->sendMessage(to, message, 0);
 }
 
-
-void  NetworkControler::sendMessage(OBJID to, Message* message){
+void  NetworkControler::sendMessage(OBJID to, Message* message, uint32_t delay){
 
 	Processor* processor = NULL ;
 	if(to == 0)
@@ -85,7 +90,7 @@ void  NetworkControler::sendMessage(OBJID to, Message* message){
 		}
 		
 		if (it->second){
-			TaskSendMessage* cmd = new TaskSendMessage(to, message);
+			TaskSendMessage* cmd = new TaskSendMessage(to, message, delay);
 			it->second->addTask(cmd);
 		}
 	}else{
@@ -104,7 +109,7 @@ void  NetworkControler::sendMessage(OBJID to, Message* message){
 uint32_t NetworkControler::addTaskToObj(Task* task, OBJID obj){
 	Processor* temp = processors[1];
 	if(temp){
-		cerr<<"NetworkControler::addTaskToObj"<<endl;
+		//cerr<<"NetworkControler::addTaskToObj"<<endl;
 		return temp->addTask(task);
 	}
 	return 1;
@@ -113,12 +118,12 @@ uint32_t NetworkControler::addTaskToObj(Task* task, OBJID obj){
 uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len){
 	
 	bool sendt = false;
-	cerr<<"send to c= "<<clientId<<endl;
+	//cerr<<"send to c= "<<clientId<<endl;
 	pthread_mutex_lock(&_clientLock);
 	map<uint32_t, Client*>::iterator it = _connections.find(clientId);
 	if (it!= _connections.end()){
 		//cerr<<"network send len ="<<len<<endl;
-		cerr<<"send IT len="<<len<<endl;
+		//cerr<<"send IT len="<<len<<endl;
 		it->second->sendToC(block, len);
 		sendt = true;
 	}else
@@ -131,9 +136,7 @@ uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len)
 }
 
 void NetworkControler::addClient(Client* client){
-	cerr<<"add cli before lock"<<endl;
 	pthread_mutex_lock(&_clientLock);
-	cerr<<"add cli ="<<client->getId()<<endl;
 	_connections[client->getId()] = client;
 	pthread_mutex_unlock(&_clientLock);
 	
@@ -142,7 +145,9 @@ void NetworkControler::addClient(Client* client){
 	}
 }
 void NetworkControler::removeClient(Client* client){
+	pthread_mutex_lock(&_clientLock);
 	_connections.erase(client->getId());
+	pthread_mutex_unlock(&_clientLock);
 }
 
 NetworkControler::~NetworkControler() {

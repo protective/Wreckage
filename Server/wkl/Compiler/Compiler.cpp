@@ -26,7 +26,6 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm ){
 }
 
 uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
-	cerr<<"execute Compiler"<<endl;
 	
 	for (auto& it : systemCallLib::lib) {
 		vTableEntry temp(it.second, it.first, varloc::abs, 0, it.first);
@@ -43,7 +42,7 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 	
 	stringstream s(_programPath);
 	s<<_programPath;
-	cerr<<s.str()<<endl;
+	//cerr<<s.str()<<endl;
 	
 	
 	stringstream input;
@@ -51,12 +50,10 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 		ifstream file(s.str().c_str());
 		while (!file.eof()){
 			int c = file.get();
-			cerr<<"c="<<c<<endl;
 			if(c>=0 && c != 4)
 				input.put(c);
 		}
 	}else{
-		cerr<<_programSrc<<endl;
 		input.write(_programSrc.c_str(),_programSrc.size());
 		//input.setstate(ios_base::eofbit);
 	}
@@ -518,7 +515,8 @@ void Compiler::visit(NodeCallExpr* node){
 		emitPushStack(0xEEEE,1);
 		uint32_t oldref = _scopeRef.back();
 		_scopeRef.push_back(_scopeRef.back());
-		node->args()->accept(this);
+		if(node->args())
+			node->args()->accept(this);
 		emitSysCall(s, ve->systemCall);
 		
 		emitPopStack(_scopeRef.back() - oldref);

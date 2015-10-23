@@ -51,7 +51,6 @@ Processor::Processor() {
 	w2.commit();	
 	
 	pqxx::work w(*_dbCon);
-	cerr<<maxLocalId<<endl;
 	s<<"select max(objid) from objs where objid <"<<maxLocalId<<";"; 
 	pqxx::result r = w.exec(s);
 
@@ -248,7 +247,6 @@ void Processor::removeClientView(uint32_t id){
 }
 
 uint32_t Processor::removeTask(Task* cmd){
-	cerr<<"remove command"<<endl;
 	pthread_mutex_lock(&this->_lockCommands);
 	list<Task*>::iterator it = _commands.begin();
 	while(it != _commands.end()){

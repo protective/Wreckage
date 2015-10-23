@@ -155,7 +155,10 @@ define(function( require )
     	UIsprites.push(element);
     	sceneOrtho.add(element);
     }
-
+    function sceneRemoveUISprite(element){
+    	UIsprites.pop(element);
+    	sceneOrtho.remove(element);
+    }
 	function onWindowResize( event ) {
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -259,6 +262,7 @@ define(function( require )
 		render : render,
 		'sceneAddDamageNotification' : sceneAddDamageNotification,
 		'sceneAddUISprite' : sceneAddUISprite,
+		'sceneRemoveUISprite' : sceneRemoveUISprite,
 		'setOnClickCallback': setOnClickCallback,
 		'addElement' : addScene,
 		'container' : container

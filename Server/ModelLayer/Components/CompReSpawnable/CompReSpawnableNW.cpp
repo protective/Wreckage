@@ -6,7 +6,7 @@
 #include "../../../NetworkLayer/Components/CompReSpawnable/CompReSpawnableSerial.h"
 
 void CompReSpawnable::sendFull(uint32_t clientId){
-	cerr<<"CompReSpawnable::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompReSpawnable::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompReSpawnable::SerialSendFull* tmp = SerialCompReSpawnable::allocSendFull(
 			this->_obj->getId());
 	

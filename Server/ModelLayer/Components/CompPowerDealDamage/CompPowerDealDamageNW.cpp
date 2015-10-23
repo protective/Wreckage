@@ -6,7 +6,7 @@
 #include "../../../NetworkLayer/Components/CompPowerDealDamage/CompPowerDealDamageSerial.h"
 
 void CompPowerDealDamage::sendFull(uint32_t clientId){
-	cerr<<"CompPowerDealDamage::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompPowerDealDamage::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompPowerDealDamage::SerialSendFull* tmp = SerialCompPowerDealDamage::allocSendFull(
 			this->_obj->getId());
 	

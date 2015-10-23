@@ -7,6 +7,7 @@
 
 #include "../../Messages/MessageDestInRangeReq.h"
 #include "../../Messages/MessageDestInRangeRsp.h"
+#include "../../Messages/MessageProgramSleepWake.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalRunProgram.h"
@@ -45,8 +46,8 @@ void CompProgramable::acceptSignal(SIGNAL::Enum type, Signal* data){
 			if(it != _programExe.end()){
 				pe = it->second;
 			}else{
-				cerr<<"env size = "<<(*(s->_env)).size()<<endl;
-				pe = new wkl::ProgramExecutor(_programIdCounter++ ,this, s->_program, _syscall, *(s->_env));
+				//cerr<<"env size = "<<(*(s->_env)).size()<<endl;
+				pe = new wkl::ProgramExecutor(_programIdCounter++ ,this->getObj(), s->_program, _syscall, *(s->_env));
 			   _programExe[pe->getRunRef()] = pe;
 			}
 			uint32_t ret = 0;
@@ -86,6 +87,17 @@ void CompProgramable::acceptMessage(MESSAGE::Enum type, Message* data){
 			
 			break;
 		}
+		case MESSAGE::programSleepWake : {
+			MessageProgramSleepWake* msg = (MessageProgramSleepWake*)data;
+			
+			//that is leave it to wkl
+			wkl::Variable v(0);
+
+			SignalRunProgram s( &v, msg->_runRef);
+			this->_obj->signal(SIGNAL::runProgram, &s);
+			
+			break;
+		}
 	}
 }
 
@@ -95,21 +107,39 @@ void CompProgramable::init(){
 
 map<uint32_t, wkl::systemCallFunc> CompProgramable::getSyscalls(){
 	return {
-		{wkl::systemCallLib::getObjInRange, CompProgramable::getObjInRange}
+		{wkl::systemCallLib::getObjInRange, CompProgramable::getObjInRange},
+		{wkl::systemCallLib::sleep, CompProgramable::sleep}
 	};
 };
 
+wkl::Variable CompProgramable::sleep(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
+	wkl::Variable* args = (wkl::Variable*)arg;
+	programExe->setFlag(wkl::registerFlags::yield);
+	//cerr<<"DEBUG sleep "<<args[1].v<<endl;
+	MessageProgramSleepWake* outmsg = new MessageProgramSleepWake(
+			_this->getId(),
+			programExe->getRunRef());
 
+	networkControl->sendMessage(_this->getId(), outmsg, args[1].v);
+
+			
 	
-wkl::Variable CompProgramable::getObjInRange(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg){
+	return wkl::Variable(0);
+}
+	
+wkl::Variable CompProgramable::getObjInRange(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
 
 	wkl::Variable* args = (wkl::Variable*)arg;
-	cerr<<"getObjInRange"<<endl;
+	//cerr<<"getObjInRange"<<endl;
 	programExe->setFlag(wkl::registerFlags::yield);
 	uint32_t range;
 	range = (DAMAGETYPES::Enum)args[1].v;
 	SPos p(0,0,0, 0);
-	MessageDestInRangeReq* outmsg = new MessageDestInRangeReq(_this->getObj()->getId(), p, range, programExe->getRunRef());
+	MessageDestInRangeReq* outmsg = new MessageDestInRangeReq(
+			_this->getId(),
+			p,
+			range,
+			programExe->getRunRef());
 
 	networkControl->sendMessage(0, outmsg);
 

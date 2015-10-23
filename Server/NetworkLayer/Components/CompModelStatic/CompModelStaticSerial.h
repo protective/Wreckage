@@ -27,7 +27,7 @@ struct SerialObjEnter : public SerialComp{
 		this->pos._y = pos->y();
 		this->pos._z = pos->z();
 		this->pos._d = pos->d();
-		cerr<<"hh x="<<pos->x()<<" y="<<pos->y()<<" z="<<pos->z()<<" d="<<pos->d()<<endl;
+		//cerr<<"hh x="<<pos->x()<<" y="<<pos->y()<<" z="<<pos->z()<<" d="<<pos->d()<<endl;
 
 	}
 	SerialPOS pos;

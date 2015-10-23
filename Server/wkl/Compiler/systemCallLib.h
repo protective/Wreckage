@@ -15,10 +15,10 @@
 
 using namespace std;
 
-class SComponent;
+class SObj;
 namespace wkl {
 	class ProgramExecutor;
-	typedef Variable (*systemCallFunc)(SComponent* _this, ProgramExecutor* programExe, void*);
+	typedef Variable (*systemCallFunc)(SObj* _this, ProgramExecutor* programExe, void*);
 	
 	typedef string systemCallBack_t;	
 
@@ -34,7 +34,11 @@ namespace wkl {
 			consume,
 			channel,
 			checkrange,
-			getObjInRange
+			getObjInRange,
+			gainBuff,
+			updateBuff,
+			loseBuff,
+			sleep,
 		};
 		
 		extern map<uint32_t, systemCallBack_t> lib;
@@ -44,7 +48,11 @@ namespace wkl {
 		enum Enum {
 			__hit__ = 1,
 			__cast__,
-			__activate_target__
+			__activate_target__,
+			__gain_buff__,
+			__lose_buff__,
+			__tick_buff__
+					
 		};
 		
 		extern map<uint32_t, systemCallBackEntry_t> lib;
@@ -55,7 +63,10 @@ namespace wkl {
 			wkl_level = 1,
 			wkl_target,
 			wkl_missChance,
-			wkl_critChance
+			wkl_critChance,
+			wkl_buffId,
+			wkl_buffTickCounter,
+			wkl_buffTickTime,
 		};	
 		
 		extern map<uint32_t, systemCallBack_t> lib;

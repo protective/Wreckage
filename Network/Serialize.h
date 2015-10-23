@@ -27,6 +27,8 @@ namespace SerialType{
 				SerialObjExit = 11,
 				SerialObjAll = 12,
 				SerialTargetStatChange = 13,
+				SerialTargetGainBuff = 14,
+				SerialTargetLoseBuff = 15,
 				SerialCmdCreateObj = 100,
 			
 	};

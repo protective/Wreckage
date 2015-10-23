@@ -39,17 +39,17 @@ void ClientWebSock::handshake(){
 		const char *end_key = "\r\n\r\n";
 		uint32_t end_key_cmpsize = 4;
 		uint32_t cmpsize = 18;
-		cerr<<"size = "<<sizeof(search_key)<<" "<< this->outputnetworkBuf->recived<<endl;
+		//cerr<<"size = "<<sizeof(search_key)<<" "<< this->outputnetworkBuf->recived<<endl;
 
 		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i++){
-			cout<<this->outputnetworkBuf->networkBuf[i];
+			//cout<<this->outputnetworkBuf->networkBuf[i];
 		}
-		cout<<endl;
+		//cout<<endl;
 		
 		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i++){
 			delta = i+1;
 			if (i + cmpsize + 24 < 512 && memcmp(search_key,&this->outputnetworkBuf->networkBuf[i], cmpsize) == 0){
-				cout<<"FOUND IT !!!!!!!!!!!!"<<endl;
+				//cout<<"FOUND IT !!!!!!!!!!!!"<<endl;
 				//_handshakeing = false;
 				memcpy(key, &this->outputnetworkBuf->networkBuf[i + cmpsize + 1], 24);
 				memcpy(key+ 24, uuid, 36);
@@ -59,15 +59,15 @@ void ClientWebSock::handshake(){
 				CryptoPP::StringSource ss(retsha,20,true,new CryptoPP::Base64Encoder(new CryptoPP::StringSink(encoded),false));
 
 				string responce = "HTTP/1.1 101\r\nConnection: Upgrade\r\nUpgrade: websocket\r\nSec-WebSocket-Accept: " + encoded + "\r\n\r\n" ;
-				cout<<"key  ="<<key<<endl;
-				cout<<"sha1 ="<<retsha<<endl;
-				cout<<"encoded ="<<encoded<<endl;
-				cout<<"size="<<responce.size()<<endl;
+				//cout<<"key  ="<<key<<endl;
+				//cout<<"sha1 ="<<retsha<<endl;
+				//cout<<"encoded ="<<encoded<<endl;
+				//cout<<"size="<<responce.size()<<endl;
 				send(this->getSocket(), (void* )responce.c_str(),responce.size() ,MSG_NOSIGNAL);
 
 			}else if (i + end_key_cmpsize < 512 && memcmp(end_key,&this->outputnetworkBuf->networkBuf[i], end_key_cmpsize) == 0){
 				end = true;
-				cout<<"found end"<<endl;
+				//cout<<"found end"<<endl;
 			}
 
 		}
@@ -77,7 +77,7 @@ void ClientWebSock::handshake(){
 	}
 	
 	
-	cerr<<"recived size="<<this->outputnetworkBuf->recived<<endl;
+	//cerr<<"recived size="<<this->outputnetworkBuf->recived<<endl;
 }
 
 
@@ -105,12 +105,12 @@ void ClientWebSock::sendToC(void* block, uint32_t len){
 		sstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(buffer[i] & 0x00FF) << " ";
 	}
 	std::string result = sstream.str();
-	cout<<"send    ="<<result<<endl;	
+	//cout<<"send    ="<<result<<endl;	
 	uint16_t* read;
 	read = (uint16_t*)buffer;
 
 	send(this->getSocket(), (void*)buffer, len + header, MSG_NOSIGNAL);
-	cerr<<"done send"<<endl;
+	//cerr<<"done send"<<endl;
 }
 
 void ClientWebSock::ReadBuffer(){
@@ -128,14 +128,14 @@ void ClientWebSock::ReadBuffer(){
 		stringstream sstream;
 		
 		
-		cout<<"size="<<this->outputnetworkBuf->recived<<endl;
+		//cout<<"read="<<this->outputnetworkBuf->recived<<endl;
 		
 
 		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
 			sstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
 		}	
 		std::string result = sstream.str();
-		cout<<"res     ="<<result<<endl;	
+		//cout<<"res     ="<<result<<endl;	
 		
 		stringstream maskstream;
 
@@ -148,8 +148,8 @@ void ClientWebSock::ReadBuffer(){
 			headerlength = 4;
 		}
 		uint32_t delta = headerlength + maskLength;
-		cerr<<"delta "<<delta<<endl;
-		cerr<<"payloadLen "<<payloadLen<<endl;
+		//cerr<<"delta "<<delta<<endl;
+		//cerr<<"payloadLen "<<payloadLen<<endl;
 		
 		//decode the message using mask
 		for (uint32_t i = delta; i < delta + payloadLen; i+=1){
@@ -157,7 +157,7 @@ void ClientWebSock::ReadBuffer(){
 					this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-delta) % 4) + headerlength];
 		}
 		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
-			maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
+			//maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
 		}
 		
 		//remove header
@@ -165,12 +165,12 @@ void ClientWebSock::ReadBuffer(){
 		this->outputnetworkBuf->recived -= delta;
 		
 		result = maskstream.str();
-		cout<<"unmasked="<<result<<endl;
+		//cout<<"unmasked="<<result<<endl;
 		
 		for (uint32_t i = 0; i < payloadLen; i+=1){
-			cout<<this->outputnetworkBuf->networkBuf[i];
+			//cout<<this->outputnetworkBuf->networkBuf[i];
 		}	
-		cout<<endl;
+		//cout<<endl;
 		
 		
 		parseBuffer(payloadLen);

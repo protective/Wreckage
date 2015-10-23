@@ -27,6 +27,7 @@ public:
 	//Processor* getProcessor(uint32_t objId);
 	SObj* getObj(uint32_t objId);
 	void sendMessage(OBJID to, Message* message);
+	void sendMessage(OBJID to, Message* message, uint32_t delay);
 	uint32_t addTaskToObj(Task* task, OBJID obj);
 	void readBuffers();
 	uint32_t sendToC(uint32_t clientId, void* block, uint32_t len);

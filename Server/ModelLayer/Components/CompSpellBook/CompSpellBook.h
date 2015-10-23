@@ -37,8 +37,8 @@ private:
 	list<OBJID> _loadedPowers;
 	
 	//systemCalls implemented by this component
-	static wkl::Variable consume(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
-	static wkl::Variable channel(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable consume(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable channel(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 };
 
 #endif	/* COMPSPELLBOOK_H */

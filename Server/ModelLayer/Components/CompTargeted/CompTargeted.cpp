@@ -71,18 +71,21 @@ void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 void CompTargeted::init(){
 	_objDataAcces.push_back(OBJDATA::hp);
 	_objDataAcces.push_back(OBJDATA::maxhp);
+	_buffIdSequence = 0;
 
 }
 
 map<uint32_t, wkl::systemCallFunc> CompTargeted::getSyscalls(){ 		
-	return {{wkl::systemCallLib::phycicalDamage, CompTargeted::phycicalDamage}};
+	return {{wkl::systemCallLib::phycicalDamage, CompTargeted::phycicalDamage},
+			{wkl::systemCallLib::gainBuff, CompTargeted::gainBuff},
+			{wkl::systemCallLib::updateBuff, CompTargeted::updateBuff},
+			{wkl::systemCallLib::loseBuff, CompTargeted::loseBuff}};
 }
 
-wkl::Variable CompTargeted::phycicalDamage(SComponent* _this,  wkl::ProgramExecutor* programExe, void* arg){
+wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
 	
-	SObj* target = _this->getObj();
+	SObj* target = _this;
 	wkl::Variable* args = (wkl::Variable*)arg;
-	cout<<"Projectile Hit"<<endl;
 	int32_t  level, attack, missP, critP, damageNormal, damageCrit;
 	DAMAGETYPES::Enum dmgtype;
 	int32_t def_hp = 0, def_dodge = 0, def_parry = 0, def_block = 0, def_level = 0, def_AC = 0;
@@ -157,7 +160,62 @@ wkl::Variable CompTargeted::phycicalDamage(SComponent* _this,  wkl::ProgramExecu
 
 	return u;
 }
+wkl::Variable CompTargeted::gainBuff(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
+	//cerr<<"DEBUG gainBuff"<<endl;
+	//TODO check if exist
+	CompTargeted* comp = (CompTargeted*)_this->getComponents()[COMPID::targeted];
+	wkl::Variable* args = (wkl::Variable*)arg;
+	OBJID target = (OBJID)args[1].v;
+	uint32_t ticks = (OBJID)args[2].v;
+	uint32_t time = (OBJID)args[3].v;
+	programExe->getEnvContext()[systemEnvLib::wkl_buffTickCounter] = ticks;
+	programExe->getEnvContext()[systemEnvLib::wkl_buffTickTime] = time;
+	uint32_t seqid = comp->_buffIdSequence++;
+	programExe->getEnvContext()[systemEnvLib::wkl_buffId] = seqid;
+	MessageProgramCallback* outmsg = new MessageProgramCallback(
+			_this->getId(),
+			programExe->getProgram(),
+			programExe->getEnvContext(),
+			wkl::systemCallBackLib::__gain_buff__,
+			0);
+	comp->sendEventTargetGainBuff(target,
+			0,
+			seqid,
+			ticks*time,
+			ticks*time,
+			ticks,
+			0,
+			0);
+	_this->getProcessor()->sendMessage(target, outmsg, 0);
 
+	
+	//TODO signal network gain buff
+	
+	
+	//TODO signal obj gain buff
+	return wkl::Variable(0);
+}
+
+wkl::Variable CompTargeted::updateBuff(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
+	//cerr<<"DEBUG update"<<endl;
+	//TODO signal network gain buff
+	//TODO signal obj gain buff
+	return wkl::Variable(0);
+}
+
+wkl::Variable CompTargeted::loseBuff(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
+	//cerr<<"DEBUG loseBuff"<<endl;
+	//TODO check exist
+	CompTargeted* comp = (CompTargeted*)_this->getComponents()[COMPID::targeted];
+
+	uint32_t target = programExe->getEnvContext()[systemEnvLib::wkl_target];
+	uint32_t buffId = programExe->getEnvContext()[systemEnvLib::wkl_buffId];
+
+	comp->sendEventTargetLoseBuff(target, buffId);
+
+	//TODO signal obj gain buff
+	return wkl::Variable(0);
+}
 CompTargeted::~CompTargeted() {
 }
 

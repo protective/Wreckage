@@ -13,14 +13,13 @@
 
 
 void CompSpellBook::acceptNetwork(SerialInputPayload* data){
-	cerr<<"CompSpellBook::acceptNetwork type="<<data->_type<<endl;
+	//cerr<<"CompSpellBook::acceptNetwork type="<<data->_type<<endl;
 	switch(data->_type) {
 		case SERIALINPUT::SerialInputCastPower :{
 			SerialInputCastPower* d = (SerialInputCastPower*)data;
 			
 			MessagePowerStats* msg = new MessagePowerStats(_obj->getId(),d->_target);
 			//_loadedPowers[d->_power];
-			cerr<<"send msg"<<endl;
 
 			_obj->getProcessor()->sendMessage(d->_power, msg);
 			break;
@@ -31,7 +30,7 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 
 
 void CompSpellBook::sendFull(uint32_t clientId){
-	cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompSpellBook::SerialSendFull* tmp = SerialCompSpellBook::allocSendFull(
 			this->_obj->getId(),
 			this->_loadedPowers);

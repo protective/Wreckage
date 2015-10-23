@@ -31,7 +31,8 @@ private:
 	map<uint32_t, wkl::ProgramExecutor*> _programExe;
 	
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
-	static wkl::Variable getObjInRange(SComponent* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable getObjInRange(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable sleep(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 
 };
 

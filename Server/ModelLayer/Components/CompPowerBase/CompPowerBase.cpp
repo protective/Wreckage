@@ -33,7 +33,7 @@ void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 			break;
 		}
 		case SIGNAL::enterClient:{
-			cerr<<"signal enter"<<endl;
+			//cerr<<"signal enter"<<endl;
 			//SignalEnterClient* s = (SignalEnterClient*)data;
 			//sendEnter(s->_clientId);
 			break;
@@ -49,7 +49,6 @@ void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
 		case MESSAGE::powerStats :{
-			//cerr<<"MESSAGE::activatePowerOnt REC"<<endl;
 			MessagePowerStats* msg = (MessagePowerStats*)data;
 	
 			map<uint32_t, wkl::Variable> envContext;
@@ -83,7 +82,7 @@ void CompPowerBase::compileProgram(string src){
 	_program = new wkl::Program(src, outasm);
 	_sym = outasm.str();
 	_programSource = src;
-	cerr<<_sym<<endl;
+	//cerr<<_sym<<endl;
 	dbSave();
 }
 void CompPowerBase::setName(string name){

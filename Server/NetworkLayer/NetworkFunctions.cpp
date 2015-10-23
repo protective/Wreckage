@@ -59,7 +59,7 @@ void* thread_Listen(){
 
 	for(;;){
 		int ConnectFD = accept(SocketFD, NULL, NULL);
-		cerr<<"connected time "<<SDL_GetTicks()<<endl;
+		//cerr<<"connected time "<<SDL_GetTicks()<<endl;
 
 		if(0 > ConnectFD){
 			perror("error accept failed");
@@ -71,10 +71,10 @@ void* thread_Listen(){
 		//create new client
 		
 		Client* cli = new Client(ConnectFD);
-		cerr<<"connected "<<endl;
+		//cerr<<"connected "<<endl;
 		networkControl->addClient(cli);
 
-		cerr<<"added to clients"<<endl;
+		//cerr<<"added to clients"<<endl;
 		pthread_create(&(cli->listenThread), NULL, (void*(*)(void*))thread_Recive, cli);
 		cerr<<"begin listen"<<endl;
 	}
@@ -116,7 +116,7 @@ void* thread_Listen_websock(){
 
 	for(;;){
 		int ConnectFD = accept(SocketFD, NULL, NULL);
-		cerr<<"connected Websocket time "<<SDL_GetTicks()<<endl;
+		//cerr<<"connected Websocket time "<<SDL_GetTicks()<<endl;
 
 		if(0 > ConnectFD){
 			perror("error accept failed");
@@ -128,15 +128,15 @@ void* thread_Listen_websock(){
 		//create new client
 		
 		ClientWebSock* cli = new ClientWebSock(ConnectFD);
-		cerr<<"connected "<<endl;
+		cerr<<"connected fd ="<<ConnectFD<<endl;
 		//blocks
 		cli->handshake();
 		
 		networkControl->addClient(cli);
 
-		cerr<<"added to clients"<<endl;
+		//cerr<<"added to clients"<<endl;
 		pthread_create(&(cli->listenThread), NULL, (void*(*)(void*))thread_Recive, cli);
-		cerr<<"begin listen"<<endl;
+		cerr<<"resume listen"<<endl;
 	}
 
     close(SocketFD);
@@ -149,18 +149,21 @@ void* thread_Recive(Client* client){
 	uint32_t timeout = 0;
 
 	while(!client->isDisconnecting()){
-
+		//cerr<<"size rec="<<client->inputnetworkBuf->recived<<endl;
 		recsize = recv(client->getSocket(), (client->inputnetworkBuf->networkBuf) + client->inputnetworkBuf->recived, 512,0);
-		cerr<<"rec timeout="<<timeout<<endl;
+		//cerr<<"rec addr="<<(int*)((client->inputnetworkBuf->networkBuf) + client->inputnetworkBuf->recived)<<endl;
+
 		if (recsize < 0){
 			
 			fprintf(stderr, "RECV  ERROR WEBSOCK***************\n");
 			client->disconnect();
 			break;
+		}else if (recsize==0){
+			client->disconnect();
+			break;
 		}
-		if (recsize){
-			timeout = 0;
-		}
+		
+		timeout = 0;
 		client->inputnetworkBuf->recived +=recsize;
 		bool switchdone = false;
 		while (!switchdone){
@@ -175,14 +178,6 @@ void* thread_Recive(Client* client){
 			//************************************
 			pthread_mutex_unlock(&client->networkBufLock);
 		}
-		timeout+=1;
-		if (timeout < 200000)
-			usleep(400);
-		else{
-			client->disconnect();
-			cerr<<"timeout"<<endl;
-			break;
-		}
 	}
 
 	
@@ -195,7 +190,7 @@ void* thread_Recive(Client* client){
 	close(client->getSocket());
 	networkControl->removeClient(client);
 
-	cerr<<"Delete"<<endl;
+	cerr<<"Delete socket"<<client->getSocket() <<endl;
 	delete client;
 	
 	pthread_exit(0);

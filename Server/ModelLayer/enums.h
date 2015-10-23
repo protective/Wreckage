@@ -68,7 +68,8 @@ namespace MESSAGE {
 		systemBroadcast,
 		destInRangeReq,
 		destInRangeRsp,
-		destUpdate
+		destUpdate,
+		programSleepWake
 				
 	};
 }

@@ -7,7 +7,7 @@
 
 
 void CompPowerBase::acceptNetwork(SerialInputPayload* data){
-	cerr<<"CompPowerBase::acceptNetwork type="<<data->_type<<endl;
+	//cerr<<"CompPowerBase::acceptNetwork type="<<data->_type<<endl;
 	switch(data->_type) {
 		case SERIALINPUT::SerialInputCastPower :{
 			break;
@@ -25,7 +25,7 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 }
 
 void CompPowerBase::sendFull(uint32_t clientId){
-	cerr<<"CompPowerBase::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompPowerBase::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompPowerBase::SerialSendFull* tmp = SerialCompPowerBase::allocSendFull(
 			this->_obj->getId(),
 			this->_name,

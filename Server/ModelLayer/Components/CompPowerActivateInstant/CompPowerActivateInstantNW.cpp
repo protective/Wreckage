@@ -6,7 +6,7 @@
 #include "../../../NetworkLayer/Components/CompPowerActivateInstant/CompPowerActivateInstantSerial.h"
 
 void CompPowerActivateInstant::sendFull(uint32_t clientId){
-	cerr<<"CompTargeted::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompTargeted::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompPowerActivateInstant::SerialSendFull* tmp = SerialCompPowerActivateInstant::allocSendFull(
 			this->_obj->getId());
 	

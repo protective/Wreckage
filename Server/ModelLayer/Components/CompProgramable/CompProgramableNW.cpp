@@ -14,7 +14,7 @@ void CompProgramable::acceptNetwork(SerialInputPayload* data){
 }
 
 void CompProgramable::sendFull(uint32_t clientId){
-	cerr<<"CompProgramable::sendFull obj "<<this->_obj->getId()<<endl;
+	//cerr<<"CompProgramable::sendFull obj "<<this->_obj->getId()<<endl;
 	SerialCompProgramable::SerialSendFull* tmp = SerialCompProgramable::allocSendFull(
 			this->_obj->getId());
 	

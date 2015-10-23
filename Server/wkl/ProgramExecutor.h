@@ -25,7 +25,7 @@ namespace wkl {
 	
 class ProgramExecutor {
 public:
-	ProgramExecutor(uint32_t runRefId, SComponent* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs, map<uint32_t, Variable> envContext);
+	ProgramExecutor(uint32_t runRefId, SObj* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs, map<uint32_t, Variable> envContext);
 
 	
 	uint32_t run(uint32_t obj);
@@ -49,7 +49,7 @@ public:
 private:
 	uint32_t _runRefId;
 	Program* _program;
-	SComponent* _comp;
+	SObj* _obj;
 	map<uint32_t, systemCallFunc> _systemCallFuncs;
 	uint32_t _registerFlags;
 	uint32_t _mipsCredit;	
