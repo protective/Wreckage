@@ -126,13 +126,11 @@ uint32_t NetworkControler::sendToC(uint32_t clientId, void* block, uint32_t len)
 		//cerr<<"send IT len="<<len<<endl;
 		it->second->sendToC(block, len);
 		sendt = true;
-	}else
-		cerr<<"ERROR CLIENT NOT FOUND id="<<clientId<<endl;
+	}//else
+	//	cerr<<"ERROR CLIENT NOT FOUND id="<<clientId<<endl;
 	pthread_mutex_unlock(&_clientLock);
-	if(sendt)
-		return 0;
-	else
-		return 1;
+
+	return sendt == true ? 0 : 1;
 }
 
 void NetworkControler::addClient(Client* client){

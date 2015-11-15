@@ -9,6 +9,7 @@
 #include "../../Messages/MessagePowerCheck.h"
 #include "../../Messages/MessageProjectileStats.h"
 #include "../../Messages/MessagePowerStats.h"
+#include "../../Messages/MessageReCloneComp.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 
@@ -20,9 +21,14 @@ SComponent(COMPID::powerBase){
 }
 
 CompPowerBase::CompPowerBase(const CompPowerBase& orig) :
-SComponent(COMPID::powerBase){
-	_program = NULL;
+SComponent(orig){
+	_name = orig._name;
+	_description = orig._description;
+	_programSource = orig._programSource;
+	_sym = orig._sym;
+	_program = new wkl::Program(orig._program);
 	init();
+	
 }
 
 void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
@@ -57,17 +63,24 @@ void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
 			_obj->getProcessor()->sendMessage(data->_fromId, outmsg);
 			break;
 		}
+		case MESSAGE::reCloneComp:{
+			MessageReCloneComp* msg = (MessageReCloneComp*)data;
+			CompPowerBase* comp = (CompPowerBase*)msg->_comp;
+			_description = comp->_description;
+			_name = comp->_name;
+			if(_program)
+				delete _program;
+			_program = new wkl::Program(comp->_program);
+			_sym = comp->_sym;
+			
+			break;
+		}
 	}
 }
 
 void CompPowerBase::init(){
 	if (_program == NULL){
 		//_program = new wkl::Program("wkl/testPrograms/test_pow.wkl", false);
-		_description = "";
-		_name = "FROST BOLT";
-		_programSource = "";
-		_sym = "";
-	}else{
 		_description = "";
 		_name = "";
 		_programSource = "";
@@ -93,5 +106,7 @@ void CompPowerBase::setDescription(string description){
 }
 
 CompPowerBase::~CompPowerBase() {
+	if(_program)
+		delete _program;
 }
 

@@ -10,7 +10,7 @@
 #include "CompPowerUseCheck/CompPowerUseCheck.h"
 #include "CompPowerActivateTimed/CompPowerActivateTimed.h"
 #include "CompAbilityInput/CompAbilityInput.h"
-#include "CompPowerDealDamage/CompPowerDealDamage.h"
+#include "CompPlayer/CompPlayer.h"
 #include "CompPowerActivateInstant/CompPowerActivateInstant.h"
 #include "CompTargeted/CompTargeted.h"
 #include "CompModelStatic/CompModelStatic.h"
@@ -38,8 +38,8 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 		case COMPID::abilityInput: {
 			return new CompAbilityInput(obj, id, con);
 		}
-		case COMPID::powerDealDamage: {
-			return new CompPowerDealDamage(obj, id, con);
+		case COMPID::player: {
+			return new CompPlayer(obj, id, con);
 		}		
 		case COMPID::powerActivateInstant: {
 			return new CompPowerActivateInstant(obj, id, con);

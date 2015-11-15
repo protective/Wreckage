@@ -113,8 +113,11 @@ uint32_t TaskCreateObj::execute(){
 				_isTemplate = r[0][0].as<bool>();
 				_persistent = true;
 			}
+			
 		}
 		SObj* obj = new SObj(_id, _persistent, _isTemplate, _id == _fromid, _processor);
+		if(_fromid)
+			_processor->setClone(_fromid, obj);
 		cerr<<"create new obj id="<<_id<<" from id="<<_fromid<<endl;
 		
 		for(map<OBJDATA::Enum, int32_t>::iterator it = _data.begin(); it != _data.end(); it++){

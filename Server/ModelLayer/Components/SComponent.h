@@ -33,6 +33,12 @@ public:
 		_type = type;
 		_flags = 0;
 	}
+	SComponent(const SComponent& orig){
+		_obj = orig._obj;
+		_type = orig._type;
+		_flags= orig._flags;
+				
+	}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};

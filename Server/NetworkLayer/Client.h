@@ -11,7 +11,7 @@
 
 struct NetworkBuffer{
     uint32_t recived;
-    unsigned char networkBuf[1024];
+    unsigned char networkBuf[1<<14];
 };
 
 class Client {
@@ -28,7 +28,7 @@ public:
 	uint32_t getProcesCount(){return procescounter;}
 	bool switchBuffer(){
        //active_buffer = (active_buffer+1)%2;
-		if(outputnetworkBuf->recived + inputnetworkBuf->recived < 1024){
+		if(outputnetworkBuf->recived + inputnetworkBuf->recived < 1<<14){
 			memmove(outputnetworkBuf->networkBuf + outputnetworkBuf->recived, inputnetworkBuf->networkBuf, inputnetworkBuf->recived);
 			outputnetworkBuf->recived += inputnetworkBuf->recived;
 			inputnetworkBuf->recived = 0;

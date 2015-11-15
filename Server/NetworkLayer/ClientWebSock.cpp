@@ -151,34 +151,35 @@ void ClientWebSock::ReadBuffer(){
 		//cerr<<"delta "<<delta<<endl;
 		//cerr<<"payloadLen "<<payloadLen<<endl;
 		
-		//decode the message using mask
-		for (uint32_t i = delta; i < delta + payloadLen; i+=1){
-			this->outputnetworkBuf->networkBuf[i] =
-					this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-delta) % 4) + headerlength];
-		}
-		for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
-			//maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
-		}
-		
-		//remove header
-		memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);
-		this->outputnetworkBuf->recived -= delta;
-		
-		result = maskstream.str();
-		//cout<<"unmasked="<<result<<endl;
-		
-		for (uint32_t i = 0; i < payloadLen; i+=1){
-			//cout<<this->outputnetworkBuf->networkBuf[i];
-		}	
-		//cout<<endl;
-		
-		
-		parseBuffer(payloadLen);
+		if (payloadLen + delta <= this->outputnetworkBuf->recived) {
+			//decode the message using mask
+			for (uint32_t i = delta; i < delta + payloadLen; i+=1){
+				this->outputnetworkBuf->networkBuf[i] =
+						this->outputnetworkBuf->networkBuf[i] ^ this->outputnetworkBuf->networkBuf[((i-delta) % 4) + headerlength];
+			}
+			for (uint32_t i = 0; i < this->outputnetworkBuf->recived; i+=1){
+				//maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(this->outputnetworkBuf->networkBuf[i] & 0x00FF) << " ";
+			}
 
-		delta = payloadLen;
-		memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);
-		this->outputnetworkBuf->recived -= delta;
+			//remove header
+			memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);
+			this->outputnetworkBuf->recived -= delta;
 
+			result = maskstream.str();
+			//cout<<"unmasked="<<result<<endl;
+
+			for (uint32_t i = 0; i < payloadLen; i+=1){
+				//cout<<this->outputnetworkBuf->networkBuf[i];
+			}	
+			//cout<<endl;
+
+
+			delta = parseBuffer(min(this->outputnetworkBuf->recived,payloadLen));
+
+			//delta = payloadLen;
+			memmove(this->outputnetworkBuf->networkBuf, this->outputnetworkBuf->networkBuf+ delta, this->outputnetworkBuf->recived- delta);
+			this->outputnetworkBuf->recived -= delta;
+		}
 		//************************************
 		//CRITICAL
 		pthread_mutex_lock(&this->networkBufLock);

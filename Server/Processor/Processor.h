@@ -25,10 +25,14 @@ public:
 	static void* workThreadFunction(void* context);
 	void addObj(SObj* obj);
 	void removeObj(SObj* obj);
+	void setClone(OBJID obj, SObj* clone){_clones[obj].push_back(clone);}
 	SObj* getObj(OBJID id);
+	list<SObj*>& getClones(OBJID parrent){return _clones[parrent];}
 	void loadAllObjFromDb();
 	void sendMessage(OBJID to, Message* message);
 	void sendMessage(OBJID to, Message* message, uint32_t delay);
+	
+	
 	OBJID getFreeID();
 	pqxx::connection& getDB(){return *_dbCon;}
 	
@@ -47,6 +51,7 @@ private:
 	list<Task*> _commands;
 
 	map<OBJID, SObj*> _localObjs;
+	map<OBJID, list<SObj*> > _clones;
 	//processor Data
 	uint8_t _id;
 	OBJID _freeIdCount;

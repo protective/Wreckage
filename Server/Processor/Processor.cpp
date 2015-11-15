@@ -118,6 +118,8 @@ SObj* Processor::getObj(OBJID id){
 	return NULL;
 }
 
+
+
 void  Processor::sendMessage(OBJID to, Message* message){
 	TaskSendMessage* cmd = new TaskSendMessage(to, message);
 	this->addTask(cmd);

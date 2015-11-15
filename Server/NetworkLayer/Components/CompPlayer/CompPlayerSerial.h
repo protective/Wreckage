@@ -1,10 +1,10 @@
 
-#ifndef COMPPOWERDEALDAMAGESERIAL_H
-#define	COMPPOWERDEALDAMAGESERIAL_H
+#ifndef COMPPLAYERSERIAL_H
+#define	COMPPLAYERSERIAL_H
 
 #include "../CompSerialize.h"
 
-namespace SerialCompPowerDealDamage{
+namespace SerialCompPlayer{
 	enum Enum{
 		Invalid = 0,
 		SendFull = 1
@@ -20,12 +20,12 @@ SerialSendFull* allocSendFull(OBJID objId){
 	s->_type = SerialType::SerialComp;
 	s->_size = size;
 	s->objid = objId;
-	s->compId = COMPID::powerDealDamage;
-	s->op = (uint32_t)SerialCompPowerDealDamage::SendFull;
+	s->compId = COMPID::player;
+	s->op = (uint32_t)SerialCompPlayer::SendFull;
 	return s;
 }
 
 }
 
-#endif	/* COMPPOWERDEALDAMAGESERIAL_H */
+#endif	/* COMPPLAYERSERIAL_H */
 

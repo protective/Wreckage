@@ -20,6 +20,7 @@
 #include "ModelLayer/Components/CompSpellBook/CompSpellBook.h"
 #include "ModelLayer/Components/CompModelStatic/CompModelStatic.h"
 #include "ModelLayer/Components/CompPowerBase/CompPowerBase.h"
+#include "ModelLayer/Components/CompPlayer/CompPlayer.h"
 
 
 
@@ -84,7 +85,11 @@ int main(int argc, char** argv) {
 	CompModelStatic cms;
 	cms.dbTableInit(con);
 	
+	
+	
 	CompPowerBase::dbTableInit(con);
+	CompPlayer::dbTableInit(con);
+	
 	SDL_Init(SDL_INIT_TIMER);
 	world = new SWorld(NULL);
 	

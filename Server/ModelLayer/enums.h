@@ -14,7 +14,7 @@ namespace COMPID {
 		spawnNode = 7,
 		reSpawnable = 8,
 		abilityInput = 9,
-		powerDealDamage = 10,
+		player = 10,
 		powerActivateInstant = 11,
 		targeted = 12,
 		modelStatic = 13,
@@ -69,7 +69,8 @@ namespace MESSAGE {
 		destInRangeReq,
 		destInRangeRsp,
 		destUpdate,
-		programSleepWake
+		programSleepWake,
+		reCloneComp
 				
 	};
 }
