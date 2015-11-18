@@ -1,7 +1,8 @@
 define(function ( require ) {
 	
     var webGL = require('webGL');
-
+    var Particals = require('Model/Effects/Particals');
+    
     function makeTextSprite( message, parameters )
     {
         if ( parameters === undefined ) parameters = {};
@@ -76,6 +77,7 @@ define(function ( require ) {
     			{ fontsize: 24, textColor : Color, borderColor: {r:255, g:0, b:0, a:0}, backgroundColor: {r:255, g:100, b:100, a:0} } );
     		spritey.position.set(obj.x, obj.y, obj.z);
     	webGL.sceneAddDamageNotification(spritey);
+    	Particals.dmg_animation(obj);
     }
     
  
