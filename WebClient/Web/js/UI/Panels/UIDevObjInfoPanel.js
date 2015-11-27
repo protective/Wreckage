@@ -26,35 +26,28 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     		return;
         var a = {'id' : obj.id};
         this.UIbars = _.template(hpBarTable)(a);
-        //tmp2[0].innerText = this.UIbars;
-       // var overlay = document.createElement('div');
-        
+
         var parser = new DOMParser()
         , doc = parser.parseFromString(this.UIbars, "text/html");
-        
-        //overlay.innerHTML = this.UIbars;
+
         var overlay = doc.firstChild;
         UIMain.maindiv.appendChild(overlay);
-        
-        
-        /*
-        var tmp2 = $('body');
-        
-        tmp2.on('mousedown', '.rcorners1', function() {
-        	event.preventDefault();
-    	} );
-    	*/
+
         obj.UIDevObjHpPanel = overlay;
         
         
         obj.UIDevObjHpPanel.updateHp = function(value){
-        	if(2 in obj.data && obj.data[2] > 0 && value >= 0){
+        	if(2 in obj.data && obj.data[2] > 0){
 	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
-	        	//var tmp2 = tmp.find('#hpbar');
+	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#hpbarlab');
+	        	tmp2[0].textContent = value;
 	        	var p = 100 - ((value / obj.data[2]) * 100);
+	        	p = Math.min(Math.max(p, 0),100);
 	        	tmp[0].style['padding-right'] = p +'%';
         	}
-        }
+        };
+        
+        obj.UIDevObjHpPanel.updateHp(obj.data[1]);
     }
     	
     Obj.prototype.createObjInfoPanel = function (obj) {

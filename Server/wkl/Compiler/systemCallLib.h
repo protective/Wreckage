@@ -33,6 +33,7 @@ namespace wkl {
 			hitTarget,
 			consume,
 			channel,
+			cast,
 			checkrange,
 			getObjInRange,
 			gainBuff,
@@ -60,7 +61,8 @@ namespace wkl {
 	namespace systemEnvLib {
 	
 		enum Enum {
-			wkl_level = 1,
+			wkl_powerId = 1,
+			wkl_level,
 			wkl_target,
 			wkl_missChance,
 			wkl_critChance,

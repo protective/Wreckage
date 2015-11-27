@@ -54,7 +54,7 @@ namespace MESSAGE {
 		killed, //the unit sending this messeage is dead
 		HeartBeatReq,
 		HeartBeatRsp,
-		ProjectileStats,
+		programFunctionSleep,
 		powerCheck,
 		powerCheckRsp,
 		powerStats,

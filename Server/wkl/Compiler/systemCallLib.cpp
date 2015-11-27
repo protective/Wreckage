@@ -14,6 +14,7 @@ namespace wkl {
 			{burnMana, "_wkl_burnMana"},
 			{hitTarget, "_wkl_hitTarget"},
 			{consume, "_wkl_consume"},
+			{cast, "_wkl_cast"},
 			{channel, "_wkl_channel"},
 			{checkrange, "_wkl_checkrange"},
 			{getObjInRange, "_wkl_getObjInRange"},

@@ -8,6 +8,7 @@
 #include "../../Messages/MessageDestInRangeReq.h"
 #include "../../Messages/MessageDestInRangeRsp.h"
 #include "../../Messages/MessageProgramSleepWake.h"
+#include "../../Messages/MessageProgramFunctionSleep.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalRunProgram.h"
@@ -32,8 +33,6 @@ void CompProgramable::acceptSignal(SIGNAL::Enum type, Signal* data){
 		}
 		
 		case SIGNAL::runProgram: {
-			
-				
 			map<uint32_t, wkl::systemCallFunc> _syscall;
 			for (auto& it : this->_obj->getComponents()){
 				auto tmp = it.second->getSyscalls();
@@ -52,13 +51,16 @@ void CompProgramable::acceptSignal(SIGNAL::Enum type, Signal* data){
 			}
 			uint32_t ret = 0;
 			uint32_t tmmi = pe->getRegister();
+
 			if((pe->getRegister() & wkl::registerFlags::yield) > 0){
+				//we are returning from a yield call
 				pe->yield(s->_retVar);
 				ret = pe->run(_obj->getId());
 			}else if(s->_program->getInterruptHandlers().find(s->_functionId) != s->_program->getInterruptHandlers().end()){
+				//call run function
 				ret = pe->run(_obj->getId(), s->_functionId);
 			}
-			
+
 			if(ret & wkl::registerFlags::halt){
 				_programExe.erase(pe->getRunRef());
 				delete pe;
@@ -98,6 +100,14 @@ void CompProgramable::acceptMessage(MESSAGE::Enum type, Message* data){
 			
 			break;
 		}
+		case MESSAGE::programFunctionSleep : {
+			MessageProgramFunctionSleep* msg = (MessageProgramFunctionSleep*)data;
+			
+			msg->_function(msg->_obj, msg->_programExe, msg->_arg);
+
+			break;
+		}		
+		
 	}
 }
 
@@ -115,15 +125,10 @@ map<uint32_t, wkl::systemCallFunc> CompProgramable::getSyscalls(){
 wkl::Variable CompProgramable::sleep(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
 	wkl::Variable* args = (wkl::Variable*)arg;
 	programExe->setFlag(wkl::registerFlags::yield);
-	//cerr<<"DEBUG sleep "<<args[1].v<<endl;
 	MessageProgramSleepWake* outmsg = new MessageProgramSleepWake(
 			_this->getId(),
 			programExe->getRunRef());
-
 	networkControl->sendMessage(_this->getId(), outmsg, args[1].v);
-
-			
-	
 	return wkl::Variable(0);
 }
 	

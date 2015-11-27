@@ -7,7 +7,7 @@
 
 #include "../../Messages/MessageActivatePowerOnTarget.h"
 #include "../../Messages/MessagePowerCheck.h"
-#include "../../Messages/MessageProjectileStats.h"
+#include "../../Messages/MessageProgramFunctionSleep.h"
 #include "../../Messages/MessagePowerStats.h"
 #include "../../Messages/MessageReCloneComp.h"
 
