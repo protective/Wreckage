@@ -103,7 +103,8 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 		cerr<<"ERROR CompSpellBook::cast calling spellbook function without component"<<endl;
 	}
 	if(spellBook->_castList.size() == 0){
-		spellBook->_castList.push_back(programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v);
+		OBJID powerId = programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v;
+		spellBook->_castList.push_back(powerId);
 		spellBook->_beginTime = world->getTime();
 		spellBook->_castTime = spellBook->_beginTime + delay;
 
@@ -116,6 +117,9 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 			programExe,
 			arg);
 			_this->getProcessor()->sendMessage(_this->getId(), outmsg, delay);
+			spellBook->sendBeginCast(powerId, target, spellBook->_beginTime, spellBook->_castTime);
+		}else{
+			return CompSpellBook::cast_final(_this, programExe, arg);
 		}
 	}
 	return wkl::Variable(0);
@@ -129,7 +133,9 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 	if(!spellBook){
 		cerr<<"ERROR CompSpellBook::cast calling spellbook function without component"<<endl;
 	}
-	spellBook->_castList.remove(programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v);
+	
+	OBJID powerId = programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v;
+	spellBook->_castList.remove(powerId);
 	
 	MessageProgramSleepWake* outSleepWake = new MessageProgramSleepWake(
 		_this->getId(),
@@ -143,6 +149,8 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 		wkl::systemCallBackLib::__hit__,
 		0);
 	_this->getProcessor()->sendMessage(target, msgHit, 0);
+	
+	spellBook->sendCast(powerId,target);
 	return wkl::Variable(0);
 }
 

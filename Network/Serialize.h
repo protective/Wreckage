@@ -29,6 +29,8 @@ namespace SerialType{
 				SerialTargetStatChange = 13,
 				SerialTargetGainBuff = 14,
 				SerialTargetLoseBuff = 15,
+				SerialBeginCast = 16,
+				SerialCast = 17,
 				SerialCmdCreateObj = 100,
 			
 	};

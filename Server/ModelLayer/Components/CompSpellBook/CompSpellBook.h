@@ -20,7 +20,8 @@ public:
 	void virtual acceptNetwork(SerialInputPayload* data);
 	
 	void sendFull(uint32_t clientId);
-	
+	void sendBeginCast(OBJID powerId, OBJID target, uint32_t beginTime, uint32_t endTime);
+	void sendCast(OBJID powerId, OBJID target);
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
 
 		

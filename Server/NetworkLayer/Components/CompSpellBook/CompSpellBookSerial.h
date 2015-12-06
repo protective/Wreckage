@@ -7,7 +7,9 @@
 namespace SerialCompSpellBook{
 	enum Enum{
 		Invalid = 0,
-		SendFull = 1
+		SendFull = 1,
+		ObjExit  = 2
+				
 	};
 
 struct SerialSendFull : public SerialComp{
@@ -31,7 +33,6 @@ SerialSendFull* allocSendFull(OBJID objId, list<OBJID> powers){
 	}
 	return s;
 }
-
 }
 
 #endif	/* COMPSPELLBOOKSERIAL_H */

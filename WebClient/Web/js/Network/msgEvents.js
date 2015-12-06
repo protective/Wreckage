@@ -56,9 +56,22 @@ define(function ( require ) {
         UIBuffBar.removeBuff(target, buffIndex)
     };
     
+    var beginCast= function(block, len) {
+
+        var caster = new Uint32Array(block.slice(0,4))[0];
+        var powerId = new Uint32Array(block.slice(4,8))[0];
+        var target = new Uint32Array(block.slice(8,12))[0];
+        var beginTime = new Uint32Array(block.slice(12,16))[0];
+        var endTime = new Uint32Array(block.slice(16,20))[0];
+        var obj = objManager.getObjById(caster);
+        
+        obj.activateCastBar(obj, target, powerId, beginTime, endTime);
+    };
+    
     return function msghook() {
     	webSocket.hook( 13, targetStatChange);
     	webSocket.hook( 14, targetGainBuff);
     	webSocket.hook( 15, targetLoseBuff);
+    	webSocket.hook( 16, beginCast);
     };
 });

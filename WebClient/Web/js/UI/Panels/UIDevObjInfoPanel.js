@@ -4,10 +4,11 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         'Model/CompTargeted',
         'obj',
         'text!templates/keyValueTable.html',
-        'text!templates/hpbar.html'],function ( require) {
+        'text!templates/hpbar.html',
+        'text!templates/castbar.html'],function ( require) {
 
     var _panels = {};
-    
+    var webGL = require('webGL');
     var UIMain = require('UI/UIMain');
     var CompSpellBook = require('Model/CompSpellBook');
     var CompTargeted = require('Model/CompTargeted');
@@ -15,7 +16,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 
 	var keyValueTable = require('text!templates/keyValueTable.html');
 	var hpBarTable = require('text!templates/hpbar.html');
-
+	var castBarTable = require('text!templates/castbar.html');
+	
 	var tmp3 = $('body');
 	tmp3.on('keydown', '.mytextarea', function(event) {
 
@@ -34,8 +36,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         UIMain.maindiv.appendChild(overlay);
 
         obj.UIDevObjHpPanel = overlay;
-        
-        
+
         obj.UIDevObjHpPanel.updateHp = function(value){
         	if(2 in obj.data && obj.data[2] > 0){
 	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
@@ -46,10 +47,51 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	        	tmp[0].style['padding-right'] = p +'%';
         	}
         };
-        
         obj.UIDevObjHpPanel.updateHp(obj.data[1]);
     }
+    
+    Obj.prototype.activateCastBar = function (obj, target, powerId, beginTime, endTime) {
+    	if(! ('UIDevObjCastBar' in obj)){
+	        var a = {'id' : obj.id};
+	        this.UIbars = _.template(castBarTable)(a);
+	
+	        var parser = new DOMParser()
+	        , doc = parser.parseFromString(this.UIbars, "text/html");
+	
+	        var overlay = doc.firstChild;
+	        UIMain.maindiv.appendChild(overlay);
+	
+	        obj.UIDevObjCastBar = overlay;
+    		
+    	}
+    	obj.UIDevObjCastBar['powerId'] = powerId;
+    	obj.UIDevObjCastBar['beginTime'] = beginTime;
+    	obj.UIDevObjCastBar['curTime'] = beginTime;
+    	obj.UIDevObjCastBar['endTime'] = endTime;
+    	obj.UIDevObjCastBar['animateTime'] = 1;
     	
+    	obj.UIDevObjCastBar['updateAnimation'] = function(delta) {
+        	if(2 in obj.data && obj.data[2] > 0){
+        		obj.UIDevObjCastBar['curTime'] += delta * 1000;
+	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#castbar');
+	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#castbarlab');
+	        	var totalTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['beginTime'];
+	        	var remaningTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['curTime']
+	        	
+	        	tmp2[0].textContent = Math.round(remaningTime / 100)  / 10 ;
+	        	
+	        	var p = 100 - ((remaningTime / totalTime) * 100);
+	        	p = Math.min(Math.max(p, 0),100);
+	        	tmp[0].style['padding-right'] = p +'%';
+	        	if(obj.UIDevObjCastBar['curTime'] >= obj.UIDevObjCastBar['endTime'])
+	        		obj.UIDevObjCastBar['animateTime'] = 0;
+        	}
+        }
+    	webGL.sceneAddDamageNotification(obj.UIDevObjCastBar);
+    	
+    }
+    
+    
     Obj.prototype.createObjInfoPanel = function (obj) {
     	
     	if('UIDevObjInfoPanel' in obj)

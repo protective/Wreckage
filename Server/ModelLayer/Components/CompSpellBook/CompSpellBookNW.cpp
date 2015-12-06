@@ -9,7 +9,8 @@
 #include "../../Messages/MessagePowerStats.h"
 
 #include "../../../NetworkLayer/Components/CompSpellBook/CompSpellBookSerial.h"
-
+#include "../../../NetworkLayer/Events/CastSerial.h"
+#include "../../../NetworkLayer/Events/BeginCastSerial.h"
 
 
 void CompSpellBook::acceptNetwork(SerialInputPayload* data){
@@ -25,9 +26,7 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 			break;
 		}
 	}
-
 }
-
 
 void CompSpellBook::sendFull(uint32_t clientId){
 	//cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
@@ -37,4 +36,34 @@ void CompSpellBook::sendFull(uint32_t clientId){
 
 	networkControl->sendToC(clientId, tmp, tmp->_size);
 	free(tmp);
+}
+
+void CompSpellBook::sendCast(OBJID powerId, OBJID target){
+
+	SerialEventSerialCast::SerialCast * tmp = SerialEventSerialCast::alloc(
+			this->_obj->getId(),
+			powerId,
+			target);
+
+	for(map<uint32_t, uint32_t>::iterator it = this->_obj->getSubscribers().begin(); it != this->_obj->getSubscribers().end(); it++){
+		if (it->second > 0)
+			networkControl->sendToC(it->first, tmp, tmp->_size);
+	}
+	free(tmp);
+}
+
+void CompSpellBook::sendBeginCast(OBJID powerId, OBJID target, uint32_t beginTime, uint32_t endTime){
+		SerialEventSerialBeginCast::SerialBeginCast * tmp = SerialEventSerialBeginCast::alloc(
+			this->_obj->getId(),
+			powerId,
+			target,
+			beginTime,
+			endTime);
+
+	for(map<uint32_t, uint32_t>::iterator it = this->_obj->getSubscribers().begin(); it != this->_obj->getSubscribers().end(); it++){
+		if (it->second > 0)
+			networkControl->sendToC(it->first, tmp, tmp->_size);
+	}
+	free(tmp);
+	
 }
