@@ -15,7 +15,8 @@ namespace varloc{
 	enum Enum {
 		rel = 1,
 		abs = 2,
-		env = 3
+		env = 3,
+		con = 4
 	};
 }
 typedef struct vTableEntry{
@@ -103,6 +104,8 @@ public:
 	virtual void visit(NodeVardecTop* node);
 	virtual void visit(NodeParam* node);
 	virtual void visit(NodeMethod* node);
+	virtual void visit(NodeDictExpr* node);
+	virtual void visit(NodePair* node);
 	void finalize();
 	virtual ~Compiler();
 private:
@@ -136,6 +139,7 @@ private:
 	void emitTopStackToEnv(uint32_t envId);
 	void emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t index);
 	void emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum rel);
+	void emitMvMapFromTopStack(uint32_t mapSize);
 	void emitLocRIndexToTopStack(uint32_t pos, varloc::Enum rel, uint32_t rIndexVar);
 	
 	void emitPushTopStackNtimesToStack(uint32_t size);

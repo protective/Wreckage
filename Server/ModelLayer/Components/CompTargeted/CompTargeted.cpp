@@ -143,7 +143,7 @@ wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* p
 	wkl::Variable u;
 	u.v = 0;
 	u.t = new wkl::VObject();
-	u.t->_vector.resize(2);
+	//u.t->_vector.resize(2);
 	//cout<<"projectile apply objid="<<_obj->getId()<<" roll="<<roll<<" result="<<result<<" damage="<<damage<<endl;
 	if (target->getData(OBJDATA::hp, &def_hp)) {
 		//TODO from id in program??

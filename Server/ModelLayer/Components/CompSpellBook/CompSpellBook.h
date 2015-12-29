@@ -41,7 +41,7 @@ private:
 	uint32_t _beginTime;
 	uint32_t _castTime;
 	//systemCalls implemented by this component
-	static wkl::Variable consume(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable consumeMana(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable channel(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable cast(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable cast_final(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);

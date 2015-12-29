@@ -31,7 +31,12 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 		vTableEntry temp(it.second, it.first, varloc::abs, 0, it.first);
 		_vtable.push_back(temp);	
 	}
-
+	
+	for (auto& it : systemConst::systemConst) {
+		vTableEntry temp(it.second, it.first, varloc::con, 0, it.first);
+		_vtable.push_back(temp);	
+	}
+	
 	for (auto& it : systemEnvLib::lib) {
 		vTableEntry temp(it.second, it.first, varloc::env, 0, 0);
 		if(it.first >= _freeEnvPos)
@@ -488,9 +493,8 @@ void Compiler::visit(NodeVariable* node){
         cerr<<"ERROR visit NodeVariable"<<endl;
         return;
     }
-	
-	emitPushLocToTopStack(ve->pos,1, ve->rel);
 
+	emitPushLocToTopStack(ve->pos,1, ve->rel);
 
 }
 
@@ -499,6 +503,31 @@ void Compiler::visit(NodeArg* node){
 	if(node->next())
 		node->next()->accept(this);
 }
+
+void Compiler::visit(NodeDictExpr* node) {
+	uint32_t size = 0;
+	NodePair* tmpnext = node->pair();
+	while (tmpnext){
+		size++;
+		tmpnext = tmpnext->next();
+	}
+	
+	emitPushStack(0,1);
+	if(node->pair())
+		node->pair()->accept(this);
+
+	emitMvMapFromTopStack(size);
+	emitPopStack(size * 2);
+}
+
+void Compiler::visit(NodePair* node) {
+	node->exprKey()->accept(this);
+	node->exprVal()->accept(this);
+
+	if(node->next())
+		node->next()->accept(this);
+}
+
 
 void Compiler::visit(NodeCallExpr* node){
 

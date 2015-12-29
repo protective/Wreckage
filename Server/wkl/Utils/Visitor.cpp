@@ -27,3 +27,5 @@ void  Visitor::visit(NodeTop* node){};
 void  Visitor::visit(NodeVardecTop* node){};
 void  Visitor::visit(NodeParam* node){};
 void  Visitor::visit(NodeMethod* node){};
+void  Visitor::visit(NodeDictExpr* node){};
+void  Visitor::visit(NodePair* node){};

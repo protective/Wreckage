@@ -116,6 +116,15 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[1] = "Env src"; 
                 break;
             }
+			case inst::cpCO_DS2:
+            {
+                name = "cpCO_DS2";
+                haveArg = true;
+                noParams = 2;
+                param[0] = "Rel dest"; 
+                param[1] = "Con src"; 
+                break;
+            }	
             case inst::cpN_RDS2:
             {
                 name = "cpN_RDS2";
@@ -141,6 +150,13 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 noParams = 2;
                 param[0] = "Rel dest"; 
                 param[1] = "Env src"; 
+                break;
+            }
+			case inst::mvMapAL:
+            {
+                name = "mvMapAL";
+                haveArg = true;
+                noParams = 0;
                 break;
             }
             case inst::cpI_RDS2:

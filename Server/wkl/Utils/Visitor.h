@@ -45,6 +45,8 @@ public:
 	virtual void visit(NodeParam* node) = 0;
 	virtual void visit(NodeTop* node) = 0;
 	virtual void visit(NodeVardecTop* node) = 0;
+	virtual void visit(NodeDictExpr* node) = 0;
+	virtual void visit(NodePair* node) = 0;
 };
 
 

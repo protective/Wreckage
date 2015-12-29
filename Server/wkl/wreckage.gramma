@@ -87,14 +87,24 @@ tuprefs		-> tuprefs comma tuprefs			{cerr<<"PARSE reftups: varexpr comma tups"<<
 			 | id							    {cerr<<"PARSE reftups: varexpr"<<endl; result = new NodeTupDref(new NodeVariable((Identifier*)arg0)) ;}
 
 
-expr		-> expr minus expr					{cerr<<"PARSE minus"<<endl; result = BinOp(arg0, arg1, arg2);}
+dictblock   -> left_c pairs right_c              {cerr<<"PARSE dictblock: left_c tuprefs right_c"<<endl; result = new NodeDictExpr((NodePair*)arg1);}
+             | left_c right_c                   {cerr<<"PARSE dictblock: left_c right_c"<<endl; result = new NodeDictExpr(NULL);}
+             
+pairs       -> pairs comma pairs                {cerr<<"PARSE pairs comma pairs  "<<endl; ((NodePair*)arg0)->setNext((NodePair*)arg2); result = arg0;}
+             | pair                             {cerr<<"PARSE pair"<<endl; result = ((NodePair*)arg0);}
+
+pair        -> expr colon expr                  {cerr<<"PARSE expr colon expr"<<endl; result = new NodePair((NodeExpr*)arg0 , (NodeExpr*)arg2);}
+
+
+expr		-> dictblock						{cerr<<"PARSE dictblock"<<endl; result = arg0;}
+             | expr minus expr					{cerr<<"PARSE minus"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr plus expr					{cerr<<"PARSE plus"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr eq expr					    {cerr<<"PARSE eq"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr neq expr					{cerr<<"PARSE neq"<<endl; result = BinOp(arg0, arg1, arg2);}
-			 | int								{cerr<<"PARSE int"<<endl;result = new NodeLiteralExpr((IntegerLiteral*)arg0);}
+			 | int								{cerr<<"PARSE int"<<endl; result = new NodeLiteralExpr((IntegerLiteral*)arg0);}
 			 | varexpr argblock					{cerr<<"PARSE call"<<endl; result = new NodeCallExpr(new NodeVariableExpr((NodeVariable*)arg0), (NodeArg*)arg1);}
-			 | varexpr							{cerr<<"PARSE varexpr"<<endl;result = new NodeVariableExpr((NodeVariable*)arg0);}	
-			 | varexpr assignment expr			{cerr<<"PARSE varexpr assignment expr"<<endl;result = new NodeAssignExpr((NodeVariable*)arg0, (NodeExpr*)arg2);}	
+			 | varexpr							{cerr<<"PARSE varexpr"<<endl; result = new NodeVariableExpr((NodeVariable*)arg0);}	
+			 | varexpr assignment expr			{cerr<<"PARSE varexpr assignment expr"<<endl; result = new NodeAssignExpr((NodeVariable*)arg0, (NodeExpr*)arg2);}	
              	
 */
 

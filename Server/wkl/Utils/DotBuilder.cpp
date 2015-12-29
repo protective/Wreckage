@@ -314,3 +314,45 @@ void DotBuilder::visit(NodeVardecTop* node){
 	}
 	
 }
+
+
+
+void DotBuilder::visit(NodeDictExpr* node){
+	int myId = printNode("NodeDictExpr");
+
+	parentId = myId;
+	
+	if(node->getType() != NULL)
+		node->getType()->accept(this);
+	parentId = myId;
+	
+	if(node->pair()){
+		cerr<<"accept pair"<<endl;
+		node->pair()->accept(this);
+	}else
+		cerr<<"ERROR type NULL"<<endl;
+	
+}
+
+
+void DotBuilder::visit(NodePair* node){
+	int myId = printNode("NodePair");
+	//Visit next
+	parentId = myId;
+
+	if(node->exprKey() != NULL)
+		node->exprKey()->accept(this);
+	//Visit children
+	parentId = myId;
+	
+	if(node->exprVal() != NULL)
+		node->exprVal()->accept(this);
+	
+	//Visit children
+	parentId = myId;
+	
+	if(node->next() != NULL)
+		node->next()->accept(this);
+	
+}
+

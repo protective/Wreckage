@@ -93,3 +93,11 @@ void NodeParam::accept(Visitor* v){
 void NodeMethod::accept(Visitor* v){
 	v->visit(this);
 }
+
+void NodeDictExpr::accept(Visitor* v){
+	v->visit(this);
+}
+
+void NodePair::accept(Visitor* v){
+	v->visit(this);
+}

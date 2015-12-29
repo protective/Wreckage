@@ -75,6 +75,26 @@ namespace MESSAGE {
 	};
 }
 
+namespace OBJDATA {
+	enum Enum {
+		invalid = 0,
+		hp,
+		level,
+		AC,
+		maxhp,
+		hitP,
+		dodgeP,
+		parryP,
+		blockP,
+		target,
+		owner,
+		position,
+		mana,
+		maxMana,
+	};
+}
+
+
 namespace STATS {
 	enum Enum {
 		invalid = 0,
@@ -85,6 +105,9 @@ namespace STATS {
 		blockP,
 		hitP,
 		dodgeP,
+		mana,
+		maxmana,
+		
 		
 	};
 }

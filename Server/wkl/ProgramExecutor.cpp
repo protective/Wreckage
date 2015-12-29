@@ -9,6 +9,7 @@
 
 #include "ProgramExecutor.h"
 #include "Compiler/Compiler.h"
+#include "../wkl/Compiler/ProgramPrinter.h"
 
 ProgramExecutor::ProgramExecutor(uint32_t runRefId, SObj* obj,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs , map<uint32_t, Variable> envContext) {
 	_runRefId = runRefId;
@@ -57,14 +58,22 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 		_programCounter = _program->getInterruptHandlers()[functionId];
 		int i = 0;
 		list<uint32_t> stack;
-		stack.push_back(0x0); //pc EOP
 		stack.push_back(0xBBBB); //retVal
-		for(auto it : args)
+		stack.push_back(0x0); //pc EOP
+		for(auto it : args){
 			stack.push_back(it);
+			
+		}
 
+#ifdef WKL_DEBUG
+		cerr<<"BEGIN External function call"<<endl;
+#endif
 		for (list<uint32_t>::iterator stackit = stack.begin(); stackit!= stack.end();stackit++){
-			_stack[i++] = *stackit;
 			_stackTop = i;
+			_stack[i++] = *stackit;
+#ifdef WKL_DEBUG
+			cerr<<"args "<<*stackit<<endl;
+#endif
 		}
 	}else if(_registerFlags & registerFlags::interrupt){
 		_registerFlags = _registerFlags & (~registerFlags::interrupt); 
@@ -119,8 +128,12 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				break;
 			}
 			case inst::popPC:{
-				if(_stackTop == 0)
-					return segfault();
+				if(_stackTop < 0)
+					return segfault("inst::popPC stack empty");
+				if(_stack[_stackTop].t)
+					return segfault("inst::popPC Not a valid PC");
+				if(_stack[_stackTop].v < 0)
+					return segfault("inst::popPC invalid PC");
 				_programCounter = _stack[_stackTop--];
 				break;
 			}
@@ -188,7 +201,6 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 2;
 				break;
 			}
-			
 			case inst::addS01dS1:{
 				if(_stackTop == 0)
 					return segfault();
@@ -224,7 +236,6 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 			case inst::cpI_DS2:{
 				uint32_t dest = _stackTop - _program->program()[_programCounter+1];
 				uint32_t src = _stackTop - _program->program()[_programCounter+2];
-				
 				if(dest  < _stackMax && src  < _stackMax && _stack[src ].t)
 					if(_stack[src].t->_vector.size() > ARG(ins))
 						_stack[dest] = _stack[src].t->_vector[ARG(ins)];
@@ -233,7 +244,6 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				else{
 					return segfault();
 				}
-				
 				_programCounter += 3;
 				break;
 			}
@@ -276,6 +286,39 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				_programCounter += 3;
 				break;
 			}
+			case inst::cpCO_DS2:{
+				uint32_t dest = _stackTop - _program->program()[_programCounter+1];
+				uint32_t src = _program->program()[_programCounter+2];
+				if (systemConst::systemConstValues.find(src) == systemConst::systemConstValues.end())
+					return segfault();
+				for(int i = 0 ; i< ARG(ins); i++){
+					if(dest + i < _stackMax)
+						_stack[dest + i] = systemConst::systemConstValues[src];
+					else{
+						return segfault();
+					}
+				}
+				_programCounter += 3;
+				break;
+			}
+			case inst::mvMapAL:{
+				uint32_t size = ARG(ins);
+				uint32_t dest = _stackTop - (size*2);
+				if (_stack.size() <= dest)
+					return segfault();
+				if (_stackTop-(size*2)-1 < 0)
+					return segfault();
+				for(int i = 0 ; i< ARG(ins); i++){
+					int32_t test = _stackTop-(i*2)-1;
+					if (_stack[dest].t == NULL)
+						_stack[dest].t = new VObject();
+					_stack[dest].t->_vector[
+							_stack[test]] =
+							_stack[_stackTop-(i*2)]; 
+				}
+				_programCounter += 1;
+				break;
+			}
 			case inst::cpRIS2_T:{
 				uint32_t src = _stackTop - _program->program()[_programCounter+1];
 				if(ARG(ins) > _stackTop || _stackTop - ARG(ins) > _stackMax)
@@ -286,12 +329,9 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 				if(_stack[src].t->_vector.size() < index)
 					return segfault("index out of range");
 				_stack[_stackTop] = _stack[src].t->_vector[index];
-
-				
 				_programCounter += 2;
 				break;
 			}			
-			
 			case inst::cpEN_DS2:{
 				uint32_t dest = _stackTop - _program->program()[_programCounter+1];
 				uint32_t src = _program->program()[_programCounter+2];
@@ -303,7 +343,6 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 							s<<"env variable id="<<src<<" not found";
 							return segfault(s.str());
 						}
-		
 						_stack[dest + i] = it->second;
 					}else{
 						return segfault();
@@ -317,7 +356,6 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 					return segfault();
 				uint32_t dest = _program->program()[_programCounter+1];
 				_envContext[dest] = _stack[_stackTop];
-				
 				_programCounter += 2;
 				break;
 			}			
@@ -342,7 +380,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, list<uint32_t> 
 			default:{
 				cerr<<"ERROR UNKNOW INSTRUCTION opcode "<<OPCODE(ins)<<endl;
 				//TODO
-				
+
 				_registerFlags |= registerFlags::halt;
 				//free(_stack);
 				return _registerFlags;
@@ -382,7 +420,7 @@ uint32_t ProgramExecutor::segfault(string message){
 }
 
 uint32_t ProgramExecutor::segfault(){
-	cerr<<"SEGFAULT PC ="<<_programCounter<<" stack top ="<<_stackTop<<endl;
+	cerr<<"SEGFAULT PC ="<<wkl::toHex(_programCounter,0)<<" stack top ="<<_stackTop<<endl;
 	cerr<<"stack"<<endl;
 	dumpStack();
 	_programCounter = 0;
@@ -403,10 +441,10 @@ void ProgramExecutor::dumpStack(){
 		else{
 			cerr<<"[";
 			bool first = true;
-			for( vector<Variable>::iterator it = _stack[i].t->_vector.begin(); it != _stack[i].t->_vector.end(); it++){
+			for( map<Variable,Variable>::iterator it = _stack[i].t->_vector.begin(); it != _stack[i].t->_vector.end(); it++){
 				if (!first)
 					cerr<<", ";
-				cerr<<(*it).v;
+				cerr<<(it->first).v<<":"<<(it->second.v);
 				first = false;
 			}
 			cerr<<"] ";

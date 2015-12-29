@@ -64,6 +64,8 @@ public:
 	void visit(NodeParam* node);
 	void visit(NodeTop* node);
 	void visit(NodeVardecTop* node);
+	void visit(NodeDictExpr* node);
+	void visit(NodePair* node);
 	void finalise(){
 		out<<"}"<<endl;
 	}

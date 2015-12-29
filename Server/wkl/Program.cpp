@@ -24,6 +24,7 @@ Program::Program(string path, bool fromFile, ostream& outAsm){
 Program::Program(string path, bool fromFile, ostream& outAsm, ostream* outDot){
 	_name = "testProgram";
 	Compiler* c = new Compiler(path, fromFile); 
+	
 	c->compile(this, outAsm, outDot);
 	delete c;
 }

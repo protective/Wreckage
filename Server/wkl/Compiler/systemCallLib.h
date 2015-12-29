@@ -20,7 +20,9 @@ namespace wkl {
 	class ProgramExecutor;
 	typedef Variable (*systemCallFunc)(SObj* _this, ProgramExecutor* programExe, void*);
 	
-	typedef string systemCallBack_t;	
+	typedef string systemCallBack_t;
+	
+	typedef string systemConst_t;	
 
 	typedef string systemCallBackEntry_t;
 
@@ -31,6 +33,7 @@ namespace wkl {
 			phycicalDamage = 1,
 			burnMana,
 			hitTarget,
+			consumeMana,
 			consume,
 			channel,
 			cast,
@@ -73,6 +76,18 @@ namespace wkl {
 		
 		extern map<uint32_t, systemCallBack_t> lib;
 	}
+	
+	namespace systemConst {
+	
+		enum Enum {
+			wkl_c_mana = 1,
+			wkl_c_hp = 2
+		};	
+		
+		extern map<uint32_t, systemConst_t> systemConst;
+		extern map<uint32_t, Variable> systemConstValues;
+	}	
+	
 	//void initSystemCallLib(){
 	//	systemCallLib["doPhycicalDamage"] = 1;
 	//}

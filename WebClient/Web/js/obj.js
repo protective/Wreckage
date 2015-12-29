@@ -35,6 +35,9 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         	if (type == 1){
         		if('UIDevObjHpPanel' in this)
         			this.UIDevObjHpPanel.updateHp(value);
+        	}else if (type == 12) {
+        		if('UIDevObjHpPanel' in this)
+        			this.UIDevObjHpPanel.updateMana(value);
         	}
         }
         //TODO this should be dynamic

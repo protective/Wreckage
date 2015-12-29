@@ -54,7 +54,7 @@ private:
 	uint32_t _registerFlags;
 	uint32_t _mipsCredit;	
 	uint32_t _programCounter;
-	uint32_t _stackTop;
+	int32_t _stackTop;
 	vector<Variable> _stack;
 	uint32_t _locRet;
 	map<uint32_t, Variable> _envContext;

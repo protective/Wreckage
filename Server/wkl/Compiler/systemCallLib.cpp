@@ -3,9 +3,6 @@
 #include "../Program.h"
 
 namespace wkl {
-	
-
-	//systemCallBack_t systemCallLib[] = 
 
 	namespace systemCallLib{
 
@@ -13,6 +10,7 @@ namespace wkl {
 			{phycicalDamage, "_wkl_phycicalDamage"},
 			{burnMana, "_wkl_burnMana"},
 			{hitTarget, "_wkl_hitTarget"},
+			{consumeMana, "_wkl_consumeMana"},
 			{consume, "_wkl_consume"},
 			{cast, "_wkl_cast"},
 			{channel, "_wkl_channel"},
@@ -50,5 +48,17 @@ namespace wkl {
 			{wkl_buffTickTime, "wkl_buffTickTime"}			
 		};
 	}
-
+	
+	namespace systemConst{
+		
+		map<uint32_t, systemConst_t> systemConst = {
+			{wkl_c_mana, "wkl_c_mana"},
+			{wkl_c_hp, "wkl_c_hp"}
+		};
+		
+		map<uint32_t, Variable> systemConstValues = {
+			{wkl_c_mana, Variable(wkl_c_mana)},
+			{wkl_c_hp, Variable(wkl_c_hp)}
+		};
+	}
 };

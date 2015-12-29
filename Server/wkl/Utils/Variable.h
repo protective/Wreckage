@@ -9,7 +9,7 @@
 #define	VARIABLE_H
 
 #include <cstddef>
-#include <vector>
+#include <map>
 #include <inttypes.h>
 
 using namespace std;
@@ -22,16 +22,12 @@ namespace wkl {
 			
 		};
 		
-		VObject (VObject* vo){
-			_vector = vector<Variable>(vo->_vector);
-		};
+		VObject (VObject* vo);
 		
 		
-		virtual VObject* clone(){
-			return new VObject(this);
-		};
+		virtual VObject* clone();
 		
-		vector<Variable> _vector;
+		map<Variable, Variable> _vector;
 	};
 	
 	class Variable {
@@ -154,9 +150,7 @@ namespace wkl {
 	  return lhs;
 	}
 	
-	class VTuple{
-		vector<Variable*> t;
-	};
+
 
 }
 #endif	/* VARIABLE_H */

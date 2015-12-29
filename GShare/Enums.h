@@ -9,22 +9,6 @@
 #define	SHAREENUMS_H
 #include <string.h>
 
-namespace OBJDATA {
-	enum Enum {
-		invalid = 0,
-		hp,
-		level,
-		AC,
-		maxhp,
-		hitP,
-		dodgeP,
-		parryP,
-		blockP,
-		target,
-		owner,
-		position,
-	};
-}
 
 
 namespace SubscriptionLevel{

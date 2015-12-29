@@ -51,8 +51,11 @@ int main(int argc, char** argv) {
 	s.clear();
 	s<<"../testPrograms/"<<"test_pow"<<".asm";
 	ofstream asmfile(s.str().c_str());
+	
+	cerr<<"hest1"<<endl;
 	Program* p = new Program("../testPrograms/test_pow.wkl", true, asmfile, &dotfile);
 	
+	cerr<<"hest2"<<endl;
 	map<uint32_t, systemCallFunc> syscall;
 
 	list<uint32_t> stack;

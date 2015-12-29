@@ -1,16 +1,12 @@
 
-def __hit__(){
-    in damageNormal, damageCrit, dmgType;
-    
-    in wkl_level, wkl_attack, wkl_missChance, wkl_critChance;
-    amount = 4;
-    hest = 45;
-    result = 1;
-    
-    a = 6;
-    b = 7;
-    (result, damage) = doPhycicalDamage(wkl_level, wkl_attack, wkl_missChance, wkl_critChance, dmgType, damageNormal, damageCrit);
-    
-
+def f(y){
+y = y;
 }
 
+def __activate_target__(){
+a=1;
+b=2;
+c = f(a);
+t = 77;
+g = c;
+}

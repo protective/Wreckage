@@ -62,14 +62,25 @@ map<uint32_t, wkl::systemCallFunc> CompSpellBook::getSyscalls(){
 	return {
 		{wkl::systemCallLib::cast, CompSpellBook::cast},
 		{wkl::systemCallLib::channel, CompSpellBook::channel},
-		{wkl::systemCallLib::consume, CompSpellBook::consume}
+		{wkl::systemCallLib::consumeMana, CompSpellBook::consumeMana}
 	};
 } 		
 
-wkl::Variable CompSpellBook::consume(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
+wkl::Variable CompSpellBook::consumeMana(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
 
 	wkl::Variable* args = (wkl::Variable*)arg;
-	cerr<<"consume"<<endl;
+	
+	uint32_t consume = (uint32_t)args[1].v;
+	int32_t curMana;
+	cerr<<"consumeMana"<<endl;
+	if (_this->getData(OBJDATA::mana, &curMana)){
+		if (curMana >= consume){
+			_this->setData(OBJDATA::mana, curMana - consume);
+			_this->sendEventTargetStatChange(0, OBJDATA::mana, curMana, curMana - consume, powerResults::invalid);
+		
+			return wkl::Variable(consume);
+		}
+	}
 	return wkl::Variable(0);
 }
 
@@ -98,6 +109,21 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 	wkl::Variable* args = (wkl::Variable*)arg;
 	OBJID target = (OBJID)args[1].v;
 	uint32_t delay = (uint32_t)args[2].v;
+	
+	VObject* tmp = (VObject*)args[3].t;
+	int32_t manacost = 0;
+	int32_t hpcost = 0;
+	if (tmp){
+
+		if (tmp->_vector.find(wkl::systemConst::wkl_c_mana) != tmp->_vector.end()) 
+			manacost = tmp->_vector[wkl::systemConst::wkl_c_mana].v;
+		if (tmp->_vector.find(wkl::systemConst::wkl_c_hp) != tmp->_vector.end())
+			hpcost = tmp->_vector[wkl::systemConst::wkl_c_hp].v;
+
+	}
+	
+	
+
 	CompSpellBook* spellBook = (CompSpellBook*)_this->getComponents()[COMPID::spellbook];
 	if(!spellBook){
 		cerr<<"ERROR CompSpellBook::cast calling spellbook function without component"<<endl;

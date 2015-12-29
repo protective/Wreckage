@@ -38,16 +38,28 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         obj.UIDevObjHpPanel = overlay;
 
         obj.UIDevObjHpPanel.updateHp = function(value){
-        	if(2 in obj.data && obj.data[2] > 0){
+        	if(4 in obj.data && obj.data[4] > 0){
 	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
 	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#hpbarlab');
 	        	tmp2[0].textContent = value;
-	        	var p = 100 - ((value / obj.data[2]) * 100);
+	        	var p = 100 - ((value / obj.data[4]) * 100);
 	        	p = Math.min(Math.max(p, 0),100);
 	        	tmp[0].style['padding-right'] = p +'%';
         	}
         };
+        obj.UIDevObjHpPanel.updateMana = function(value){
+        	if(13 in obj.data && obj.data[13] > 0){
+	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#manabar');
+	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#manabarlab');
+	        	tmp2[0].textContent = value;
+	        	var p = 100 - ((value / obj.data[13]) * 100);
+	        	p = Math.min(Math.max(p, 0),100);
+	        	tmp[0].style['padding-right'] = p +'%';
+        	}
+        };
+        
         obj.UIDevObjHpPanel.updateHp(obj.data[1]);
+        obj.UIDevObjHpPanel.updateMana(obj.data[12]);
     }
     
     Obj.prototype.activateCastBar = function (obj, target, powerId, beginTime, endTime) {

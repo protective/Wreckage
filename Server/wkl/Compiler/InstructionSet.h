@@ -39,6 +39,8 @@ namespace inst{
 		cpN_RDS2    = 0x00520000, //i
 		cpEN_DS2	= 0x00600000, //i
 		
+		cpCO_DS2	= 0x00700000, //i
+		
 		cpRIS2_T    = 0x00560000, //copy rel S0 [S1] to top
 		cpAIS2_T    = 0x00550000, //copy abs S0 [S1] to top
 		cpEIS2_T	= 0x00620000, //copy env[S0][S1] to top
@@ -48,6 +50,7 @@ namespace inst{
 		cpI_RDS2    = 0x00540000,
 		cpEI_DS2	= 0x00610000, 
 
+		mvMapAL     = 0x00800000,
 		addS01      = 0x00200000,
 		minusS01    = 0x00210000,	 
 		addS01dS1   = 0x00220000, //i

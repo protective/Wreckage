@@ -79,7 +79,7 @@ void CompProgramable::acceptMessage(MESSAGE::Enum type, Message* data){
 			//that is leave it to wkl
 			wkl::Variable v;
 			v.t = new wkl::VObject();
-			v.t->_vector.resize(msg->_res.size());
+			//v.t->_vector.resize(msg->_res.size());
 			uint32_t i = 0;
 			for(auto it : msg->_res){
 				v.t->_vector[i++] = it;

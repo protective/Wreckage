@@ -32,6 +32,8 @@
 #include "NodeMethod.h"
 #include "NodeTop.h"
 #include "NodeVardecTop.h"
+#include "NodeDictExpr.h"
+#include "NodePair.h"
 #include "../Terminals/Identifier.h"
 #include "../Types/TypeDenoter.h"
 #endif	/* SORDERNODES_H */

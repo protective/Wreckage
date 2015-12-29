@@ -148,9 +148,13 @@ void Compiler::emitSysCall(uint32_t pos, uint32_t functionId){
 	program().push_back(relpos(pos));
 }
 
+void Compiler::emitMvMapFromTopStack(uint32_t mapSize){
+	program().push_back(inst::mvMapAL | mapSize);
+}
+
 void Compiler::emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum rel){
     
-    //coppy loc to top stact
+    //copy loc to top stack
     program().push_back(inst::pushN | size);
     _scopeRef.back() += size;
 	inst::Enum ins;
@@ -166,6 +170,10 @@ void Compiler::emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum r
 			break;}
 		case varloc::env:{
 			ins = inst::cpEN_DS2;
+			fromPos = pos;
+			break;}
+		case varloc::con:{
+			ins = inst::cpCO_DS2;
 			fromPos = pos;
 			break;}
 	}
