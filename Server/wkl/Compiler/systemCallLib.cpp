@@ -1,7 +1,7 @@
 #include "systemCallLib.h"
 
 #include "../Program.h"
-
+#include "../../../Server/ModelLayer/enums.h"
 namespace wkl {
 
 	namespace systemCallLib{
@@ -57,8 +57,8 @@ namespace wkl {
 		};
 		
 		map<uint32_t, Variable> systemConstValues = {
-			{wkl_c_mana, Variable(wkl_c_mana)},
-			{wkl_c_hp, Variable(wkl_c_hp)}
+			{wkl_c_mana, Variable(OBJDATA::mana)},
+			{wkl_c_hp, Variable(OBJDATA::hp)}
 		};
 	}
 };

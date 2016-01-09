@@ -114,19 +114,24 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 	int32_t manacost = 0;
 	int32_t hpcost = 0;
 	if (tmp){
-
-		if (tmp->_vector.find(wkl::systemConst::wkl_c_mana) != tmp->_vector.end()) 
-			manacost = tmp->_vector[wkl::systemConst::wkl_c_mana].v;
-		if (tmp->_vector.find(wkl::systemConst::wkl_c_hp) != tmp->_vector.end())
-			hpcost = tmp->_vector[wkl::systemConst::wkl_c_hp].v;
-
+		if (tmp->_vector.find(OBJDATA::mana) != tmp->_vector.end()) 
+			manacost = tmp->_vector[OBJDATA::mana].v;
+		if (tmp->_vector.find(OBJDATA::hp) != tmp->_vector.end())
+			hpcost = tmp->_vector[OBJDATA::hp].v;
 	}
-	
-	
 
 	CompSpellBook* spellBook = (CompSpellBook*)_this->getComponents()[COMPID::spellbook];
 	if(!spellBook){
 		cerr<<"ERROR CompSpellBook::cast calling spellbook function without component"<<endl;
+	}
+	int32_t mana, hp;
+	if(manacost != 0 && !_this->getData(OBJDATA::mana, &mana)){
+		cerr<<"ERROR CompSpellBook::cast no mana var on obj"<<endl;
+		return wkl::Variable(0);
+	}
+	if(hpcost != 0 && !_this->getData(OBJDATA::hp, &hp)){
+		cerr<<"ERROR CompSpellBook::cast no hp var on obj"<<endl;
+		return wkl::Variable(0);
 	}
 	if(spellBook->_castList.size() == 0){
 		OBJID powerId = programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v;
@@ -155,28 +160,59 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 	wkl::Variable* args = (wkl::Variable*)arg;
 	OBJID target = (OBJID)args[1].v;
 	uint32_t delay = (uint32_t)args[2].v;
+	VObject* tmp = (VObject*)args[3].t;
+	
 	CompSpellBook* spellBook = (CompSpellBook*)_this->getComponents()[COMPID::spellbook];
 	if(!spellBook){
 		cerr<<"ERROR CompSpellBook::cast calling spellbook function without component"<<endl;
 	}
+
+	int32_t manacost = 0;
+	int32_t hpcost = 0;
+	if (tmp){
+		if (tmp->_vector.find(OBJDATA::mana) != tmp->_vector.end()) 
+			manacost = tmp->_vector[OBJDATA::mana].v;
+		if (tmp->_vector.find(OBJDATA::hp) != tmp->_vector.end())
+			hpcost = tmp->_vector[OBJDATA::hp].v;
+	}
 	
 	OBJID powerId = programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v;
 	spellBook->_castList.remove(powerId);
+	bool sucess = true;
+	int32_t mana, hp;
+	if(manacost != 0 && !_this->getData(OBJDATA::mana, &mana)){
+		cerr<<"ERROR CompSpellBook::cast_final no mana var on obj"<<endl;
+		sucess = false;
+	}
+	if(hpcost != 0 && !_this->getData(OBJDATA::hp, &hp)){
+		cerr<<"ERROR CompSpellBook::cast_final no hp var on obj"<<endl;
+		return wkl::Variable(0);
+	}
+	if (sucess){
+		if(manacost != 0){
+			_this->setData(OBJDATA::mana, mana - manacost);
+			_this->sendEventTargetStatChange(0, OBJDATA::mana, mana, mana - manacost, powerResults::invalid);
+		}
+		if(hpcost != 0){
+			_this->setData(OBJDATA::hp, hp - hpcost);
+			_this->sendEventTargetStatChange(0, OBJDATA::mana, hp, hp - hpcost, powerResults::invalid);
+		}
+		MessageProgramCallback* msgHit = new MessageProgramCallback(
+			_this->getId(),
+			programExe->getProgram(),
+			programExe->getEnvContext(),
+			wkl::systemCallBackLib::__hit__,
+			0);
+		_this->getProcessor()->sendMessage(target, msgHit, 0);
 	
+		spellBook->sendCast(powerId, target);
+	}
+
 	MessageProgramSleepWake* outSleepWake = new MessageProgramSleepWake(
-		_this->getId(),
-		programExe->getRunRef());
-	_this->getProcessor()->sendMessage(_this->getId(), outSleepWake);
-	
-	MessageProgramCallback* msgHit = new MessageProgramCallback(
-		_this->getId(),
-		programExe->getProgram(),
-		programExe->getEnvContext(),
-		wkl::systemCallBackLib::__hit__,
-		0);
-	_this->getProcessor()->sendMessage(target, msgHit, 0);
-	
-	spellBook->sendCast(powerId,target);
+			_this->getId(),
+			programExe->getRunRef());
+		_this->getProcessor()->sendMessage(_this->getId(), outSleepWake);
+
 	return wkl::Variable(0);
 }
 
