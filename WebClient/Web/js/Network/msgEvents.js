@@ -66,6 +66,7 @@ define(function ( require ) {
         var obj = objManager.getObjById(caster);
         
         obj.activateCastBar(obj, target, powerId, beginTime, endTime);
+        obj.activateSpell(obj, target, powerId, beginTime, endTime);
     };
     
     return function msghook() {

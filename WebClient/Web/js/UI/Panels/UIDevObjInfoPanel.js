@@ -29,8 +29,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         var a = {'id' : obj.id};
         this.UIbars = _.template(hpBarTable)(a);
 
-        var parser = new DOMParser()
-        , doc = parser.parseFromString(this.UIbars, "text/html");
+        var parser = new DOMParser(),
+        doc = parser.parseFromString(this.UIbars, "text/html");
 
         var overlay = doc.firstChild;
         UIMain.maindiv.appendChild(overlay);

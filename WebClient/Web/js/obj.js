@@ -1,10 +1,12 @@
 
 define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
+        'text!templates/spell.html'
         ],function ( require ) {
 
 	var webGL = require('webGL');
 	//var UIDevObjInfoPanel = require('UI/Panels/UIDevObjInfoPanel');
 	
+		
 
     function Obj(id) {
     	this.onclickCallbacks = [];

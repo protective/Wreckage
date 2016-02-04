@@ -38,6 +38,32 @@ div.devObjView {
     line-height: normal;
 }
 
+.spellBox {
+    top: 100px;
+    left: 200px;
+    position:absolute;
+    border-spacing: 2px;
+    padding: 2px;
+}
+
+.spellBoxActive {
+    padding: 2px;
+    background-color: red;
+    animation-name: keySpellBoxActive;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.spellBoxReady {
+    padding: 2px;
+    background-color: red;
+}
+
+@keyframes keySpellBoxActive {
+    from {background-color: red;}
+    to {background-color: yellow;}
+}
+
 .UIStatHpBar {
 
     background: #8AC007;

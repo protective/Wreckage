@@ -3,7 +3,6 @@ define(function ( require ) {
 	
     var webSocket = require('Network/webSocket');
     var UIKeyInput = require('UI/UIKeyInput');
-    var UISpellbook = require('UI/UISpellbook');
     var UIBuffBar = require('UI/UIBuffBar');
     
     var CompSpellBook = require('Model/CompSpellBook');
@@ -13,7 +12,7 @@ define(function ( require ) {
     var _panels = {};
     
 
-    
+    var _playerId = null;
     var _playerTarget = null;
     
     var maindiv = webGL.container;
