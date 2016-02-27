@@ -42,6 +42,10 @@ define(function ( require ) {
 
     }
     
+    function getPlayerTarget(){
+    	return _playerTarget;
+    }
+    
     webGL.setOnClickCallback(setTarget);
  
     return {'init' : function(){
@@ -50,5 +54,6 @@ define(function ( require ) {
     	
     		'maindiv' : maindiv,
     		'setTarget' : setTarget,
-    		'addPanel': addPanel};
+    		'addPanel': addPanel,
+    		'getPlayerTarget': getPlayerTarget};
 });

@@ -49,11 +49,12 @@ void CompSpellBook::dbSave(){
 		for(list<OBJID>::iterator it = _knownPowers.begin();it!=_knownPowers.end();it++){
 			s<<"insert into compspellbook_knownpowers values("
 				<<_obj->getId()<<","
-				<<*it<<")";
+				<<*it<<");";
 			w.exec(s);
-			w.commit();
+			
 			s.clear();
 		}
+		w.commit();
 		if(!isInit()){
 			dbInit();
 		}

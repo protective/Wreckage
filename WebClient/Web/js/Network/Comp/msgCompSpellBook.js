@@ -8,7 +8,7 @@ define(function ( require ) {
 
     function encodeCastSpellTarget(caster, target, spellId){
        
-    	spellId = 16777226;
+    	spellId = spellId;
     	var buffer = new ArrayBuffer(24);
     	var base = new Uint32Array(buffer);
     	base[0] = 7; //cmdindput
@@ -27,7 +27,7 @@ define(function ( require ) {
     
     var full = function(objId, block) {
         var obj = objManager.gotObjEnter(objId);
-        
+        UISpellbook.createSpellBookPanel(obj);
         var dv = new DataView(block, 0);
         var len = dv.getUint16(0,true);
         var powers = new Array();

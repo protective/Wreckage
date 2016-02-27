@@ -15,8 +15,8 @@ define( function( require )
 		
 	}
 	
-	CompSpellBook.prototype.castSpellTarget = function castSpellTarget(target){
-		webSocket.handlers["castSpellTarget"](this.obj, target, 0); 
+	CompSpellBook.prototype.castSpellTarget = function castSpellTarget(target, powerid){
+		webSocket.handlers["castSpellTarget"](this.obj, target, powerid); 
 	}
 	
 	

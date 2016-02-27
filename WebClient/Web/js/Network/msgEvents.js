@@ -56,7 +56,7 @@ define(function ( require ) {
         UIBuffBar.removeBuff(target, buffIndex)
     };
     
-    var beginCast= function(block, len) {
+    var beginCast = function(block, len) {
 
         var caster = new Uint32Array(block.slice(0,4))[0];
         var powerId = new Uint32Array(block.slice(4,8))[0];
@@ -69,10 +69,21 @@ define(function ( require ) {
         obj.activateSpell(obj, target, powerId, beginTime, endTime);
     };
     
+    var cast = function(block, len) {
+
+        var caster = new Uint32Array(block.slice(0,4))[0];
+        var powerId = new Uint32Array(block.slice(4,8))[0];
+        var target = new Uint32Array(block.slice(8,12))[0];
+        var obj = objManager.getObjById(caster);
+        
+        obj.castSpell(obj, target, powerId);
+    };
+    
     return function msghook() {
     	webSocket.hook( 13, targetStatChange);
     	webSocket.hook( 14, targetGainBuff);
     	webSocket.hook( 15, targetLoseBuff);
     	webSocket.hook( 16, beginCast);
+    	webSocket.hook( 17, cast);
     };
 });

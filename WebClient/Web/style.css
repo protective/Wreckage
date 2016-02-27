@@ -38,10 +38,15 @@ div.devObjView {
     line-height: normal;
 }
 
-.spellBox {
-    top: 100px;
+
+.spellBar {
+    top: 150px;
     left: 200px;
+    border-spacing: 1px;
     position:absolute;
+}
+.spellBox {
+
     border-spacing: 2px;
     padding: 2px;
 }
