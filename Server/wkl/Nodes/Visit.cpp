@@ -101,3 +101,7 @@ void NodeDictExpr::accept(Visitor* v){
 void NodePair::accept(Visitor* v){
 	v->visit(this);
 }
+
+void NodeKeyAccessVariable::accept(Visitor* v){
+	v->visit(this);
+}

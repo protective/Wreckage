@@ -1,12 +1,8 @@
 
-def f(y){
-y = y;
-}
-
 def __activate_target__(){
-a=1;
-b=2;
-c = f(a);
-t = 77;
-g = c;
+a = 0;
+b = 1;
+
+c = a[b];
+
 }

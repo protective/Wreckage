@@ -98,24 +98,165 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 haveArg = true;
                 break;
             }
-            case inst::cpN_DS2:
+            case inst::cpN_ADAS2:
             {
-                name = "cpN_DS2";
-                haveArg = true;
+                name = "cpN_ADAS2";
+                haveArg = false;
                 noParams = 2;
-                param[0] = "Rel dest"; 
-                param[1] = "Rel src"; 
+                param[0] = "Abs src"; 
+                param[1] = "Abs dest"; 
                 break;
             }
-			case inst::cpEN_DS2:
+            case inst::cpN_ADRS2:
             {
-                name = "cpEN_DS2";
-                haveArg = true;
+                name = "cpN_ADRS2";
+                haveArg = false;
                 noParams = 2;
-                param[0] = "Rel dest"; 
-                param[1] = "Env src"; 
+                param[0] = "Abs src"; 
+                param[1] = "Rel dest"; 
                 break;
             }
+            case inst::cpN_RDAS2:
+            {
+                name = "cpN_RDAS2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Rel src"; 
+                param[1] = "Abs dest"; 
+                break;
+            }
+            case inst::cpN_RDRS2:
+            {
+                name = "cpN_RDRS2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Rel src"; 
+                param[1] = "Rel dest"; 
+                break;
+            }
+			
+            case inst::cpN_EAD2:
+            {
+                name = "cpN_EAD2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Env src"; 
+                param[1] = "Abs dest"; 
+                break;
+            }
+            case inst::cpN_ERD2:
+            {
+                name = "cpN_ERD2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Env src"; 
+                param[1] = "Rel dest"; 
+                break;
+            }
+            case inst::cpN_AED2:
+            {
+                name = "cpN_AED2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Abs src"; 
+                param[1] = "Env dest"; 
+                break;
+            }
+            case inst::cpN_RED2:
+            {
+                name = "cpN_RED2";
+                haveArg = false;
+                noParams = 2;
+                param[0] = "Rel src"; 
+                param[1] = "Env dest"; 
+                break;
+            }
+			
+			
+			
+            case inst::cp_ASIAD2:
+            {
+                name = "cp_ASIAD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Abs src"; 
+				param[1] = "Rel index"; 
+                param[2] = "Abs dest"; 
+                break;
+            }
+            case inst::cp_ASIRD2:
+            {
+                name = "cp_ASIRD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Abs src";
+				param[1] = "Rel index"; 
+                param[2] = "Rel dest"; 
+                break;
+            }
+            case inst::cp_RSIAD2:
+            {
+                name = "cp_RSIAD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Rel src"; 
+				param[1] = "Rel index"; 
+                param[2] = "Abs dest"; 
+                break;
+            }
+            case inst::cp_RSIRD2:
+            {
+                name = "cp_RSIRD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Rel src";
+				param[1] = "Rel index";  
+                param[2] = "Rel dest"; 
+                break;
+            }
+
+            case inst::cp_ASsvIAD2:
+            {
+                name = "cp_ASsvIAD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Abs src"; 
+				param[1] = "Rel *index"; 
+                param[2] = "Abs dest"; 
+                break;
+            }
+            case inst::cp_ASsvIRD2:
+            {
+                name = "cp_ASsvIRD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Abs src";
+				param[1] = "Rel *index"; 
+                param[2] = "Rel dest"; 
+                break;
+            }
+            case inst::cp_RSsvIAD2:
+            {
+                name = "cp_RSsvIAD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Rel src"; 
+				param[1] = "Rel *index"; 
+                param[2] = "Abs dest"; 
+                break;
+            }
+            case inst::cp_RSsvIRD2:
+            {
+                name = "cp_RSsvIRD2";
+                haveArg = false;
+                noParams = 3;
+                param[0] = "Rel src";
+				param[1] = "Rel *index";  
+                param[2] = "Rel dest"; 
+                break;
+            }
+			
+			
 			case inst::cpCO_DS2:
             {
                 name = "cpCO_DS2";
@@ -125,24 +266,6 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[1] = "Con src"; 
                 break;
             }	
-            case inst::cpN_RDS2:
-            {
-                name = "cpN_RDS2";
-                haveArg = true;
-                noParams = 2;
-                param[0] = "Rel dest"; 
-                param[1] = "Abs src"; 
-                break;
-            }
-            case inst::cpI_DS2:
-            {
-                name = "cpI_DS2";
-                haveArg = true;
-                noParams = 2;
-                param[0] = "Rel dest"; 
-                param[1] = "Rel src"; 
-                break;
-            }
 			case inst::cpEI_DS2:
             {
                 name = "cpEI_DS2";
@@ -168,15 +291,6 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[1] = "Abs src"; 
                 break;
             }
-            case inst::cpN_DRS2:
-            {
-                name = "cpN_DRS2";
-                haveArg = true;
-                noParams = 2;
-                param[0] = "Abs dest"; 
-                param[1] = "Rel src"; 
-                break;
-            }
 	
 			case inst::cpAIS2_T:
             {
@@ -186,14 +300,6 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 param[0] = "Abs src"; 
                 break;
             }
-            case inst::cpRIS2_T:
-            {
-                name = "cpRIS2_T";
-                haveArg = true;
-                noParams = 1;
-                param[0] = "Rel src"; 
-                break;
-            }
             case inst::cpEIS2_T:
             {
                 name = "cpEIS2_T";
@@ -201,15 +307,7 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 noParams = 1;
                 param[0] = "Env src"; 
                 break;
-            }			
-            case inst::cpT_EN:
-            {
-                name = "cpT_EN";
-                haveArg = false;
-                noParams = 1;
-                param[0] = "Env dest"; 
-                break;
-            }				
+            }						
 			case inst::jmpA_1:
             {
                 name = "jmpA_1";

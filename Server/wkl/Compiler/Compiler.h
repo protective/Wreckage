@@ -63,8 +63,12 @@ namespace Step{
 }
 
 typedef uint32_t INSTRUCTION;
-#define OPCODE(X) (X & 0x00FF0000)
+#define OPCODE(X) (X & 0xFFFF0000)
+#define SOPCODE(X) ((X & 0xFF000000)>>24) 
 #define ARG(X) (X & 0x0000FFFF)
+#define ARGS0(X) ((X & 0x0000FF00)>>8)
+#define ARGS1(X) (X & 0x000000FF)
+
 typedef vector<INSTRUCTION> PROGRAM;
 class Program;
 class Compiler : public Visitor {
@@ -106,6 +110,7 @@ public:
 	virtual void visit(NodeMethod* node);
 	virtual void visit(NodeDictExpr* node);
 	virtual void visit(NodePair* node);
+	virtual void visit(NodeKeyAccessVariable* node){}
 	void finalize();
 	virtual ~Compiler();
 private:
@@ -138,7 +143,7 @@ private:
 	void emitTopStackToLoc(uint32_t pos, bool rel, uint32_t size);
 	void emitTopStackToEnv(uint32_t envId);
 	void emitTopStackIndexToLoc(uint32_t pos, varloc::Enum loc, uint32_t index);
-	void emitPushLocToTopStack(uint32_t pos, uint32_t size, varloc::Enum rel);
+	void emitPushLocToTopStack(uint32_t pos, varloc::Enum rel);
 	void emitMvMapFromTopStack(uint32_t mapSize);
 	void emitLocRIndexToTopStack(uint32_t pos, varloc::Enum rel, uint32_t rIndexVar);
 	

@@ -13,6 +13,7 @@
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalRunProgram.h"
 
+#include "../CompTargeted/CompTargeted.h"
 
 CompProgramable::CompProgramable() :
 SComponent(COMPID::programable){
@@ -47,11 +48,16 @@ void CompProgramable::acceptSignal(SIGNAL::Enum type, Signal* data){
 			}else{
 				//cerr<<"env size = "<<(*(s->_env)).size()<<endl;
 				pe = new wkl::ProgramExecutor(_programIdCounter++ ,this->getObj(), s->_program, _syscall, *(s->_env));
-			   _programExe[pe->getRunRef()] = pe;
+			    _programExe[pe->getRunRef()] = pe;
 			}
 			uint32_t ret = 0;
 			uint32_t tmmi = pe->getRegister();
-
+			if (s->_functionId == systemCallBackLib::__gain_buff__){
+				if (this->getObj()->haveComponent(COMPID::targeted)){
+					CompTargeted* comp = (CompTargeted*)this->getObj()->getComponents()[COMPID::targeted];
+					comp->getBuffs()[pe->getRunRef()] = pe;
+				}
+			}
 			if((pe->getRegister() & wkl::registerFlags::yield) > 0){
 				//we are returning from a yield call
 				pe->yield(s->_retVar);
@@ -63,6 +69,11 @@ void CompProgramable::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 			if(ret & wkl::registerFlags::halt){
 				_programExe.erase(pe->getRunRef());
+				if (this->getObj()->haveComponent(COMPID::targeted)){
+					CompTargeted* comp = (CompTargeted*)this->getObj()->getComponents()[COMPID::targeted];
+					comp->getBuffs().erase(pe->getRunRef());
+				}
+				
 				delete pe;
 			}
 			break;

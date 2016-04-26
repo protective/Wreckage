@@ -66,6 +66,7 @@ public:
 	void visit(NodeVardecTop* node);
 	void visit(NodeDictExpr* node);
 	void visit(NodePair* node);
+	void visit(NodeKeyAccessVariable* node);
 	void finalise(){
 		out<<"}"<<endl;
 	}

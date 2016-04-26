@@ -51,7 +51,8 @@ returnStmt  -> expr                             {cerr<<"PARSE returnStmt"<<endl;
 varDecl		-> id 							    {cerr<<"PARSE id"<<endl;result = new NodeVardeclStmt(NULL,(Identifier*)arg0, NULL, NULL);}
 			 | id assignment expr			    {cerr<<"PARSE id assignment expr"<<endl;result = new NodeVardeclStmt(NULL, (Identifier*)arg0,(NodeExpr*)arg2, NULL);}
 
-varexpr		-> id								{cerr<<"PARSE varexpr: id"<<endl;result = new NodeVariable((Identifier*)arg0);}
+varexpr		-> id left_b expr right_b	        {cerr<<"PARSE varexpr: left_b expr right_b"<<endl;result = new NodeKeyAccessVariable((Identifier*)arg0, (NodeExpr*)arg2);}
+             | id								{cerr<<"PARSE varexpr: id"<<endl;result = new NodeVariable((Identifier*)arg0);}
 			 | expr dot id						{cerr<<"PARSE varexpr: expr dot id"<<endl;result = new NodeAttributeAccessVariable((NodeExpr*)arg0, (Identifier*)arg2);}	
 
 block		-> left_c stmts right_c				{cerr<<"PARSE block"<<endl;result = arg1;}

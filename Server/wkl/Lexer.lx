@@ -91,6 +91,8 @@ rules:
 {\)} 											{cerr<<"terminal rightp"<<endl;return new Terminal(TOKEN_right_p, pos);}
 {\{} 											{cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_c, pos);}
 {\}} 											{cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_c, pos);}
+{\[} 											{cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_b, pos);}
+{\]} 											{cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_b, pos);}
 {_*[a-Z]([a-Z]|[0-9]|_)*} 					    {cerr<<"terminal id"<<endl;return new Identifier(token, toklen, pos);}
 {[0-9]+} 										{cerr<<"terminal int"<<endl;return IntegerFromDecimalString(token, toklen, pos);}
 {\x04}											{cerr<<"terminal eof"<<endl;return new Terminal(TOKEN_EOF, pos);}

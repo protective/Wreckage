@@ -97,6 +97,7 @@ public:
 		}
 	}
 	map<COMPID::Enum, SComponent*>& getComponents(){return _components;}
+	bool haveComponent(COMPID::Enum cmp){return _components.find(cmp) != _components.end();}
 	map<uint32_t, uint32_t>& getSubscribers(){return _subscribers;}
 	bool isPersistent(){return (_flags & OBJFLAGPERSISTENT) ? true : false;}
 	bool isInit(){return (_flags & OBJFLAGINIT) ? true : false;}

@@ -64,7 +64,7 @@ namespace MESSAGE {
 		activatePowerOnt,
 		requestRefObj,
 		objDeleted,
-		programCallback,
+		programFork,
 		systemBroadcast,
 		destInRangeReq,
 		destInRangeRsp,

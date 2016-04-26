@@ -25,26 +25,24 @@ namespace wkl {
 	
 class ProgramExecutor {
 public:
-	ProgramExecutor(uint32_t runRefId, SObj* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs, map<uint32_t, Variable> envContext);
+	ProgramExecutor(uint32_t runRefId, SObj* comp, Program* program, map<uint32_t, systemCallFunc> systemCallFuncs, map<Variable, Variable> envContext);
 
 	
 	uint32_t run(uint32_t obj);
 	uint32_t run(uint32_t obj, uint32_t functionId);
-	uint32_t run(uint32_t obj, uint32_t functionId, list<uint32_t> args);
-	
+	uint32_t run(uint32_t obj, uint32_t functionId, vector<Variable> args);
+	void interrupt(uint32_t obj, uint32_t functionId, vector<Variable>& _args);
+	vector<Variable>& getStack(){return _stack;}
 	void yield(Variable* retVar);
 	
 	uint32_t getRunRef() {return this->_runRefId;}
 	Program* getProgram() {return this->_program;}
 	uint32_t getRegister(){return this->_registerFlags;}
 	void setFlag(uint32_t flag){this->_registerFlags |= flag;}
-	map<uint32_t, Variable>& getEnvContext() {return this->_envContext;}
+	map<Variable, Variable>& getEnvContext() {return this->_envContext;}
 	uint32_t segfault(string message);	
 	uint32_t segfault();
 	void dumpStack();
-	virtual void interrupt(uint32_t programId, uint32_t handlerId, uint32_t* payload, uint32_t payloadLen);
-	//void yeld(){_registerFlags |= registerFlags::Yeld;}
-	
 	virtual ~ProgramExecutor();
 private:
 	uint32_t _runRefId;
@@ -57,7 +55,7 @@ private:
 	int32_t _stackTop;
 	vector<Variable> _stack;
 	uint32_t _locRet;
-	map<uint32_t, Variable> _envContext;
+	map<Variable, Variable> _envContext;
 	uint32_t _stackMax;
 };
 }

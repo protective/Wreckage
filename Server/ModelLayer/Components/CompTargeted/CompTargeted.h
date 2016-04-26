@@ -34,6 +34,7 @@ public:
 		uint32_t buffIndex);
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
 
+	map<uint32_t, wkl::ProgramExecutor*>& getBuffs(){return _buffs;}
 	
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);
@@ -44,6 +45,7 @@ public:
 private:
 	virtual void init();
 	uint32_t _buffIdSequence;
+	map<uint32_t, wkl::ProgramExecutor*> _buffs;
 	//systemCalls implemented by this component
 	static wkl::Variable phycicalDamage(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable gainBuff(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);

@@ -44,16 +44,16 @@ int main(int argc, char** argv) {
 
 	s.str("");
 	s.clear();
-	s<<"../testPrograms/"<<"test_pow"<<".dot";
+	s<<"/home/karsten/Wreckage/ScriptCompiler/testPrograms/"<<"test_pow"<<".dot";
 	ofstream dotfile(s.str().c_str());
 	
 	s.str("");
 	s.clear();
-	s<<"../testPrograms/"<<"test_pow"<<".asm";
+	s<<"/home/karsten/Wreckage/ScriptCompiler/testPrograms/"<<"test_pow"<<".asm";
 	ofstream asmfile(s.str().c_str());
-	
+
 	cerr<<"hest1"<<endl;
-	Program* p = new Program("../testPrograms/test_pow.wkl", true, asmfile, &dotfile);
+	Program* p = new Program("/home/karsten/Wreckage/ScriptCompiler/testPrograms/test_pow.wkl", true, asmfile, &dotfile);
 	
 	cerr<<"hest2"<<endl;
 	map<uint32_t, systemCallFunc> syscall;
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
 	stack.push_back(0xBBBB); //retVal
 	//ProgramExecutor* e = new ProgramExecutor("test", NULL, p, syscall);
 	
-	map<uint32_t, Variable> envContext;
+	map<Variable, Variable> envContext;
 	envContext[1] = 9000;
 	//e->run(0,1,stack, envContext);
 	

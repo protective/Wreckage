@@ -9,6 +9,7 @@
 #define	PROGRAM_H
 
 #include <vector>
+#include <list>
 #include <map>
 #include <string>
 #include <iostream>

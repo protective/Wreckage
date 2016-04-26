@@ -32,24 +32,53 @@ namespace inst{
 		cmpS0S1     = 0x000A0000,
 		cmpS0R      = 0x000B0000,
 		cmpS0A      = 0x000C0000,		
+		
 		pushRS_1    = 0x000D0000,
 		pushS0A     = 0x000E0000,
-        cpN_DS2     = 0x00500000, //i
-		cpN_DRS2    = 0x00510000,
-		cpN_RDS2    = 0x00520000, //i
-		cpEN_DS2	= 0x00600000, //i
+        
+		//
+		//00 00 00 01  x01 Src Rel
+		//00 00 00 10  x02 Dest Rel
+		//00 00 01 00  x04 Dest mode=env
 		
-		cpCO_DS2	= 0x00700000, //i
+		//00 01 00 00  x10 Src mode=env
+		//00 10 00 00  x20 Src mode=const
+
+		//01 00 00 00  x40 arg=Dest index
+		//10 00 00 00  x80 arg=src index
 		
-		cpRIS2_T    = 0x00560000, //copy rel S0 [S1] to top
+		cpN_ADAS2   = 0x00900000, //i copy N from abs scr to abs dest arg=N
+		cpN_ADRS2   = 0x02900000, //i copy N from abs scr to rel dest arg=N
+		cpN_RDAS2   = 0x01900000, //i copy N from rel scr to abs dest arg=N
+		cpN_RDRS2   = 0x03900000, //i copy N from rel scr to rel dest arg=N
+
+		cpN_EAD2    = 0x90900000, //copy env scr to abs dest
+		cpN_ERD2    = 0x92900000, //copy env scr to rel dest
+		cpN_AED2    = 0x04900000, //copy abs scr to env dest
+		cpN_RED2    = 0x05900000, //copy rel scr to env dest
+		
+		cp_ASIAD2   = 0x00A00000, //copy abs src index to abs dest
+		cp_ASIRD2   = 0x02A00000, //copy abs src index to rel dest
+		cp_RSIAD2   = 0x01A00000, //copy rel src index to abs dest
+		cp_RSIRD2   = 0x03A00000, //copy rel src index to rel dest
+
+		cp_ASsvIAD2 = 0x00A10000, //copy abs src stackVal index to abs dest
+		cp_ASsvIRD2 = 0x02A10000, //copy abs src stackVal index to rel dest
+		cp_RSsvIAD2 = 0x01A10000, //copy rel src stackVal index to abs dest
+		cp_RSsvIRD2 = 0x03A10000, //copy rel src stackVal index to rel dest
+		
+		//cpRIS2_T    = 0x00560000, //copy rel S0 [S1] to top
 		cpAIS2_T    = 0x00550000, //copy abs S0 [S1] to top
 		cpEIS2_T	= 0x00620000, //copy env[S0][S1] to top
-		cpT_EN   	= 0x00630000, //copy top to env [N]
-		
-		cpI_DS2     = 0x00530000, 
-		cpI_RDS2    = 0x00540000,
-		cpEI_DS2	= 0x00610000, 
 
+		
+		
+		//cpI_DS2     = 0x00530000, //top stack to rel loc
+		cpI_RDS2    = 0x00540000, //top stack to abs loc
+		cpEI_DS2	= 0x00610000, //top stack to loc 
+
+		cpCO_DS2	= 0x00700000, //i copy const to dest
+		
 		mvMapAL     = 0x00800000,
 		addS01      = 0x00200000,
 		minusS01    = 0x00210000,	 
@@ -57,7 +86,6 @@ namespace inst{
 		minusS01dS1 = 0x00230000, //i
 		eqS01dS1    = 0x00240000, //i
 		neqS01dS1   = 0x00250000, //i
-		
 		
 		sysCall     = 0x00F00000, //i
 	};

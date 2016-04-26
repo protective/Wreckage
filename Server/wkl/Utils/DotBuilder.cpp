@@ -356,3 +356,17 @@ void DotBuilder::visit(NodePair* node){
 	
 }
 
+
+void DotBuilder::visit(NodeKeyAccessVariable* node) { 
+	int myId = printNode("NodeKeyAccessVariable");
+	//Visit children
+	parentId = myId;
+	if(node->getType())
+		node->getType()->accept(this);
+	//Visit children
+	parentId = myId;
+	node->id()->accept(this);
+	
+	parentId = myId;
+	node->key()->accept(this);
+}

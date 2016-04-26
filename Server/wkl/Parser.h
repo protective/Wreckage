@@ -19,6 +19,8 @@ enum Token{
 	TOKEN_left_p,
 	TOKEN_right_p,
 	TOKEN_comma,
+	TOKEN_left_b,
+	TOKEN_right_b,
 	TOKEN_dot,
 	TOKEN_left_c,
 	TOKEN_right_c,

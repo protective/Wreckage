@@ -9,7 +9,7 @@
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalRunProgram.h"
 
-#include "../../Messages/MessageProgramCallback.h"
+#include "../../Messages/MessageProgramFork.h"
 
 
 #include "GFunctions.h"
@@ -36,33 +36,10 @@ void CompTargeted::acceptSignal(SIGNAL::Enum type, Signal* data){
 
 void CompTargeted::acceptMessage(MESSAGE::Enum type, Message* data){
 	switch(type){
-		case MESSAGE::programCallback:{
-					
-			MessageProgramCallback* msg = (MessageProgramCallback*)data;
-			
+		case MESSAGE::programFork:{
+			MessageProgramFork* msg = (MessageProgramFork*)data;
 			SignalRunProgram s(msg->_program, &msg->_env, msg->_functionId, 0);
 			this->_obj->signal(SIGNAL::runProgram, &s);
-			
-			/*
-			auto it = _programExe.find(msg->_runRef);
-			wkl::ProgramExecutor* pe;
-			if(it != _programExe.end()){
-				pe = it->second;
-				
-			}else{
-				uint32_t sesionProgramId = _programIdCounter++;
-				pe = new wkl::ProgramExecutor(sesionProgramId ,this, msg->_program, _syscall, msg->_env);
-				_programExe[sesionProgramId] = pe;
-			}
-				
-			if(msg->_functionId == 0 || msg->_program->getInterruptHandlers().find(msg->_functionId) != msg->_program->getInterruptHandlers().end()){
-				uint32_t ret = pe->run(_obj->getId(), msg->_functionId);
-				if(ret && wkl::registerFlags::halt){
-					_programExe.erase(pe->getRunRef());
-					delete pe;
-				}
-			}
-			 * */
 			break;
 		}
 	}
@@ -85,6 +62,7 @@ map<uint32_t, wkl::systemCallFunc> CompTargeted::getSyscalls(){
 wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
 	
 	SObj* target = _this;
+	CompTargeted* comp = (CompTargeted*)_this->getComponents()[COMPID::targeted];
 	wkl::Variable* args = (wkl::Variable*)arg;
 	int32_t  level, attack, missP, critP, damageNormal, damageCrit;
 	DAMAGETYPES::Enum dmgtype;
@@ -96,6 +74,9 @@ wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* p
 	attack = programExe->getEnvContext()[wkl::systemEnvLib::wkl_target].v;
 	missP = programExe->getEnvContext()[wkl::systemEnvLib::wkl_missChance].v;
 	critP = programExe->getEnvContext()[wkl::systemEnvLib::wkl_critChance].v;
+	//map<wkl::Variable, wkl::Variable> _test;
+	wkl::VObject tmp;
+	//tmp->_vector = map<wkl::Variable,wkl::Variable>(programExe->getEnvContext());
 	
 	dmgtype = (DAMAGETYPES::Enum)args[1].v;
 	damageNormal = args[2].v;
@@ -143,6 +124,16 @@ wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* p
 	wkl::Variable u;
 	u.v = 0;
 	u.t = new wkl::VObject();
+
+	for (auto it : comp->getBuffs()){
+		vector<Variable> args; args.reserve(1);
+		args.push_back(damage);
+		
+		it.second->interrupt(_this->getId(), systemCallBackLib::__on_damage__, args);
+		cerr<<"dmg="<<damage<<endl;
+		damage = args[0].v;
+		cerr<<"mod dmg="<<damage<<endl;
+	}
 	//u.t->_vector.resize(2);
 	//cout<<"projectile apply objid="<<_obj->getId()<<" roll="<<roll<<" result="<<result<<" damage="<<damage<<endl;
 	if (target->getData(OBJDATA::hp, &def_hp)) {
@@ -163,7 +154,13 @@ wkl::Variable CompTargeted::phycicalDamage(SObj* _this,  wkl::ProgramExecutor* p
 wkl::Variable CompTargeted::gainBuff(SObj* _this,  wkl::ProgramExecutor* programExe, void* arg){
 	//cerr<<"DEBUG gainBuff"<<endl;
 	//TODO check if exist
+	//Note this runs in the caster obj context
+	//The wlk function __gain_buff__ is then skeduled to run on the target
+	//in a fork of the program
 	CompTargeted* comp = (CompTargeted*)_this->getComponents()[COMPID::targeted];
+	
+
+	
 	wkl::Variable* args = (wkl::Variable*)arg;
 	OBJID target = (OBJID)args[1].v;
 	uint32_t ticks = (OBJID)args[2].v;
@@ -172,7 +169,7 @@ wkl::Variable CompTargeted::gainBuff(SObj* _this,  wkl::ProgramExecutor* program
 	programExe->getEnvContext()[systemEnvLib::wkl_buffTickTime] = time;
 	uint32_t seqid = comp->_buffIdSequence++;
 	programExe->getEnvContext()[systemEnvLib::wkl_buffId] = seqid;
-	MessageProgramCallback* outmsg = new MessageProgramCallback(
+	MessageProgramFork* outmsg = new MessageProgramFork(
 			_this->getId(),
 			programExe->getProgram(),
 			programExe->getEnvContext(),
@@ -187,9 +184,6 @@ wkl::Variable CompTargeted::gainBuff(SObj* _this,  wkl::ProgramExecutor* program
 			0,
 			0);
 	_this->getProcessor()->sendMessage(target, outmsg, 0);
-
-	
-	//TODO signal network gain buff
 	
 	
 	//TODO signal obj gain buff
@@ -207,7 +201,9 @@ wkl::Variable CompTargeted::loseBuff(SObj* _this,  wkl::ProgramExecutor* program
 	//cerr<<"DEBUG loseBuff"<<endl;
 	//TODO check exist
 	CompTargeted* comp = (CompTargeted*)_this->getComponents()[COMPID::targeted];
-
+	
+	comp->getBuffs().erase(programExe->getRunRef());
+	
 	uint32_t target = programExe->getEnvContext()[systemEnvLib::wkl_target];
 	uint32_t buffId = programExe->getEnvContext()[systemEnvLib::wkl_buffId];
 

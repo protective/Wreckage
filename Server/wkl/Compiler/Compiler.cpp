@@ -19,6 +19,7 @@ Compiler::Compiler(string programScr) {
 	_inStatic = true;
 	_step = Step::allocation;
 	_fromFile = false;
+	
 }
 
 uint32_t Compiler::compile(Program* program, ostream& outAsm ){
@@ -36,7 +37,7 @@ uint32_t Compiler::compile(Program* program, ostream& outAsm , ostream* outDot){
 		vTableEntry temp(it.second, it.first, varloc::con, 0, it.first);
 		_vtable.push_back(temp);	
 	}
-	
+	_freeEnvPos = 0;
 	for (auto& it : systemEnvLib::lib) {
 		vTableEntry temp(it.second, it.first, varloc::env, 0, 0);
 		if(it.first >= _freeEnvPos)
@@ -283,6 +284,16 @@ void Compiler::visit(NodeForEachStmt* node){
 	}
 }
 
+void Compiler::visit(NodeParam* node){
+	_scopeRef.back()+=1;
+	vTableEntry v(node->id()->name(),_scopeRef.back(), varloc::rel);
+    _vtable.push_back(v);
+	cerr<<"paramnode "<<node->id()->name() <<" ref "<< _scopeRef.back()<<endl;
+	if(node->next())
+        node->next()->accept(this);
+}
+
+
 void Compiler::visit(NodeMethod* node){
 	if(_step == Step::main){
 		
@@ -305,8 +316,13 @@ void Compiler::visit(NodeMethod* node){
 			_scopeRef.push_back(0);
 			if(node->param())
 				node->param()->accept(this);
+			//pc ontop of 
+			_scopeRef.back()+=1;
+			
+			uint32_t old = _scopeRef.back();
+
 			node->block()->accept(this);
-			emitPopStack(_scopeRef.back());
+			emitPopStack(_scopeRef.back() - old);
 			_scopeRef.pop_back();
 			emitReturn();
 		}
@@ -314,6 +330,42 @@ void Compiler::visit(NodeMethod* node){
 	if(node->next())
 		node->next()->accept(this);
 	
+}
+
+void Compiler::visit(NodeCallExpr* node){
+	vTableEntry* ve = NULL;
+	ve = this->vtableFind(node->callee()->var()->id()->name());
+	if(!ve){
+        return;
+    }
+	if(ve->systemCall){
+		uint32_t s = _scopeRef.back();
+		emitPushStack(0xEEEE,1);
+		uint32_t oldref = _scopeRef.back();
+		_scopeRef.push_back(_scopeRef.back());
+
+		if(node->args())
+			node->args()->accept(this);
+
+		emitSysCall(s, ve->systemCall);
+		
+		emitPopStack(_scopeRef.back() - oldref);
+		_scopeRef.pop_back();
+		
+	}else{
+		emitPushStack(0x00FF,1);
+		
+		_scopeRef.push_back(_scopeRef.back());
+		if(node->args())
+			node->args()->accept(this);
+		
+		uint32_t h = emitPushRPC();
+		
+		emitCall(ve->name);
+		program().at(h) = program().size();
+		emitPopStack(_scopeRef.back());
+		_scopeRef.pop_back();
+	}
 }
 
  void Compiler::visit(NodeVardecTop* node){
@@ -338,11 +390,20 @@ void Compiler::visit(NodeVardeclStmt* node){
     if(node->expr()){
         node->expr()->accept(this);
     }
-    if(!node->expr()){
-        emitPushStack(0x00, 1);
-    }
-    vTableEntry v(node->variable()->name(),_scopeRef.back(), varloc::rel);
-    _vtable.push_back(v);
+
+	vTableEntry* ve = NULL;
+    ve = this->vtableFind(node->variable()->name());
+    if(ve){
+		 if(node->expr())
+			emitTopStackToLoc(ve->pos, ve->rel, 1);
+    }else{
+		vTableEntry v(node->variable()->name(),_scopeRef.back(), varloc::rel);
+		_vtable.push_back(v);
+		if(!node->expr()){
+			emitPushStack(0x00, 1);
+		}
+	}
+
     if(node->next())
         node->next()->accept(this);
 }
@@ -374,14 +435,6 @@ void Compiler::visit(NodeOutdeclStmt* node){
         node->next()->accept(this);
 }
 
-void Compiler::visit(NodeParam* node){
-	_scopeRef.back()+=1;
-	vTableEntry v(node->id()->name(),_scopeRef.back(), varloc::rel);
-    _vtable.push_back(v);
-	cerr<<"paramnode "<<node->id()->name() <<" ref "<< _scopeRef.back()<<endl;
-	if(node->next())
-        node->next()->accept(this);
-}
 
 void Compiler::visit(NodeExprStmt* node){
 
@@ -494,7 +547,7 @@ void Compiler::visit(NodeVariable* node){
         return;
     }
 
-	emitPushLocToTopStack(ve->pos,1, ve->rel);
+	emitPushLocToTopStack(ve->pos, ve->rel);
 
 }
 
@@ -526,46 +579,6 @@ void Compiler::visit(NodePair* node) {
 
 	if(node->next())
 		node->next()->accept(this);
-}
-
-
-void Compiler::visit(NodeCallExpr* node){
-
-	vTableEntry* ve = NULL;
-
-	ve = this->vtableFind(node->callee()->var()->id()->name());
-		
-	if(!ve){
-        return;
-    }
-
-	if(ve->systemCall){
-		uint32_t s = _scopeRef.back();
-		emitPushStack(0xEEEE,1);
-		uint32_t oldref = _scopeRef.back();
-		_scopeRef.push_back(_scopeRef.back());
-		if(node->args())
-			node->args()->accept(this);
-		emitSysCall(s, ve->systemCall);
-		
-		emitPopStack(_scopeRef.back() - oldref);
-		_scopeRef.pop_back();
-		
-	}else{
-		emitPushStack(0x00FF,1);
-		uint32_t h = emitPushRPC();
-		
-		_scopeRef.push_back(_scopeRef.back());
-		if(node->args())
-			node->args()->accept(this);
-		_scopeRef.pop_back();
-		emitCall(ve->name);
-		program().at(h) = program().size();
-		//emitPopStack(_scopeRef.back());
-		
-	}
-		
-	
 }
 
 

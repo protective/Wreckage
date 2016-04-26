@@ -14,7 +14,7 @@
 struct SignalRunProgram : public Signal {
 	SignalRunProgram(
 			wkl::Program* program,
-			map<uint32_t, wkl::Variable>* env,
+			map<wkl::Variable, wkl::Variable>* env,
 			uint32_t functionId,
 			uint32_t runRef
 	):
@@ -43,7 +43,7 @@ struct SignalRunProgram : public Signal {
 		_runRef = s._runRef;
 		_retVar = s._retVar;
 	}
-	map<uint32_t, wkl::Variable>* _env;
+	map<wkl::Variable, wkl::Variable>* _env;
 	wkl::Program* _program;
 	uint32_t _functionId;
 	uint32_t _runRef;

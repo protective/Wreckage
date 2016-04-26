@@ -6,7 +6,7 @@
 #include "../../../Processor/Processor.h"
 
 #include "../../Messages/MessagePowerStats.h"
-#include "../../Messages/MessageProgramCallback.h"
+#include "../../Messages/MessageProgramFork.h"
 #include "../../Messages/MessageProgramSleepWake.h"
 #include "../../Messages/MessageProgramFunctionSleep.h"
 
@@ -39,7 +39,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			//cerr<<"MESSAGE::powerStatsRsp"<<endl;
 			MessagePowerStats* msg = (MessagePowerStats*)data;
 
-			map<uint32_t, wkl::Variable> envContext;
+			map<wkl::Variable, wkl::Variable> envContext;
 			envContext[systemEnvLib::wkl_powerId] = msg->_fromId;
 			envContext[systemEnvLib::wkl_level] = 1;
 			envContext[systemEnvLib::wkl_target] = msg->_target;
@@ -93,7 +93,7 @@ wkl::Variable CompSpellBook::channel(SObj* _this, wkl::ProgramExecutor* programE
 
 	//MessagePowerStats* msg = (MessagePowerStats*)data;
 	for(int i = 1 ; i <= count; i++){
-		MessageProgramCallback* outmsg = new MessageProgramCallback(
+		MessageProgramFork* outmsg = new MessageProgramFork(
 				_this->getId(),
 				programExe->getProgram(),
 				programExe->getEnvContext(),
@@ -142,11 +142,11 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 		if (delay > 0){
 			programExe->setFlag(wkl::registerFlags::yield);
 			MessageProgramFunctionSleep* outmsg = new MessageProgramFunctionSleep(
-			_this->getId(),
-			CompSpellBook::cast_final,
-			_this,
-			programExe,
-			arg);
+				_this->getId(),
+				CompSpellBook::cast_final,
+				_this,
+				programExe,
+				arg);
 			_this->getProcessor()->sendMessage(_this->getId(), outmsg, delay);
 			spellBook->sendBeginCast(powerId, target, spellBook->_beginTime, spellBook->_castTime);
 		}else{
@@ -197,7 +197,7 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 			_this->setData(OBJDATA::hp, hp - hpcost);
 			_this->sendEventTargetStatChange(0, OBJDATA::mana, hp, hp - hpcost, powerResults::invalid);
 		}
-		MessageProgramCallback* msgHit = new MessageProgramCallback(
+		MessageProgramFork* msgHit = new MessageProgramFork(
 			_this->getId(),
 			programExe->getProgram(),
 			programExe->getEnvContext(),

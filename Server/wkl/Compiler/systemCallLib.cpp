@@ -32,7 +32,15 @@ namespace wkl {
 			{__activate_target__, "__activate_target__"},
 			{__gain_buff__, "__gain_buff__"},
 			{__lose_buff__, "__lose_buff__"},
-			{__tick_buff__, "__tick_buff__"}
+			{__tick_buff__, "__tick_buff__"},
+			{__on_gain_buff__, "__on_gain_buff__"},
+			{__on_lose_buff__, "__on_lose_buff__"},
+			{__on_heal__, "__on_heal__"},
+			{__on_hit__, "__on_hit__"},
+			{__on_damage__, "__on_damage__"},
+			{__on_begin_cast__, "__on_begin_cast__"},
+			{__on_cast__, "__on_cast__"}
+			
 		};
 	}
 
