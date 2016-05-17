@@ -11,23 +11,32 @@
 #include "NodeExpr.h"
 #include "NodeVariable.h"
 
+#include "../Terminals/Terminal.h"
 
 class NodeAssignExpr : public NodeExpr {
 public:
-	NodeAssignExpr(NodeVariable* assignee, NodeExpr* expresion) : NodeExpr(assignee->id()->pos()) {
+	NodeAssignExpr(NodeVariable* assignee, Terminal* appliedOperator, NodeExpr* expresion) : NodeExpr(assignee->id()->pos()) {
 		_assignee = assignee;
 		_expresion = expresion;
+		_appliedOperator = appliedOperator;
 	}
-	NodeExpr* value(){return _expresion;}
+	NodeExpr* expr(){return _expresion;}
 	virtual TypeDenoter* getType(){return _expresion->getType();}
 	
 	NodeVariable* assignee(){return _assignee;}
+	
+	/** Get the operator applied */
+	Terminal* appliedOperator(){
+		return _appliedOperator;
+	}
+	
 	virtual void accept(Visitor* v);
 	virtual ~NodeAssignExpr(){}
 private:
 	NodeVariable* _assignee;
 	NodeExpr* _expresion;
-};
+	Terminal* _appliedOperator;
+};	
 
 
 #endif	/* SORDERNODEASSIGNEXPR_H */

@@ -258,6 +258,94 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				_programCounter += 1;
 				break;
 			}
+			case inst::multiS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] * _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::deviS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] / _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::moduloS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] % _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::bitandS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] & _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::bitorS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = _stack[_stackTop-1] | _stack[_stackTop];
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::andS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] && _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::orS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] || _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::leeqS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] <= _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}			
+			case inst::leS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] < _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::gteqS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] >= _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
+			case inst::gtS01dS1:{
+				if(_stackTop == 0)
+					return segfault();
+				_stack[_stackTop-1] = (_stack[_stackTop-1] > _stack[_stackTop]) ? 1 : 0;
+				_stackTop--;
+				_programCounter += 1;
+				break;
+			}
 			case inst::eqS01dS1:{
 				if(_stackTop == 0)
 					return segfault();

@@ -129,7 +129,9 @@ void CompProgramable::init(){
 map<uint32_t, wkl::systemCallFunc> CompProgramable::getSyscalls(){
 	return {
 		{wkl::systemCallLib::getObjInRange, CompProgramable::getObjInRange},
-		{wkl::systemCallLib::sleep, CompProgramable::sleep}
+		{wkl::systemCallLib::sleep, CompProgramable::sleep},
+		{wkl::systemCallLib::min, CompProgramable::min},
+		{wkl::systemCallLib::max, CompProgramable::max}
 	};
 };
 
@@ -163,6 +165,22 @@ wkl::Variable CompProgramable::getObjInRange(SObj* _this, wkl::ProgramExecutor* 
 	return wkl::Variable(0);
 }
 
+
+wkl::Variable CompProgramable::max(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
+	wkl::Variable* args = (wkl::Variable*)arg;
+	if (args[1].v > args[2].v)
+		return args[1].v;
+	else
+		return args[2].v;
+}
+
+wkl::Variable CompProgramable::min(SObj* _this, wkl::ProgramExecutor* programExe, void* arg){
+	wkl::Variable* args = (wkl::Variable*)arg;
+	if (args[1].v < args[2].v)
+		return args[1].v;
+	else
+		return args[2].v;
+}
 
 CompProgramable::~CompProgramable() {
 }

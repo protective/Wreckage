@@ -68,13 +68,13 @@ namespace inst{
 		cp_RSsvIRD2 = 0x03A10000, //copy rel src stackVal index to rel dest
 		
 		//cpRIS2_T    = 0x00560000, //copy rel S0 [S1] to top
-		cpAIS2_T    = 0x00550000, //copy abs S0 [S1] to top
+		cpAIS2_T    = 0x00650000, //copy abs S0 [S1] to top
 		cpEIS2_T	= 0x00620000, //copy env[S0][S1] to top
 
 		
 		
 		//cpI_DS2     = 0x00530000, //top stack to rel loc
-		cpI_RDS2    = 0x00540000, //top stack to abs loc
+		cpI_RDS2    = 0x00640000, //top stack to abs loc
 		cpEI_DS2	= 0x00610000, //top stack to loc 
 
 		cpCO_DS2	= 0x00700000, //i copy const to dest
@@ -84,9 +84,20 @@ namespace inst{
 		minusS01    = 0x00210000,	 
 		addS01dS1   = 0x00220000, //i
 		minusS01dS1 = 0x00230000, //i
-		eqS01dS1    = 0x00240000, //i
-		neqS01dS1   = 0x00250000, //i
+		multiS01dS1 = 0x00240000, //i
+		deviS01dS1  = 0x00250000, //i
+		moduloS01dS1= 0x00260000, //i
+		leeqS01dS1  = 0x00270000, //i
+		leS01dS1    = 0x00280000, //i
+		gteqS01dS1  = 0x00290000, //i		
+		gtS01dS1    = 0x002A0000, //i
+		eqS01dS1    = 0x002C0000, //i	
+		neqS01dS1   = 0x002D0000, //i
 		
+		andS01dS1   = 0x00500000, //i
+		orS01dS1    = 0x00510000, //i	
+		bitandS01dS1= 0x00520000, //i
+		bitorS01dS1 = 0x00530000, //i			
 		sysCall     = 0x00F00000, //i
 	};
 }

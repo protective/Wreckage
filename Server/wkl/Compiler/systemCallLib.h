@@ -43,6 +43,8 @@ namespace wkl {
 			updateBuff,
 			loseBuff,
 			sleep,
+			min,
+			max
 		};
 		
 		extern map<uint32_t, systemCallBack_t> lib;

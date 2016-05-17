@@ -114,105 +114,195 @@ final:
 		break;
 	case 8:
 		{
-		cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_eq, pos);
+		cerr<<"terminal plus_assignment"<<endl; return new Terminal(TOKEN_plus_assignment, pos);
 		}
 		break;
 	case 9:
 		{
-		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_neq, pos);
+		cerr<<"terminal minus_assignment"<<endl; return new Terminal(TOKEN_minus_assignment, pos);
 		}
 		break;
 	case 10:
 		{
-		cerr<<"terminal comma"<<endl;return new Terminal(TOKEN_comma, pos);
+		cerr<<"terminal multiply_assignment"<<endl; return new Terminal(TOKEN_multiply_assignment, pos);
 		}
 		break;
 	case 11:
 		{
-		cerr<<"terminal dot"<<endl;return new Terminal(TOKEN_dot, pos);
+		cerr<<"terminal division_assignment"<<endl; return new Terminal(TOKEN_division_assignment, pos);
 		}
 		break;
 	case 12:
 		{
-		cerr<<"terminal plus"<<endl;return new Terminal(TOKEN_plus, pos);
+		cerr<<"terminal bitand_assignment"<<endl; return new Terminal(TOKEN_bitand_assignment, pos);
 		}
 		break;
 	case 13:
 		{
-		cerr<<"terminal minus"<<endl;return new Terminal(TOKEN_minus, pos);
+		cerr<<"terminal bitor_assignment"<<endl; return new Terminal(TOKEN_bitor_assignment, pos);
 		}
 		break;
 	case 14:
 		{
-		cerr<<"terminal semicolon"<<endl;return new Terminal(TOKEN_semicolon, pos);
+		cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_eq, pos);
 		}
 		break;
 	case 15:
 		{
-		cerr<<"terminal colon"<<endl;return new Terminal(TOKEN_colon, pos);
+		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_not, pos);
 		}
 		break;
 	case 16:
 		{
-		cerr<<"terminal leftp"<<endl;return new Terminal(TOKEN_left_p, pos);
+		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_neq, pos);
 		}
 		break;
 	case 17:
 		{
-		cerr<<"terminal rightp"<<endl;return new Terminal(TOKEN_right_p, pos);
+		cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_gteq, pos);
 		}
 		break;
 	case 18:
 		{
-		cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_c, pos);
+		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_leeq, pos);
 		}
 		break;
 	case 19:
 		{
-		cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_c, pos);
+		cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_gt, pos);
 		}
 		break;
 	case 20:
 		{
-		cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_b, pos);
+		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_le, pos);
 		}
 		break;
 	case 21:
 		{
-		cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_b, pos);
+		cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_modulo, pos);
 		}
 		break;
 	case 22:
 		{
-		cerr<<"terminal id"<<endl;return new Identifier(token, toklen, pos);
+		cerr<<"terminal comma"<<endl;return new Terminal(TOKEN_comma, pos);
 		}
 		break;
 	case 23:
 		{
-		cerr<<"terminal int"<<endl;return IntegerFromDecimalString(token, toklen, pos);
+		cerr<<"terminal dot"<<endl;return new Terminal(TOKEN_dot, pos);
 		}
 		break;
 	case 24:
 		{
-		cerr<<"terminal eof"<<endl;return new Terminal(TOKEN_EOF, pos);
+		cerr<<"terminal plus"<<endl;return new Terminal(TOKEN_plus, pos);
 		}
 		break;
 	case 25:
 		{
-		cerr<<"space"<<endl;goto BEGIN;
+		cerr<<"terminal minus"<<endl;return new Terminal(TOKEN_minus, pos);
 		}
 		break;
 	case 26:
 		{
-		cerr<<"tab"<<endl;goto BEGIN;
+		cerr<<"terminal multiply"<<endl;return new Terminal(TOKEN_multiply, pos);
 		}
 		break;
 	case 27:
 		{
-		cerr<<"newline lf"<<endl;goto BEGIN;
+		cerr<<"terminal division"<<endl;return new Terminal(TOKEN_division, pos);
 		}
 		break;
 	case 28:
+		{
+		cerr<<"terminal and"<<endl;return new Terminal(TOKEN_and, pos);
+		}
+		break;
+	case 29:
+		{
+		cerr<<"terminal or"<<endl;return new Terminal(TOKEN_or, pos);
+		}
+		break;
+	case 30:
+		{
+		cerr<<"terminal bitand"<<endl;return new Terminal(TOKEN_bitand, pos);
+		}
+		break;
+	case 31:
+		{
+		cerr<<"terminal bitor"<<endl;return new Terminal(TOKEN_bitor, pos);
+		}
+		break;
+	case 32:
+		{
+		cerr<<"terminal semicolon"<<endl;return new Terminal(TOKEN_semicolon, pos);
+		}
+		break;
+	case 33:
+		{
+		cerr<<"terminal colon"<<endl;return new Terminal(TOKEN_colon, pos);
+		}
+		break;
+	case 34:
+		{
+		cerr<<"terminal leftp"<<endl;return new Terminal(TOKEN_left_p, pos);
+		}
+		break;
+	case 35:
+		{
+		cerr<<"terminal rightp"<<endl;return new Terminal(TOKEN_right_p, pos);
+		}
+		break;
+	case 36:
+		{
+		cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_c, pos);
+		}
+		break;
+	case 37:
+		{
+		cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_c, pos);
+		}
+		break;
+	case 38:
+		{
+		cerr<<"terminal leftcur"<<endl;return new Terminal(TOKEN_left_b, pos);
+		}
+		break;
+	case 39:
+		{
+		cerr<<"terminal rightcur"<<endl;return new Terminal(TOKEN_right_b, pos);
+		}
+		break;
+	case 40:
+		{
+		cerr<<"terminal id"<<endl;return new Identifier(token, toklen, pos);
+		}
+		break;
+	case 41:
+		{
+		cerr<<"terminal int"<<endl;return IntegerFromDecimalString(token, toklen, pos);
+		}
+		break;
+	case 42:
+		{
+		cerr<<"terminal eof"<<endl;return new Terminal(TOKEN_EOF, pos);
+		}
+		break;
+	case 43:
+		{
+		cerr<<"space"<<endl;goto BEGIN;
+		}
+		break;
+	case 44:
+		{
+		cerr<<"tab"<<endl;goto BEGIN;
+		}
+		break;
+	case 45:
+		{
+		cerr<<"newline lf"<<endl;goto BEGIN;
+		}
+		break;
+	case 46:
 		{
 		cerr<<"newline cr"<<endl;goto BEGIN;
 		}
@@ -225,7 +315,269 @@ final:
 	}
 	bufstart = marker;
 	goto START;
-State3:
+State1:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 42;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State2:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 44;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State27:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State53;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State22:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 19;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State55;	//'='
+		default: goto final;
+	};
+
+State9:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 34;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State57:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 18;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State49:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 1;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State43:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State44;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State62:
 	cursor++;
 	if(limit == cursor) fill();
 	accept = 28;
@@ -234,412 +586,179 @@ State3:
 		default: goto final;
 	};
 
-State1:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 24;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State21:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State44;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State5:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 25;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
 State10:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 10;
+	accept = 35;
 	marker = cursor;
 	switch(*cursor){
 		default: goto final;
 	};
 
-State40:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 1;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State34:
+State13:
 	cursor++;
 	if(limit == cursor) fill();
 	accept = 22;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State35;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
 		default: goto final;
 	};
 
-State19:
+State20:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 21;
+	accept = 20;
 	marker = cursor;
 	switch(*cursor){
-		default: goto final;
-	};
-
-State26:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State29;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State2:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 26;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State38:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State39;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 61: goto State57;	//'='
 		default: goto final;
 	};
 
 State47:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State48;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State46:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 6;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State59:
 	cursor++;
 	if(limit == cursor) fill();
 	accept = 9;
@@ -648,612 +767,609 @@ State47:
 		default: goto final;
 	};
 
-State39:
+State34:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 5;
+	accept = 31;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 61: goto State36;	//'='
+		case 124: goto State37;	//'|'
+		default: goto final;
+	};
+
+State38:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State39;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State35:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 37;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State53:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State54;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State5:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 43;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State37:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 29;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State16:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 27;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State58;	//'='
 		default: goto final;
 	};
 
 State29:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 40;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State30;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State49;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State50;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State44:
+State12:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 24;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State45;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 61: goto State60;	//'='
 		default: goto final;
 	};
 
-State6:
+State15:
 	cursor++;
 	if(limit == cursor) fill();
-	switch(*cursor){
-		case 61: goto State47;	//'='
-		default: goto final;
-	};
-
-State18:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 20;
+	accept = 23;
 	marker = cursor;
 	switch(*cursor){
 		default: goto final;
 	};
 
-State23:
+State50:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 4;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State40;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State41;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State32:
+State31:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 2;
+	accept = 40;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State42;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State30:
+State14:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 25;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State31;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State7:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 16;
-	marker = cursor;
-	switch(*cursor){
+		case 61: goto State59;	//'='
 		default: goto final;
 	};
 
 State41:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 4;
+	accept = 2;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State25:
+State54:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 0;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State33;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State22:
+State55:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 17;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State61:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 10;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State17:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 41;
 	marker = cursor;
 	switch(*cursor){
 		case 49: goto State17;	//'1'
@@ -1266,138 +1382,756 @@ State22:
 		case 54: goto State17;	//'6'
 		case 57: goto State17;	//'9'
 		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State42;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		default: goto final;
+	};
+
+State8:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 30;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State63;	//'='
+		case 38: goto State62;	//'&'
+		default: goto final;
+	};
+
+State33:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 36;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State51:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State52;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State7:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 21;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State39:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State40;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State18:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 33;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State40:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State41;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State32:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State38;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State44:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State45;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State6:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 15;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State64;	//'='
+		default: goto final;
+	};
+
+State42:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State43;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State21:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 7;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State56;	//'='
 		default: goto final;
 	};
 
 State45:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 0;
+	accept = 40;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State46;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State28:
+State52:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 19;
+	accept = 3;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State3:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 46;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State30:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State47;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State24:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 38;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State36:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 13;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State11:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 26;
+	marker = cursor;
+	switch(*cursor){
+		case 61: goto State61;	//'='
+		default: goto final;
+	};
+
+State19:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 32;
 	marker = cursor;
 	switch(*cursor){
 		default: goto final;
@@ -1409,650 +2143,98 @@ State0:
 START: 
 	switch(*cursor){
 		case 4: goto State1;
-		case 9: goto State2;
+		case 32: goto State5;	//' '
+		case 40: goto State9;	//'('
+		case 44: goto State13;	//','
+		case 48: goto State17;	//'0'
+		case 52: goto State17;	//'4'
+		case 56: goto State17;	//'8'
+		case 60: goto State20;	//'<'
+		case 68: goto State23;	//'D'
+		case 72: goto State23;	//'H'
+		case 76: goto State23;	//'L'
+		case 80: goto State23;	//'P'
+		case 84: goto State23;	//'T'
+		case 88: goto State23;	//'X'
+		case 100: goto State27;	//'d'
+		case 104: goto State23;	//'h'
+		case 108: goto State23;	//'l'
+		case 112: goto State23;	//'p'
+		case 116: goto State23;	//'t'
+		case 120: goto State23;	//'x'
+		case 124: goto State34;	//'|'
+		case 43: goto State12;	//'+'
+		case 47: goto State16;	//'/'
+		case 51: goto State17;	//'3'
+		case 55: goto State17;	//'7'
+		case 59: goto State19;	//';'
+		case 67: goto State23;	//'C'
+		case 71: goto State23;	//'G'
+		case 75: goto State23;	//'K'
+		case 79: goto State23;	//'O'
+		case 83: goto State23;	//'S'
+		case 87: goto State23;	//'W'
+		case 91: goto State24;	//'['
+		case 95: goto State26;	//'_'
+		case 99: goto State23;	//'c'
+		case 103: goto State23;	//'g'
+		case 107: goto State23;	//'k'
+		case 111: goto State30;	//'o'
+		case 115: goto State23;	//'s'
+		case 119: goto State32;	//'w'
+		case 123: goto State33;	//'{'
 		case 10: goto State3;
+		case 38: goto State8;	//'&'
+		case 42: goto State11;	//'*'
+		case 46: goto State15;	//'.'
+		case 50: goto State17;	//'2'
+		case 54: goto State17;	//'6'
+		case 58: goto State18;	//':'
+		case 62: goto State22;	//'>'
+		case 66: goto State23;	//'B'
+		case 70: goto State23;	//'F'
+		case 74: goto State23;	//'J'
+		case 78: goto State23;	//'N'
+		case 82: goto State23;	//'R'
+		case 86: goto State23;	//'V'
+		case 90: goto State23;	//'Z'
+		case 98: goto State23;	//'b'
+		case 102: goto State28;	//'f'
+		case 106: goto State23;	//'j'
+		case 110: goto State23;	//'n'
+		case 114: goto State31;	//'r'
+		case 118: goto State23;	//'v'
+		case 122: goto State23;	//'z'
+		case 9: goto State2;
 		case 13: goto State4;
 		case 33: goto State6;	//'!'
-		case 32: goto State5;	//' '
-		case 41: goto State8;	//')'
-		case 40: goto State7;	//'('
-		case 43: goto State9;	//'+'
-		case 45: goto State11;	//'-'
-		case 44: goto State10;	//','
-		case 46: goto State12;	//'.'
-		case 49: goto State13;	//'1'
-		case 48: goto State13;	//'0'
-		case 51: goto State13;	//'3'
-		case 50: goto State13;	//'2'
-		case 53: goto State13;	//'5'
-		case 52: goto State13;	//'4'
-		case 55: goto State13;	//'7'
-		case 54: goto State13;	//'6'
-		case 57: goto State13;	//'9'
-		case 56: goto State13;	//'8'
-		case 59: goto State15;	//';'
-		case 58: goto State14;	//':'
-		case 61: goto State16;	//'='
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 91: goto State18;	//'['
-		case 90: goto State17;	//'Z'
-		case 93: goto State19;	//']'
-		case 95: goto State20;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State21;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State22;	//'f'
-		case 105: goto State23;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State24;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State25;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State26;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 123: goto State27;	//'{'
-		case 122: goto State17;	//'z'
-		case 125: goto State28;	//'}'
-		default: goto final;
-	};
-
-State8:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 17;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State42:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
+		case 37: goto State7;	//'%'
+		case 41: goto State10;	//')'
+		case 45: goto State14;	//'-'
 		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
 		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
 		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State43;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 61: goto State21;	//'='
+		case 65: goto State23;	//'A'
+		case 69: goto State23;	//'E'
+		case 73: goto State23;	//'I'
+		case 77: goto State23;	//'M'
+		case 81: goto State23;	//'Q'
+		case 85: goto State23;	//'U'
+		case 89: goto State23;	//'Y'
+		case 93: goto State25;	//']'
+		case 97: goto State23;	//'a'
+		case 101: goto State23;	//'e'
+		case 105: goto State29;	//'i'
+		case 109: goto State23;	//'m'
+		case 113: goto State23;	//'q'
+		case 117: goto State23;	//'u'
+		case 121: goto State23;	//'y'
+		case 125: goto State35;	//'}'
 		default: goto final;
 	};
 
-State4:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 27;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State11:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 13;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State31:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State32;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State35:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State36;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State9:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 12;
-	marker = cursor;
-	switch(*cursor){
-		default: goto final;
-	};
-
-State33:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State34;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State36:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State37;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State43:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 3;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State13:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 23;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State13;	//'1'
-		case 48: goto State13;	//'0'
-		case 51: goto State13;	//'3'
-		case 50: goto State13;	//'2'
-		case 53: goto State13;	//'5'
-		case 52: goto State13;	//'4'
-		case 55: goto State13;	//'7'
-		case 54: goto State13;	//'6'
-		case 57: goto State13;	//'9'
-		case 56: goto State13;	//'8'
-		default: goto final;
-	};
-
-State24:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 22;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State38;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State12:
+State58:
 	cursor++;
 	if(limit == cursor) fill();
 	accept = 11;
@@ -2061,116 +2243,97 @@ State12:
 		default: goto final;
 	};
 
-State14:
+State63:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 15;
+	accept = 12;
 	marker = cursor;
 	switch(*cursor){
 		default: goto final;
 	};
 
-State16:
+State25:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 7;
-	marker = cursor;
-	switch(*cursor){
-		case 61: goto State46;	//'='
-		default: goto final;
-	};
-
-State37:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 6;
-	marker = cursor;
-	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
-		default: goto final;
-	};
-
-State46:
-	cursor++;
-	if(limit == cursor) fill();
-	accept = 8;
+	accept = 39;
 	marker = cursor;
 	switch(*cursor){
 		default: goto final;
 	};
 
-State27:
+State48:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 18;
+	accept = 5;
 	marker = cursor;
 	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State15:
+State56:
 	cursor++;
 	if(limit == cursor) fill();
 	accept = 14;
@@ -2179,135 +2342,234 @@ State15:
 		default: goto final;
 	};
 
-State17:
+State28:
 	cursor++;
 	if(limit == cursor) fill();
-	accept = 22;
+	accept = 40;
 	marker = cursor;
 	switch(*cursor){
-		case 49: goto State17;	//'1'
-		case 48: goto State17;	//'0'
-		case 51: goto State17;	//'3'
-		case 50: goto State17;	//'2'
-		case 53: goto State17;	//'5'
-		case 52: goto State17;	//'4'
-		case 55: goto State17;	//'7'
-		case 54: goto State17;	//'6'
-		case 57: goto State17;	//'9'
-		case 56: goto State17;	//'8'
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State17;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State51;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 
-State20:
+State60:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 8;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State4:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 45;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State64:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 16;
+	marker = cursor;
+	switch(*cursor){
+		default: goto final;
+	};
+
+State23:
+	cursor++;
+	if(limit == cursor) fill();
+	accept = 40;
+	marker = cursor;
+	switch(*cursor){
+		case 49: goto State23;	//'1'
+		case 48: goto State23;	//'0'
+		case 51: goto State23;	//'3'
+		case 50: goto State23;	//'2'
+		case 53: goto State23;	//'5'
+		case 52: goto State23;	//'4'
+		case 55: goto State23;	//'7'
+		case 54: goto State23;	//'6'
+		case 57: goto State23;	//'9'
+		case 56: goto State23;	//'8'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State23;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
+		default: goto final;
+	};
+
+State26:
 	cursor++;
 	if(limit == cursor) fill();
 	switch(*cursor){
-		case 65: goto State17;	//'A'
-		case 67: goto State17;	//'C'
-		case 66: goto State17;	//'B'
-		case 69: goto State17;	//'E'
-		case 68: goto State17;	//'D'
-		case 71: goto State17;	//'G'
-		case 70: goto State17;	//'F'
-		case 73: goto State17;	//'I'
-		case 72: goto State17;	//'H'
-		case 75: goto State17;	//'K'
-		case 74: goto State17;	//'J'
-		case 77: goto State17;	//'M'
-		case 76: goto State17;	//'L'
-		case 79: goto State17;	//'O'
-		case 78: goto State17;	//'N'
-		case 81: goto State17;	//'Q'
-		case 80: goto State17;	//'P'
-		case 83: goto State17;	//'S'
-		case 82: goto State17;	//'R'
-		case 85: goto State17;	//'U'
-		case 84: goto State17;	//'T'
-		case 87: goto State17;	//'W'
-		case 86: goto State17;	//'V'
-		case 89: goto State17;	//'Y'
-		case 88: goto State17;	//'X'
-		case 90: goto State17;	//'Z'
-		case 95: goto State20;	//'_'
-		case 97: goto State17;	//'a'
-		case 99: goto State17;	//'c'
-		case 98: goto State17;	//'b'
-		case 101: goto State17;	//'e'
-		case 100: goto State17;	//'d'
-		case 103: goto State17;	//'g'
-		case 102: goto State17;	//'f'
-		case 105: goto State17;	//'i'
-		case 104: goto State17;	//'h'
-		case 107: goto State17;	//'k'
-		case 106: goto State17;	//'j'
-		case 109: goto State17;	//'m'
-		case 108: goto State17;	//'l'
-		case 111: goto State17;	//'o'
-		case 110: goto State17;	//'n'
-		case 113: goto State17;	//'q'
-		case 112: goto State17;	//'p'
-		case 115: goto State17;	//'s'
-		case 114: goto State17;	//'r'
-		case 117: goto State17;	//'u'
-		case 116: goto State17;	//'t'
-		case 119: goto State17;	//'w'
-		case 118: goto State17;	//'v'
-		case 121: goto State17;	//'y'
-		case 120: goto State17;	//'x'
-		case 122: goto State17;	//'z'
+		case 65: goto State23;	//'A'
+		case 67: goto State23;	//'C'
+		case 66: goto State23;	//'B'
+		case 69: goto State23;	//'E'
+		case 68: goto State23;	//'D'
+		case 71: goto State23;	//'G'
+		case 70: goto State23;	//'F'
+		case 73: goto State23;	//'I'
+		case 72: goto State23;	//'H'
+		case 75: goto State23;	//'K'
+		case 74: goto State23;	//'J'
+		case 77: goto State23;	//'M'
+		case 76: goto State23;	//'L'
+		case 79: goto State23;	//'O'
+		case 78: goto State23;	//'N'
+		case 81: goto State23;	//'Q'
+		case 80: goto State23;	//'P'
+		case 83: goto State23;	//'S'
+		case 82: goto State23;	//'R'
+		case 85: goto State23;	//'U'
+		case 84: goto State23;	//'T'
+		case 87: goto State23;	//'W'
+		case 86: goto State23;	//'V'
+		case 89: goto State23;	//'Y'
+		case 88: goto State23;	//'X'
+		case 90: goto State23;	//'Z'
+		case 95: goto State26;	//'_'
+		case 97: goto State23;	//'a'
+		case 99: goto State23;	//'c'
+		case 98: goto State23;	//'b'
+		case 101: goto State23;	//'e'
+		case 100: goto State23;	//'d'
+		case 103: goto State23;	//'g'
+		case 102: goto State23;	//'f'
+		case 105: goto State23;	//'i'
+		case 104: goto State23;	//'h'
+		case 107: goto State23;	//'k'
+		case 106: goto State23;	//'j'
+		case 109: goto State23;	//'m'
+		case 108: goto State23;	//'l'
+		case 111: goto State23;	//'o'
+		case 110: goto State23;	//'n'
+		case 113: goto State23;	//'q'
+		case 112: goto State23;	//'p'
+		case 115: goto State23;	//'s'
+		case 114: goto State23;	//'r'
+		case 117: goto State23;	//'u'
+		case 116: goto State23;	//'t'
+		case 119: goto State23;	//'w'
+		case 118: goto State23;	//'v'
+		case 121: goto State23;	//'y'
+		case 120: goto State23;	//'x'
+		case 122: goto State23;	//'z'
 		default: goto final;
 	};
 

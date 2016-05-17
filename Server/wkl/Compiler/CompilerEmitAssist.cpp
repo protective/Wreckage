@@ -14,10 +14,12 @@ void Compiler::emitEOP(){
 	program().push_back(inst::EOP);
 }
 void Compiler::emitPopStack(uint32_t size){
-	if(size){
+	if(size != 0 && size <= 0xFFFF){
 		//coppy top stack to the rel loc 
 		program().push_back(inst::popN | size);
 		this->_scopeRef.back() -= size;
+	}else if (size > 0xFFFF){
+		cerr<<"ERROR Compiler::emitPopStack invalid size is "<<size<<endl;
 	}
 }
 void Compiler::emitPopStackIgnore(uint32_t size){
@@ -221,12 +223,12 @@ uint32_t Compiler::emitCond2NEQJumpToRef(uint32_t ref){
 
 void Compiler::emitBOAddPush(){
 	program().push_back(inst::addS01);
-	_scopeRef.back() += 1;
+	_scopeRef.back() -= 1;
 }
 
 void Compiler::emitBOMinusPush(){
 	program().push_back(inst::minusS01);
-	_scopeRef.back() += 1;
+	_scopeRef.back() -= 1;
 }
 
 void Compiler::emitBOAddPop(){
@@ -236,6 +238,63 @@ void Compiler::emitBOAddPop(){
 
 void Compiler::emitBOMinusPop(){
 	program().push_back(inst::minusS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+
+
+void Compiler::emitBOMultiPop(){
+	program().push_back(inst::multiS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBODeviPop(){
+	program().push_back(inst::deviS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOModuloPop(){
+	program().push_back(inst::moduloS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBitAndPop(){
+	program().push_back(inst::bitandS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBitOrPop(){
+	program().push_back(inst::bitorS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitAndPop(){
+	program().push_back(inst::andS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitOrPop(){
+	program().push_back(inst::orS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOLEEQPop(){	
+	program().push_back(inst::leeqS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOLEPop(){
+	program().push_back(inst::leS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOGTEQPop(){	
+	program().push_back(inst::gteqS01dS1);
+	_scopeRef.back() -= 1;
+}
+
+void Compiler::emitBOGTPop(){
+	program().push_back(inst::gtS01dS1);
 	_scopeRef.back() -= 1;
 }
 

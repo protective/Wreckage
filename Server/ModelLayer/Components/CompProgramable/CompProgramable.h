@@ -34,6 +34,9 @@ private:
 	static wkl::Variable getObjInRange(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable sleep(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 
+	static wkl::Variable min(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable max(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+
 };
 
 #endif	/* COMPROGRAMABLE_H */

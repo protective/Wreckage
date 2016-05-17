@@ -355,6 +355,21 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
                 name = "minusS01dS1";
                 break;
             }
+ 			case inst::multiS01dS1:
+            {
+                name = "multiS01dS1";
+                break;
+            }
+ 			case inst::deviS01dS1:
+            {
+                name = "deviS01dS1";
+                break;
+            }
+ 			case inst::moduloS01dS1:
+            {
+                name = "moduloS01dS1";
+                break;
+            }
  			case inst::eqS01dS1:
             {
                 name = "eqS01dS1";
@@ -363,6 +378,46 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
  			case inst::neqS01dS1:
             {
                 name = "neqS01dS1";
+                break;
+            }
+ 			case inst::leeqS01dS1:
+            {
+                name = "leeqS01dS1";
+                break;
+            }
+			case inst::leS01dS1:
+            {
+                name = "leS01dS1";
+                break;
+            }
+ 			case inst::gteqS01dS1:
+            {
+                name = "gteqS01dS1";
+                break;
+            }
+ 			case inst::gtS01dS1:
+            {
+                name = "gtS01dS1";
+                break;
+            }
+ 			case inst::andS01dS1:
+            {
+                name = "andS01dS1";
+                break;
+            }
+ 			case inst::orS01dS1:
+            {
+                name = "orS01dS1";
+                break;
+            }
+ 			case inst::bitandS01dS1:
+            {
+                name = "bitandS01dS1";
+                break;
+            }
+ 			case inst::bitorS01dS1:
+            {
+                name = "bitorS01dS1";
                 break;
             }
  			case inst::sysCall:
@@ -402,7 +457,8 @@ void wkl::printProgram(ostream& out, PROGRAM& p, map<uint32_t, uint32_t> interru
             }			
 			default:{
 				name = "unknown";
-						break;
+				haveArg = true;
+				break;
 			}
 
         }

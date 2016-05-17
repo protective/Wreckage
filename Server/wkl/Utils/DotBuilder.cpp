@@ -41,10 +41,7 @@ void DotBuilder::visit(NodeVardeclStmt* node){
 	parentId = myId;
 	node->variable()->accept(this);
 	parentId = myId;
-	if(node->getType()){
-		cerr<<"accept type"<<endl;
-		node->getType()->accept(this);
-	}
+
 	if(node->expr() != NULL){
 		parentId = myId;
 		node->expr()->accept(this);
@@ -130,7 +127,7 @@ void DotBuilder::visit(NodeAssignExpr* node) {
 	if(node->getType())
 		node->getType()->accept(this);
 	parentId = myId;
-	node->value()->accept(this);
+	node->expr()->accept(this);
 }
 
 void DotBuilder::visit(NodeTupAssignStmt* node) { 

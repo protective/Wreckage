@@ -79,12 +79,31 @@ rules:
 {out}											{cerr<<"terminal out"<<endl; return new Terminal(TOKEN_out, pos);}
 {return}										{cerr<<"terminal return"<<endl; return new Terminal(TOKEN_return, pos);}
 {=}												{cerr<<"terminal assignment"<<endl; return new Terminal(TOKEN_assignment, pos);}
+{+=}											{cerr<<"terminal plus_assignment"<<endl; return new Terminal(TOKEN_plus_assignment, pos);}
+{-=}											{cerr<<"terminal minus_assignment"<<endl; return new Terminal(TOKEN_minus_assignment, pos);}
+{*=}											{cerr<<"terminal multiply_assignment"<<endl; return new Terminal(TOKEN_multiply_assignment, pos);}
+{/=}											{cerr<<"terminal division_assignment"<<endl; return new Terminal(TOKEN_division_assignment, pos);}
+{&=}											{cerr<<"terminal bitand_assignment"<<endl; return new Terminal(TOKEN_bitand_assignment, pos);}
+{\|=}											{cerr<<"terminal bitor_assignment"<<endl; return new Terminal(TOKEN_bitor_assignment, pos);}
 {==}										    {cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_eq, pos);}
+{!}											    {cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_not, pos);}
 {!=}											{cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_neq, pos);}
+{>=}										    {cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_gteq, pos);}
+{<=}											{cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_leeq, pos);}
+{>}										        {cerr<<"terminal eq"<<endl; return new Terminal(TOKEN_gt, pos);}
+{<}											    {cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_le, pos);}
+{%}											    {cerr<<"terminal neq"<<endl; return new Terminal(TOKEN_modulo, pos);}
 {,} 											{cerr<<"terminal comma"<<endl;return new Terminal(TOKEN_comma, pos);}
 {.} 											{cerr<<"terminal dot"<<endl;return new Terminal(TOKEN_dot, pos);}
 {+} 											{cerr<<"terminal plus"<<endl;return new Terminal(TOKEN_plus, pos);}
 {-} 											{cerr<<"terminal minus"<<endl;return new Terminal(TOKEN_minus, pos);}
+{*} 											{cerr<<"terminal multiply"<<endl;return new Terminal(TOKEN_multiply, pos);}
+{/} 											{cerr<<"terminal division"<<endl;return new Terminal(TOKEN_division, pos);}
+{&&} 											{cerr<<"terminal and"<<endl;return new Terminal(TOKEN_and, pos);}
+{\|\|} 											{cerr<<"terminal or"<<endl;return new Terminal(TOKEN_or, pos);}
+{&} 											{cerr<<"terminal bitand"<<endl;return new Terminal(TOKEN_bitand, pos);}
+{\|} 											{cerr<<"terminal bitor"<<endl;return new Terminal(TOKEN_bitor, pos);}
+
 {;} 											{cerr<<"terminal semicolon"<<endl;return new Terminal(TOKEN_semicolon, pos);}
 {:} 											{cerr<<"terminal colon"<<endl;return new Terminal(TOKEN_colon, pos);}
 {\(} 											{cerr<<"terminal leftp"<<endl;return new Terminal(TOKEN_left_p, pos);}

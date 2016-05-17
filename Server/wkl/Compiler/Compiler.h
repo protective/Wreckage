@@ -158,8 +158,23 @@ private:
 	void emitReturn();
 	void emitBOAddPush();
 	void emitBOMinusPush();
+	
 	void emitBOAddPop();
 	void emitBOMinusPop();
+	void emitBOMultiPop();
+	void emitBODeviPop();
+	void emitBOModuloPop();
+	
+	void emitBitAndPop();
+	void emitBitOrPop();
+	
+	void emitAndPop();
+	void emitOrPop();
+	
+	void emitBOLEEQPop();
+	void emitBOLEPop();
+	void emitBOGTEQPop();
+	void emitBOGTPop();
 	void emitBOEQPop();
 	void emitBONEQPop();
 	

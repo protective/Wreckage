@@ -19,8 +19,9 @@ namespace wkl {
 			{gainBuff, "_wkl_gainBuff"},
 			{updateBuff, "_wkl_updateBuff"},
 			{loseBuff, "_wkl_loseBuff"},
-			{sleep, "_wkl_sleep"}
-			
+			{sleep, "_wkl_sleep"},
+			{min, "min"},
+			{max, "max"}			
 		};
 
 	}

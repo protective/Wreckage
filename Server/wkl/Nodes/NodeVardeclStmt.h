@@ -11,14 +11,22 @@
 #include "NodeStmt.h"
 #include "NodeExpr.h"
 
+#include "../Terminals/Terminal.h"
+
 class NodeVardeclStmt : public NodeStmt {
 public:
-	NodeVardeclStmt(TypeDenoter* type, Identifier* id, NodeExpr* expr, NodeStmt* next):
+	NodeVardeclStmt(Identifier* id, Terminal* appliedOperator, NodeExpr* expr, NodeStmt* next):
 	NodeStmt(next){
-		_expr = expr;
 		_id = id;
-		_type = type;
+		_expr = expr;
+		_appliedOperator = appliedOperator;
+		
 	}
+	/** Get the operator applied */
+	Terminal* appliedOperator(){
+		return _appliedOperator;
+	}
+	
 	Identifier* variable(){
 		return this->_id;
 	}
@@ -27,13 +35,11 @@ public:
 		return this->_expr;
 	}
 	virtual void accept(Visitor* v);
-	virtual TypeDenoter* getType(){return _type;}
-	virtual void setType(TypeDenoter* type){_type = type;}
 	virtual ~NodeVardeclStmt(){}
 private:
 	NodeExpr* _expr;
 	Identifier* _id;
-	TypeDenoter* _type;
+	Terminal* _appliedOperator;
 };
 
 #endif	/* SORDERNODEVARDECLSTMT_H */

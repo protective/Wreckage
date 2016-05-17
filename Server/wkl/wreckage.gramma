@@ -27,9 +27,9 @@ stmts		-> stmt semicolon stmts				{cerr<<"PARSE stmt semicolon stmts"<<endl;((No
 stmt		-> out outDecl						{cerr<<"PARSE out outDecl"<<endl;result = arg1;}
 			 | in inDecl						{cerr<<"PARSE in inDecl"<<endl;result = arg1;}
              | return returnStmt                {cerr<<"PARSE return returnStmt"<<endl;result = arg1;}
-             | varDecl                          {cerr<<"PARSE varDecl Stmt"<<endl;result = arg0;}
-             | expr								{cerr<<"PARSE expr"<<endl; result = new NodeExprStmt((NodeExpr*)arg0);}
+             | varAssign                        {cerr<<"PARSE varAssign Stmt"<<endl;result = arg0;}
              | tuprefblock assignment expr      {cerr<<"PARSE tuprefblock assignment expr"<<endl;result = new NodeTupAssignStmt((NodeTupDref*)arg0, (NodeExpr*)arg2);}
+             | expr								{cerr<<"PARSE expr"<<endl; result = new NodeExprStmt((NodeExpr*)arg0);}
 
 paramsblock	-> left_p params right_p			{result = arg1;}
 			 | left_p right_p					{result = NULL;}
@@ -44,13 +44,18 @@ outDecl     -> id assignment expr               {cerr<<"PARSE id assignment expr
 inDecl      -> inDecl comma inDecl              {cerr<<"PARSE in decl block"<<endl;((NodeIndeclStmt*)arg0)->setNext((NodeIndeclStmt*)arg2); result = arg0;}
              | id                               {cerr<<"PARSE in decl"<<endl;result = new NodeIndeclStmt((Identifier*)arg0, NULL);}
 
+varAssign   -> id assignment expr               {cerr<<"PARSE id assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}
+			 | id plus_assignment expr			{cerr<<"PARSE add assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+			 | id minus_assignment expr			{cerr<<"PARSE minus assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+			 | id multiply_assignment expr		{cerr<<"PARSE multiply assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+			 | id division_assignment expr		{cerr<<"PARSE division assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+			 | id bitand_assignment expr		{cerr<<"PARSE bitand assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+			 | id bitor_assignment expr			{cerr<<"PARSE bitor assignment expr"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, (Terminal*)arg1, (NodeExpr*)arg2, NULL);}	
+             | id                               {cerr<<"PARSE id"<<endl; result = new NodeVardeclStmt((Identifier*)arg0, NULL, NULL, NULL);}
 
 returnStmt  -> expr                             {cerr<<"PARSE returnStmt"<<endl;result = new NodeRtnStmt((NodeExpr*)arg0);}
 
 			 
-varDecl		-> id 							    {cerr<<"PARSE id"<<endl;result = new NodeVardeclStmt(NULL,(Identifier*)arg0, NULL, NULL);}
-			 | id assignment expr			    {cerr<<"PARSE id assignment expr"<<endl;result = new NodeVardeclStmt(NULL, (Identifier*)arg0,(NodeExpr*)arg2, NULL);}
-
 varexpr		-> id left_b expr right_b	        {cerr<<"PARSE varexpr: left_b expr right_b"<<endl;result = new NodeKeyAccessVariable((Identifier*)arg0, (NodeExpr*)arg2);}
              | id								{cerr<<"PARSE varexpr: id"<<endl;result = new NodeVariable((Identifier*)arg0);}
 			 | expr dot id						{cerr<<"PARSE varexpr: expr dot id"<<endl;result = new NodeAttributeAccessVariable((NodeExpr*)arg0, (Identifier*)arg2);}	
@@ -98,14 +103,24 @@ pair        -> expr colon expr                  {cerr<<"PARSE expr colon expr"<<
 
 
 expr		-> dictblock						{cerr<<"PARSE dictblock"<<endl; result = arg0;}
+             | not expr				            {cerr<<"PARSE not not implemented"<<endl; result = NULL;}
+             | expr multiply expr				{cerr<<"PARSE multiply"<<endl; result = BinOp(arg0, arg1, arg2);}
+             | expr division expr				{cerr<<"PARSE division"<<endl; result = BinOp(arg0, arg1, arg2);}
+             | expr modulo expr					{cerr<<"PARSE modulo"<<endl; result = BinOp(arg0, arg1, arg2);}
              | expr minus expr					{cerr<<"PARSE minus"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr plus expr					{cerr<<"PARSE plus"<<endl; result = BinOp(arg0, arg1, arg2);}
+		     | expr leeq expr					{cerr<<"PARSE leeq"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr le expr					    {cerr<<"PARSE le"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr gteq expr					{cerr<<"PARSE gteq"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr gt expr					    {cerr<<"PARSE gt"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr eq expr					    {cerr<<"PARSE eq"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | expr neq expr					{cerr<<"PARSE neq"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr bitand expr					{cerr<<"PARSE bitand"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr bitor expr					{cerr<<"PARSE bitor"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr and expr					{cerr<<"PARSE and"<<endl; result = BinOp(arg0, arg1, arg2);}
+			 | expr or expr					    {cerr<<"PARSE or"<<endl; result = BinOp(arg0, arg1, arg2);}
 			 | int								{cerr<<"PARSE int"<<endl; result = new NodeLiteralExpr((IntegerLiteral*)arg0);}
 			 | varexpr argblock					{cerr<<"PARSE call"<<endl; result = new NodeCallExpr(new NodeVariableExpr((NodeVariable*)arg0), (NodeArg*)arg1);}
 			 | varexpr							{cerr<<"PARSE varexpr"<<endl; result = new NodeVariableExpr((NodeVariable*)arg0);}	
-			 | varexpr assignment expr			{cerr<<"PARSE varexpr assignment expr"<<endl; result = new NodeAssignExpr((NodeVariable*)arg0, (NodeExpr*)arg2);}	
-             	
 */
 

@@ -156,21 +156,20 @@ void Compiler::visit(NodeIfStmt* node){
 	emitPopStackIgnore(1);
     if(node->elseBlock()){
         _scopeRef.push_back(_scopeRef.back());
+		uint32_t old = _scopeRef.back();
         node->elseBlock()->accept(this);
-		emitPopStack(_scopeRef.back());
-        _scopeRef.pop_back();
-        
-
+		emitPopStack(_scopeRef.back() - old);
+		_scopeRef.pop_back();
     }
     uint32_t g = emitJumpToRef();
     program().at(h) = program().size();
 	emitPopStackIgnore(1);
     if(node->ifBlock()){
         _scopeRef.push_back(_scopeRef.back());
+		uint32_t old = _scopeRef.back();
 		node->ifBlock()->accept(this);
-		emitPopStack(_scopeRef.back());
-        _scopeRef.pop_back();
-
+		emitPopStack(_scopeRef.back() - old);
+		_scopeRef.pop_back();
     }
 	program().at(g) = program().size();
 	if(node->next()){
@@ -197,10 +196,10 @@ void Compiler::visit(NodeWhileStmt* node){
 	emitPopStackIgnore(1);
 	if(node->body()){
 		_scopeRef.push_back(_scopeRef.back());
-		 node->body()->accept(this);
 		uint32_t oldRef = _scopeRef.back();
+		node->body()->accept(this);
+		emitPopStack(_scopeRef.back() - oldRef);
 		_scopeRef.pop_back();
-		emitPopStack(oldRef - _scopeRef.back());	
     }
 	program().at(g) = program().size();
 	_scopeRef.push_back(0);
@@ -323,8 +322,9 @@ void Compiler::visit(NodeMethod* node){
 
 			node->block()->accept(this);
 			emitPopStack(_scopeRef.back() - old);
-			_scopeRef.pop_back();
+			
 			emitReturn();
+			_scopeRef.pop_back();
 		}
 	}
 	if(node->next())
@@ -386,22 +386,41 @@ void Compiler::visit(NodeCallExpr* node){
 }
 
 void Compiler::visit(NodeVardeclStmt* node){
-    
-    if(node->expr()){
-        node->expr()->accept(this);
-    }
 
 	vTableEntry* ve = NULL;
-    ve = this->vtableFind(node->variable()->name());
+    ve = this->vtableFind(node->variable()->name());	
     if(ve){
-		 if(node->expr())
+		if(node->expr()){
+			if (node->appliedOperator()->token() != TOKEN_assignment)
+				emitPushLocToTopStack(ve->pos, ve->rel);
+			node->expr()->accept(this);
+			Token tmp = node->appliedOperator()->token();
+			switch(node->appliedOperator()->token()){
+				case TOKEN_plus_assignment:{
+					emitBOAddPop();break;}
+				case TOKEN_minus_assignment:{
+					emitBOMinusPop();break;}
+				case TOKEN_multiply_assignment:{
+					emitBOMultiPop();break;}
+				case TOKEN_division_assignment:{
+					emitBODeviPop();break;}
+				case TOKEN_bitand_assignment:{
+					emitBOAddPop();break;}
+				case TOKEN_bitor_assignment:{
+					emitBOMinusPop();break;}
+				default: {}
+			}
 			emitTopStackToLoc(ve->pos, ve->rel, 1);
+		}
     }else{
-		vTableEntry v(node->variable()->name(),_scopeRef.back(), varloc::rel);
-		_vtable.push_back(v);
-		if(!node->expr()){
+
+		if(node->expr()){
+			node->expr()->accept(this);
+		}else{
 			emitPushStack(0x00, 1);
 		}
+		vTableEntry v(node->variable()->name(), _scopeRef.back(), varloc::rel);
+		_vtable.push_back(v);
 	}
 
     if(node->next())
@@ -451,22 +470,41 @@ void Compiler::visit(NodeExprStmt* node){
 
 
 void Compiler::visit(NodeAssignExpr* node){
-    
-    node->value()->accept(this);
-    
-    vTableEntry* ve = NULL;
-    ve = this->vtableFind(node->assignee()->id()->name());
-    if(!ve){
-        return;
-    }
-    emitTopStackToLoc(ve->pos, ve->rel, 1);
-
+	/*
+	vTableEntry* ve = NULL;
+    ve = this->vtableFind(node->assignee()->id()->name());	
+    if(ve){
+		if(node->expr()){
+			if (node->appliedOperator()->token() != TOKEN_assignment)
+				emitPushLocToTopStack(ve->pos, ve->rel);
+			node->expr()->accept(this);
+			switch(node->appliedOperator()->token()){
+				case TOKEN_plus:{emitBOAddPop();break;}
+				case TOKEN_minus:{emitBOMinusPop();break;}
+				case TOKEN_multiply:{emitBOMultiPop();break;}
+				case TOKEN_division:{emitBODeviPop();break;}
+				case TOKEN_modulo:{emitBOModuloPop();break;}
+				case TOKEN_bitand:{emitBOAddPop();break;}
+				case TOKEN_bitor:{emitBOMinusPop();break;}
+				default: {}
+			}
+			emitTopStackToLoc(ve->pos, ve->rel, 1);
+		}
+    }else{
+		vTableEntry v(node->assignee()->id()->name(),_scopeRef.back(), varloc::rel);
+		_vtable.push_back(v);
+		if(node->expr()){
+			node->expr()->accept(this);
+			emitPushStack(0x00, 1); //retun value of assignment expr is 0 TODO FIX
+		}else{
+			emitPushStack(0x00, 2);
+		}
+	}
+	*/
 }
 
 void Compiler::visit(NodeTupAssignStmt* node){
-    
-    
-    
+
     vTableEntry* ve = NULL;
 	NodeTupDref* tup = node->assignee();
 	while(tup){
@@ -520,6 +558,50 @@ void Compiler::visit(BinaryOperatorExpr* node){
 		}
 		case TOKEN_minus:{
 			emitBOMinusPop();
+			break;
+		}
+		case TOKEN_multiply:{
+			emitBOMultiPop();
+			break;
+		}
+		case TOKEN_division:{
+			emitBODeviPop();
+			break;
+		}
+		case TOKEN_modulo:{
+			emitBOModuloPop();
+			break;
+		}
+		case TOKEN_and:{
+			emitAndPop();
+			break;
+		}
+		case TOKEN_or:{
+			emitBOMinusPop();
+			break;
+		}
+		case TOKEN_bitand:{
+			emitBOAddPop();
+			break;
+		}
+		case TOKEN_bitor:{
+			emitBOMinusPop();
+			break;
+		}
+		case TOKEN_leeq:{
+			emitBOLEEQPop();
+			break;
+		}		
+		case TOKEN_le:{
+			emitBOLEPop();
+			break;
+		}		
+		case TOKEN_gteq:{
+			emitBOGTEQPop();
+			break;
+		}		
+		case TOKEN_gt:{
+			emitBOGTPop();
 			break;
 		}
 		case TOKEN_eq:{
