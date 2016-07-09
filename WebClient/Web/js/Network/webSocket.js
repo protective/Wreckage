@@ -13,7 +13,7 @@ define(function ( require ) {
         var handlers = {};
 
         function connect(){
-            ws = new WebSocket("ws://192.168.1.180:11143");
+            ws = new WebSocket("ws://localhost:11143");
 
             ws.onopen = function()
             {

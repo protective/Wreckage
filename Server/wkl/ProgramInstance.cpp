@@ -16,13 +16,27 @@ ProgramInstance::ProgramInstance(uint32_t instanceRefId, SObj* obj,  Program* pr
 	_envContext = envContext;
 }
 
+bool ProgramInstance::isTerminating(){
+	for (auto it: _instances) {
+		if (!it.second->isHalt())
+			return false;
+	}
+	return true;
+
+}
+
 void ProgramInstance::yield(uint32_t refId, Variable* retVar){
 	ProgramExecutor* pe = getRunRef(refId);
 	if(pe)
 		pe->yield(retVar);
 }
 
-uint32_t ProgramInstance::getRegister(uint32_t refId, uint32_t refId) {
+ProgramExecutor* ProgramInstance::getRunRef(uint32_t refId)
+{
+	return _instances.find(refId) != _instances.end() ? _instances[refId]: NULL;
+}
+
+uint32_t ProgramInstance::getRegister(uint32_t refId) {
 	ProgramExecutor* pe = getRunRef(refId);
 	if(pe)
 		return pe->getRegister();
@@ -54,34 +68,46 @@ uint32_t ProgramInstance::run(uint32_t refId, uint32_t obj, uint32_t functionId,
 		return 0;
 }
 
-void ProgramInstance::interrupt(uint32_t obj, uint32_t functionId, vector<Variable>& args){
-	cerr<<"ProgramExecutor::interrupt"<<endl;
-	_registerFlags = _registerFlags | registerFlags::interrupt; 
+uint32_t ProgramInstance::interrupt(uint32_t obj, uint32_t functionId){
+	vector<Variable> nonargs;
+	return this->interrupt(obj, functionId, nonargs, NULL, NULL);			
+}
+uint32_t ProgramInstance::interrupt(uint32_t obj, uint32_t functionId, vector<Variable>& args){
 	
-	list<Variable> stack;
+	return this->interrupt(obj, functionId, args, NULL, NULL);	
+}
 
-	stack.push_back(0xBBBB); //retVal
-	for(auto it : args){
-		stack.push_back(it);
+uint32_t ProgramInstance::interrupt(uint32_t obj, uint32_t functionId, vector<Variable>& args, iterateFunc callback, void* callBackBlock){
+	cerr<<"ProgramExecutor::interrupt"<<endl;
+	//_registerFlags = _registerFlags | registerFlags::interrupt;
+	uint32_t runRef;
+	uint32_t highest = 0;
+	bool found = false;
+	for(auto it : this->_instances){
+		if (it.second->isHalt()){
+			it.second->reset();
+			runRef = it.first;
+			found = true;
+			break;
+		}else{
+			highest = max(highest, it.first);
+		}
 	}
-	uint32_t oldPc = _programCounter;
-	stack.push_back(0x00); //pc EOP
-	int i = _stackTop;
-	uint32_t ret_top = _stackTop;
-	for (list<Variable>::iterator stackit = stack.begin(); stackit!= stack.end();stackit++){
-		_stackTop = i;
-		_stack[i++] = *stackit;
-	}	
-	_programCounter = _program->getInterruptHandlers()[functionId];
-	run(obj, functionId, args);
-	_programCounter = oldPc;
-	_registerFlags = _registerFlags & (~registerFlags::interrupt);
-	_stackTop = ret_top;
+	if(!found){
+		highest++;
+		cerr<<"New program executor "<<highest<<endl;
+		this->_instances[highest] = new ProgramExecutor(this, highest);
+		runRef = highest;
+	}
 	
-	for (i = 0; i < args.size(); i++){
-		args[i] = _stack[ret_top + i + 1];
-	}
-	//*argIndex = ret_top + 1;
+	cerr<<"Program executor run"<<endl;
+	this->_instances[runRef]->run(obj, functionId, args);
+	
+	cerr<<"Program executor run done"<<endl;
+	if (this->getRegister(runRef) & wkl::registerFlags::yield)
+		this->_instances[runRef]->setCallback(callback, callBackBlock);
+
+	return highest;
 }
 
 ProgramInstance::~ProgramInstance() {

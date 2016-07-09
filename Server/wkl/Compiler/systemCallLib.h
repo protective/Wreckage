@@ -19,7 +19,9 @@ class SObj;
 namespace wkl {
 	class ProgramExecutor;
 	typedef Variable (*systemCallFunc)(SObj* _this, ProgramExecutor* programExe, void*);
-	
+	typedef void (*iterateFunc)(SObj* _this, void* block);
+
+
 	typedef string systemCallBack_t;
 	
 	typedef string systemConst_t;	
@@ -81,6 +83,12 @@ namespace wkl {
 			wkl_buffId,
 			wkl_buffTickCounter,
 			wkl_buffTickTime,
+			wkl_gfx_cast,
+			wkl_gfx_travel,
+			wkl_gfx_hit,
+			wkl_gfx_buffgain,
+			wkl_gfx_buffanimate,
+			wkl_gfx_bufflose,
 		};	
 		
 		extern map<uint32_t, systemCallBack_t> lib;

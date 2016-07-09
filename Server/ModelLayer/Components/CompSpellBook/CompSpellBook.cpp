@@ -47,7 +47,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			envContext[systemEnvLib::wkl_critChance] = 90;
 
 			//that is leave it to wkl
-			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0);
+			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0, 0);
 			this->_obj->signal(SIGNAL::runProgram, &s);
 			break;
 		}
@@ -204,12 +204,13 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 			wkl::systemCallBackLib::__hit__,
 			0);
 		_this->getProcessor()->sendMessage(target, msgHit, 0);
-	
+
 		spellBook->sendCast(powerId, target);
 	}
 
 	MessageProgramSleepWake* outSleepWake = new MessageProgramSleepWake(
 			_this->getId(),
+			programExe->getInstanceRef(),
 			programExe->getRunRef());
 		_this->getProcessor()->sendMessage(_this->getId(), outSleepWake);
 

@@ -5,9 +5,19 @@
 #include "../SComponent.h"
 
 #include "../../../wkl/Compiler/systemCallLib.h"
-#include "../../../wkl/ProgramExecutor.h"
+#include "../../../wkl/ProgramInstance.h"
 
 #include "../../../wkl/Program.h"
+#include "../../../wkl/ProgramExecutor.h"
+
+struct BuffIterator {
+	uint32_t iteratorId;
+	uint32_t interrupt_functionId;
+	list<uint32_t> buffs;
+	wkl::ProgramExecutor* callback_programExe;
+	systemCallFunc callback_function;
+	vector<Variable> callback_args;
+};
 
 class CompTargeted  : public SComponent {
 public:
@@ -34,7 +44,7 @@ public:
 		uint32_t buffIndex);
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
 
-	map<uint32_t, wkl::ProgramExecutor*>& getBuffs(){return _buffs;}
+	map<uint32_t, wkl::ProgramInstance*>& getBuffs(){return _buffs;}
 	
 	void virtual dbInit();
 	void virtual dbTableInit(pqxx::connection& con);
@@ -45,9 +55,15 @@ public:
 private:
 	virtual void init();
 	uint32_t _buffIdSequence;
-	map<uint32_t, wkl::ProgramExecutor*> _buffs;
+	map<uint32_t, wkl::ProgramInstance*> _buffs;
+	uint32_t _asyncIteratorCount;
+	map<uint32_t, void*> _asyncIterators;
+	
 	//systemCalls implemented by this component
+	void foreachbuff(uint32_t interrupt_functionId, wkl::ProgramExecutor* callback_programExe, vector<Variable> args, systemCallFunc callback);
+	static void _foreachbuff(SObj* _this, void* block);
 	static wkl::Variable phycicalDamage(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
+	static wkl::Variable takeDamage(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable gainBuff(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable updateBuff(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable loseBuff(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);

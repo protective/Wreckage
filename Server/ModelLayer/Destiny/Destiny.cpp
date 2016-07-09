@@ -27,7 +27,7 @@ void Destiny::message(MESSAGE::Enum type, Message* data){
 					res.push_back(it.first);
 				} 
 			}
-			MessageDestInRangeRsp* outmsg = new MessageDestInRangeRsp(0, res,  msg->_ref);
+			MessageDestInRangeRsp* outmsg = new MessageDestInRangeRsp(0, res, msg->_instanceRef, msg->_runRef);
 			networkControl->sendMessage(msg->_fromId, outmsg);
 			break;
 		}

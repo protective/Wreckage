@@ -8,28 +8,36 @@
 #include <stdint.h>
 
 #include "ProgramExecutor.h"
+#include "ProgramInstance.h"
 #include "Compiler/Compiler.h"
+#include "../ModelLayer/Components/CompTargeted/CompTargeted.h"
+
 #include "../wkl/Compiler/ProgramPrinter.h"
 
-ProgramExecutor::ProgramExecutor(uint32_t runRefId, SObj* obj,  Program* program, map<uint32_t, systemCallFunc> systemCallFuncs , map<Variable, Variable> envContext) {
+ProgramExecutor::ProgramExecutor(ProgramInstance* instance, uint32_t runRefId) {
+	_instance = instance;
 	_runRefId = runRefId;
-	_obj = obj;
-	_program = program;
-	_systemCallFuncs = systemCallFuncs;
-	_envContext = envContext;
-	_registerFlags = 0;
-	_mipsCredit = 0;
-	_programCounter = 0;
-	_stackTop = 0;
+	_callback = NULL;
+	_callbackBlock= NULL;
+	this->reset();
+}
+
+void ProgramExecutor::reset(){
 	_locRet = 0;
-	//if(_stack)
-	//	free(_stack);
-	//_stack = (uint32_t*)malloc(sizeof(uint32_t)* 100);
-	//memset(_stack,0,sizeof(uint32_t)* 100);
-	
+	_mipsCredit = 1000;
+	_programCounter = 0;
+	_registerFlags = 0;
+
+	_stackTop = 0;
 	_stack.resize(100);
 	_stackMax = 100;
 }
+
+
+bool ProgramExecutor::isHalt() {
+	return _registerFlags & registerFlags::halt;
+}
+
 
 void ProgramExecutor::yield(Variable* retVar){
 	if (_registerFlags & registerFlags::yield){
@@ -38,39 +46,7 @@ void ProgramExecutor::yield(Variable* retVar){
 		_registerFlags = _registerFlags & (~registerFlags::yield);
 	}else
 		segfault("yield while flags is not set");
-
 }
-
-void ProgramExecutor::interrupt(uint32_t obj, uint32_t functionId, vector<Variable>& args){
-	cerr<<"ProgramExecutor::interrupt"<<endl;
-	_registerFlags = _registerFlags | registerFlags::interrupt; 
-	
-	list<Variable> stack;
-
-	stack.push_back(0xBBBB); //retVal
-	for(auto it : args){
-		stack.push_back(it);
-	}
-	uint32_t oldPc = _programCounter;
-	stack.push_back(0x00); //pc EOP
-	int i = _stackTop;
-	uint32_t ret_top = _stackTop;
-	for (list<Variable>::iterator stackit = stack.begin(); stackit!= stack.end();stackit++){
-		_stackTop = i;
-		_stack[i++] = *stackit;
-	}	
-	_programCounter = _program->getInterruptHandlers()[functionId];
-	run(obj, functionId, args);
-	_programCounter = oldPc;
-	_registerFlags = _registerFlags & (~registerFlags::interrupt);
-	_stackTop = ret_top;
-	
-	for (i = 0; i < args.size(); i++){
-		args[i] = _stack[ret_top + i + 1];
-	}
-	//*argIndex = ret_top + 1;
-}
-
 
 uint32_t ProgramExecutor::run(uint32_t obj){
 	vector<Variable> arg;
@@ -82,14 +58,16 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId){
 	return this->run(obj, functionId, arg);
 }
 
-uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable> args){
+uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable>& args){
 //cerr<<"execure CommandOrderThread"<<endl;
+	uint32_t arg_ret_pos = 0;
 	_mipsCredit = 1000;
-	if (functionId > 0 && !(_registerFlags & registerFlags::interrupt)) {
-		_programCounter = _program->getInterruptHandlers()[functionId];
+	Program* program = _instance->getProgram();
+	if (functionId > 0) {
+		_programCounter = program->getInterruptHandlers()[functionId];
 		int i = 0;
 		list<uint32_t> stack;
-		
+		//arg_ret_pos = stack.size();
 		stack.push_back(0xBBBB); //retVal
 		for(auto it : args){
 			stack.push_back(it);
@@ -104,33 +82,23 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 #endif
 		}
 	}
-	
-		if (_registerFlags & registerFlags::interrupt &&
-			_registerFlags & registerFlags::yield)
-			cerr<<"ERROR wkl function call interrupt && yield"<<endl;
 
 #ifdef WKL_DEBUG
-	if (_registerFlags & registerFlags::interrupt)
-		cerr<<"BEGIN wkl function call"<<endl;
-	else if (_registerFlags & registerFlags::yield)
-		cerr<<"BEGIN wkl function call"<<endl;
-	else
-		cerr<<"BEGIN wkl function call"<<endl;
+
+	cerr<<"BEGIN wkl function call yield ="<<(_registerFlags & registerFlags::yield ? "true" : "false")<<endl;
 #endif
-	
+	if (_registerFlags & registerFlags::yield){
+		cerr<<"hest"<<endl;
+	}
 	while(_mipsCredit
-			&& _program
-			&& (!(_registerFlags & registerFlags::yield) || (_registerFlags & registerFlags::interrupt))){
-		
+			&& program
+			&& (!(_registerFlags & registerFlags::yield))){
+		cerr<<"ret0 "<<arg_ret_pos<<endl;
 		_mipsCredit--;
-		//if((_registerFlags & registerFlags::Yeld) > 0){
-		//	_registerFlags &= ~registerFlags::Yeld;
-			//cerr<<"yeld"<<endl;
-		//	return 1;
-		//}
-		if(_programCounter > _program->program().size())
+
+		if(_programCounter > program->program().size())
 			return segfault();
-		uint32_t ins = _program->program()[_programCounter];
+		uint32_t ins = program->program()[_programCounter];
 		
 		cerr<<"exe line "<<std::hex<<_programCounter<<std::dec<<" stack top "<<_stackTop<<endl;
 
@@ -141,15 +109,15 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				for(int i = 0 ; i < ARG(ins);i++){
 					if(_stackTop++ >= _stackMax)
 						return segfault();
-					_stack[_stackTop] = _program->program()[_programCounter+1];
+					_stack[_stackTop] = program->program()[_programCounter+1];
 				}
 				_programCounter += 2;
 				break;
 			}
 			case inst::jmpA_1:{
-				if(_program->program()[_programCounter+1] >= _program->program().size())
+				if(program->program()[_programCounter+1] >= program->program().size())
 					return segfault();
-				_programCounter = _program->program()[_programCounter+1];
+				_programCounter = program->program()[_programCounter+1];
 				break;
 			}
 			case inst::pushPC:{
@@ -163,7 +131,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 			case inst::pushRPC:{
 				if(_stackTop++ >= _stackMax)
 					return segfault();			
-				_stack[_stackTop] = _program->program()[_programCounter+1]; 
+				_stack[_stackTop] = program->program()[_programCounter+1]; 
 	
 				_programCounter += 2;
 				break;
@@ -179,9 +147,9 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				break;
 			}
 			case inst::pushUIndx:{
-				if(_programCounter + 1 >= _program->program().size())
+				if(_programCounter + 1 >= program->program().size())
 					return segfault();
-				uint32_t src = _stackTop - _program->program()[_programCounter + 1];
+				uint32_t src = _stackTop - program->program()[_programCounter + 1];
 				if(_stackTop++ >= _stackMax)
 					return segfault();
 				if(_stack[src].t == NULL)
@@ -193,9 +161,9 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 			}
 			case inst::cjmpA_1:{
 				if (_stack[_stackTop]){
-					if(_program->program()[_programCounter+1] >= _program->program().size())
+					if(program->program()[_programCounter+1] >= program->program().size())
 						return segfault();
-					_programCounter =  _program->program()[_programCounter+1];
+					_programCounter =  program->program()[_programCounter+1];
 				}else{
 					_programCounter += 2;
 				}
@@ -205,9 +173,9 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				if(_stackTop < 1)
 					return segfault();
 				if (_stack[_stackTop] != _stack[_stackTop-1]){
-					if(_program->program()[_programCounter+1] >= _program->program().size())
+					if(program->program()[_programCounter+1] >= program->program().size())
 						return segfault();
-					_programCounter =  _program->program()[_programCounter+1];
+					_programCounter =  program->program()[_programCounter+1];
 				}else{
 					_programCounter += 2;
 				}
@@ -228,17 +196,18 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				break;
 			}
 			case inst::sysCall:{
-				uint32_t stackArg = _program->program()[_programCounter+1];
-				
-				if(_systemCallFuncs.find(ARG(ins)) != _systemCallFuncs.end()){
+				uint32_t stackArg = program->program()[_programCounter+1];
+				cerr<<"ret1 "<<arg_ret_pos<<endl;
+				if(_instance->getSystemCallFuncs().find(ARG(ins)) != _instance->getSystemCallFuncs().end()){
 					_stack[_stackTop - stackArg + 1] =
-							_systemCallFuncs[ARG(ins)](_obj, this, (void*)(&_stack[_stackTop - stackArg +1]));
+							_instance->getSystemCallFuncs()[ARG(ins)](this->getObj(), this, (void*)(&_stack[_stackTop - stackArg + 1]));
 					if(_registerFlags & registerFlags::yield){
 						_locRet = _stackTop - stackArg + 1;
 					}		
 				}else{
 					return segfault("syscall not implemented");
 				}
+				cerr<<"ret2 "<<arg_ret_pos<<endl;
 				_programCounter += 2;
 				break;
 			}
@@ -375,31 +344,31 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				uint32_t sup = SOPCODE(ins);
 				
 				if (sup & 0x10 ){
-					src = _program->program()[_programCounter + 1];
+					src = program->program()[_programCounter + 1];
 				}else if (sup & 0x01 ) {
-					if (_stackTop < _program->program()[_programCounter+1]) {
+					if (_stackTop < program->program()[_programCounter+1]) {
 						stringstream s; s<<"rel src negative src="<<src;
 						return segfault(s.str());
 					}
-					src = _stackTop - _program->program()[_programCounter+1];
+					src = _stackTop - program->program()[_programCounter+1];
 				} else {
-					src = _program->program()[_programCounter + 1];
+					src = program->program()[_programCounter + 1];
 				}
 				if (sup & 0x04) {
-					dest = _program->program()[_programCounter + 2];
+					dest = program->program()[_programCounter + 2];
 				} else if (sup & 0x02) {
-					if (_stackTop < _program->program()[_programCounter + 2]) {
+					if (_stackTop < program->program()[_programCounter + 2]) {
 						stringstream s; s<<"rel dest negative dest="<<dest;
 						return segfault(s.str());
 					}
-					dest = _stackTop - _program->program()[_programCounter + 2];
+					dest = _stackTop - program->program()[_programCounter + 2];
 				} else {
-					dest = _program->program()[_programCounter + 2];
+					dest = program->program()[_programCounter + 2];
 				}
 				Variable v;
 				if (sup & 0x10) { //src is env
-					map<Variable, Variable>::iterator it = _envContext.find(src);
-					if (it == _envContext.end()){
+					map<Variable, Variable>::iterator it = _instance->getEnvContext().find(src);
+					if (it ==  _instance->getEnvContext().end()){
 						stringstream s; s<<"src env variable id="<<src<<" not found";
 						return segfault(s.str());
 					}
@@ -411,7 +380,7 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				}
 				
 				if (sup & 0x04){ //dest is env
-					_envContext[dest] = v;
+					 _instance->getEnvContext()[dest] = v;
 				}else if(dest < _stackMax) {
 					_stack[dest] = v;
 				}else{
@@ -433,20 +402,19 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				uint32_t src, index , dest;
 				uint32_t sup = SOPCODE(ins);
 				if (sup & 0x01)
-					src = _stackTop - _program->program()[_programCounter+1];
+					src = _stackTop - program->program()[_programCounter+1];
 				else
-					src = _program->program()[_programCounter+1];
+					src = program->program()[_programCounter+1];
 					
 				if (sup & 0x02)
-					dest = _stackTop - _program->program()[_programCounter+3];
+					dest = _stackTop - program->program()[_programCounter+3];
 				else
-					dest = _program->program()[_programCounter+3];
-					
+					dest = program->program()[_programCounter+3];
 
 				Variable v;
 				if (sup & 0x10) { //src is env
-					map<Variable, Variable>::iterator it = _envContext.find(src);
-					if (it == _envContext.end()){
+					map<Variable, Variable>::iterator it =  _instance->getEnvContext().find(src);
+					if (it ==  _instance->getEnvContext().end()){
 						stringstream s; s<<"src env variable id="<<src<<" not found";
 						return segfault(s.str());
 					}
@@ -458,12 +426,12 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				}					
 					
 				if (sup & 0x20){ //dest is env
-					map<Variable, Variable>::iterator it_dest = _envContext.find(dest);
-					if (it_dest == _envContext.end()){
+					map<Variable, Variable>::iterator it_dest =  _instance->getEnvContext().find(dest);
+					if (it_dest ==  _instance->getEnvContext().end()){
 						stringstream s; s<<"dest env variable id="<<dest<<" not found";
 						return segfault(s.str());
 					}
-					_envContext[dest] = v;
+					 _instance->getEnvContext()[dest] = v;
 				}else if(dest < _stackMax) {
 					_stack[dest] = v;
 				}else{
@@ -474,8 +442,8 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				break;
 			}
 			case inst::cpCO_DS2:{
-				uint32_t src = _program->program()[_programCounter+1];
-				uint32_t dest = _stackTop - _program->program()[_programCounter+2];
+				uint32_t src = program->program()[_programCounter+1];
+				uint32_t dest = _stackTop - program->program()[_programCounter+2];
 				if (systemConst::systemConstValues.find(src) == systemConst::systemConstValues.end())
 					return segfault();
 				for(int i = 0 ; i< ARG(ins); i++){
@@ -521,6 +489,19 @@ uint32_t ProgramExecutor::run(uint32_t obj, uint32_t functionId, vector<Variable
 				_registerFlags |= registerFlags::halt;
 				//TODO
 				//free(_stack);
+				for (int i = 0; i < args.size(); i++){
+					args[i] = _stack[arg_ret_pos + i + 1];
+				}
+				if (_callback){
+					
+					BuffIterator* _buffiterator = (BuffIterator*)this->_callbackBlock;
+					for(uint32_t i = 0; i < _buffiterator->callback_args.size(); i++){
+						_buffiterator->callback_args[i] = _stack[arg_ret_pos + 1 + i];
+					}
+					//, (void*)(&_stack[arg_ret_pos + 1])
+					_callback(this->getObj(), _callbackBlock);
+					
+				}
 				return _registerFlags;
 				break;
 			}
@@ -573,7 +554,6 @@ void ProgramExecutor::dumpStack(){
 			}
 			cerr<<"] ";
 		}
-			
 	}
 	cerr<<endl<<endl;
 }

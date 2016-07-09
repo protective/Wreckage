@@ -4,7 +4,7 @@
 
 #include "../SComponent.h"
 #include "../../../wkl/Program.h"
-#include "../../../wkl/ProgramExecutor.h"
+#include "../../../wkl/ProgramInstance.h"
 
 class CompProgramable : public SComponent {
 public:
@@ -28,8 +28,8 @@ private:
 	virtual void init();
 	
 	uint32_t _programIdCounter;
-	map<uint32_t, wkl::ProgramExecutor*> _programExe;
-	
+	map<uint32_t, wkl::ProgramInstance*> _programInst;
+
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
 	static wkl::Variable getObjInRange(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);
 	static wkl::Variable sleep(SObj* _this, wkl::ProgramExecutor* programExe, void* arg);

@@ -16,23 +16,44 @@ struct SignalRunProgram : public Signal {
 			wkl::Program* program,
 			map<wkl::Variable, wkl::Variable>* env,
 			uint32_t functionId,
+			uint32_t instanceRef,
 			uint32_t runRef
 	):
 	Signal(SIGNAL::runProgram){
 		_program = program;
 		_env = env;
 		_functionId = functionId;
+		_instanceRef = instanceRef;
 		_runRef = runRef;
 		_retVar = NULL;
 	}
 	
 	SignalRunProgram(
 			wkl::Variable* retVar,
+			uint32_t instanceRef,
 			uint32_t runRef
 	):
 	Signal(SIGNAL::runProgram){
 		_retVar = retVar;
 		_runRef = runRef;
+		_instanceRef = instanceRef;
+		_env = NULL;
+		_functionId = 0;
+		_program = NULL;
+	}
+	
+	SignalRunProgram(
+			uint32_t functionId,
+			uint32_t instanceRef,
+			uint32_t runRef
+	):
+	Signal(SIGNAL::runProgram){
+		_retVar = NULL;
+		_runRef = runRef;
+		_instanceRef = instanceRef;
+		_env = NULL;
+		_functionId = functionId;
+		_program = NULL;
 	}
 	
 	SignalRunProgram(SignalRunProgram& s):
@@ -40,12 +61,14 @@ struct SignalRunProgram : public Signal {
 		_env = s._env;
 		_functionId = s._functionId;
 		_program = s._program;
+		_instanceRef = s._instanceRef;
 		_runRef = s._runRef;
 		_retVar = s._retVar;
 	}
 	map<wkl::Variable, wkl::Variable>* _env;
 	wkl::Program* _program;
 	uint32_t _functionId;
+	uint32_t _instanceRef;
 	uint32_t _runRef;
 	wkl::Variable* _retVar;
 };

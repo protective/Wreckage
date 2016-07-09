@@ -20,7 +20,7 @@ define(function ( require ) {
        
         var obj = objManager.getObjById(target);
         if(statType == 1){
-        var damageHealingDone = oldVal - newVal;
+        	var damageHealingDone = oldVal - newVal;
 	        UIDamageNotification.createDamangeNotification(obj, damageHealingDone, result);
 	    }
         obj.setData(statType, newVal)

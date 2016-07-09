@@ -70,6 +70,7 @@ namespace MESSAGE {
 		destInRangeRsp,
 		destUpdate,
 		programSleepWake,
+		programIterate,
 		reCloneComp
 				
 	};
@@ -93,7 +94,21 @@ namespace OBJDATA {
 		maxMana,
 	};
 }
-
+namespace HARDPOINTS {
+	enum Enum {
+		invalid = 0,
+		TFeet = 1,
+		Tbody = 2,
+		Thead = 3,
+		Thands = 4,
+		TAboveHead = 5,
+		CFeet = 6,
+		Cbody = 7,
+		Chead = 8,
+		Chands = 9,
+		CAboveHead = 10
+	};
+}
 
 namespace DAMAGETYPES {
 	enum Enum {
