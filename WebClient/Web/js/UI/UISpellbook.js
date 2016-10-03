@@ -89,7 +89,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     	a.setActive();
     }
     
-    Obj.prototype.castSpell = function (obj, target, powerId) {
+    Obj.prototype.castSpell = function (obj, target, powerId, effectId, hardpoint) {
     	var a = powerlist[powerId];
     	a.setReady();
     }

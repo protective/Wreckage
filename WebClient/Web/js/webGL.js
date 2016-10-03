@@ -148,7 +148,8 @@ define(function( require )
     function sceneAddDamageNotification(element){
     	spriteDamageNotifications.push(element);
     	element['removetime'] = 5000;
-    	scene.add(element);
+    	if ('geometry' in element)
+	    	scene.add(element);
     }
 
     function sceneAddUISprite(element){

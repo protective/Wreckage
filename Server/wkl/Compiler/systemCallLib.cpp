@@ -54,7 +54,13 @@ namespace wkl {
 			{wkl_critChance, "wkl_critChance"},
 			{wkl_buffId, "wkl_buffId"},
 			{wkl_buffTickCounter, "wkl_buffTickCounter"},
-			{wkl_buffTickTime, "wkl_buffTickTime"}			
+			{wkl_buffTickTime, "wkl_buffTickTime"},
+			{wkl_gfx_cast, "wkl_gfx_cast"},
+			{wkl_gfx_travel, "wkl_gfx_travel"},
+			{wkl_gfx_hit, "wkl_gfx_hit"},
+			{wkl_gfx_buffgain, "wkl_gfx_buffgain"},
+			{wkl_gfx_buffanimate, "wkl_gfx_buffanimate"},
+			{wkl_gfx_bufflose, "wkl_gfx_bufflose"}
 		};
 	}
 	

@@ -45,7 +45,9 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			envContext[systemEnvLib::wkl_target] = msg->_target;
 			envContext[systemEnvLib::wkl_missChance] = 10;
 			envContext[systemEnvLib::wkl_critChance] = 90;
-
+			envContext[systemEnvLib::wkl_gfx_cast] = GFXTYPE::fireball1;
+			envContext[systemEnvLib::wkl_gfx_hit] = GFXTYPE::fireball1;
+			
 			//that is leave it to wkl
 			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0, 0);
 			this->_obj->signal(SIGNAL::runProgram, &s);
@@ -55,7 +57,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 }
 
 void CompSpellBook::init(){
-
+	_gfxId = 0;
 }
 
 map<uint32_t, wkl::systemCallFunc> CompSpellBook::getSyscalls(){
@@ -76,7 +78,7 @@ wkl::Variable CompSpellBook::consumeMana(SObj* _this, wkl::ProgramExecutor* prog
 	if (_this->getData(OBJDATA::mana, &curMana)){
 		if (curMana >= consume){
 			_this->setData(OBJDATA::mana, curMana - consume);
-			_this->sendEventTargetStatChange(0, OBJDATA::mana, curMana, curMana - consume, powerResults::invalid);
+			//_this->sendEventTargetStatChange(0, OBJDATA::mana, curMana, curMana - consume, powerResults::invalid);
 		
 			return wkl::Variable(consume);
 		}
@@ -135,6 +137,7 @@ wkl::Variable CompSpellBook::cast(SObj* _this, wkl::ProgramExecutor* programExe,
 	}
 	if(spellBook->_castList.size() == 0){
 		OBJID powerId = programExe->getEnvContext()[wkl::systemEnvLib::wkl_powerId].v;
+		programExe->getEnvContext()[wkl::systemEnvLib::wkl_gfx_ref] = spellBook->_gfxId++;
 		spellBook->_castList.push_back(powerId);
 		spellBook->_beginTime = world->getTime();
 		spellBook->_castTime = spellBook->_beginTime + delay;
@@ -188,14 +191,29 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 		cerr<<"ERROR CompSpellBook::cast_final no hp var on obj"<<endl;
 		return wkl::Variable(0);
 	}
+
 	if (sucess){
+		uint8_t gfxRef = programExe->getEnvContext()[wkl::systemEnvLib::wkl_gfx_ref].v;
 		if(manacost != 0){
 			_this->setData(OBJDATA::mana, mana - manacost);
-			_this->sendEventTargetStatChange(0, OBJDATA::mana, mana, mana - manacost, powerResults::invalid);
+			_this->sendEventTargetStatChange(
+				0,
+				OBJDATA::mana,
+				mana,
+				mana - manacost,
+				powerResults::invalid,
+				GFXTYPE::none,
+				gfxRef);
 		}
 		if(hpcost != 0){
 			_this->setData(OBJDATA::hp, hp - hpcost);
-			_this->sendEventTargetStatChange(0, OBJDATA::mana, hp, hp - hpcost, powerResults::invalid);
+			_this->sendEventTargetStatChange(0,
+					OBJDATA::mana,
+					hp,
+					hp - hpcost,
+					powerResults::invalid,
+					GFXTYPE::none,
+					gfxRef);
 		}
 		MessageProgramFork* msgHit = new MessageProgramFork(
 			_this->getId(),
@@ -205,7 +223,11 @@ wkl::Variable CompSpellBook::cast_final(SObj* _this, wkl::ProgramExecutor* progr
 			0);
 		_this->getProcessor()->sendMessage(target, msgHit, 0);
 
-		spellBook->sendCast(powerId, target);
+		spellBook->sendCast(
+			powerId,
+			target,
+			(GFXTYPE::Enum)programExe->getEnvContext()[wkl::systemEnvLib::wkl_gfx_cast].v,
+			gfxRef);
 	}
 
 	MessageProgramSleepWake* outSleepWake = new MessageProgramSleepWake(

@@ -226,8 +226,15 @@ wkl::Variable CompTargeted::takeDamage(SObj* _this, wkl::ProgramExecutor* progra
 	if (target->getData(OBJDATA::hp, &def_hp)) {
 		//TODO from id in program??
 		target->setData(OBJDATA::hp, def_hp - damage);
-		target->sendEventTargetStatChange(0, OBJDATA::hp, def_hp, def_hp - damage, powerResults::hit);
-		
+		target->sendEventTargetStatChange(
+			0,
+			OBJDATA::hp,
+			def_hp,
+			def_hp - damage,
+			powerResults::hit,
+			(GFXTYPE::Enum)programExe->getEnvContext()[wkl::systemEnvLib::wkl_gfx_hit].v,
+			programExe->getEnvContext()[wkl::systemEnvLib::wkl_gfx_ref].v);
+
 		u.t->_vector[0] = (int32_t)powerResults::hit;
 		u.t->_vector[1] = def_hp - damage;
 	}else{

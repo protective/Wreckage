@@ -83,6 +83,7 @@ namespace wkl {
 			wkl_buffId,
 			wkl_buffTickCounter,
 			wkl_buffTickTime,
+			wkl_gfx_ref,
 			wkl_gfx_cast,
 			wkl_gfx_travel,
 			wkl_gfx_hit,

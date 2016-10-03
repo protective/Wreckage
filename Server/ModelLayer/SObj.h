@@ -49,7 +49,7 @@ public:
 	
 	
 	void sendall(uint32_t clientId);
-	void sendEventTargetStatChange(OBJID caster, OBJDATA::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result);
+	void sendEventTargetStatChange(OBJID caster, OBJDATA::Enum statType, int32_t oldVal, int32_t newVal, powerResults::Enum result,	GFXTYPE::Enum gfxType, uint8_t gfxRef);
 	
 	Processor* getProcessor(){return _processor;}
 	

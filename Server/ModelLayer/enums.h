@@ -110,6 +110,17 @@ namespace HARDPOINTS {
 	};
 }
 
+namespace GFXTYPE {
+	enum Enum {
+		none = 0,
+		fireball1 = 1,
+		fireball2 = 2,
+		frostball1 = 3,
+		frostblast1 = 4
+	
+	};
+}
+
 namespace DAMAGETYPES {
 	enum Enum {
 		invalid = 0,
