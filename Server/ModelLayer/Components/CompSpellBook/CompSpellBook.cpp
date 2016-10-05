@@ -46,7 +46,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			envContext[systemEnvLib::wkl_missChance] = 10;
 			envContext[systemEnvLib::wkl_critChance] = 90;
 			envContext[systemEnvLib::wkl_gfx_cast] = GFXTYPE::fireball1;
-			envContext[systemEnvLib::wkl_gfx_hit] = GFXTYPE::fireball1;
+			envContext[systemEnvLib::wkl_gfx_hit] = GFXTYPE::renew1;
 			
 			//that is leave it to wkl
 			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0, 0);

@@ -6,6 +6,7 @@ define(function ( require ) {
     var objManager = require("../objManager");
     var webGL = require('webGL');
     var UIDamageNotification = require('UI/UIDamageNotification');
+    var Particals = require('Model/Effects/Particals');
     
     var UIBuffBar = require('UI/UIBuffBar');
  
@@ -33,8 +34,8 @@ define(function ( require ) {
         for (i = 0; i < noStats; i++) {
             var effect = new Uint32Array(block.slice(0 + (_esize * i) + offset, 4 + (_esize * i) + offset))[0];
             var hardpoint = new Uint8Array(block.slice(4 + (_esize * i) + offset, 5 + (_esize * i) + offset))[0];	
-            if(effect == 1){
-    	    }
+            Particals.dmg_animation(obj, effect, hardpoint);
+    	    
         }
 
        

@@ -116,7 +116,8 @@ namespace GFXTYPE {
 		fireball1 = 1,
 		fireball2 = 2,
 		frostball1 = 3,
-		frostblast1 = 4
+		frostblast1 = 4,
+		renew1 = 5
 	
 	};
 }

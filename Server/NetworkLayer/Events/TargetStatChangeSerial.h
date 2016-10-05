@@ -36,7 +36,7 @@ SerialTargetStatChange* allocStatChange(OBJID target, OBJID caster,
 	size_t size = sizeof(SerialTargetStatChange) +
 			      (sizeof(SerialStat) * stats.size()) + 
 				  (sizeof(SerialEffect) * effects.size());
-	
+
 	SerialTargetStatChange* s = (SerialTargetStatChange*)malloc(size);
 	s->_type = SerialType::SerialTargetStatChange;
 	s->_size = size;
@@ -56,7 +56,7 @@ SerialTargetStatChange* allocStatChange(OBJID target, OBJID caster,
 		sce->_oldVal = (*it)._oldVal;
 		sce->_statType = (*it)._statType;
 		i++;
-	} 
+	}
 	i = 0;
 	for (list<SerialEffect>::iterator it = effects.begin(); it != effects.end(); it++){
 		uint32_t a= ((sizeof(SerialStat) * stats.size()) +
