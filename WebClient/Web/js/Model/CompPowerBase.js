@@ -9,26 +9,28 @@ define( ['require','jquery-ui'], function( require)
 		this.description = description;
 		this.programSrc = programSrc;
 	}
-	
-	CompPowerBase.prototype.sendProgramSrc = function(programSrc) {
-		webSocket.handlers['CompPowerBaseSetProgram'](this.obj, programSrc);
+
+	CompPowerBase.prototype.saveAll = function(name, description, programSrc) {
+		webSocket.handlers['CompPowerBaseSave'](this.obj, name, description, programSrc);
 		this.programSrc = programSrc;
-		//alert("send");
+		this.description = description;
+		this.programSrc = programSrc;
+
 	}
-	
+
 	CompPowerBase.prototype.getKeyValues = function() {
-		
+
 		return {'compName' : 'CompPowerBase',
 			'entries' : {
 				'powerName': {'value' : this.powerName},
 				'description' : {'value' : this.description},
-				'programSrc' : {'value' : this.programSrc ,'save' : this.sendProgramSrc
+				'programSrc' : {'value' : this.programSrc ,'save' : this.programSrc
 				}
 			}
 		};
-			
+
 	}
-	
+
 	return function Init(powerName, description, programSrc)
 	{
 		this.compPowerBase = new CompPowerBase(this, powerName, description, programSrc);

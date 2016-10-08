@@ -1,0 +1,26 @@
+<table class="powerEditor">
+    <thead>
+    
+    <tr>
+        <th>
+            <button class="btn-submit-comp" id="comsave<%= id %>">Save</button>
+        </th>
+        <th><%= id  %></th>
+    </tr>
+    <tr>
+        <th> <%= keyval["compName"] %> </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% for(var i in keyval["entries"]) { %>
+    <tr>
+        <td class="filterable-cell"><%= i %></td>
+        <td class="filterable-cell">
+            <textarea class="mytextarea" id="comfield<%= i + id  %>" type="text"><%= keyval["entries"][i].value %></textarea>
+        </td>
+
+    </tr>
+    <% } %>
+    </tbody>  
+</table>

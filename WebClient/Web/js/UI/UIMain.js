@@ -4,7 +4,6 @@ define(function ( require ) {
     var webSocket = require('Network/webSocket');
     var UIKeyInput = require('UI/UIKeyInput');
     var UIBuffBar = require('UI/UIBuffBar');
-    
     var CompSpellBook = require('Model/CompSpellBook');
     var objManager = require('objManager');
     var webGL = require('webGL');
@@ -14,12 +13,11 @@ define(function ( require ) {
 
     var _playerId = null;
     var _playerTarget = null;
-    
-    var maindiv = webGL.container;
-    
-    require('UI/UINaveBar')(maindiv);
-    
-    //
+    var ret = {'maindiv': webGL.container};
+
+    require('UI/UINaveBar')(ret);
+    require('UI/Panels/UIPowerListPanel')(ret);
+    require('UI/Panels/UIDevObjInfoPanel')(ret);
     
     function castspell() {
     	_playerObj.compSpellBook.castSpellTarget(_playerTarget);
@@ -36,10 +34,8 @@ define(function ( require ) {
     }
     Obj.prototype.targetMe = setTarget;
     
-    
     function addPanel(id, panel) {
     	_panels[id] = panel;
-
     }
     
     function getPlayerTarget(){
@@ -48,12 +44,12 @@ define(function ( require ) {
     
     webGL.setOnClickCallback(setTarget);
  
-    return {'init' : function(){
-    	objManager.hook('PlayerObjEnter', setPlayerUnit);
-    },
-    	
-    		'maindiv' : maindiv,
-    		'setTarget' : setTarget,
-    		'addPanel': addPanel,
-    		'getPlayerTarget': getPlayerTarget};
+    ret['init'] = function(){
+    	objManager.hook('PlayerObjEnter', setPlayerUnit);};
+
+    ret['setTarget'] = setTarget;
+    ret['addPanel'] = addPanel;
+    ret['getPlayerTarget'] = getPlayerTarget;
+    
+    return ret
 });

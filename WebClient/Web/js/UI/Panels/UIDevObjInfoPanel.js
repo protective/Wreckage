@@ -9,175 +9,158 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 
     var _panels = {};
     var webGL = require('webGL');
-    var UIMain = require('UI/UIMain');
+    //var UIMain = require('UI/UIMain');
     var CompSpellBook = require('Model/CompSpellBook');
     var CompTargeted = require('Model/CompTargeted');
     var Obj = require('obj');
 
-	var keyValueTable = require('text!templates/keyValueTable.html');
-	var hpBarTable = require('text!templates/hpbar.html');
-	var castBarTable = require('text!templates/castbar.html');
-	
-	var tmp3 = $('body');
-	tmp3.on('keydown', '.mytextarea', function(event) {
+    var keyValueTable = require('text!templates/keyValueTable.html');
+    var hpBarTable = require('text!templates/hpbar.html');
+    var castBarTable = require('text!templates/castbar.html');
 
-	});
+    var tmp3 = $('body');
+    tmp3.on('keydown', '.mytextarea', function(event) {});
 
-    Obj.prototype.createHpPanel = function (obj) {
-    	if('UIDevObjHpPanel' in obj)
-    		return;
-        var a = {'id' : obj.id};
-        this.UIbars = _.template(hpBarTable)(a);
+    function init(UIMain){
+        Obj.prototype.createHpPanel = function (obj) {
+            if('UIDevObjHpPanel' in obj)
+                return;
+            var a = {'id' : obj.id};
+            this.UIbars = _.template(hpBarTable)(a);
 
-        var parser = new DOMParser(),
-        doc = parser.parseFromString(this.UIbars, "text/html");
+            var parser = new DOMParser(),
+            doc = parser.parseFromString(this.UIbars, "text/html");
 
-        var overlay = doc.firstChild;
-        UIMain.maindiv.appendChild(overlay);
+            var overlay = doc.firstChild;
+            UIMain.maindiv.appendChild(overlay);
 
-        obj.UIDevObjHpPanel = overlay;
+            obj.UIDevObjHpPanel = overlay;
 
-        obj.UIDevObjHpPanel.updateHp = function(value){
-        	if(4 in obj.data && obj.data[4] > 0){
-	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
-	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#hpbarlab');
-	        	tmp2[0].textContent = value;
-	        	var p = 100 - ((value / obj.data[4]) * 100);
-	        	p = Math.min(Math.max(p, 0),100);
-	        	tmp[0].style['padding-right'] = p +'%';
-        	}
-        };
-        obj.UIDevObjHpPanel.updateMana = function(value){
-        	if(13 in obj.data && obj.data[13] > 0){
-	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#manabar');
-	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#manabarlab');
-	        	tmp2[0].textContent = value;
-	        	var p = 100 - ((value / obj.data[13]) * 100);
-	        	p = Math.min(Math.max(p, 0),100);
-	        	tmp[0].style['padding-right'] = p +'%';
-        	}
-        };
-        
-        obj.UIDevObjHpPanel.updateHp(obj.data[1]);
-        obj.UIDevObjHpPanel.updateMana(obj.data[12]);
-    }
-    
-    Obj.prototype.activateCastBar = function (obj, target, powerId, beginTime, endTime) {
-    	if(! ('UIDevObjCastBar' in obj)){
-	        var a = {'id' : obj.id};
-	        this.UIbars = _.template(castBarTable)(a);
-	
-	        var parser = new DOMParser()
-	        , doc = parser.parseFromString(this.UIbars, "text/html");
-	
-	        var overlay = doc.firstChild;
-	        UIMain.maindiv.appendChild(overlay);
-	
-	        obj.UIDevObjCastBar = overlay;
-    		
-    	}
-    	obj.UIDevObjCastBar['powerId'] = powerId;
-    	obj.UIDevObjCastBar['beginTime'] = beginTime;
-    	obj.UIDevObjCastBar['curTime'] = beginTime;
-    	obj.UIDevObjCastBar['endTime'] = endTime;
-    	obj.UIDevObjCastBar['animateTime'] = 1;
-    	
-    	obj.UIDevObjCastBar['updateAnimation'] = function(delta) {
-        	if(2 in obj.data && obj.data[2] > 0){
-        		obj.UIDevObjCastBar['curTime'] += delta * 1000;
-	        	var tmp = $('#objId'+ obj.id + '.rcorners1').find('#castbar');
-	        	var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#castbarlab');
-	        	var totalTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['beginTime'];
-	        	var remaningTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['curTime']
-	        	
-	        	tmp2[0].textContent = Math.round(remaningTime / 100)  / 10 ;
-	        	
-	        	var p = 100 - ((remaningTime / totalTime) * 100);
-	        	p = Math.min(Math.max(p, 0),100);
-	        	tmp[0].style['padding-right'] = p +'%';
-	        	if(obj.UIDevObjCastBar['curTime'] >= obj.UIDevObjCastBar['endTime'])
-	        		obj.UIDevObjCastBar['animateTime'] = 0;
-        	}
+            obj.UIDevObjHpPanel.updateHp = function(value){
+                if(4 in obj.data && obj.data[4] > 0){
+                    var tmp = $('#objId'+ obj.id + '.rcorners1').find('#hpbar');
+                    var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#hpbarlab');
+                    tmp2[0].textContent = value;
+                    var p = 100 - ((value / obj.data[4]) * 100);
+                    p = Math.min(Math.max(p, 0),100);
+                    tmp[0].style['padding-right'] = p +'%';
+                }
+            };
+            obj.UIDevObjHpPanel.updateMana = function(value){
+                if(13 in obj.data && obj.data[13] > 0){
+                    var tmp = $('#objId'+ obj.id + '.rcorners1').find('#manabar');
+                    var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#manabarlab');
+                    tmp2[0].textContent = value;
+                    var p = 100 - ((value / obj.data[13]) * 100);
+                    p = Math.min(Math.max(p, 0),100);
+                    tmp[0].style['padding-right'] = p +'%';
+                }
+            };
+            obj.UIDevObjHpPanel.updateHp(obj.data[1]);
+            obj.UIDevObjHpPanel.updateMana(obj.data[12]);
         }
-    	webGL.sceneAddDamageNotification(obj.UIDevObjCastBar);
-    	
-    }
-    
-    
-    Obj.prototype.createObjInfoPanel = function (obj) {
-    	
-    	if('UIDevObjInfoPanel' in obj)
-    		UIMain.maindiv.removeChild(obj.UIDevObjInfoPanel);
-    		
-    	
-    	var overlay = document.createElement('div');
-    	overlay.className  = "devObjView";
-    	UIMain.maindiv.appendChild(overlay);
-    	
 
-    	var table = document.createElement('TABLE');
+        Obj.prototype.activateCastBar = function (obj, target, powerId, beginTime, endTime) {
+            if(! ('UIDevObjCastBar' in obj)){
+                var a = {'id' : obj.id};
+                this.UIbars = _.template(castBarTable)(a);
 
-    	overlay.appendChild(table);
-    	
-    	var tempComponents = ['compTargeted',
-    	                      'compSpellBook',
-    	                      'compPowerDealDamage',
-    	                      'compPowerActivateInstant',
-    	                      'compPowerUseCheck',
-    	                      'compReSpawnable',
-    	                      'compPowerBase',
-    	                      'compProgramable'];
-    	for (var i in tempComponents){
-        	if(tempComponents[i] in obj){
+                var parser = new DOMParser()
+                , doc = parser.parseFromString(this.UIbars, "text/html");
 
-	    		var row = table.insertRow(0);
-	        	var cell1 = row.insertCell(0);
-	        	
-	        	var button = document.createElement('button');
-	        	button.id = obj.id + '_' + i ;
-	        	button["title"] = "hest";
-	        	button["data-toggle"] = "popover";
-	        	
-	        	button.keyval = {'id' : button.id,
-	        			'keyval' : obj[tempComponents[i]].getKeyValues()}; 	
-	        	button.compName = tempComponents[i];
-	        	button.myhest = function(){alert(1);};
+                var overlay = doc.firstChild.lastChild.firstChild;
+                UIMain.maindiv.appendChild(overlay);
 
-	        	button.innerHTML = tempComponents[i];
-	        	cell1.appendChild(button);
-	        	var tmp = $('#' + obj.id + '_' + i);
-	        	tmp.popover({
-	                'html' : true,
-	                content: function() {
-	                	var yy = _.template(keyValueTable)(this.keyval);
-	                    return yy;
-	                }});
-            	var tmp2 = $('body');
+                obj.UIDevObjCastBar = overlay;
 
-            	tmp2.on('click', '#comsave'+ button.id, function() {
-            		var compName = button.compName;
-            		for (var j in button.keyval['keyval']['entries']){
-            			if (button.keyval['keyval']['entries'][j]['save']){
-            				var value = $('#comfield' + j + button.id)[0].value;    
-            				
-            				button.keyval['keyval']['entries'][j]['save'].call(obj[compName], value);
-            			}
-            		}
-            		//button.keyval.sendProgramSrc(this.value)
-            		
-            	} );
-	        	
-	        	
-	        	
-        	}
-    	}
+            }
+            obj.UIDevObjCastBar['powerId'] = powerId;
+            obj.UIDevObjCastBar['beginTime'] = beginTime;
+            obj.UIDevObjCastBar['curTime'] = beginTime;
+            obj.UIDevObjCastBar['endTime'] = endTime;
+            obj.UIDevObjCastBar['animateTime'] = 1;
 
-    	$('.devObjView').draggable();
-    	obj.UIDevObjInfoPanel = overlay;
+            obj.UIDevObjCastBar['updateAnimation'] = function(delta) {
+                if(2 in obj.data && obj.data[2] > 0){
+                    obj.UIDevObjCastBar['curTime'] += delta * 1000;
+                    var tmp = $('#objId'+ obj.id + '.rcorners1').find('#castbar');
+                    var tmp2 = $('#objId'+ obj.id + '.rcorners1').find('#castbarlab');
+                    var totalTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['beginTime'];
+                    var remaningTime = obj.UIDevObjCastBar['endTime'] - obj.UIDevObjCastBar['curTime']
 
+                    tmp2[0].textContent = Math.round(remaningTime / 100)  / 10 ;
+
+                    var p = 100 - ((remaningTime / totalTime) * 100);
+                    p = Math.min(Math.max(p, 0),100);
+                    tmp[0].style['padding-right'] = p +'%';
+                    if(obj.UIDevObjCastBar['curTime'] >= obj.UIDevObjCastBar['endTime'])
+                        obj.UIDevObjCastBar['animateTime'] = 0;
+                }
+            }
+            webGL.sceneAddDamageNotification(obj.UIDevObjCastBar);
+        }
+
+        Obj.prototype.createObjInfoPanel = function (obj) {
+            if('UIDevObjInfoPanel' in obj)
+                UIMain.maindiv.removeChild(obj.UIDevObjInfoPanel);
+            var overlay = document.createElement('div');
+            overlay.className  = "devObjView";
+            UIMain.maindiv.appendChild(overlay);
+
+            var table = document.createElement('TABLE');
+            overlay.appendChild(table);
+            var tempComponents = ['compTargeted',
+                                  'compSpellBook',
+                                  'compPowerDealDamage',
+                                  'compPowerActivateInstant',
+                                  'compPowerUseCheck',
+                                  'compReSpawnable',
+                                  'compPowerBase',
+                                  'compProgramable'];
+            for (var i in tempComponents){
+                if(tempComponents[i] in obj){
+
+                    var row = table.insertRow(0);
+                    var cell1 = row.insertCell(0);
+
+                    var button = document.createElement('button');
+                    button.id = obj.id + '_' + i ;
+                    button["title"] = "hest";
+                    button["data-toggle"] = "popover";
+
+                    button.keyval = {'id' : button.id,
+                            'keyval' : obj[tempComponents[i]].getKeyValues()};
+                    button.compName = tempComponents[i];
+                    button.myhest = function(){alert(1);};
+
+                    button.innerHTML = tempComponents[i];
+                    cell1.appendChild(button);
+                    var tmp = $('#' + obj.id + '_' + i);
+                    tmp.popover({
+                        'html' : true,
+                        content: function() {
+                            var yy = _.template(keyValueTable)(this.keyval);
+                            return yy;
+                        }});
+                    var tmp2 = $('body');
+
+                    tmp2.on('click', '#comsave'+ button.id, function() {
+                        var compName = button.compName;
+                        for (var j in button.keyval['keyval']['entries']){
+                            if (button.keyval['keyval']['entries'][j]['save']){
+                                var value = $('#comfield' + j + button.id)[0].value;
+
+                                button.keyval['keyval']['entries'][j]['save'].call(obj[compName], value);
+                            }
+                        }
+                    });
+                }
+            }
+
+            $('.devObjView').draggable();
+            obj.UIDevObjInfoPanel = overlay;
+        };
     };
-    
 
- 
-    return {};
+    return init;
 });

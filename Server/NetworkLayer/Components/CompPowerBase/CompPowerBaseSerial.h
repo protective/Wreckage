@@ -46,7 +46,7 @@ void setvalue(CompPowerBase* comp, SerialSetField* msg){
 				maskstream <<std::hex <<setfill('0')<<setw( 2 ) << (uint16_t)(((char*)msg)[i] & 0x00FF) << " ";
 			}
 			SerialSetString* st = (SerialSetString*)msg;
-			comp->compileProgram(string(st->_text,st->_len));
+			comp->compileProgram(string(st->_text, st->_len));
 			break;
 		}
 	}

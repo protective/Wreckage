@@ -1,0 +1,44 @@
+<table class="UIPowerList ui-draggable ui-draggable-handle">
+    <thead>
+        <tr>
+            <td>
+                <div>
+                  <ul class="nav nav-pills nav-stacked" style="overflow:scroll;height:180px;width:200px;top: 0px;overflow:auto">
+                    <li><a class="clickThis" id="-1">New Power</a></li>
+                    <% for(var id in ids) { %>
+                    <li><a class="clickThis" id="<%= id %>"><%= ids[id].powerName %></a></li>
+                    <% } %>
+                  </ul>
+                </div>
+            </td>
+            <td>
+                <table class="powerEditor">
+                    <tr>
+                        <td><button id="powerEditor_submit">Save</button></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><a>Name<a></td>
+                        <td><input id="powerEditor_name" type="text"></input></td>
+                    </tr>
+                    <tr>
+                        <td><a>Description<a></td>
+                        <td></td>
+                    </tr>
+                     <tr>
+                        <td colspan="2">
+                        <textarea id="powerEditor_desc" style="width: 400px; height: 50px; overflow: auto; max-height: 50px; max-width: 400px" type="text"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                        <textarea id="powerEditor_src" style="width: 400px; height: 200px; overflow: auto; max-height: 200px; max-width: 400px" type="text"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>  
+</table>
+
+

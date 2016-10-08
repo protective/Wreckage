@@ -13,6 +13,21 @@
     background-color: grey;
 }
 
+.powerEditor {
+    color: black;
+    margin-bottom: 0px;
+    border-style: solid;
+    border-color: #303030;
+    background-color: grey;
+}
+
+.UIPowerList {
+    top: 50px;
+    left: 10px;
+    border-spacing: 1px;
+    position:absolute;
+}
+
 div.devObjView {
 
     position:absolute;

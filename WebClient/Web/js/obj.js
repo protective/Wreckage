@@ -6,7 +6,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	var webGL = require('webGL');
 	//var UIDevObjInfoPanel = require('UI/Panels/UIDevObjInfoPanel');
 	
-		
+
 
     function Obj(id) {
     	this.onclickCallbacks = [];
