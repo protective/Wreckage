@@ -72,6 +72,10 @@ SComponent* createComponent(SerialObjComp* sc, int32_t* size){
 			temp = new CompSpawnNode((SerialCompSpawnNode*)sc, size);
 			break;
 		}
+		case COMPID::powerBase: {
+			temp = new CompPowerBase();
+			break;
+		}
 		default:{
 			cerr<<"WARNING factory createComponent unserialized component"<<endl;
 		}
@@ -81,4 +85,19 @@ SComponent* createComponent(SerialObjComp* sc, int32_t* size){
 	else if(temp)
 		delete temp;
 	return NULL;
+}
+
+SComponent* createComponent(uint32_t compId){
+	SComponent* temp = NULL;
+	switch(compId){
+		case COMPID::powerBase: {
+			temp = new CompPowerBase();
+			break;
+		}
+		default:{
+			cerr<<"WARNING factory createComponent unserialized component"<<endl;
+		}
+	}
+	return temp;
+
 }

@@ -10,9 +10,7 @@ define( function( require )
 	}
 
 	CompSpellBook.prototype.getKeyValues = function() {
-
 		return {'compName': 'CompSpellBook', 'timer' : 1};
-
 	}
 
 	CompSpellBook.prototype.castSpellTarget = function castSpellTarget(target, powerid){

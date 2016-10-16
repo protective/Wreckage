@@ -127,10 +127,11 @@ uint32_t Client::parseBuffer(uint32_t len){
 						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
 						break;
 					}
-					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
-					TaskRemoveObj * t = new TaskRemoveObj(st->_unitId);
-					networkControl->addTaskToObj(t,st->_unitId);
-
+					SComponent* tmp = createComponent(st->_compid);
+					if(tmp) {
+						TaskAddComponent * t = new TaskAddComponent(obj, tmp);
+						networkControl->addTaskToObj(t, st->_unitId);
+					}
 					break;
 				}
 				case SerialType::SerialInput:{
@@ -192,7 +193,15 @@ uint32_t Client::parseBuffer(uint32_t len){
 					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
 					
 					//TaskAddComponent * t = new TaskAddComponent(obj, new CompSpawnNode(10000,1,0));
-					TaskCreateObj* t = new TaskCreateObj(0, st->_template, true);
+					TaskCreateObj* t = new TaskCreateObj(
+							0,
+							st->_template,
+							st->_makePersistent ? true: false,
+							st->_makeTemplate ? true: false,
+							(TIME)0,
+							this->_id,
+							st->_creationRef);
+					/*
 					SerialObjData* sd = (SerialObjData*)st->_data;
 					while(sd->_dataType){
 						switch(sd->_dataType){
@@ -223,8 +232,8 @@ uint32_t Client::parseBuffer(uint32_t len){
 							break;
 						}
 					}
-					
-					networkControl->addTaskToObj(t,0);
+					*/
+					networkControl->addTaskToObj(t, 0);
 
 					break;
 				}

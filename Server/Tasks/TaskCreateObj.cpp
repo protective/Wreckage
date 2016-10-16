@@ -14,16 +14,23 @@
 
 #include "../ModelLayer/Signals/SignalCreated.h"
 
-TaskCreateObj::TaskCreateObj(OBJID id, OBJID fromId, bool persistent, TIME spawnTime) :
+TaskCreateObj::TaskCreateObj(
+    OBJID id,
+    OBJID fromId,
+    bool makePersistent,
+    bool makeTemplate,
+    TIME spawnTime,
+    uint32_t clientId,
+    uint32_t creationRef) :
 Task(spawnTime) {
-	_persistent = persistent;
-	_isTemplate = false;
-	_id = id;
-	_fromid = fromId;
-	_pos = NULL;
+    _makePersistent = makePersistent;
+    _makeTemplate = makeTemplate;
+    _id = id;
+    _fromid = fromId;
+    _creationRef = creationRef;
+    _clientId = clientId;
+    _pos = NULL;
 }
-
-
 
 bool TaskCreateObj::addComponent(SComponent* cmp){
 	if(!cmp)
@@ -56,10 +63,9 @@ void TaskCreateObj::loadData(SObj* obj, OBJID id){
 	for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end();it++){
 		for (list<OBJDATA::Enum>::iterator it2 = it->second->getDataAccesUssage().begin() ; it2 != it->second->getDataAccesUssage().end();it2++){
 			obj->setData(*it2,0);
-			
 		}
 	}
-	
+
 	stringstream s;
 	s<<"select dataid, value from objdata where "
 	"objid = "<<id<<";";
@@ -80,7 +86,6 @@ void TaskCreateObj::loadPos(SObj* obj, OBJID id){
 		SPos p(r[0][0].as<int32_t>(),r[0][1].as<int32_t>(),r[0][2].as<int32_t>(),r[0][3].as<uint16_t>());
 		obj->setPos(p);
 	}
-	
 }
 
 void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
@@ -105,44 +110,43 @@ uint32_t TaskCreateObj::execute(){
 			pqxx::work w(_processor->getDB());	
 			stringstream s; s<<"select istemplate, cloneispersistent from objs where objid = "<<_fromid<<";";
 			pqxx::result r = w.exec(s); w.commit();	
-			
+
 			if(_id != _fromid){
-				_isTemplate = false;
-				_persistent = r[0][1].as<bool>();
+				_makeTemplate = false;
+				_makePersistent = r[0][1].as<bool>();
 			}else if(_id == _fromid){
-				_isTemplate = r[0][0].as<bool>();
-				_persistent = true;
+				_makeTemplate = r[0][0].as<bool>();
+				_makePersistent = true;
 			}
-			
 		}
-		SObj* obj = new SObj(_id, _persistent, _isTemplate, _id == _fromid, _processor);
+		SObj* obj = new SObj(_id, _makePersistent, _makeTemplate, _id == _fromid, _processor);
 		if(_fromid)
 			_processor->setClone(_fromid, obj);
 		cerr<<"create new obj id="<<_id<<" from id="<<_fromid<<endl;
-		
+
 		for(map<OBJDATA::Enum, int32_t>::iterator it = _data.begin(); it != _data.end(); it++){
 			obj->setData(it->first, it->second);
 		}
 		if(_pos)
 			obj->setPos(*_pos);
-		
+
 		//load components to add to the task
 		loadComponents(obj, _fromid);
 		loadData(obj, _fromid);
 		loadPos(obj, _fromid);
-		
+
 		//add components from the task to obj
 		for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it!=_components.end(); it++){
 			obj->addComponent(it->second);
 		}
-		
-		if(_id != _fromid && _persistent)
+
+		if(_id != _fromid && _makePersistent)
 			obj->save();
-		
+
 		_processor->addObj(obj);
-		SignalCreated s;
+		SignalCreated s(_clientId, _creationRef);
 		obj->signal(SIGNAL::created, &s);
-	
+
 	}
 	return COMMAND_FINAL;
 }

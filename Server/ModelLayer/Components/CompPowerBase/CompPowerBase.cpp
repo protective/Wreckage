@@ -12,7 +12,7 @@
 #include "../../Messages/MessageReCloneComp.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
-
+#include "../../Signals/SignalGainComp.h"
 
 CompPowerBase::CompPowerBase() :
 SComponent(COMPID::powerBase){
@@ -33,6 +33,16 @@ SComponent(orig){
 
 void CompPowerBase::acceptSignal(SIGNAL::Enum type, Signal* data){
 	switch(type){
+		case SIGNAL::gainComp:{
+			SignalGainComp* s = (SignalGainComp*)data;
+			if(s->_comp->getType() == COMPID::powerBase){
+				for (map<uint32_t, uint32_t>::iterator it = _obj->getSubscribers().begin(); it != _obj->getSubscribers().end(); it++) {
+					if (it->second > 0)
+						this->sendFull(it->first);
+				}
+			}
+			break;
+		}
 		case SIGNAL::enterDevClient:{
 			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
 			this->sendFull(s->_clientId);

@@ -6,6 +6,9 @@
  */
 
 #include "TaskAddComponent.h"
+
+#include "../ModelLayer/Signals/SignalGainComp.h"
+
 #include "../Processor/Processor.h"
 TaskAddComponent::TaskAddComponent(SObj* id, SComponent* component) :
 Task(0) {
@@ -15,6 +18,8 @@ Task(0) {
 
 uint32_t TaskAddComponent::execute(){
 	_id->addComponent(_component);
+	SignalGainComp s(_component);
+	_id->signal(SIGNAL::gainComp, &s);
 	return COMMAND_FINAL;
 }
 

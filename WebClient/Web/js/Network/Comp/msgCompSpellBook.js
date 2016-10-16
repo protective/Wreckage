@@ -25,8 +25,8 @@ define(function ( require ) {
     	webSocket.send(buffer);
     }
     
-    var full = function(objId, block) {
-        var obj = objManager.gotObjEnter(objId);
+    var full = function(obj, block) {
+
         UISpellbook.createSpellBookPanel(obj);
         var dv = new DataView(block, 0);
         var len = dv.getUint16(0,true);

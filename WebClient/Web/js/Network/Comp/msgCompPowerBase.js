@@ -20,12 +20,12 @@ define(function ( require ) {
         dv.setUint16(20, field, true); //fieldId == program //3
         dv.setUint32(22, len, true); //textLen
 
-	    for (var i=0; i < value.length; i++) {
-			if(value.charCodeAt(i) <= 255)
-				dv.setUint8(26 + i, value.charCodeAt(i));
-			else
-				dv.setUint8(26 + i, 0);
-		}	
+    for (var i=0; i < value.length; i++) {
+        if(value.charCodeAt(i) <= 255)
+            dv.setUint8(26 + i, value.charCodeAt(i));
+        else
+            dv.setUint8(26 + i, 0);
+	}	
     	webSocket.send(buffer);
     }
 
@@ -47,9 +47,7 @@ define(function ( require ) {
         encodeSetDescription(obj, description);
     }
 
-    var full = function(objId, block) {
-
-        var obj = objManager.gotObjEnter(objId);
+    var full = function(obj, block) {
 
         lenName = new Uint16Array(block.slice(0,2))[0];
         lenDesciption = new Uint16Array(block.slice(2,4))[0];

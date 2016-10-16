@@ -38,9 +38,6 @@ define(function ( require ) {
     	    
         }
 
-       
-        
-
         obj.setData(statType, newVal)
         //.;
     };
@@ -106,10 +103,10 @@ define(function ( require ) {
     };
     
     return function msghook() {
-    	webSocket.hook( 13, targetStatChange);
-    	webSocket.hook( 14, targetGainBuff);
-    	webSocket.hook( 15, targetLoseBuff);
-    	webSocket.hook( 16, beginCast);
-    	webSocket.hook( 17, cast);
+        webSocket.hook(13, targetStatChange);
+        webSocket.hook(14, targetGainBuff);
+        webSocket.hook(15, targetLoseBuff);
+        webSocket.hook(16, beginCast);
+        webSocket.hook(17, cast);
     };
 });

@@ -3,9 +3,8 @@ define(function ( require ) {
     var SerialComp = require('Network/Comp/SerialComp');
     var objManager = require("../../objManager");
     
-    var full = function(objId, block) {
-    
-        var obj = objManager.gotObjEnter(objId);
+    var full = function(obj, block) {
+
         require('Model/CompReSpawnable').call(obj);
     }
 

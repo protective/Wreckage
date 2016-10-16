@@ -14,18 +14,17 @@ define(function ( require ) {
     require('Network/Comp/msgCompReSpawnable').call();
     require('Network/Comp/msgCompProgramable').call();
     require('Network/msgObjAll').call();
+    require('Network/msgObjCreated').call();
     require('Network/msgEvents').call();      
 
     webSocket.connect();
-    
-    
+
     var UIMain = require('UI/UIMain');
 	require('UI/Panels/UIDevObjInfoPanel');
 	require('UI/Panels/UIPowerListPanel');
 	require('UI/UISpellbook');
     var webGL = require('webGL');
-    
-    
+
     webGL.initWebGL();
     UIMain.init();
     //webGL.addObj();

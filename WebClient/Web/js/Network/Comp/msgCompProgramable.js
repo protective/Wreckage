@@ -5,10 +5,8 @@ define(function ( require ) {
     var objManager = require("../../objManager");
     
     
-    var full = function(objId, block) {
-    
-        var obj = objManager.gotObjEnter(objId);
-        
+    var full = function(obj, block) {
+
        require('Model/CompProgramable').call(obj);
     }
 

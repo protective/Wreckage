@@ -18,7 +18,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 		var tmp = objManager.getObjs();
 		var ret = [];
 		for (var ob in tmp){
-			if (tmp[ob].id < (1 <<24))
+			if (tmp[ob].isTemplate)
 				if ('compPowerBase' in tmp[ob]){
 					ret.push(tmp[ob].compPowerBase)
 				}
@@ -26,25 +26,46 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 		return ret;
 	}
 
+	function createNewPower(name, description, src) {
+		var callback = function(obj){
+			var callback2 = function(power) {
+				power.compPowerBase.saveAll(
+						name,
+					    description,
+					    src);
+				powerListPanel = null;
+			};
+			objManager.modAddCompPowerBase(obj, callback2);
+		};
+		objManager.createObj(callback);
+	}
+
 	function updatePowerEditor(power) {
 		var name = $('#powerEditor_name')[0];
 		var description = $('#powerEditor_desc')[0];
 		var src = $('#powerEditor_src')[0];
-		if (power){
+		var savebtn = $('#powerEditor_submit')[0];
+
+		if (power) {
 			name.value = power.powerName;
 			description.value = power.description;
 			src.value = power.programSrc;
-		}else{
+
+			savebtn.onclick = function(){
+				power.saveAll(name.value,
+						      description.value,
+						      src.value);
+			}
+		} else {
 			name.value = "";
 			description.value = "";
 			src.value = "";
-		}
 
-		var savebtn = $('#powerEditor_submit')[0];
-		savebtn.onclick = function(){
-			power.saveAll(name.value,
+			savebtn.onclick = function(){
+				createNewPower(name.value,
 					      description.value,
 					      src.value);
+			}
 		}
 	}
 

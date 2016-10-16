@@ -24,5 +24,8 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
  */
 SComponent* createComponent(SerialObjComp* sc, int32_t* Size);
 
+
+SComponent* createComponent(uint32_t compId);
+
 #endif	/* COMPONENTFACTORY_H */
 

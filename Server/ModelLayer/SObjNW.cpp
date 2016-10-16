@@ -2,8 +2,10 @@
 #include "SObj.h"
 
 #include "../NetworkLayer/ObjSerial.h"
+#include "../NetworkLayer/ObjCreatedSerial.h"
 #include "../NetworkLayer/Events/TargetStatChangeSerial.h"
 #include "../NetworkLayer/NetworkControler.h"
+
 
 void SObj::sendall(uint32_t clientId){
 	//cerr<<"SObj::sendall obj "<<this->_id<<endl;
@@ -13,6 +15,17 @@ void SObj::sendall(uint32_t clientId){
 	networkControl->sendToC(clientId, tmp, size);
 	free(tmp);
 }
+
+void SObj::sendObjCreated(uint32_t clientId, uint32_t createdRef){
+	//cerr<<"SObj::sendall obj "<<this->_id<<endl;
+	SerialEventObjCreated::SerialObjCreated * tmp = SerialEventObjCreated::alloc(
+			this->_id,
+			createdRef);
+
+	networkControl->sendToC(clientId, tmp, tmp->_size);
+	free(tmp);
+}
+
 void SObj::sendEventTargetStatChange (
 	OBJID caster,
 	OBJDATA::Enum statType,

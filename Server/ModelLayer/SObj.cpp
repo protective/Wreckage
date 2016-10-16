@@ -10,10 +10,10 @@
 #include "Signals/Signal.h"
 #include "../Processor/Processor.h"
 
-#include "../NetworkLayer/ObjSerial.h"
 #include "Signals/SignalEnterDevClient.h"
 #include "Signals/SignalExitClient.h"
 #include "Signals/SignalEnterClient.h"
+#include "Signals/SignalCreated.h"
 
 
 SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
@@ -68,9 +68,15 @@ void SObj::signal(SIGNAL::Enum type, Signal* data){
 	//if (it != _signalAccept.end()){
 	
 	switch(type){
+		case SIGNAL::created:{
+			SignalCreated* s = (SignalCreated*)data;
+			_subscribers[s->_clientId] = 2;
+			this->sendObjCreated(s->_clientId, s->_creationRef);
+			break;
+		}
 		case SIGNAL::enterDevClient:{
 			SignalEnterDevClient* s = (SignalEnterDevClient*)data;
-			_subscribers[s->_clientId] = 2;		
+			_subscribers[s->_clientId] = 2;
 			this->sendall(s->_clientId);
 			break;
 		}

@@ -15,6 +15,7 @@ struct SerialObjAll : public SerialData{
 	SerialObjAll(SObj* obj, uint32_t size):
 	SerialData(SerialType::SerialObjAll, size){
 		_id = obj->getId();
+		_isTemplate = obj->isTemplate() ? 1 : 0;
 		_xitems = obj->getDataSize();
 	}
 	static uint32_t getMallocSize(SObj* obj){return
@@ -34,10 +35,10 @@ struct SerialObjAll : public SerialData{
 		}
 	}
 
-	OBJID _id;
+    OBJID _id;
     uint32_t _xitems;
+    uint8_t _isTemplate;
 }__attribute__((__packed__));
-
 
 #endif	/* OBJSERIAL_H */
 

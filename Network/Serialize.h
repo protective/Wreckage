@@ -31,6 +31,7 @@ namespace SerialType{
 				SerialTargetLoseBuff = 15,
 				SerialBeginCast = 16,
 				SerialCast = 17,
+				SerialObjCreated = 18,
 				SerialCmdCreateObj = 100,
 			
 	};
@@ -94,6 +95,9 @@ struct SerialObjComp  {
 
 struct SerialCmdCreateObj : public SerialData{
     OBJID _template;
+	uint32_t _creationRef;
+	uint8_t _makeTemplate;
+	uint8_t _makePersistent;
 	SerialObjData _data[1];
 	SerialObjComp _comp[1];
 };

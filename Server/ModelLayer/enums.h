@@ -38,7 +38,8 @@ namespace SIGNAL {
 		exitClient,
 		enterDevClient,
 		runProgram,
-		created
+		created,
+		gainComp
 	};
 }
 

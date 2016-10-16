@@ -19,7 +19,7 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 			SerialIndputSetCompValue* d = (SerialIndputSetCompValue*)data;
 			if(d->_compId == COMPID::powerBase){
 				SerialCompPowerBase::setvalue(this, (SerialCompPowerBase::SerialSetField*)&d[1]);
-				
+
 				for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
 					MessageReCloneComp* m = new MessageReCloneComp(this->_obj->getId(), new CompPowerBase(*this) );
 					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
