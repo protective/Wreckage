@@ -27,7 +27,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
         $("body").on("click", "#UIshowtemplates", function(e){
             UI_show_templates()});
         $("body").on("click", "#UIshowPowerList", function(e){
-            UIMain.UI_show_powers_list()});
+            UIMain.UI_togglePowersList()});
     }
 
     return init;

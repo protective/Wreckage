@@ -101,7 +101,7 @@ define(function ( require ) {
         
         obj.castSpell(obj, target, powerId, effectId, hardpoint);
     };
-    
+
     return function msghook() {
         webSocket.hook(13, targetStatChange);
         webSocket.hook(14, targetGainBuff);

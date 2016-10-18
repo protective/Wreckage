@@ -3,11 +3,8 @@
         <tr>
             <td>
                 <div>
-                  <ul class="nav nav-pills nav-stacked" style="overflow:scroll;height:180px;width:200px;top: 0px;overflow:auto">
-                    <li><a class="clickThis" id="-1">New Power</a></li>
-                    <% for(var id in ids) { %>
-                    <li><a class="clickThis" id="<%= id %>"><%= ids[id].powerName %></a></li>
-                    <% } %>
+                  <ul id="UIPowerList_list" class="nav nav-pills nav-stacked" style="overflow:scroll;height:180px;width:200px;top: 0px;overflow:auto">
+
                   </ul>
                 </div>
             </td>

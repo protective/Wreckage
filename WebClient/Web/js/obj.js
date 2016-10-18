@@ -40,18 +40,25 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
                     this.UIDevObjHpPanel.updateMana(value);
             }
         }
-        //TODO this should be dynamic
-        //as not all unit have all components
-		//require('Model/CompSpellBook').call(this);
+
         var _gainCompCallbacks = {};
 
-        this.gainCompCallback = function(compId, callback){
-            _gainCompCallbacks[compId] = callback;
+        this.onGainComp = function (compId, callback, singleshot) {
+            if (!(compId in _gainCompCallbacks))
+            	_gainCompCallbacks[compId] = []
+            _gainCompCallbacks[compId].push({'callback': callback,
+            								   'singleshot': singleshot});    	
         };
 
         this.gainComp = function(compId) {
             if (compId in _gainCompCallbacks) {
-                _gainCompCallbacks[compId](this);
+
+            	for (i in _gainCompCallbacks[compId]) {
+            		_gainCompCallbacks[compId][i]['callback'](this);                
+            	}
+            	_gainCompCallbacks[compId].filter(function( dict ) {
+            	    return dict.singleshot == false;
+            	});
             }};
     }
     return Obj;

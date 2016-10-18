@@ -39,7 +39,7 @@ define(function ( require ) {
 
     function modAddCompPowerBase(obj, callback) {
         //15 CompPowerBase
-        obj.gainCompCallback(15, callback);
+        obj.onGainComp(15, callback, true);
         webSocket.handlers.modAddCompPowerBase(obj, 15);
     }
 

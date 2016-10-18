@@ -31,14 +31,17 @@ define(function ( require ) {
 
     function encodeSetProgram(obj, programSrc){
         encodeSetStr(obj, 3, programSrc);
+        obj.compPowerBase.programSrc = programSrc;
     }
 
     function encodeSetName(obj, name){
         encodeSetStr(obj, 1, name);
+        obj.compPowerBase.powerName = name;
     }
 
     function encodeSetDescription(obj, description){
         encodeSetStr(obj, 2, description);
+        obj.compPowerBase.description = description;
     }
 
     function saveAll(obj, name, description, programSrc){
