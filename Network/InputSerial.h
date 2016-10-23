@@ -16,7 +16,9 @@ namespace SERIALINPUT{
 		  */
 		Invalid = 0,
         SerialInputCastPower= 1,
-		SerialIndputSetCompValue = 2
+		SerialIndputSetCompValue = 2,
+        SerialIndputAddCompValue = 3,
+        SerialIndputRemoveCompValue = 4
 	};
 }
 
@@ -26,13 +28,21 @@ struct SerialInputPayload{
 	inputLen _size;
 }__attribute__((__packed__));
 
+struct SerialInputCastPower : public SerialInputPayload{ //id = 1
+    OBJID _power;
+	OBJID _target;
+}__attribute__((__packed__));
+
 struct SerialIndputSetCompValue : public SerialInputPayload{ //id = 2
     uint32_t _compId;
 }__attribute__((__packed__));
 
-struct SerialInputCastPower : public SerialInputPayload{ //id = 5
-    OBJID _power;
-	OBJID _target;
+struct SerialIndputAddCompValue : public SerialInputPayload{ //id = 3
+    uint32_t _compId;
+}__attribute__((__packed__));
+
+struct SerialIndputRemoveCompValue : public SerialInputPayload{ //id = 4
+    uint32_t _compId;
 }__attribute__((__packed__));
 
 #endif	/* SERIALIZE_H */

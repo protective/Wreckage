@@ -21,6 +21,16 @@ SComponent(COMPID::spellbook){
 CompSpellBook::CompSpellBook(const CompSpellBook& orig) :
 SComponent(COMPID::spellbook){
 	init();
+	_gfxId = orig._gfxId;
+	_castTime = 0;
+	_beginTime = 0;
+}
+
+void CompSpellBook::addPower(OBJID power){
+	_knownPowers.push_back(power);
+}
+void CompSpellBook::removePower(OBJID power){
+	_knownPowers.remove(power);
 }
 
 void CompSpellBook::acceptSignal(SIGNAL::Enum type, Signal* data){

@@ -27,7 +27,6 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 			}
 		}
 	}
-
 }
 
 void CompPowerBase::sendFull(uint32_t clientId){
@@ -37,7 +36,7 @@ void CompPowerBase::sendFull(uint32_t clientId){
 			this->_name,
 			this->_description,
 			this->_programSource);
-	
+
 	networkControl->sendToC(clientId, tmp, tmp->_size);
 	free(tmp);
 }

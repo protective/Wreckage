@@ -9,7 +9,8 @@ public:
 	CompPosition(uint32_t modelId);
 	CompPosition(const CompPosition& orig);
 	CompPosition(SObj* obj, OBJID id, pqxx::connection& con);	
-	
+	CompPosition* clone(){return new CompPosition( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

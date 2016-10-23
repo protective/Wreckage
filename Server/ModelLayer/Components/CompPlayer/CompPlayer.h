@@ -9,7 +9,8 @@ public:
 	CompPlayer();
 	CompPlayer(const CompPlayer& orig);
 	CompPlayer(SObj* obj, OBJID id, pqxx::connection& con);
-	
+	CompPlayer* clone(){return new CompPlayer( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

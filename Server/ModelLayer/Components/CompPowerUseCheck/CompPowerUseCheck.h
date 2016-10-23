@@ -10,7 +10,8 @@ public:
 	CompPowerUseCheck(OBJID spawner);
 	CompPowerUseCheck(const CompPowerUseCheck& orig);
 	CompPowerUseCheck(SObj* obj, OBJID id, pqxx::connection& con);
-	
+	CompPowerUseCheck* clone(){return new CompPowerUseCheck( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

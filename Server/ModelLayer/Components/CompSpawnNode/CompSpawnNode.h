@@ -11,7 +11,8 @@ public:
 	CompSpawnNode(const CompSpawnNode& orig);
 	CompSpawnNode(SObj* obj, OBJID id, pqxx::connection& con);	
 	CompSpawnNode(SerialCompSpawnNode* sc, int32_t* size);
-	
+	CompSpawnNode* clone(){return new CompSpawnNode( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

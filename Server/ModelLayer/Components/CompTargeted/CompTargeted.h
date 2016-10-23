@@ -25,7 +25,8 @@ public:
 	//CompTargeted(OBJID spawner);
 	CompTargeted(const CompTargeted& orig);
 	CompTargeted(SObj* obj, OBJID id, pqxx::connection& con);
-	
+	CompTargeted* clone(){return new CompTargeted( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

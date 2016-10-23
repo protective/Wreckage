@@ -57,48 +57,65 @@ bool TaskCreateObj::addPos(SPos* pos){
 	return true;
 }
 
-void TaskCreateObj::loadData(SObj* obj, OBJID id){
-	pqxx::work w(_processor->getDB());
-	
+void TaskCreateObj::loadData(SObj* obj, OBJID fromId){
+
 	for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end();it++){
 		for (list<OBJDATA::Enum>::iterator it2 = it->second->getDataAccesUssage().begin() ; it2 != it->second->getDataAccesUssage().end();it2++){
-			obj->setData(*it2,0);
+			obj->setData(*it2, 0);
 		}
 	}
-
-	stringstream s;
-	s<<"select dataid, value from objdata where "
-	"objid = "<<id<<";";
-	pqxx::result r = w.exec(s); w.commit();	
-	for (int i = 0; i< r.size(); i++){
-		obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][1].as<int32_t>());
+	SObj* from = _processor->getObj(fromId);
+	if (from) {
+		for (auto& kv: from->getData()) {
+			obj->setData(kv.first, kv.second);
+		}
+	} else {
+		pqxx::work w(_processor->getDB());
+		stringstream s;
+		s<<"select dataid, value from objdata where "
+		"objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s); w.commit();
+		for (int i = 0; i< r.size(); i++){
+			obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][1].as<int32_t>());
+		}
 	}
 }
 
-void TaskCreateObj::loadPos(SObj* obj, OBJID id){
-
-	pqxx::work w(_processor->getDB());
-	stringstream s;
-	s<<"select x, y, z, d from objpos where "
-	"objid = "<<id<<";";
-	pqxx::result r = w.exec(s); w.commit();	
-	if ( r.size() > 0){
-		SPos p(r[0][0].as<int32_t>(),r[0][1].as<int32_t>(),r[0][2].as<int32_t>(),r[0][3].as<uint16_t>());
+void TaskCreateObj::loadPos(SObj* obj, OBJID fromId){
+	SObj* from = _processor->getObj(fromId);
+	if (from) {
+		SPos p(from->getPos()->x(), from->getPos()->y(), from->getPos()->z(), from->getPos()->d());
 		obj->setPos(p);
+	} else {
+		pqxx::work w(_processor->getDB());
+		stringstream s;
+		s<<"select x, y, z, d from objpos where "
+		"objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s); w.commit();
+		if ( r.size() > 0){
+			SPos p(r[0][0].as<int32_t>(),r[0][1].as<int32_t>(),r[0][2].as<int32_t>(),r[0][3].as<uint16_t>());
+			obj->setPos(p);
+		}
 	}
 }
 
-void TaskCreateObj::loadComponents(SObj* obj, OBJID id){
-
-	pqxx::work w(_processor->getDB());
-	stringstream s; 
-	s<<"select compid from comp where objid = "<<id<<";";
-	pqxx::result r = w.exec(s);
-	w.commit();
-	for(int i = 0; i< r.size();i++){
-		SComponent* cmp = createComponent(obj,(COMPID::Enum)r[i][0].as<uint32_t>(), id, _processor->getDB());
-		if(!this->addComponent(cmp))
-			delete cmp;
+void TaskCreateObj::loadComponents(SObj* obj, OBJID fromId){
+	SObj* from = _processor->getObj(fromId);
+	if(from) {
+		for (auto& kv : from->getComponents()) {
+			this->addComponent(kv.second->clone());
+		}
+	} else {
+		pqxx::work w(_processor->getDB());
+		stringstream s;
+		s<<"select compid from comp where objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s);
+		w.commit();
+		for(int i = 0; i< r.size();i++){
+			SComponent* cmp = createComponent(obj,(COMPID::Enum)r[i][0].as<uint32_t>(), fromId, _processor->getDB());
+			if(!this->addComponent(cmp))
+				delete cmp;
+		}
 	}
 }
 

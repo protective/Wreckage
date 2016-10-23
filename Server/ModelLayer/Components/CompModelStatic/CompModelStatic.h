@@ -9,7 +9,8 @@ public:
 	CompModelStatic(uint32_t modelId);
 	CompModelStatic(const CompModelStatic& orig);
 	CompModelStatic(SObj* obj, OBJID id, pqxx::connection& con);	
-	
+	CompModelStatic* clone(){return new CompModelStatic( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

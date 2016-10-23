@@ -33,9 +33,9 @@ public:
 	virtual ~TaskCreateObj();
 private:
 
-    void loadComponents(SObj* obj, OBJID id);
-    void loadData(SObj* obj, OBJID id);
-    void loadPos(SObj* obj, OBJID id);
+    void loadComponents(SObj* obj, OBJID fromId);
+    void loadData(SObj* obj, OBJID fromId);
+    void loadPos(SObj* obj, OBJID fromId);
     OBJID _id;
     OBJID _fromid;
     bool _makePersistent;

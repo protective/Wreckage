@@ -9,7 +9,8 @@ public:
 	CompReSpawnable(OBJID spawner);
 	CompReSpawnable(const CompReSpawnable& orig);
 	CompReSpawnable(SObj* obj, OBJID id, pqxx::connection& con);
-	
+	CompReSpawnable* clone(){return new CompReSpawnable( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	

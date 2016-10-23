@@ -9,13 +9,50 @@ namespace SerialCompSpellBook{
 		Invalid = 0,
 		SendFull = 1,
 		ObjExit  = 2
-				
 	};
+
+struct SerialSetField {
+	enum Enum {
+		Invalid = 0,
+		knownpowers = 1
+	};
+	uint16_t _field;
+}__attribute__((__packed__));
+
+struct SerialAddKnownpower : public SerialSetField {
+	OBJID _power;
+}__attribute__((__packed__));
+
+struct SerialRemoveKnownpower : public SerialSetField {
+	OBJID _power;
+}__attribute__((__packed__));
 
 struct SerialSendFull : public SerialComp{
 	uint16_t _xPowers;
 	OBJID _powers[1];
 }__attribute__((__packed__));
+
+void addValue(CompSpellBook* comp, SerialSetField* msg){
+	switch((SerialSetField::Enum)msg->_field){
+		//TODO Check Security
+		case SerialSetField::Enum::knownpowers: {
+			SerialAddKnownpower* st = (SerialAddKnownpower*)msg;
+			comp->addPower(st->_power);
+			break;
+		}
+    }
+}
+
+void removeValue(CompSpellBook* comp, SerialSetField* msg){
+	switch((SerialSetField::Enum)msg->_field){
+		//TODO Check Security
+		case SerialSetField::Enum::knownpowers: {
+			SerialAddKnownpower* st = (SerialAddKnownpower*)msg;
+			comp->removePower(st->_power);
+			break;
+		}
+    }
+}
 
 SerialSendFull* allocSendFull(OBJID objId, list<OBJID> powers){
 

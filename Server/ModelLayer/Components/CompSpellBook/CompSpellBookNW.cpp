@@ -25,6 +25,23 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 			_obj->getProcessor()->sendMessage(d->_power, msg);
 			break;
 		}
+		case SERIALINPUT::SerialIndputAddCompValue: {
+			SerialIndputAddCompValue* d = (SerialIndputAddCompValue*)data;
+			if(d->_compId == COMPID::spellbook){
+				SerialCompSpellBook::addValue(this, (SerialCompSpellBook::SerialAddKnownpower*)&d[1]);
+
+				//for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
+				//	MessageReCloneComp* m = new MessageReCloneComp(this->_obj->getId(), new CompPowerBase(*this) );
+				//	this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
+				//}
+			}
+		}
+		case SERIALINPUT::SerialIndputRemoveCompValue: {
+			SerialIndputRemoveCompValue* d = (SerialIndputRemoveCompValue*)data;
+			if(d->_compId == COMPID::spellbook){
+				SerialCompSpellBook::removeValue(this, (SerialCompSpellBook::SerialRemoveKnownpower*)&d[1]);
+			}
+		}
 	}
 }
 

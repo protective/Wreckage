@@ -39,6 +39,7 @@ public:
 		_flags= orig._flags;
 				
 	}
+    virtual SComponent* clone() = 0;
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};

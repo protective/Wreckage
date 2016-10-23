@@ -52,11 +52,10 @@ void setvalue(CompPowerBase* comp, SerialSetField* msg){
 	}
 }
 
-
 struct SerialSendFull : public SerialComp{
 	SerialSendFull(OBJID objId, string name, string description, string programSrc):
 		SerialComp(objId, COMPID::powerBase, (uint32_t)SendFull, sizeof(SerialSendFull)){}
-	
+
 	uint16_t _lenName;
 	uint16_t _lenDescription;
 	uint16_t _lenProgramSrc;
@@ -74,11 +73,11 @@ SerialSendFull* allocSendFull(OBJID objId, string name, string description, stri
 	s->_lenName = name.size();
 	s->_lenDescription = description.size();
 	s->_lenProgramSrc = programSrc.size();
-		
+
 	memcpy((char*)s + sizeof(SerialSendFull), name.c_str(), name.size());
 	memcpy((char*)s + sizeof(SerialSendFull) + name.size(), description.c_str(),description.size());
 	memcpy((char*)s + sizeof(SerialSendFull) + name.size() + description.size(), programSrc.c_str(), programSrc.size());
-	
+
 	return s;
 }
 

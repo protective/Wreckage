@@ -11,7 +11,8 @@ public:
 	CompProgramable();
 	CompProgramable(const CompProgramable& orig);
 	CompProgramable(SObj* obj, OBJID id, pqxx::connection& con);
-	
+	CompProgramable* clone(){return new CompProgramable( *this );}
+
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	void virtual acceptNetwork(SerialInputPayload* data);
