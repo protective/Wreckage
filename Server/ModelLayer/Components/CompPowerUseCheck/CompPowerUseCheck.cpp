@@ -8,13 +8,13 @@
 #include "../../Messages/MessageActivatePowerOnTarget.h"
 #include "../../Messages/MessagePowerCheck.h"
 
-CompPowerUseCheck::CompPowerUseCheck() :
-SComponent(COMPID::powerUseCheck){
+CompPowerUseCheck::CompPowerUseCheck(SObj* obj) :
+SComponent(COMPID::powerUseCheck, obj){
 	
 }
 
-CompPowerUseCheck::CompPowerUseCheck(const CompPowerUseCheck& orig) :
-SComponent(COMPID::powerUseCheck){
+CompPowerUseCheck::CompPowerUseCheck(const CompPowerUseCheck& orig, SObj* obj) :
+SComponent(COMPID::powerUseCheck, obj){
 
 }
 

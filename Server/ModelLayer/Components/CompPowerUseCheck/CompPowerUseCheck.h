@@ -6,11 +6,11 @@
 
 class CompPowerUseCheck  : public SComponent {
 public:
-	CompPowerUseCheck();
-	CompPowerUseCheck(OBJID spawner);
-	CompPowerUseCheck(const CompPowerUseCheck& orig);
+	CompPowerUseCheck(SObj* obj);
+	CompPowerUseCheck(OBJID spawner, SObj* obj);
+	CompPowerUseCheck(const CompPowerUseCheck& orig, SObj* obj);
 	CompPowerUseCheck(SObj* obj, OBJID id, pqxx::connection& con);
-	CompPowerUseCheck* clone(){return new CompPowerUseCheck( *this );}
+	CompPowerUseCheck* clone(SObj* obj){return new CompPowerUseCheck(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -18,7 +18,7 @@ public:
 	void sendFull(uint32_t clientId);
 		
 	void virtual dbInit();
-	void virtual dbTableInit(pqxx::connection& con);
+	void static dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();

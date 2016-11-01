@@ -14,13 +14,13 @@
 
 #include "GFunctions.h"
 #include <math.h>
-CompTargeted::CompTargeted() :
-SComponent(COMPID::targeted){
+CompTargeted::CompTargeted(SObj* obj) :
+SComponent(COMPID::targeted, obj){
 	init();
 }
 
-CompTargeted::CompTargeted(const CompTargeted& orig) :
-SComponent(COMPID::targeted){
+CompTargeted::CompTargeted(const CompTargeted& orig, SObj* obj) :
+SComponent(COMPID::targeted, obj){
 	init();
 }
 

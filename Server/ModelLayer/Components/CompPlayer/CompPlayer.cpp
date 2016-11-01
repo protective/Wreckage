@@ -5,13 +5,13 @@
 
 #include "../../Signals/SignalEnterDevClient.h"
 
-CompPlayer::CompPlayer() :
-SComponent(COMPID::player){
+CompPlayer::CompPlayer(SObj* obj) :
+SComponent(COMPID::player, obj){
 	init();
 }
 
-CompPlayer::CompPlayer(const CompPlayer& orig) :
-SComponent(COMPID::player){
+CompPlayer::CompPlayer(const CompPlayer& orig, SObj* obj) :
+SComponent(COMPID::player, obj){
 	init();
 }
 

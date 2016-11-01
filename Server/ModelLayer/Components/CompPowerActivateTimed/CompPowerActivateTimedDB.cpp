@@ -2,7 +2,7 @@
 #include "CompPowerActivateTimed.h"
 
 CompPowerActivateTimed::CompPowerActivateTimed(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::powerActivateTimed){
+SComponent(COMPID::powerActivateTimed, obj){
 	init();
 	
 	if(obj->getId() == id)

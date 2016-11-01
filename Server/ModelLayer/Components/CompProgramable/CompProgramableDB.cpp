@@ -4,7 +4,7 @@
 #include "../../../Processor/Processor.h"
 
 CompProgramable::CompProgramable(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::programable){
+SComponent(COMPID::programable, obj){
 
 	init();
 	pqxx::work w(con);

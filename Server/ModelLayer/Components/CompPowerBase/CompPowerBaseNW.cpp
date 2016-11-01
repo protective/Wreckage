@@ -1,7 +1,7 @@
 
 #include "CompPowerBase.h"
 
-#include "../../../ModelLayer/Messages/MessageReCloneComp.h"
+#include "../../../ModelLayer/Messages/CompPowerBase/MessagePowerBaseClone.h"
 
 #include "../../../NetworkLayer/NetworkControler.h"
 
@@ -21,7 +21,13 @@ void CompPowerBase::acceptNetwork(SerialInputPayload* data){
 				SerialCompPowerBase::setvalue(this, (SerialCompPowerBase::SerialSetField*)&d[1]);
 
 				for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
-					MessageReCloneComp* m = new MessageReCloneComp(this->_obj->getId(), new CompPowerBase(*this) );
+					MessagePowerBaseClone* m = new MessagePowerBaseClone(
+						this->_obj->getId(),
+							this->_name,
+							this->_description,
+							this->_programSource,
+							this->_sym,
+							new wkl::Program(this->_program));
 					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
 				}
 			}

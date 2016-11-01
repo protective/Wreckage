@@ -3,7 +3,7 @@
 
 
 CompPowerActivateInstant::CompPowerActivateInstant(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::powerActivateInstant){
+SComponent(COMPID::powerActivateInstant, obj){
 	init();
 	
 	if(obj->getId() == id)

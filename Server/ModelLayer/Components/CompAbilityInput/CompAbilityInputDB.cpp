@@ -2,7 +2,7 @@
 #include "CompAbilityInput.h"
 
 CompAbilityInput::CompAbilityInput(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::abilityInput){
+SComponent(COMPID::abilityInput, obj){
 	init();
 	
 	if(obj->getId() == id)

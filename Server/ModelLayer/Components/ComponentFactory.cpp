@@ -65,15 +65,15 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
 	}
 }
 
-SComponent* createComponent(SerialObjComp* sc, int32_t* size){
+SComponent* createComponent(SerialObjComp* sc, int32_t* size, SObj* obj){
 	SComponent* temp = NULL;
 	switch(sc->_compType){
 		case COMPID::spawnNode: {
-			temp = new CompSpawnNode((SerialCompSpawnNode*)sc, size);
+			//temp = new CompSpawnNode((SerialCompSpawnNode*)sc, size);
 			break;
 		}
 		case COMPID::powerBase: {
-			temp = new CompPowerBase();
+			//temp = new CompPowerBase();
 			break;
 		}
 		default:{
@@ -87,11 +87,11 @@ SComponent* createComponent(SerialObjComp* sc, int32_t* size){
 	return NULL;
 }
 
-SComponent* createComponent(uint32_t compId){
+SComponent* createComponent(uint32_t compId, SObj* obj){
 	SComponent* temp = NULL;
 	switch(compId){
 		case COMPID::powerBase: {
-			temp = new CompPowerBase();
+			temp = new CompPowerBase(obj);
 			break;
 		}
 		default:{

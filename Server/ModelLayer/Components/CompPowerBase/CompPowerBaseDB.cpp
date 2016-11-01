@@ -4,8 +4,7 @@
 #include "../../../Processor/Processor.h"
 
 CompPowerBase::CompPowerBase(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::powerBase){
-
+SComponent(COMPID::powerBase, obj){
 	_program = NULL;
 	init();
 	pqxx::work w(con);

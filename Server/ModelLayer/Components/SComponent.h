@@ -28,18 +28,18 @@ class SComponent {
 	friend SObj;
 public:
 	
-	SComponent(COMPID::Enum type){
-		_obj = NULL;
+	SComponent(COMPID::Enum type, SObj* obj){
+		_obj = obj;
 		_type = type;
 		_flags = 0;
 	}
-	SComponent(const SComponent& orig){
-		_obj = orig._obj;
+	SComponent(const SComponent& orig, SObj* obj){
+		_obj = obj;
 		_type = orig._type;
 		_flags= orig._flags;
 				
 	}
-    virtual SComponent* clone() = 0;
+    virtual SComponent* clone(SObj* obj) = 0;
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data) {};
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data) {};

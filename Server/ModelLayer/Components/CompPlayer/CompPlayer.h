@@ -6,10 +6,10 @@
 
 class CompPlayer  : public SComponent {
 public:
-	CompPlayer();
-	CompPlayer(const CompPlayer& orig);
+	CompPlayer(SObj* obj);
+	CompPlayer(const CompPlayer& orig, SObj* obj);
 	CompPlayer(SObj* obj, OBJID id, pqxx::connection& con);
-	CompPlayer* clone(){return new CompPlayer( *this );}
+	CompPlayer* clone(SObj* obj){return new CompPlayer(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

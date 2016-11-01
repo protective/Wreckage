@@ -6,17 +6,17 @@
 
 class CompPowerActivateTimed  : public SComponent {
 public:
-	CompPowerActivateTimed();
-	CompPowerActivateTimed(OBJID spawner);
-	CompPowerActivateTimed(const CompPowerActivateTimed& orig);
+	CompPowerActivateTimed(SObj* obj);
+	CompPowerActivateTimed(OBJID spawner, SObj* obj);
+	CompPowerActivateTimed(const CompPowerActivateTimed& orig, SObj* obj);
 	CompPowerActivateTimed(SObj* obj, OBJID id, pqxx::connection& con);
-	CompPowerActivateTimed* clone(){return new CompPowerActivateTimed( *this );}
+	CompPowerActivateTimed* clone(SObj* obj){return new CompPowerActivateTimed(*this, obj);}
 
     void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	
 	void virtual dbInit();
-	void virtual dbTableInit(pqxx::connection& con);
+	void static dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();

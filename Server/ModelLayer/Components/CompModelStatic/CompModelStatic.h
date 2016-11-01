@@ -5,17 +5,17 @@
 #include "../SComponent.h"
 class CompModelStatic : public SComponent  {
 public:
-	CompModelStatic();
-	CompModelStatic(uint32_t modelId);
-	CompModelStatic(const CompModelStatic& orig);
+	CompModelStatic(SObj* obj);
+	CompModelStatic(uint32_t modelId, SObj* obj);
+	CompModelStatic(const CompModelStatic& orig, SObj* obj);
 	CompModelStatic(SObj* obj, OBJID id, pqxx::connection& con);	
-	CompModelStatic* clone(){return new CompModelStatic( *this );}
+	CompModelStatic* clone(SObj* obj){return new CompModelStatic(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	
 	void virtual dbInit();
-	void virtual dbTableInit(pqxx::connection& con);
+	void static dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();

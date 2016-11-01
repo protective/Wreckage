@@ -6,11 +6,11 @@
 
 class CompPowerActivateInstant : public SComponent {
 public:
-	CompPowerActivateInstant();
+	CompPowerActivateInstant(SObj* obj);
 	//CompPowerActivateInstant(OBJID spawner);
-	CompPowerActivateInstant(const CompPowerActivateInstant& orig);
+	CompPowerActivateInstant(const CompPowerActivateInstant& orig, SObj* obj);
 	CompPowerActivateInstant(SObj* obj, OBJID id, pqxx::connection& con);
-	CompPowerActivateInstant* clone(){return new CompPowerActivateInstant( *this );}
+	CompPowerActivateInstant* clone(SObj* obj){return new CompPowerActivateInstant(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

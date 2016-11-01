@@ -3,7 +3,7 @@
 #include "CompTargeted.h"
 
 CompTargeted::CompTargeted(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::targeted){
+SComponent(COMPID::targeted, obj){
 	init();
 	
 	if(obj->getId() == id)

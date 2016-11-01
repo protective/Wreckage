@@ -2,7 +2,7 @@
 #include "CompPlayer.h"
 
 CompPlayer::CompPlayer(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::player){
+SComponent(COMPID::player, obj){
 	init();
 	
 	if(obj->getId() == id)

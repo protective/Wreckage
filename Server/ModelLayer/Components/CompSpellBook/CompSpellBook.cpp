@@ -9,17 +9,18 @@
 #include "../../Messages/MessageProgramFork.h"
 #include "../../Messages/MessageProgramSleepWake.h"
 #include "../../Messages/MessageProgramFunctionSleep.h"
+#include "../../Messages/CompSpellBook/MessageSpellbookClone.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalRunProgram.h"
 
-CompSpellBook::CompSpellBook() :
-SComponent(COMPID::spellbook){
+CompSpellBook::CompSpellBook(SObj* obj) :
+SComponent(COMPID::spellbook, obj){
 	init();
 }
 
-CompSpellBook::CompSpellBook(const CompSpellBook& orig) :
-SComponent(COMPID::spellbook){
+CompSpellBook::CompSpellBook(const CompSpellBook& orig, SObj* obj) :
+SComponent(COMPID::spellbook, obj){
 	init();
 	_gfxId = orig._gfxId;
 	_castTime = 0;
@@ -27,10 +28,17 @@ SComponent(COMPID::spellbook){
 }
 
 void CompSpellBook::addPower(OBJID power){
-	_knownPowers.push_back(power);
+	if(!_obj->isTemplate()){
+		OBJID tmp = _obj->getProcessor()->getFreeID();
+		SObj* powerObj = _obj->getProcessor()->createObj(tmp, power, false, false);
+		_powers[power] = powerObj;
+	}else{
+		_powers[power] = NULL;
+	}
 }
 void CompSpellBook::removePower(OBJID power){
-	_knownPowers.remove(power);
+	//TODO delete obj
+	_powers.erase(power);
 }
 
 void CompSpellBook::acceptSignal(SIGNAL::Enum type, Signal* data){
@@ -53,7 +61,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			envContext[systemEnvLib::wkl_powerId] = msg->_fromId;
 			envContext[systemEnvLib::wkl_level] = 1;
 			envContext[systemEnvLib::wkl_target] = msg->_target;
-			envContext[systemEnvLib::wkl_missChance] = 10;
+			envContext[systemEnvLib::wkl_missChance] = 1;
 			envContext[systemEnvLib::wkl_critChance] = 90;
 			envContext[systemEnvLib::wkl_gfx_cast] = GFXTYPE::fireball1;
 			envContext[systemEnvLib::wkl_gfx_hit] = GFXTYPE::renew1;
@@ -61,6 +69,15 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			//that is leave it to wkl
 			SignalRunProgram s(msg->_program, &envContext, systemCallBackLib::__activate_target__, 0, 0);
 			this->_obj->signal(SIGNAL::runProgram, &s);
+			break;
+		}
+		case MESSAGE::reCloneComp:{
+			MessageSpellbookClone* msg = (MessageSpellbookClone*)data;
+			for (auto it: msg->_powers) {
+				if (_powers.find(it) == _powers.end()) {
+					this->addPower(it);
+				}
+			}
 			break;
 		}
 	}

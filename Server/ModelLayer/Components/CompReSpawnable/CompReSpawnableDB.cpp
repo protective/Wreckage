@@ -5,7 +5,7 @@
 #include "../../Signals/SignalProcess.h"
 
 CompReSpawnable::CompReSpawnable(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::spawnNode){
+SComponent(COMPID::spawnNode, obj){
 	init();
 	pqxx::work w(con);
 	stringstream s; 

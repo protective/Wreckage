@@ -16,7 +16,7 @@
 #include "Signals/SignalCreated.h"
 
 
-SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Processor* processor) {
+SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized, Processor* processor) {
 	_id = id;
 	_pos = NULL;
 	_processor = processor;
@@ -26,12 +26,11 @@ SObj::SObj(OBJID id, bool persistent, bool istemplate, bool initialized ,Process
 }
 void SObj::addComponent(SComponent* comp){
 	if(comp){
-		comp->setObj(this);
 		_components[comp->_type] = comp;
 		for(list<OBJDATA::Enum>::iterator it = comp->getDataAccesUssage().begin(); it!=comp->getDataAccesUssage().end();it++){
 			if(_data.find(*it) == _data.end())
 				addData(*it,0);
-		} 
+		}
 		if(isPersistent()){
 			if(isInit() && !comp->isInit()){
 				stringstream s;

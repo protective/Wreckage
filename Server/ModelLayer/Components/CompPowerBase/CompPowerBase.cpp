@@ -9,19 +9,19 @@
 #include "../../Messages/MessagePowerCheck.h"
 #include "../../Messages/MessageProgramFunctionSleep.h"
 #include "../../Messages/MessagePowerStats.h"
-#include "../../Messages/MessageReCloneComp.h"
+#include "../../Messages/CompPowerBase/MessagePowerBaseClone.h"
 
 #include "../../Signals/SignalEnterDevClient.h"
 #include "../../Signals/SignalGainComp.h"
 
-CompPowerBase::CompPowerBase() :
-SComponent(COMPID::powerBase){
+CompPowerBase::CompPowerBase(SObj* obj) :
+SComponent(COMPID::powerBase, obj){
 	_program = NULL;
 	init();
 }
 
-CompPowerBase::CompPowerBase(const CompPowerBase& orig) :
-SComponent(orig){
+CompPowerBase::CompPowerBase(const CompPowerBase& orig, SObj* obj) :
+SComponent(orig, obj){
 	_name = orig._name;
 	_description = orig._description;
 	_programSource = orig._programSource;
@@ -74,14 +74,15 @@ void CompPowerBase::acceptMessage(MESSAGE::Enum type, Message* data){
 			break;
 		}
 		case MESSAGE::reCloneComp:{
-			MessageReCloneComp* msg = (MessageReCloneComp*)data;
-			CompPowerBase* comp = (CompPowerBase*)msg->_comp;
-			_description = comp->_description;
-			_name = comp->_name;
+			MessagePowerBaseClone* msg = (MessagePowerBaseClone*)data;
+			_description = msg->_description;
+			_name = msg->_name;
+			_sym = msg->_sym;
 			if(_program)
 				delete _program;
-			_program = new wkl::Program(comp->_program);
-			_sym = comp->_sym;
+			_program = msg->_program;
+			msg->_program = NULL;
+			
 			
 			break;
 		}
@@ -110,9 +111,11 @@ void CompPowerBase::compileProgram(string src){
 }
 void CompPowerBase::setName(string name){
 	_name = name;
+	dbSave();
 }
 void CompPowerBase::setDescription(string description){
 	_description = description;
+	dbSave();
 }
 
 CompPowerBase::~CompPowerBase() {

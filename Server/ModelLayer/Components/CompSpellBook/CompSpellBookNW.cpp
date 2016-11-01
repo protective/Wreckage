@@ -7,6 +7,7 @@
 #include "../../../../Network/InputSerial.h"
 #include "../../Messages/MessageActivatePowerOnTarget.h"
 #include "../../Messages/MessagePowerStats.h"
+#include "../../Messages/CompSpellBook/MessageSpellbookClone.h"
 
 #include "../../../NetworkLayer/Components/CompSpellBook/CompSpellBookSerial.h"
 #include "../../../NetworkLayer/Events/CastSerial.h"
@@ -29,17 +30,28 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 			SerialIndputAddCompValue* d = (SerialIndputAddCompValue*)data;
 			if(d->_compId == COMPID::spellbook){
 				SerialCompSpellBook::addValue(this, (SerialCompSpellBook::SerialAddKnownpower*)&d[1]);
-
-				//for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
-				//	MessageReCloneComp* m = new MessageReCloneComp(this->_obj->getId(), new CompPowerBase(*this) );
-				//	this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
-				//}
+				list<OBJID> tmp;
+				for (auto &kv: _powers) {
+					tmp.push_back(kv.first);
+				}
+				for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
+					MessageSpellbookClone* m = new MessageSpellbookClone(this->_obj->getId(), tmp);
+					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
+				}
 			}
 		}
 		case SERIALINPUT::SerialIndputRemoveCompValue: {
 			SerialIndputRemoveCompValue* d = (SerialIndputRemoveCompValue*)data;
 			if(d->_compId == COMPID::spellbook){
 				SerialCompSpellBook::removeValue(this, (SerialCompSpellBook::SerialRemoveKnownpower*)&d[1]);
+				list<OBJID> tmp;
+				for (auto &kv: _powers) {
+					tmp.push_back(kv.first);
+				}
+				for (auto clone : this->getObj()->getProcessor()->getClones(this->_obj->getId())){
+					MessageSpellbookClone* m = new MessageSpellbookClone(this->_obj->getId(), tmp);
+					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
+				}
 			}
 		}
 	}
@@ -47,9 +59,16 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 
 void CompSpellBook::sendFull(uint32_t clientId){
 	//cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
+	list<OBJID> tmplist;
+	for(auto it: this->_powers) {
+		if (it.second)
+			tmplist.push_back(it.second->getId());
+		else
+			tmplist.push_back(it.first);
+	}
 	SerialCompSpellBook::SerialSendFull* tmp = SerialCompSpellBook::allocSendFull(
 			this->_obj->getId(),
-			this->_loadedPowers);
+			tmplist);
 
 	networkControl->sendToC(clientId, tmp, tmp->_size);
 	free(tmp);

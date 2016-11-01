@@ -5,7 +5,7 @@
 #include "../../../Processor/Processor.h"
 
 CompModelStatic::CompModelStatic(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::modelStatic){
+SComponent(COMPID::modelStatic, obj){
 	init();
 	pqxx::work w(con);
 	stringstream s; 

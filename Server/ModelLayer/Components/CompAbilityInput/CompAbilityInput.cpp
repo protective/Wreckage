@@ -11,15 +11,14 @@
 #include "../../Messages/MessagePowerCheck.h"
 #include "../../Messages/MessageCasterStats.h"
 
-CompAbilityInput::CompAbilityInput() :
-SComponent(COMPID::abilityInput){
+CompAbilityInput::CompAbilityInput(SObj* obj) :
+SComponent(COMPID::abilityInput, obj){
 	init();
 }
 
-CompAbilityInput::CompAbilityInput(const CompAbilityInput& orig) :
-SComponent(COMPID::abilityInput){
+CompAbilityInput::CompAbilityInput(const CompAbilityInput& orig, SObj* obj) :
+SComponent(COMPID::abilityInput, obj){
 	init();
-
 }
 
 void CompAbilityInput::acceptSignal(SIGNAL::Enum type, Signal* data){

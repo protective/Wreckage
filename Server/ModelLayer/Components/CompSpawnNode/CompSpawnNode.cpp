@@ -15,24 +15,24 @@
 
 #include "../CompReSpawnable/CompReSpawnable.h"
 
-CompSpawnNode::CompSpawnNode() :
-SComponent(COMPID::spawnNode){
+CompSpawnNode::CompSpawnNode(SObj* obj) :
+SComponent(COMPID::spawnNode, obj){
 	init();
 	_spawnTime = 0;
 	_spawn = 0;
 	_spawnTemplate = 0;
 }
 
-CompSpawnNode::CompSpawnNode(TIME spawnTime, OBJTPID spawnTemplate, OBJID spawn) :
-SComponent(COMPID::spawnNode){
+CompSpawnNode::CompSpawnNode(TIME spawnTime, OBJTPID spawnTemplate, OBJID spawn, SObj* obj) :
+SComponent(COMPID::spawnNode, obj){
 	init();
 	_spawnTime = spawnTime;
 	_spawn = spawn;
 	_spawnTemplate = spawnTemplate;
 }
 
-CompSpawnNode::CompSpawnNode(const CompSpawnNode& orig) :
-SComponent(COMPID::spawnNode){
+CompSpawnNode::CompSpawnNode(const CompSpawnNode& orig, SObj* obj) :
+SComponent(COMPID::spawnNode, obj){
 	init();
 	_spawnTime = orig._spawnTime;
 	_spawn = orig._spawn;
@@ -90,6 +90,8 @@ void CompSpawnNode::acceptMessage(MESSAGE::Enum type, Message* data){
 
 void CompSpawnNode::spawn(TIME spawnTime){
 	_spawn = 0;
+	/*
+	 * TODO REIMPLEMENT THIS IS BROKEN
 	if(_obj->getPos()){
 		OBJID id = _obj->getProcessor()->getFreeID();
 		cerr<<"Spwan new unit id ="<<id<<" in "<<spawnTime<<" ms"<<endl;
@@ -104,6 +106,7 @@ void CompSpawnNode::spawn(TIME spawnTime){
 	}else
 		cerr<<"ERROR CompSpawnNode no pos"<<endl;
 	this->dbSave();
+	 * */
 }
 
 CompSpawnNode::~CompSpawnNode() {

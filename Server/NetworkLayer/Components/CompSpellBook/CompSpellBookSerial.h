@@ -54,7 +54,7 @@ void removeValue(CompSpellBook* comp, SerialSetField* msg){
     }
 }
 
-SerialSendFull* allocSendFull(OBJID objId, list<OBJID> powers){
+SerialSendFull* allocSendFull(OBJID objId, list<OBJID>& powers){
 
 	size_t size = sizeof(SerialSendFull) + (powers.size() * sizeof(OBJID));
 	SerialSendFull* s = (SerialSendFull*)malloc(size);

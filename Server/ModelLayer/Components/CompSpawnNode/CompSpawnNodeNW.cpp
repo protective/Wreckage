@@ -1,8 +1,8 @@
 
 #include "CompSpawnNode.h"
 
-CompSpawnNode::CompSpawnNode(SerialCompSpawnNode* sc, int32_t* size):
-SComponent(COMPID::spawnNode){
+CompSpawnNode::CompSpawnNode(SerialCompSpawnNode* sc, int32_t* size, SObj* obj):
+SComponent(COMPID::spawnNode, obj){
 	init();
 	if(*size >= sizeof(SerialCompSpawnNode)){
 		this->_spawn = sc->_spawn;

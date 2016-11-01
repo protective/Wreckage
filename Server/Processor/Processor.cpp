@@ -85,11 +85,110 @@ void Processor::loadAllObjFromDb(){
 					new MessageSystemBroadcast(0, MessageSystemBroadcast::dbloadObjComplete),
 				1000)
 				);
-	}
-	
-		
+	}	
 }
 
+SObj* Processor::createObj(
+	OBJID id,
+	OBJID fromId,
+	bool makePersistent,
+	bool makeTemplate)
+{
+	if(id == 0)
+		id = this->getFreeID();
+	if(fromId){
+		pqxx::work w(this->getDB());	
+		stringstream s; s<<"select istemplate, cloneispersistent from objs where objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s); w.commit();	
+
+		if(id != fromId){
+			makeTemplate = false;
+			makePersistent = r[0][1].as<bool>();
+		}else if(id == fromId){
+			makeTemplate = r[0][0].as<bool>();
+			makePersistent = true;
+		}
+	}
+	SObj* obj = new SObj(id, makePersistent, makeTemplate, id == fromId, this);
+	if(fromId)
+		this->setClone(fromId, obj);
+	cerr<<"create new obj id="<<id<<" from id="<<fromId<<endl;
+
+	loadComponents(obj, fromId);
+	loadData(obj, fromId);
+	loadPos(obj, fromId);
+
+	if(id != fromId && makePersistent)
+		obj->save();
+
+	this->addObj(obj);
+	return obj;
+}
+
+void Processor::loadData(SObj* obj, OBJID fromId){
+	/*
+	 * 
+	 * TODO do we need this?
+	for(map<COMPID::Enum, SComponent*>::iterator it = _components.begin(); it != _components.end();it++){
+		for (list<OBJDATA::Enum>::iterator it2 = it->second->getDataAccesUssage().begin() ; it2 != it->second->getDataAccesUssage().end();it2++){
+			obj->setData(*it2, 0);
+		}
+	}
+	*/
+	SObj* from = this->getObj(fromId);
+	if (from) {
+		for (auto& kv: from->getData()) {
+			obj->setData(kv.first, kv.second);
+		}
+	} else {
+		pqxx::work w(this->getDB());
+		stringstream s;
+		s<<"select dataid, value from objdata where "
+		"objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s); w.commit();
+		for (int i = 0; i< r.size(); i++){
+			obj->setData((OBJDATA::Enum)r[i][0].as<int32_t>(), r[i][1].as<int32_t>());
+		}
+	}
+}
+
+void Processor::loadPos(SObj* obj, OBJID fromId){
+	SObj* from = this->getObj(fromId);
+	if (from) {
+		SPos* p = from->getPos();
+		if (p)
+			obj->setPos(*p);
+	} else {
+		pqxx::work w(this->getDB());
+		stringstream s;
+		s<<"select x, y, z, d from objpos where "
+		"objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s); w.commit();
+		if ( r.size() > 0){
+			SPos p(r[0][0].as<int32_t>(),r[0][1].as<int32_t>(),r[0][2].as<int32_t>(),r[0][3].as<uint16_t>());
+			obj->setPos(p);
+		}
+	}
+}
+
+void Processor::loadComponents(SObj* obj, OBJID fromId){
+	SObj* from = this->getObj(fromId);
+	if (from) {
+		for (auto& kv : from->getComponents()) {
+			obj->addComponent(kv.second->clone(obj));
+		}
+	} else {
+		pqxx::work w(this->getDB());
+		stringstream s;
+		s<<"select compid from comp where objid = "<<fromId<<";";
+		pqxx::result r = w.exec(s);
+		w.commit();
+		for(int i = 0; i< r.size();i++){
+			SComponent* cmp = createComponent(obj, (COMPID::Enum)r[i][0].as<uint32_t>(), fromId, this->getDB());
+			obj->addComponent(cmp);
+		}
+	}
+}
 
 void Processor::addObj(SObj* obj){
 	if(obj){

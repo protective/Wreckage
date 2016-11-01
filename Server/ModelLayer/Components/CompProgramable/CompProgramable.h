@@ -8,10 +8,10 @@
 
 class CompProgramable : public SComponent {
 public:
-	CompProgramable();
-	CompProgramable(const CompProgramable& orig);
+	CompProgramable(SObj* obj);
+	CompProgramable(const CompProgramable& orig, SObj* obj);
 	CompProgramable(SObj* obj, OBJID id, pqxx::connection& con);
-	CompProgramable* clone(){return new CompProgramable( *this );}
+	CompProgramable* clone(SObj* obj){return new CompProgramable(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

@@ -4,20 +4,20 @@
 #include "../../Signals/SignalEnterClient.h"
 #include "../../Signals/SignalExitClient.h"
 
-CompModelStatic::CompModelStatic() :
-SComponent(COMPID::modelStatic){
+CompModelStatic::CompModelStatic(SObj* obj) :
+SComponent(COMPID::modelStatic, obj){
 	init();
 	_modelId = 0;
 }
 
-CompModelStatic::CompModelStatic(uint32_t modelId) :
-SComponent(COMPID::modelStatic){
+CompModelStatic::CompModelStatic(uint32_t modelId, SObj* obj) :
+SComponent(COMPID::modelStatic, obj){
 	init();
 	_modelId = modelId;
 }
 
-CompModelStatic::CompModelStatic(const CompModelStatic& orig) :
-SComponent(COMPID::modelStatic){
+CompModelStatic::CompModelStatic(const CompModelStatic& orig, SObj* obj) :
+SComponent(COMPID::modelStatic, obj){
 	init();
 	_modelId = orig._modelId;
 }

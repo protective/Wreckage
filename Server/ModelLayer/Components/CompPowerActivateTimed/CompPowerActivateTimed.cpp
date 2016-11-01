@@ -1,13 +1,13 @@
 
 #include "CompPowerActivateTimed.h"
 
-CompPowerActivateTimed::CompPowerActivateTimed() :
-SComponent(COMPID::powerActivateTimed){
+CompPowerActivateTimed::CompPowerActivateTimed(SObj* obj) :
+SComponent(COMPID::powerActivateTimed, obj){
 	
 }
 
-CompPowerActivateTimed::CompPowerActivateTimed(const CompPowerActivateTimed& orig) :
-SComponent(COMPID::powerActivateTimed){
+CompPowerActivateTimed::CompPowerActivateTimed(const CompPowerActivateTimed& orig, SObj* obj) :
+SComponent(COMPID::powerActivateTimed, obj){
 
 }
 

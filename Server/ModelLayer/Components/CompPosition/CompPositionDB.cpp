@@ -5,7 +5,7 @@
 #include "../../../Processor/Processor.h"
 
 CompPosition::CompPosition(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::position){
+SComponent(COMPID::position, obj){
 	init();
 	/*
 	pqxx::work w(con);

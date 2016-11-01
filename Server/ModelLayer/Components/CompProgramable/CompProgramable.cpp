@@ -16,13 +16,13 @@
 
 #include "../CompTargeted/CompTargeted.h"
 
-CompProgramable::CompProgramable() :
-SComponent(COMPID::programable){
+CompProgramable::CompProgramable(SObj* obj) :
+SComponent(COMPID::programable, obj){
 	init();
 }
 
-CompProgramable::CompProgramable(const CompProgramable& orig) :
-SComponent(COMPID::programable){
+CompProgramable::CompProgramable(const CompProgramable& orig, SObj* obj) :
+SComponent(COMPID::programable, obj){
 	init();
 }
 

@@ -23,6 +23,16 @@ public:
 	uint32_t addTask(Task* task);
 	uint32_t removeTask(Task* task);
 	static void* workThreadFunction(void* context);
+    SObj* createObj(
+        OBJID id,
+        OBJID fromId,
+        bool makePersistent,
+        bool makeTemplate);
+    
+    void loadComponents(SObj* obj, OBJID fromId);
+    void loadData(SObj* obj, OBJID fromId);
+    void loadPos(SObj* obj, OBJID fromId);
+    
 	void addObj(SObj* obj);
 	void removeObj(SObj* obj);
 	void setClone(OBJID obj, SObj* clone){_clones[obj].push_back(clone);}

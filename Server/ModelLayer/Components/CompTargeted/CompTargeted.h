@@ -21,11 +21,11 @@ struct BuffIterator {
 
 class CompTargeted  : public SComponent {
 public:
-	CompTargeted();
+	CompTargeted(SObj* obj);
 	//CompTargeted(OBJID spawner);
-	CompTargeted(const CompTargeted& orig);
+	CompTargeted(const CompTargeted& orig, SObj* obj);
 	CompTargeted(SObj* obj, OBJID id, pqxx::connection& con);
-	CompTargeted* clone(){return new CompTargeted( *this );}
+	CompTargeted* clone(SObj* obj){return new CompTargeted(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);

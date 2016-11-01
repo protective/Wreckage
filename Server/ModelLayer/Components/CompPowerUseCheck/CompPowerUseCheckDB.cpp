@@ -2,10 +2,8 @@
 #include "CompPowerUseCheck.h"
 
 CompPowerUseCheck::CompPowerUseCheck(SObj* obj, OBJID id, pqxx::connection& con) :
-SComponent(COMPID::powerUseCheck){
+SComponent(COMPID::powerUseCheck, obj){
 	init();
-	
-	
 	if(obj->getId() == id)
 		_flags = COMPFLAGINIT;
 }

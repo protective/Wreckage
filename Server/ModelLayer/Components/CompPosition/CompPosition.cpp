@@ -5,18 +5,18 @@
 
 #include "../../Messages/MessageDestUpdate.h"
 
-CompPosition::CompPosition() :
-SComponent(COMPID::position){
+CompPosition::CompPosition(SObj* obj) :
+SComponent(COMPID::position, obj){
 	init();
 }
 
-CompPosition::CompPosition(uint32_t modelId) :
-SComponent(COMPID::position){
+CompPosition::CompPosition(uint32_t modelId, SObj* obj) :
+SComponent(COMPID::position, obj){
 	init();
 }
 
-CompPosition::CompPosition(const CompPosition& orig) :
-SComponent(COMPID::position){
+CompPosition::CompPosition(const CompPosition& orig, SObj* obj) :
+SComponent(COMPID::position, obj){
 	init();
 }
 

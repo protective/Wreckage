@@ -67,23 +67,18 @@ int main(int argc, char** argv) {
 	}	
 	w.commit();
 	
-	CompSpawnNode csn;
-	csn.dbTableInit(con);
-	
-	CompReSpawnable crsn;
-	crsn.dbTableInit(con);
 
-	CompPowerActivateTimed cpat;
-	cpat.dbTableInit(con);
+	CompSpawnNode::dbTableInit(con);
+	
+	CompReSpawnable::dbTableInit(con);
 
-	CompPowerUseCheck cpuc;
-	cpuc.dbTableInit(con);
-	
-	CompSpellBook css;
-	css.dbTableInit(con);
-	
-	CompModelStatic cms;
-	cms.dbTableInit(con);
+	CompPowerActivateTimed::dbTableInit(con);
+
+	CompPowerUseCheck::dbTableInit(con);
+
+	CompSpellBook::dbTableInit(con);
+
+	CompModelStatic::dbTableInit(con);
 	
 	
 	

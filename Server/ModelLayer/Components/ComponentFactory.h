@@ -22,10 +22,10 @@ SComponent* createComponent(SObj* obj, COMPID::Enum type, OBJID id, pqxx::connec
  * it is up to the factory to check that no buffer overflow occur.
  * size is set to the size of the serialiszed component before the function return
  */
-SComponent* createComponent(SerialObjComp* sc, int32_t* Size);
+SComponent* createComponent(SerialObjComp* sc, int32_t* Size, SObj* obj);
 
 
-SComponent* createComponent(uint32_t compId);
+SComponent* createComponent(uint32_t compId, SObj* obj);
 
 #endif	/* COMPONENTFACTORY_H */
 

@@ -4,12 +4,11 @@ define(function ( require ) {
     var SerialComp = require('Network/Comp/SerialComp');
     var objManager = require("../../objManager");
 
-    var objEnter = function(objId, block) {
+    var objEnter = function(obj, block) {
         var x = new Int32Array(block.slice(0,4))[0];
         var y = new Int32Array(block.slice(4,8))[0];
         var z = new Int32Array(block.slice(8,12))[0];
 
-        var obj = objManager.gotObjEnter(objId);
         obj['x'] = x / 50;
         obj['y'] = y / 50;
         obj['z'] = z / 50;

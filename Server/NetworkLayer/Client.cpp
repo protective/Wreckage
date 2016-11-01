@@ -127,7 +127,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 						//cerr<<"SerialType::SerialAddComponent: obj not found "<<endl;
 						break;
 					}
-					SComponent* tmp = createComponent(st->_compid);
+					SComponent* tmp = createComponent(st->_compid, obj);
 					if(tmp) {
 						TaskAddComponent * t = new TaskAddComponent(obj, tmp);
 						networkControl->addTaskToObj(t, st->_unitId);

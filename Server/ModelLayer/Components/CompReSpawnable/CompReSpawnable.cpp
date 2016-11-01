@@ -9,24 +9,22 @@
 #include "../../Messages/MessageHeartBeatReq.h"
 #include "../../Messages/MessageHeartBeatRsp.h"
 
-CompReSpawnable::CompReSpawnable() :
-SComponent(COMPID::reSpawnable){
+CompReSpawnable::CompReSpawnable(SObj* obj) :
+SComponent(COMPID::reSpawnable, obj){
 	init();
 	_spawner = 0;
 }
 
-CompReSpawnable::CompReSpawnable(const CompReSpawnable& orig) :
-SComponent(COMPID::reSpawnable){
+CompReSpawnable::CompReSpawnable(const CompReSpawnable& orig, SObj* obj) :
+SComponent(COMPID::reSpawnable, obj){
 	init();
 	_spawner = orig._spawner;
-
 }
 
-CompReSpawnable::CompReSpawnable(OBJID spawner) :
-SComponent(COMPID::reSpawnable){
+CompReSpawnable::CompReSpawnable(OBJID spawner, SObj* obj) :
+SComponent(COMPID::reSpawnable, obj){
 	init();
 	_spawner = spawner;
-
 }
 
 void CompReSpawnable::init(){

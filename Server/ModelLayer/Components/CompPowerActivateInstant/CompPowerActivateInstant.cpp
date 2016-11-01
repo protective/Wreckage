@@ -3,13 +3,13 @@
 
 #include "../../Signals/SignalEnterDevClient.h"
 
-CompPowerActivateInstant::CompPowerActivateInstant() :
-SComponent(COMPID::powerActivateInstant){
+CompPowerActivateInstant::CompPowerActivateInstant(SObj* obj) :
+SComponent(COMPID::powerActivateInstant, obj){
 	init();
 }
 
-CompPowerActivateInstant::CompPowerActivateInstant(const CompPowerActivateInstant& orig) :
-SComponent(COMPID::powerActivateInstant){
+CompPowerActivateInstant::CompPowerActivateInstant(const CompPowerActivateInstant& orig, SObj* obj) :
+SComponent(COMPID::powerActivateInstant, obj){
 	init();
 }
 

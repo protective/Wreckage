@@ -50,6 +50,7 @@ void setvalue(CompPowerBase* comp, SerialSetField* msg){
 			break;
 		}
 	}
+    comp->dbSave();
 }
 
 struct SerialSendFull : public SerialComp{

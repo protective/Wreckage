@@ -8,13 +8,13 @@
 #include "../../../wkl/ProgramExecutor.h"
 
 #include "../../../wkl/Program.h"
-
+class SObj;
 class CompSpellBook  : public SComponent {
 public:
-	CompSpellBook();
-	CompSpellBook(const CompSpellBook& orig);
+	CompSpellBook(SObj* obj);
+	CompSpellBook(const CompSpellBook& orig, SObj* obj);
 	CompSpellBook(SObj* obj, OBJID id, pqxx::connection& con);
-	CompSpellBook* clone(){return new CompSpellBook( *this );}
+	CompSpellBook* clone(SObj* obj){return new CompSpellBook(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
@@ -31,7 +31,7 @@ public:
 	void removePower(OBJID power);
 
 	void virtual dbInit();
-	void virtual dbTableInit(pqxx::connection& con);
+	void static dbTableInit(pqxx::connection& con);
 	void virtual dbSave();
 	void virtual dbLoad(){}
 	void virtual dbDelete();
@@ -39,8 +39,7 @@ public:
 private:
 	virtual void init();
 
-	list<OBJID> _knownPowers;
-	list<OBJID> _loadedPowers;
+    map<OBJID, SObj*> _powers;
 
 	list<OBJID> _castList;
 	uint32_t _beginTime;

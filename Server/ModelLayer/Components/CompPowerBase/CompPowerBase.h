@@ -8,10 +8,10 @@ typedef uint16_t CID;
 
 class CompPowerBase  : public SComponent {
 public:
-	CompPowerBase();
-	CompPowerBase(const CompPowerBase& orig);
+	CompPowerBase(SObj* obj);
+	CompPowerBase(const CompPowerBase& orig, SObj* obj);
 	CompPowerBase(SObj* obj, OBJID id, pqxx::connection& con);
-	CompPowerBase* clone(){return new CompPowerBase( *this );}
+	CompPowerBase* clone(SObj* obj){return new CompPowerBase(*this, obj);}
 
 	void virtual acceptSignal(SIGNAL::Enum type, Signal* data);
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
