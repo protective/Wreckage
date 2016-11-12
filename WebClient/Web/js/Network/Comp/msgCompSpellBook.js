@@ -25,17 +25,56 @@ define(function ( require ) {
     	webSocket.send(buffer);
     }
     
-    var full = function(obj, block) {
+    function encodeAddPower(spellbook, powerId) {
+    	spellId = spellId;
+    	var buffer = new ArrayBuffer(22);
+    	var base = new Uint32Array(buffer);
+    	base[0] = 7; //cmdindput
+    	base[1] = 24; //length
+    	base[2] = spellbook.id; //InputObj
+    	var cast16View = new Uint16Array(buffer, 12);
+    	cast16View[0] = 3 //AddCompValue
+    	cast16View[1] = 6 //inputlength
+    	cast16View[2] = 1 //knownpowers
+    	var data32View = new Uint32Array(buffer, 18);
+    	data32View[0] = powerId //powerobjid
 
+    	webSocket.send(buffer);
+    }
+
+    function encodeRemovePower(spellbook, powerId) {
+    	spellId = spellId;
+    	var buffer = new ArrayBuffer(22);
+    	var base = new Uint32Array(buffer);
+    	base[0] = 7; //cmdindput
+    	base[1] = 24; //length
+    	base[2] = spellbook.id; //InputObj
+    	var cast16View = new Uint16Array(buffer, 12);
+    	cast16View[0] = 4 //RemoveCompValue
+    	cast16View[1] = 6 //inputlength
+    	cast16View[2] = 1 //knownpowers
+    	var data32View = new Uint32Array(buffer, 18);
+    	data32View[0] = powerId //powerobjid
+
+    	webSocket.send(buffer);
+    }    
+    
+    var full = function(obj, block) {
+    	var size = 14;
         UISpellbook.createSpellBookPanel(obj);
         var dv = new DataView(block, 0);
-        var len = dv.getUint16(0,true);
+        var len = dv.getUint16(0, true);
         var powers = new Array();
         for (var i = 0; i< len; i++ ){
-        	var powerid = dv.getUint32(2+(i*4),true);
-        	powers[powerid] = null;
-        	if (powerid >= 1 << 24)
-        		UISpellbook.addAvilPower(powerid);
+        	var powerid = dv.getUint32(2 + (i * size), true);
+        	var templatePowerid = dv.getUint32(6 + (i * size), true);
+        	var powerFlags = dv.getUint32(10 + (i * size), true);
+        	var powerlevel = dv.getUint16(14 + (i * size), true);
+        	powers[powerid] = {
+        			'template': templatePowerid,
+        			'flags': powerFlags,
+        			'level': powerlevel};
+        	UISpellbook.addAvilPower(powerid);
         }
         require('Model/CompSpellBook').call(obj, powers);
     }
@@ -48,7 +87,9 @@ define(function ( require ) {
     }
     
     return function msgSpellBook() {
-    	webSocket.hook("castSpellTarget", encodeCastSpellTarget )
+    	webSocket.hook("castSpellTarget", encodeCastSpellTarget);
+    	webSocket.hook("sendAddPower", encodeAddPower);
+    	webSocket.hook("sendRemovePower", encodeRemovePower);
     	SerialComp.hook(4, decode);
     };
 });

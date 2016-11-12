@@ -59,12 +59,19 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 
 void CompSpellBook::sendFull(uint32_t clientId){
 	//cerr<<"CompSpellBook::sendFull obj "<<this->_obj->getId()<<endl;
-	list<OBJID> tmplist;
+	list<SerialCompSpellBook::SerialPower> tmplist;
 	for(auto it: this->_powers) {
-		if (it.second)
-			tmplist.push_back(it.second->getId());
-		else
-			tmplist.push_back(it.first);
+		
+		SerialCompSpellBook::SerialPower tmp;
+		tmp.templatePower = it.first;
+		tmp.level = 0;
+		tmp.trainedFlags = 0;
+		if (it.second.obj) {
+			tmp.power = it.second.obj->getId();
+		} else {
+			tmp.power = 0;
+		}
+		tmplist.push_back(tmp);
 	}
 	SerialCompSpellBook::SerialSendFull* tmp = SerialCompSpellBook::allocSendFull(
 			this->_obj->getId(),

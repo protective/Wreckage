@@ -14,13 +14,30 @@
     </thead>
     <tbody>
     <% for(var i in keyval["entries"]) { %>
-    <tr>
-        <td class="filterable-cell"><%= i %></td>
+    <% if ('list' in keyval["entries"]) { %>
+    
+        
+        <% for (var j in keyval["entries"].list.values) { %>
+        <tr>
         <td class="filterable-cell">
-            <textarea class="mytextarea" id="comfield<%= i + id  %>" type="text"><%= keyval["entries"][i].value %></textarea>
+        <p><%= keyval["entries"].list.values[j] %></p>
+        
         </td>
+        <td class="filterable-cell">
+        <button type="button" id="remove_power_<%= j %>">Remove</button>
+        </td>
+        </tr>
+        <% } %>
+    
+        
+    <%  } else { %>
+        <tr>
+            <td class="filterable-cell"><%= i %></td>
+            <td class="filterable-cell">
+                <textarea class="mytextarea" id="comfield<%= i + id  %>" type="text"><%= keyval["entries"][i].value %></textarea>
+            </td>
 
-    </tr>
-    <% } %>
+        </tr>
+    <% }} %>
     </tbody>  
 </table>

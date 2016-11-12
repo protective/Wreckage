@@ -9,8 +9,15 @@
 
 #include "../../../wkl/Program.h"
 class SObj;
+
+
 class CompSpellBook  : public SComponent {
 public:
+    struct Power {
+        SObj* obj;
+        uint16_t level;
+        uint32_t trainedFlags;
+    };
 	CompSpellBook(SObj* obj);
 	CompSpellBook(const CompSpellBook& orig, SObj* obj);
 	CompSpellBook(SObj* obj, OBJID id, pqxx::connection& con);
@@ -39,7 +46,7 @@ public:
 private:
 	virtual void init();
 
-    map<OBJID, SObj*> _powers;
+    map<OBJID, CompSpellBook::Power> _powers;
 
 	list<OBJID> _castList;
 	uint32_t _beginTime;

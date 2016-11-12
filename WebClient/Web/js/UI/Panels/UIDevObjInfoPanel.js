@@ -131,7 +131,6 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
                     button.keyval = {'id' : button.id,
                             'keyval' : obj[tempComponents[i]].getKeyValues()};
                     button.compName = tempComponents[i];
-                    button.myhest = function(){alert(1);};
 
                     button.innerHTML = tempComponents[i];
                     cell1.appendChild(button);
@@ -139,6 +138,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
                     tmp.popover({
                         'html' : true,
                         content: function() {
+                        	
                             var yy = _.template(keyValueTable)(this.keyval);
                             return yy;
                         }});

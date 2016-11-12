@@ -27,10 +27,20 @@ struct SerialRemoveKnownpower : public SerialSetField {
 	OBJID _power;
 }__attribute__((__packed__));
 
+
+struct SerialPower{
+	OBJID power;
+    OBJID templatePower;
+    uint32_t trainedFlags;
+	uint16_t level;
+}__attribute__((__packed__));
+
+
 struct SerialSendFull : public SerialComp{
 	uint16_t _xPowers;
-	OBJID _powers[1];
+	SerialPower _powers[1];
 }__attribute__((__packed__));
+
 
 void addValue(CompSpellBook* comp, SerialSetField* msg){
 	switch((SerialSetField::Enum)msg->_field){
@@ -54,9 +64,9 @@ void removeValue(CompSpellBook* comp, SerialSetField* msg){
     }
 }
 
-SerialSendFull* allocSendFull(OBJID objId, list<OBJID>& powers){
+SerialSendFull* allocSendFull(OBJID objId, list<SerialPower>& powers){
 
-	size_t size = sizeof(SerialSendFull) + (powers.size() * sizeof(OBJID));
+	size_t size = sizeof(SerialSendFull) + (powers.size() * sizeof(SerialPower));
 	SerialSendFull* s = (SerialSendFull*)malloc(size);
 	s->_type = SerialType::SerialComp;
 	s->_size = size;

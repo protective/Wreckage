@@ -15,7 +15,6 @@ SComponent(COMPID::spellbook, obj){
 	pqxx::result r = w.exec(s);
 	w.commit();
 	for (int i = 0; i < r.size(); i++) {
-		
 		OBJID templateId = r[i][0].as<OBJID>();
 		this->addPower(templateId);
 	}

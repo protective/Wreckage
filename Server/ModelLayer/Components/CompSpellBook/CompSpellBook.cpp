@@ -28,16 +28,21 @@ SComponent(COMPID::spellbook, obj){
 }
 
 void CompSpellBook::addPower(OBJID power){
+	CompSpellBook::Power tpower;
+	tpower.level = 0;
+	tpower.trainedFlags = 0;
 	if(!_obj->isTemplate()){
 		OBJID tmp = _obj->getProcessor()->getFreeID();
 		SObj* powerObj = _obj->getProcessor()->createObj(tmp, power, false, false);
-		_powers[power] = powerObj;
+		tpower.obj = powerObj;
 	}else{
-		_powers[power] = NULL;
+		tpower.obj = NULL;
 	}
+	_powers[power] = tpower;
 }
 void CompSpellBook::removePower(OBJID power){
 	//TODO delete obj
+	cerr<<"deleting power Warning memleak"<<endl;
 	_powers.erase(power);
 }
 
