@@ -13,15 +13,25 @@
     background-color: grey;
 }
 
-.powerEditor {
+.Editor {
     color: black;
     margin-bottom: 0px;
     border-style: solid;
     border-color: #303030;
     background-color: grey;
+    width: 250px;
 }
 
-.UIPowerList {
+.unitEditorEntry td {
+    color: black;
+    margin-bottom: 0px;
+    border-style: solid;
+    border-color: #303030;
+    background-color: white;
+}
+
+
+.UIEditorList {
     top: 50px;
     left: 10px;
     border-spacing: 1px;

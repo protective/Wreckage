@@ -28,6 +28,8 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap',
             UI_show_templates()});
         $("body").on("click", "#UIshowPowerList", function(e){
             UIMain.UI_togglePowersList()});
+        $("body").on("click", "#UIshowUnitList", function(e){
+            UIMain.UI_toggleUnitList()});
     }
 
     return init;

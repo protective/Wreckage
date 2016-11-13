@@ -21,7 +21,6 @@ define(function ( require ) {
 
     var UIMain = require('UI/UIMain');
 	require('UI/Panels/UIDevObjInfoPanel');
-	require('UI/Panels/UIPowerListPanel');
 	require('UI/UISpellbook');
     var webGL = require('webGL');
 

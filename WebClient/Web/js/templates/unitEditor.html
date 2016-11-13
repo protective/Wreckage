@@ -1,0 +1,19 @@
+<table class="Editor">
+    <tr>
+        <td><button id="unitEditor_submit">Save</button></td>
+        <td></td>
+    </tr>
+    <% for (var i in entries) { %>
+    <tr class="unitEditorEntry" id="<%= i %>">
+        <td class="filterable-cell">
+            <p><%= i %></p>
+        </td>
+        <td class="filterable-cell">
+            <p><%= entries[i].value %></p>
+        </td>
+    </tr>
+    <% } %>
+    
+</table>
+
+

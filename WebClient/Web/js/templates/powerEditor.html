@@ -1,26 +1,26 @@
-<table class="powerEditor">
-    <thead>
-    
+<table class="Editor">
     <tr>
-        <th>
-            <button class="btn-submit-comp" id="comsave<%= id %>">Save</button>
-        </th>
-        <th><%= id  %></th>
+        <td><button id="powerEditor_submit">Save</button></td>
+        <td></td>
     </tr>
     <tr>
-        <th> <%= keyval["compName"] %> </th>
-        <th></th>
+        <td><a>Name<a></td>
+        <td><input id="powerEditor_name" type="text"></input></td>
     </tr>
-    </thead>
-    <tbody>
-    <% for(var i in keyval["entries"]) { %>
     <tr>
-        <td class="filterable-cell"><%= i %></td>
-        <td class="filterable-cell">
-            <textarea class="mytextarea" id="comfield<%= i + id  %>" type="text"><%= keyval["entries"][i].value %></textarea>
+        <td><a>Description<a></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td colspan="2">
+        <textarea id="powerEditor_desc" style="width: 400px; height: 50px; overflow: auto; max-height: 50px; max-width: 400px" type="text"></textarea>
         </td>
-
     </tr>
-    <% } %>
-    </tbody>  
+    <tr>
+        <td colspan="2">
+        <textarea id="powerEditor_src" style="width: 400px; height: 200px; overflow: auto; max-height: 200px; max-width: 400px; font-family: Lucida Console, Courier, monospace;" type="text"></textarea>
+        </td>
+    </tr>
 </table>
+
+

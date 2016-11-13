@@ -14,7 +14,8 @@ define(function ( require ) {
     var ret = {'maindiv': webGL.container};
 
     require('UI/UINaveBar')(ret);
-    require('UI/Panels/UIPowerListPanel')(ret);
+    
+    require('UI/Panels/UIEditorPanel')(ret);
     require('UI/Panels/UIDevObjInfoPanel')(ret);
 
     function castspell() {

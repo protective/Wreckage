@@ -31,6 +31,15 @@ define(function ( require ) {
         return _list;
     }
 
+    function getTemplateObjs() {
+    	var ret = {};
+        for (var ob in _list) {
+            if (_list[ob].isTemplate)
+                ret[_list[ob].id] = _list[ob]
+        }
+        return ret;
+    }
+    
     function createObj(callback) {
         _nextCreateObjRef += 1;
         _createObjCallback[_nextCreateObjRef] = callback;
@@ -94,6 +103,7 @@ define(function ( require ) {
             'gotObjCreated' : gotObjCreated,
             'hook' : hook,
             'getObjs' : getObjs,
+            'getTemplateObjs' : getTemplateObjs,
             'createObj': createObj,
             'modAddCompPowerBase': modAddCompPowerBase
     };
