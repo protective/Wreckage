@@ -2,18 +2,26 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
         'Model/CompPowerBase',
         'objManager',
         'obj',
+        'UI/Panels/UIModifyPowerList',
         'text!templates/unitEditor.html'], function (require) {
 	
 	var UnitEditorTemplate = require('text!templates/unitEditor.html');
 	var objManager = require('objManager');
 
-	var UIEditorItemField = null;
-	var activeUIEditorItemField = null;
+	var UIModifyPowersList = require('UI/Panels/UIModifyPowerList');
 	
+	var UIEditorItemField = null;
+	var UIEditorItemFieldEditor = null;
+	var activeUIEditorItemField = null;
+
 	function setUIEditorItemField(dom){
 		UIEditorItemField = dom;
 	}
-	
+
+	function setUIEditorItemFieldEditor(dom){
+		UIEditorItemFieldEditor = dom;
+	}
+
     function createNewUnit(name, description, src) {
         var callback = function(obj){
             var callback2 = function(power) {
@@ -54,18 +62,29 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     	var spellbook = null;
     	var entry_dict = {'entries': {}};
 
-    	if ('compSpellBook' in unit)
-        	var f = function() {
+    	if ('compSpellBook' in unit) {
+    		powers = unit.compSpellBook.powers;
+
+    		var ui_modify = null;
+
+        	var openSpellEdit = function() {
+        		if (ui_modify && ui_modify.active()) {
+        			ui_modify.save();
+        		} else {
+            		ui_modify = UIModifyPowersList(
+            				unit.compSpellBook,
+                			UIEditorItemFieldEditor);
+        		}
     		};
 
     		tmp = "";
-    		spellbook = unit.compSpellbook;
-    		for (power in spellbook) {
-    			var powerObj = objManager.getObjById(power);
+    		for (power in powers) {
+    			var powerObj = objManager.getObjById(powers[power].template);
     			if (powerObj)
-    				tmp.concat(powerObj.compPowerBase.powerName);
+    				tmp = tmp + powerObj.compPowerBase.powerName + " ";
     		}
-    		entry_dict.entries['spells'] = {'value': tmp, 'onClick': f};
+    		entry_dict.entries['spells'] = {'value': tmp, 'onClick': openSpellEdit};
+    	}
 
     	dom = $.parseHTML($.trim(_.template(UnitEditorTemplate, "text/html")(entry_dict)))[0];
     	if (activeUIEditorItemField)
@@ -102,6 +121,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     return {
     	'getItems': getUnitItems,
     	'itemOnClick': updateUnitEditor,
-    	'setUIEditorItemField': setUIEditorItemField
+    	'setUIEditorItemField': setUIEditorItemField,
+    	'setUIEditorItemFieldEditor': setUIEditorItemFieldEditor
     	};
 });

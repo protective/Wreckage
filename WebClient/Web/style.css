@@ -13,6 +13,19 @@
     background-color: grey;
 }
 
+.ListEditorMenu {
+    color: black;
+    margin-bottom: 0px;
+    border-style: solid;
+    border-color: #303030;
+    background-color: grey;
+    width: 250px;
+}
+
+.ListEditorMenu button, select {
+    width: 100%;
+}
+
 .Editor {
     color: black;
     margin-bottom: 0px;

@@ -42,18 +42,20 @@ struct SerialSendFull : public SerialComp{
 }__attribute__((__packed__));
 
 
-void addValue(CompSpellBook* comp, SerialSetField* msg){
+uint32_t addValue(CompSpellBook* comp, SerialSetField* msg){
 	switch((SerialSetField::Enum)msg->_field){
 		//TODO Check Security
 		case SerialSetField::Enum::knownpowers: {
 			SerialAddKnownpower* st = (SerialAddKnownpower*)msg;
-			comp->addPower(st->_power);
+			if (comp->addPower(st->_power))
+                return 1;
 			break;
 		}
     }
+    return 0;
 }
 
-void removeValue(CompSpellBook* comp, SerialSetField* msg){
+uint32_t removeValue(CompSpellBook* comp, SerialSetField* msg){
 	switch((SerialSetField::Enum)msg->_field){
 		//TODO Check Security
 		case SerialSetField::Enum::knownpowers: {
@@ -62,6 +64,7 @@ void removeValue(CompSpellBook* comp, SerialSetField* msg){
 			break;
 		}
     }
+    return 0;
 }
 
 SerialSendFull* allocSendFull(OBJID objId, list<SerialPower>& powers){

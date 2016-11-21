@@ -8,6 +8,13 @@ define( function( require )
 		this.obj = obj;
 		this.tick = 0;
 		this.powers = powers;
+		
+		this.addPower = function(powerTemplateId) {
+			webSocket.handlers["sendAddPower"](this.obj, powerTemplateId); 
+		};
+		this.removePower = function(powerTemplateId) {
+			webSocket.handlers["sendRemovePower"](this.obj, powerTemplateId);
+		};
 	}
 
 	CompSpellBook.prototype.getKeyValues = function() {

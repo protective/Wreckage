@@ -141,7 +141,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 					if(!obj){
 						break;
 					}
-					
+
 					SerialInputPayload* data = NULL;
 					switch (((SerialInputPayload*)(&st[1]))->_type){
 						case SERIALINPUT::SerialInputCastPower:{
@@ -149,6 +149,8 @@ uint32_t Client::parseBuffer(uint32_t len){
 							memcpy(data, &st[1], sizeof(SerialInputCastPower));
 							break;
 						}
+						case SERIALINPUT::SerialIndputAddCompValue:
+						case SERIALINPUT::SerialIndputRemoveCompValue:		
 						case SERIALINPUT::SerialIndputSetCompValue:{
 							//TODO security
 							uint32_t tmp = st->_size;
@@ -162,9 +164,12 @@ uint32_t Client::parseBuffer(uint32_t len){
 						}
 						
 					}
-					TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, data);
-					networkControl->addTaskToObj(t,st->_unitId);
-
+					if(data) {
+						TaskAcceptInput * t = new TaskAcceptInput(st->_unitId, data);
+						networkControl->addTaskToObj(t,st->_unitId);
+					}else {
+						cerr<<"Error unrecognized input type"<<endl;
+					}
 					break;
 				}
 				
@@ -182,13 +187,9 @@ uint32_t Client::parseBuffer(uint32_t len){
 						default:{
 							break;
 						}
-						
 					}
-
 					break;
 				}
-
-
 				case SerialType::SerialCmdCreateObj:{
 					SerialCmdCreateObj* st = (SerialCmdCreateObj*)(buffer+offset);
 					
@@ -201,40 +202,7 @@ uint32_t Client::parseBuffer(uint32_t len){
 							(TIME)0,
 							this->_id,
 							st->_creationRef);
-					/*
-					SerialObjData* sd = (SerialObjData*)st->_data;
-					while(sd->_dataType){
-						switch(sd->_dataType){
-							case OBJDATA::position: {
-								t->addPos(new SPos((SerialObjDataPos*)sd));	
-								sd = &(((SerialObjDataPos*)sd)[1]);
-							}
-							default:{
-								t->addData((OBJDATA::Enum)((SerialObjDataValue*)sd)->_dataType,((SerialObjDataValue*)sd)->_value);
-								sd = &(((SerialObjDataValue*)sd)[1]);
-							}
-						}
-						
-						cerr<<"WARNING shoudl be empty "<<sd->_dataType<<endl;
-						break;
-					}
-					SerialObjComp* sc = (SerialObjComp*) (&sd[1]);
-					while(sc->_compType){
-						cerr<<"WARNING shoudl also be empty "<<sc->_compType<<endl;
-				
-						//component size is max the min of remaning buffer of the size of the package
-						int32_t cmpSize = min(remaning, temp->_size);
-						t->addComponent(createComponent(sc, &cmpSize));
-						if(cmpSize){
-							sc += cmpSize; //increasse by the buffer read by the factory
-						}else{
-							cerr<<"parse buffer SerialType::SerialCmdCreateObj WARNING this should not happen"<<endl;
-							break;
-						}
-					}
-					*/
 					networkControl->addTaskToObj(t, 0);
-
 					break;
 				}
 				default:{

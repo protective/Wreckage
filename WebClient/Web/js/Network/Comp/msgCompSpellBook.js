@@ -25,40 +25,36 @@ define(function ( require ) {
     	webSocket.send(buffer);
     }
     
-    function encodeAddPower(spellbook, powerId) {
-    	spellId = spellId;
-    	var buffer = new ArrayBuffer(22);
-    	var base = new Uint32Array(buffer);
-    	base[0] = 7; //cmdindput
-    	base[1] = 24; //length
-    	base[2] = spellbook.id; //InputObj
-    	var cast16View = new Uint16Array(buffer, 12);
-    	cast16View[0] = 3 //AddCompValue
-    	cast16View[1] = 6 //inputlength
-    	cast16View[2] = 1 //knownpowers
-    	var data32View = new Uint32Array(buffer, 18);
-    	data32View[0] = powerId //powerobjid
+    function encodeAddPower(obj, powerId) {
+    	var buffer = new ArrayBuffer(26);
+    	var dv = new DataView(buffer, 0);
+    	dv.setUint32(0, 7, true); //cmdindput
+    	dv.setUint32(4, 26, true); //length
+    	dv.setUint32(8, obj.id, true); //InputObj
+    	dv.setUint16(12, 3, true); //AddCompValue
+    	dv.setUint16(14, 10, true); //inputlength
+    	dv.setUint32(16, 4, true); //compid
+    	dv.setUint16(20, 1, true); //knownpowers
+    	dv.setUint32(22, powerId, true); //powerobjid
 
     	webSocket.send(buffer);
     }
 
-    function encodeRemovePower(spellbook, powerId) {
-    	spellId = spellId;
-    	var buffer = new ArrayBuffer(22);
-    	var base = new Uint32Array(buffer);
-    	base[0] = 7; //cmdindput
-    	base[1] = 24; //length
-    	base[2] = spellbook.id; //InputObj
-    	var cast16View = new Uint16Array(buffer, 12);
-    	cast16View[0] = 4 //RemoveCompValue
-    	cast16View[1] = 6 //inputlength
-    	cast16View[2] = 1 //knownpowers
-    	var data32View = new Uint32Array(buffer, 18);
-    	data32View[0] = powerId //powerobjid
+    function encodeRemovePower(obj, powerId) {
+    	var buffer = new ArrayBuffer(26);
+    	var dv = new DataView(buffer, 0);
+    	dv.setUint32(0, 7, true); //cmdindput
+    	dv.setUint32(4, 26, true); //length
+    	dv.setUint32(8, obj.id, true); //InputObj
+    	dv.setUint16(12, 4, true); //RemoveCompValue
+    	dv.setUint16(14, 10, true); //inputlength
+    	dv.setUint32(16, 4, true); //compid
+    	dv.setUint16(20, 1, true); //knownpowers
+    	dv.setUint32(22, powerId, true); //powerobjid
 
     	webSocket.send(buffer);
-    }    
-    
+    }
+
     var full = function(obj, block) {
     	var size = 14;
         UISpellbook.createSpellBookPanel(obj);
@@ -70,6 +66,8 @@ define(function ( require ) {
         	var templatePowerid = dv.getUint32(6 + (i * size), true);
         	var powerFlags = dv.getUint32(10 + (i * size), true);
         	var powerlevel = dv.getUint16(14 + (i * size), true);
+        	if (powerid == 0)
+        		powerid = templatePowerid;
         	powers[powerid] = {
         			'template': templatePowerid,
         			'flags': powerFlags,

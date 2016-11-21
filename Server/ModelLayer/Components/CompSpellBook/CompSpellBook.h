@@ -33,7 +33,7 @@ public:
 	virtual map<uint32_t, wkl::systemCallFunc> getSyscalls();
 
 	//addFunctions
-	void addPower(OBJID power);
+	bool addPower(OBJID power);
     //removeFunctions
 	void removePower(OBJID power);
 

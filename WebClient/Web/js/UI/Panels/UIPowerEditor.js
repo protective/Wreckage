@@ -13,6 +13,9 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	function setUIEditorItemField(dom){
 		UIEditorItemField = dom;
 	}
+	function setUIEditorItemFieldEditor(dom){
+
+	}
 	
     function createNewPower(name, description, src) {
         var callback = function(obj){
@@ -94,6 +97,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     return {
     	'getItems': getPowerItems,
     	'itemOnClick': updatePowerEditor,
-    	'setUIEditorItemField': setUIEditorItemField
+    	'setUIEditorItemField': setUIEditorItemField,
+    	'setUIEditorItemFieldEditor': setUIEditorItemFieldEditor
     	};
 });

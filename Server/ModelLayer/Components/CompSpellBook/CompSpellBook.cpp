@@ -27,7 +27,10 @@ SComponent(COMPID::spellbook, obj){
 	_beginTime = 0;
 }
 
-void CompSpellBook::addPower(OBJID power){
+bool CompSpellBook::addPower(OBJID power){
+	if (_powers.find(power) != _powers.end())
+		return false;
+
 	CompSpellBook::Power tpower;
 	tpower.level = 0;
 	tpower.trainedFlags = 0;
@@ -39,11 +42,14 @@ void CompSpellBook::addPower(OBJID power){
 		tpower.obj = NULL;
 	}
 	_powers[power] = tpower;
+	dbSave();
+	return true;
 }
 void CompSpellBook::removePower(OBJID power){
 	//TODO delete obj
 	cerr<<"deleting power Warning memleak"<<endl;
 	_powers.erase(power);
+	dbSave();
 }
 
 void CompSpellBook::acceptSignal(SIGNAL::Enum type, Signal* data){

@@ -25,7 +25,7 @@ SComponent(COMPID::spellbook, obj){
 }
 
 void CompSpellBook::dbSave(){
-	if(_obj->getProcessor()){
+	if(_obj->getProcessor() && _obj->isPersistent()){
 		
 		pqxx::work w(_obj->getProcessor()->getDB());
 		stringstream s; 

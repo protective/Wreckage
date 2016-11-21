@@ -49,6 +49,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     	UIMain.maindiv.appendChild(ActiveDom);
     	UIEditorItemListDom = $(ActiveDom).find(".UIEditorItemList")[0];
     	ActivePanel.setUIEditorItemField($(ActiveDom).find(".UIEditorItemField")[0]);
+    	ActivePanel.setUIEditorItemFieldEditor($(ActiveDom).find(".UIEditorItemFieldEdit")[0]);
 
     	var panelItems = panel.getItems();
         for (item in panelItems) {
