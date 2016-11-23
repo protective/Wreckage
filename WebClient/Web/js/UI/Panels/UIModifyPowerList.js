@@ -11,6 +11,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	
 	var _spellbook = null;
 	var _powers = null;
+	var _onsave = null;
 	var _dom = null;
 	var _addButton = null;
 	var _removeButton = null;
@@ -32,10 +33,12 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 	function insert(powerid) {
 		var a = "<option id=\"<%= id %>\" value=\"<%= value %>\"><%= value %></option>";
 		var powerObj = objManager.getObjById(powerid);
-		tmpdom = $.parseHTML($.trim(_.template(a, "text/html")(
-				{'value': powerObj.compPowerBase.powerName,
-				 'id': powerid})))[0];
-		_selectList.appendChild(tmpdom);
+		if (powerObj) {
+    		tmpdom = $.parseHTML($.trim(_.template(a, "text/html")(
+    				{'value': powerObj.compPowerBase.powerName,
+    				 'id': powerid})))[0];
+    		_selectList.appendChild(tmpdom);
+		}
 	}
 
 	function addSave() {
@@ -93,6 +96,7 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 
 	function save() {
 		close();
+		_onsave();
 	}
 
 	function open(dom) {
@@ -120,9 +124,10 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
 		return false;
 	}
 
-    function init(spellbook, dom) {
+    function init(spellbook, dom, onsave) {
     	_spellbook = spellbook;
     	_powers = _spellbook.powers;
+    	_onsave = onsave;
     	close();
     	open(dom);
 		var ret= {'save': save,

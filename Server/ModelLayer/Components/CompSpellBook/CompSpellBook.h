@@ -27,6 +27,7 @@ public:
 	void virtual acceptMessage(MESSAGE::Enum type, Message* data);
 	void virtual acceptNetwork(SerialInputPayload* data);
 
+    void sendUpdate();
 	void sendFull(uint32_t clientId);
 	void sendBeginCast(OBJID powerId, OBJID target, uint32_t beginTime, uint32_t endTime);
 	void sendCast(OBJID powerId, OBJID target, GFXTYPE::Enum gfxType, uint8_t gfxRef);

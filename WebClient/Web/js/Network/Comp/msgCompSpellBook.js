@@ -4,7 +4,7 @@ define(function ( require ) {
     var SerialComp = require('Network/Comp/SerialComp');	
     var objManager = require("../../objManager");
     var UISpellbook = require('UI/UISpellbook');
-    
+    var CompSpellBookConst = require('Model/CompSpellBook');
 
     function encodeCastSpellTarget(caster, target, spellId){
        
@@ -74,7 +74,9 @@ define(function ( require ) {
         			'level': powerlevel};
         	UISpellbook.addAvilPower(powerid);
         }
-        require('Model/CompSpellBook').call(obj, powers);
+        if (!('compSpellBook' in obj))
+        	CompSpellBookConst.call(obj);
+        obj.compSpellBook.setPowers(powers);
     }
     
     var messageHandles = {1 : full};

@@ -39,6 +39,7 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 					MessageSpellbookClone* m = new MessageSpellbookClone(this->_obj->getId(), tmp);
 					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
 				}
+				this->sendUpdate();
 			}
 			break;
 		}
@@ -54,9 +55,18 @@ void CompSpellBook::acceptNetwork(SerialInputPayload* data){
 					MessageSpellbookClone* m = new MessageSpellbookClone(this->_obj->getId(), tmp);
 					this->getObj()->getProcessor()->sendMessage(clone->getId(), m);
 				}
+				this->sendUpdate();
 			}
 			break;
 		}
+	}
+}
+
+void CompSpellBook::sendUpdate() {
+
+	for(map<uint32_t, uint32_t>::iterator it = this->_obj->getSubscribers().begin(); it != this->_obj->getSubscribers().end(); it++){
+		if (it->second >= 2)
+			sendFull(it->first);
 	}
 }
 
@@ -91,7 +101,7 @@ void CompSpellBook::sendCast(OBJID powerId, OBJID target, GFXTYPE::Enum gfxType,
 	effect._effect = (uint32_t)gfxType;
 	effect._hardpoint = 0;
 	effect_l.push_back(effect);
-	
+
 	SerialEventSerialCast::SerialCast * tmp = SerialEventSerialCast::alloc(
 			this->_obj->getId(),
 			powerId,
@@ -119,5 +129,4 @@ void CompSpellBook::sendBeginCast(OBJID powerId, OBJID target, uint32_t beginTim
 			networkControl->sendToC(it->first, tmp, tmp->_size);
 	}
 	free(tmp);
-	
 }

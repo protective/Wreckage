@@ -66,14 +66,17 @@ define(['require', 'jquery', 'jquery-ui' , 'bootstrap', 'underscore',
     		powers = unit.compSpellBook.powers;
 
     		var ui_modify = null;
-
+    		var onsave = function(){
+    			updateUnitEditor(unitId);
+    		}
         	var openSpellEdit = function() {
         		if (ui_modify && ui_modify.active()) {
         			ui_modify.save();
         		} else {
             		ui_modify = UIModifyPowersList(
             				unit.compSpellBook,
-                			UIEditorItemFieldEditor);
+                			UIEditorItemFieldEditor,
+                			onsave);
         		}
     		};
 

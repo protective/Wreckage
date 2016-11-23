@@ -87,6 +87,7 @@ void CompSpellBook::acceptMessage(MESSAGE::Enum type, Message* data){
 			for (auto it: msg->_powers) {
 				if (_powers.find(it) == _powers.end()) {
 					this->addPower(it);
+					this->sendUpdate();
 				}
 			}
 			break;

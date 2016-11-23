@@ -7,7 +7,7 @@ define( function( require )
 	{
 		this.obj = obj;
 		this.tick = 0;
-		this.powers = powers;
+		this.powers = {};
 		
 		this.addPower = function(powerTemplateId) {
 			webSocket.handlers["sendAddPower"](this.obj, powerTemplateId); 
@@ -15,6 +15,10 @@ define( function( require )
 		this.removePower = function(powerTemplateId) {
 			webSocket.handlers["sendRemovePower"](this.obj, powerTemplateId);
 		};
+	}
+	
+	CompSpellBook.prototype.setPowers = function(powers) {
+		this.powers = powers;
 	}
 
 	CompSpellBook.prototype.getKeyValues = function() {
@@ -49,8 +53,8 @@ define( function( require )
 		webSocket.handlers["castSpellTarget"](this.obj, target, powerid); 
 	}
 
-	return function Init(powers)
+	return function Init()
 	{
-		this.compSpellBook = new CompSpellBook(this, powers);
+		this.compSpellBook = new CompSpellBook(this);
 	};
 });
